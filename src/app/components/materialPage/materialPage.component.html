@@ -1,0 +1,83 @@
+<div *ngIf="material; else spinner" class="flex flex-column md:flex-row justify-content-between md:gap-4">
+    <div class="flex flex-column overflow-auto">
+        <h1 class="mb-2">{{material.title}}</h1>
+        <div class="flex align-items-end gap-2 flex-wrap white-space-nowrap mb-2">
+            <div class="text-sm"><strong>Language:</strong> {{material.language}}</div>
+            |
+            <div class="text-sm"><strong>EQF Level:</strong> {{material.educationLevel}}</div>
+            |
+            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.type.toUpperCase()}}</div>
+            |
+            <div class="text-sm"><strong>Created:</strong> {{material.created}}</div>
+            |
+            <div class="text-sm overflow-hidden text-overflow-ellipsis">
+                <a href="{{material.source}}" target="_blank" class="icon-link">
+                    <i class="pi pi-external-link"></i>
+                </a>
+            </div>
+        </div>
+        <div style="color: var(--secondary-color);" class="my-2">{{this.material.creator.join(', ') || ""}}</div>
+        <p-tabs value="0" scrollable class="custom-tabs">
+            <p-tablist>
+                <p-tab value="0">Description</p-tab>
+                <p-tab value="1">Table Of Contents</p-tab>
+                <p-tab value="2">Additional Information</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+                <p-tabpanel value="0">
+                    <p class="m-0">
+                        {{material.abstract}}
+                    </p>
+                    <p class="m-0 mt-3">
+                        {{material.description}}
+                    </p>
+                </p-tabpanel>
+                <p-tabpanel value="1">
+                    <p class="m-0">
+                        {{material.tableOfContents}}
+                    </p>
+                </p-tabpanel>
+                <p-tabpanel value="2">
+
+                </p-tabpanel>
+            </p-tabpanels>
+        </p-tabs>
+        <p-button label="Return To Homepage" class="hidden md:flex custom-button mt-auto mb-2" (onClick)="goToMainPage()"></p-button>
+    </div>
+    <div class="flex flex-column image-column">
+
+        <img src="{{material.image}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
+
+        <p-panel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" class="my-2 custom-panel">            
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let concept of currentConcepts">
+                    <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
+                        [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-panel *ngIf="deprecatedConcepts.length > 0" [header]="'Deprecated BoK Concepts (' + deprecatedConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">            
+            <div class="text-xs mb-3" style="color: var(--danger-color);">*These are obsolete concepts, so they are not present in the current version of the Bok.</div>
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let concept of deprecatedConcepts">
+                    <p-tag [value]="concept" [rounded]="true" class="xs:white-space-nowrap bok-tag" [style.background]="selectedConceptsColor.get(concept)"
+                        (click)="onClickConcept(concept)" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-panel [header]="'Subjects (' + material.subject.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let subject of material.subject">
+                    <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-button label="Return To Homepage" class="flex md:hidden justify-content-center custom-button my-2" (onClick)="goToMainPage()"></p-button>
+    </div>
+</div>
+
+<ng-template #spinner>
+    <div class="flex justify-content-center align-content-center h-screen">
+        <p-progress-spinner strokeWidth="3" ariaLabel="loading" class="flex align-items-center justify-content-center" />
+    </div>
+</ng-template>

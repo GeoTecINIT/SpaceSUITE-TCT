@@ -1,0 +1,5 @@
+.custom-skeleton {
+    border-radius: 12px;
+    --p-skeleton-border-radius: 12px;
+    box-shadow: var(--p-card-shadow);
+}

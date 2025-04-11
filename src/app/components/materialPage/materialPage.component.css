@@ -1,0 +1,62 @@
+.custom-button {
+    --p-button-primary-color: white;
+    --p-button-primary-background: var(--secondary-color);
+    --p-button-primary-border-color: var(--secondary-color);
+    --p-button-primary-hover-background: var(--hover-color);
+    --p-button-primary-hover-border-color: var(--hover-color);
+    --p-button-primary-active-background: color-mix(in srgb, var(--hover-color) 80%, black 20%);
+    --p-button-primary-active-border-color: color-mix(in srgb, var(--hover-color) 90%, black 10%);
+}
+
+.custom-tag {
+    font-size: .8rem;
+    --p-tag-primary-color: white;
+    cursor: default;
+    text-decoration: none;
+}
+
+.bok-tag {
+    font-size: .8rem;
+    --p-tag-primary-color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bok-tag:hover {
+    --p-tag-primary-color: white;
+}
+
+.custom-panel {
+    --p-panel-header-color: var(--primary-color)
+}
+
+.custom-tabs {
+    --p-tabs-tab-active-color: var(--hover-color);
+    --p-tabs-active-bar-background: var(--hover-color);
+    --p-tabs-tab-hover-color: var(--primary-color);
+    --p-tabs-tab-color: color-mix(in srgb, var(--primary-color) 60%, rgba(255, 255, 255, 0) 40%);
+}
+
+.rounded-image {
+    border-radius: var(--p-panel-border-radius);
+}
+
+.icon-link {
+    color: var(--primary-color)
+}
+
+.icon-link:hover {
+    color: var(--hover-color)
+}
+
+.image-column {
+    max-width: auto; 
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .image-column {
+        max-width: 30vw; 
+        height: auto;
+    }
+}

@@ -1,0 +1,26 @@
+<div class="flex flex-column xl:flex-row h-full xl:w-23rem">
+    <div class="mx-2">
+        <h2>Filters</h2>
+        <p-divider class="flex-grow-1"/>
+        <div class="my-4">
+            Search by Title
+            <p-iconfield class="mt-1">
+                <p-inputicon styleClass="pi pi-search" />
+                <input type="text" pInputText [(ngModel)]="searchValue" (ngModelChange)="updateSearchValue()" placeholder="Search" class="w-21rem custom-input" [disabled]="loading"/>
+            </p-iconfield>
+        </div>
+        <ng-container *ngFor="let option of multiSelectOptions">
+            <div class="flex flex-column my-4">
+                {{option.label}}
+                <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateOptions()" 
+                    placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" [disabled]="loading" [showClear]="true"
+                    (onClear)="clearOptions(option.label)" [maxSelectedLabels]="1"/>
+            </div>
+        </ng-container>
+        <div class="flex my-4">
+            <bokModal class="mt-1" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading"></bokModal>
+        </div>
+    </div>
+    <p-divider layout="vertical" class="flex-grow-1 hidden xl:flex"/>
+    <p-divider class="flex xl:hidden"/>
+</div>

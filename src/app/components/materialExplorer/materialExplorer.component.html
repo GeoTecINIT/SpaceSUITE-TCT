@@ -1,0 +1,18 @@
+<div class="flex flex-column xl:flex-row gap-5 m-2">
+    <filters [(multiSelectOptions)]="filterOptions" [loading]="loading" (multiSelectOptionsChange)="filterTrainingMaterial()" 
+        (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)"></filters>
+    <div *ngIf="!loading else cardSkeleton" class="flex align-items-start justify-content-center gap-5 flex-wrap xl:h-screen overflow-auto" >
+        <ng-container  *ngFor="let material of finalTrainingMaterial">
+            <card [trainingMaterial]="material"></card>
+        </ng-container >
+    </div>    
+</div>
+
+<ng-template #cardSkeleton>
+    <div class="flex align-items-start justify-content-center gap-5 flex-wrap xl:h-screen overflow-auto" >
+        <ng-content *ngFor="let i of skelletonElements">
+            <p-skeleton width="19rem" height="27.5rem" class="custom-skeleton" />
+        </ng-content>
+    </div>    
+</ng-template>
+
