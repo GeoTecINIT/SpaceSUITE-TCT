@@ -1,0 +1,61 @@
+<div class="flex flex-column align-items-center justify-content-center p-4">
+    <h2>Create New Material</h2>
+    <p-stepper [value]="1" [linear]="true" class="custom-stepper">
+        <p-step-list>
+            <p-step [value]="1">General Information</p-step>
+            <p-step [value]="2">Material Content</p-step>
+            <p-step [value]="3">Additional Information</p-step>
+        </p-step-list>
+        <p-step-panels>
+            <p-step-panel [value]="1">
+                <ng-template #content let-activateCallback="activateCallback">
+                        <div class="flex flex-column gap-4 my-2">
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <p-inputicon class="pi pi-pencil" />
+                                    <input pInputText id="title" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.title"/>
+                                </p-iconfield>
+                                <label for="title">Title</label>
+                            </p-floatlabel>
+
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield class="textarea-iconfield">
+                                    <p-inputicon class="pi pi-align-justify"></p-inputicon>
+                                    <textarea id="description" rows="5" cols="20" pTextarea [(ngModel)]="material.description" style="resize: none;" 
+                                        class="w-full custom-textarea"></textarea>
+                                </p-iconfield>
+                                <label for="description">Description</label>
+                            </p-floatlabel>
+            
+                        </div>
+                        <div class="flex">
+                            <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
+                        </div>
+                </ng-template>
+            </p-step-panel>
+    
+            <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex my-2">
+
+                    </div>
+                    <div class="flex justify-content-between">
+                        <p-button label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(3)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+    
+            <p-step-panel [value]="3">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex my-2">
+
+                    </div>
+                    <div class="flex">
+                        <p-button label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(2)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+        </p-step-panels>
+    </p-stepper>
+</div>
