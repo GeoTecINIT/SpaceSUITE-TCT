@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, inject, Inject } from "@angular/core";
 import { SkeletonModule } from 'primeng/skeleton';
+import { ScrollTopModule } from 'primeng/scrolltop';
 import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule } from "@angular/common";
@@ -8,13 +9,14 @@ import { filter } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
+import { FirebaseService } from "../../services/firebase.service";
 
 @Component({
   standalone: true,
   selector: 'material-explorer',
   templateUrl: './materialExplorer.component.html',
   styleUrls: ['./materialExplorer.component.css'],
-  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule],
+  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, ScrollTopModule],
 })
 export class MaterialExplorerComponent {
   trainingMaterialArray: TrainingMaterial[] = [];
@@ -22,15 +24,18 @@ export class MaterialExplorerComponent {
   filteredTrainingMaterial: TrainingMaterial[] = [];
   finalTrainingMaterial: TrainingMaterial[] = [];
   filterOptions: FilterOption[] = [];
+  userFilterOptions: FilterOption[] = [];
+  filterByUserMaterial: boolean = false;
   loading: boolean = true;
   skelletonElements: number[] = [];
 
-  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService) {
+  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private firebase: FirebaseService) {
     this.skelletonElements = Array(16).fill(null);
   }
 
   ngOnInit() {
     this.filterOptions = this.filterService.getFilterOptions();
+    this.userFilterOptions = this.filterService.getUserFilterOptions();
     this.trainingMaterialService.getTrainingMaterials().pipe(
       filter(value => value !== undefined)
     ).subscribe(
@@ -52,12 +57,23 @@ export class MaterialExplorerComponent {
   }
 
   filterTrainingMaterial() {
-    if (this.filterOptions.every(filter => !filter.selection || filter.selection.length === 0)) {
+    if (this.filterOptions.every(filter => !filter.selection || filter.selection.length === 0) &&
+        this.userFilterOptions.every(filter => !filter.selection || filter.selection.length === 0) &&
+        !this.filterByUserMaterial) {
       this.filteredTrainingMaterial = this.searchedTrainingMaterial;
     }
     else{
-      let newFilteredMaterial = this.searchedTrainingMaterial.filter(material => 
+      let newFilteredMaterial = [...this.searchedTrainingMaterial];
+      const userId: string = this.firebase.userId
+      if (this.filterByUserMaterial && userId != '') {
+        newFilteredMaterial = newFilteredMaterial.filter(material => material.userId == userId)
+      }
+      newFilteredMaterial = newFilteredMaterial.filter(material => 
         this.filterOptions.every(filter => 
+          !filter.selection || filter.selection.length === 0|| this.filterService.checkMaterial(material, filter)
+        ) 
+      ).filter(material => 
+        this.userFilterOptions.every(filter => 
           !filter.selection || filter.selection.length === 0|| this.filterService.checkMaterial(material, filter)
         ) 
       );
@@ -79,6 +95,15 @@ export class MaterialExplorerComponent {
       );
       this.finalTrainingMaterial = this.finalTrainingMaterial.concat(partialTrainingMaterial);
     }
+  }
+
+  filterByUserMaterialChange(newValue: boolean) {
+    this.filterByUserMaterial = newValue;
+    this.filterTrainingMaterial();
+  }
+
+  isLogged(): boolean {
+    return this.firebase.userId != '';
   }
 
 }

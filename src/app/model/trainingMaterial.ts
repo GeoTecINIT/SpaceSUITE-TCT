@@ -19,4 +19,7 @@ export interface TrainingMaterial {
     license: string;
     relation: string[];
     image: string;
+    userId: string;
+    organization: string;
+    division: string;
   }

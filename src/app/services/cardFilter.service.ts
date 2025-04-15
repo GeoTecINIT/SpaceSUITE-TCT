@@ -3,6 +3,7 @@ import { FilterOption } from "../model/filterOption";
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { LanguageService } from "./language.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
+import { FirebaseService } from "./firebase.service";
 
 @Injectable({
     providedIn: 'root',
@@ -76,14 +77,28 @@ export class CardFilterService {
         }
     ];
 
+    private userFilterOptions: FilterOption[] = [
+      {
+        label: 'Organizations',
+        tags: [],
+        selection: []
+      }
+    ];
+
     public searchOption: string = '';
     public bokConcepts: string[] = [];
 
-    constructor(private readonly languageService: LanguageService, private readonly bokInfoService: BokInformationService){}
+    constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService){
+      this.firebase.getUserOrganizationList().subscribe( organizations => this.userFilterOptions[0].tags = organizations.map(value => value.name));
+    }
 
     public getFilterOptions(): FilterOption[] {
         return this.filterOptions;
     }
+
+    public getUserFilterOptions(): FilterOption[] {
+      return this.userFilterOptions;
+  }
 
     public checkMaterial(material: TrainingMaterial, filter: FilterOption): boolean {
         switch(filter.label) {
@@ -96,6 +111,8 @@ export class CardFilterService {
               return true;
             case 'Language':
               return filter.selection.some(selection => material.language.toLowerCase().includes(this.languageService.getIsoCode(selection)));
+            case 'Organizations':
+              return filter.selection.some(selection => material.organization?.toLowerCase().includes(selection.toLowerCase()));
             default:
               return true;
         }

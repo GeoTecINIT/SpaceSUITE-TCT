@@ -1,5 +1,23 @@
 <div class="flex flex-column xl:flex-row h-full xl:w-23rem">
     <div class="mx-2">
+        <ng-container *ngIf="logged">
+            <h2>User Filters</h2>
+            <p-divider class="flex-grow-1"/>
+            <div class="flex flex-column gap-2 my-4">
+                My Materials
+                <p-selectbutton [options]="filterUserMaterialOptions" [(ngModel)]="filterUserMaterial" allowEmpty="false" 
+                                optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserMaterial()"/>
+            </div>
+            <ng-container *ngFor="let option of multiSelectUserOptions">
+                <div class="flex flex-column my-4">
+                    {{option.label}}
+                    <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateUserOptions()" 
+                        placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" [disabled]="loading" [showClear]="true"
+                        (onClear)="clearUserOptions(option.label)" [maxSelectedLabels]="1"/>
+                </div>
+            </ng-container>
+            <p-button (click)="createTrainingMaterial()" label="Create Training Materials" class="custom-button"/>
+        </ng-container>
         <h2>Filters</h2>
         <p-divider class="flex-grow-1"/>
         <div class="my-4">
