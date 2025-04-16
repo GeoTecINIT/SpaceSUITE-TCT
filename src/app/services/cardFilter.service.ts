@@ -79,7 +79,7 @@ export class CardFilterService {
 
     private userFilterOptions: FilterOption[] = [
       {
-        label: 'Organizations',
+        label: 'User Organizations',
         tags: [],
         selection: []
       }
@@ -87,6 +87,7 @@ export class CardFilterService {
 
     public searchOption: string = '';
     public bokConcepts: string[] = [];
+    public userMaterialFilter: boolean = false;
 
     constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService){
       this.firebase.getUserOrganizationList().subscribe( organizations => this.userFilterOptions[0].tags = organizations.map(value => value.name));
@@ -111,7 +112,7 @@ export class CardFilterService {
               return true;
             case 'Language':
               return filter.selection.some(selection => material.language.toLowerCase().includes(this.languageService.getIsoCode(selection)));
-            case 'Organizations':
+            case 'User Organizations':
               return filter.selection.some(selection => material.organization?.toLowerCase().includes(selection.toLowerCase()));
             default:
               return true;

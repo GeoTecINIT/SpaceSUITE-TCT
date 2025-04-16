@@ -41,6 +41,7 @@ export class MaterialExplorerComponent {
     ).subscribe(
     (newValue: TrainingMaterial[]) => {
       this.trainingMaterialArray = newValue;
+      this.filterByUserMaterial = this.filterService.userMaterialFilter;
       this.searchTrainingMaterial(this.filterService.searchOption);
       this.loading = false;
     });
@@ -99,6 +100,7 @@ export class MaterialExplorerComponent {
 
   filterByUserMaterialChange(newValue: boolean) {
     this.filterByUserMaterial = newValue;
+    this.filterService.userMaterialFilter = newValue;
     this.filterTrainingMaterial();
   }
 

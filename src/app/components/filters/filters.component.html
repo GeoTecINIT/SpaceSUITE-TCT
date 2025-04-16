@@ -1,10 +1,13 @@
 <div class="flex flex-column xl:flex-row h-full xl:w-23rem">
     <div class="mx-2">
         <ng-container *ngIf="logged">
+            <h2>Create Material</h2>
+            <p-divider class="flex-grow-1"/>
+            <p-button (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add" class="custom-button my-4"/>
             <h2>User Filters</h2>
             <p-divider class="flex-grow-1"/>
             <div class="flex flex-column gap-2 my-4">
-                My Materials
+                User Materials Filter
                 <p-selectbutton [options]="filterUserMaterialOptions" [(ngModel)]="filterUserMaterial" allowEmpty="false" 
                                 optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserMaterial()"/>
             </div>
@@ -16,7 +19,6 @@
                         (onClear)="clearUserOptions(option.label)" [maxSelectedLabels]="1"/>
                 </div>
             </ng-container>
-            <p-button (click)="createTrainingMaterial()" label="Create Training Materials" class="custom-button my-4"/>
         </ng-container>
         <h2>Filters</h2>
         <p-divider class="flex-grow-1"/>

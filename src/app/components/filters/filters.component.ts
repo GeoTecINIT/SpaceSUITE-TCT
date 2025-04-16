@@ -42,6 +42,7 @@ export class FiltersComponent {
 
   constructor(private filterService: CardFilterService, private router: Router) {
     this.searchValue = filterService.searchOption;
+    this.filterUserMaterial = filterService.userMaterialFilter;
   }
 
   updateOptions() {

@@ -1,6 +1,6 @@
 <div class="flex flex-column align-items-center justify-content-center p-4">
     <h2>Create New Material</h2>
-    <p-stepper [value]="1" [linear]="true" class="custom-stepper">
+    <p-stepper [value]="1" [linear]="true" class="custom-stepper" style="width: 50vw;">
         <p-step-list>
             <p-step [value]="1">General Information</p-step>
             <p-step [value]="2">Material Content</p-step>
@@ -40,7 +40,7 @@
 
                     </div>
                     <div class="flex justify-content-between">
-                        <p-button label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
                         <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(3)" />
                     </div>
                 </ng-template>
@@ -52,7 +52,7 @@
 
                     </div>
                     <div class="flex">
-                        <p-button label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(2)" />
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(2)" />
                     </div>
                 </ng-template>
             </p-step-panel>
