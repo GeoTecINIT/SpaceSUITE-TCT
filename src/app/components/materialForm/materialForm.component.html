@@ -1,6 +1,6 @@
 <div class="flex flex-column align-items-center justify-content-center p-4">
     <h2>Create New Material</h2>
-    <p-stepper [value]="1" [linear]="true" class="custom-stepper" style="width: 50vw;">
+    <p-stepper [value]="1" [linear]="true" class="custom-stepper">
         <p-step-list>
             <p-step [value]="1">General Information</p-step>
             <p-step [value]="2">Material Content</p-step>
@@ -9,37 +9,79 @@
         <p-step-panels>
             <p-step-panel [value]="1">
                 <ng-template #content let-activateCallback="activateCallback">
-                        <div class="flex flex-column gap-4 my-2">
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <p-iconfield>
-                                    <p-inputicon class="pi pi-pencil" />
-                                    <input pInputText id="title" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.title"/>
-                                </p-iconfield>
-                                <label for="title">Title</label>
-                            </p-floatlabel>
-
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <p-iconfield class="textarea-iconfield">
-                                    <p-inputicon class="pi pi-align-justify"></p-inputicon>
-                                    <textarea id="description" rows="5" cols="20" pTextarea [(ngModel)]="material.description" style="resize: none;" 
-                                        class="w-full custom-textarea"></textarea>
-                                </p-iconfield>
-                                <label for="description">Description</label>
-                            </p-floatlabel>
-            
-                        </div>
-                        <div class="flex">
-                            <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
-                        </div>
+                    <div class="flex flex-column gap-3">
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="title" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.title"/>
+                                <p-inputicon class="pi pi-pencil" />
+                            </p-iconfield>
+                            <label for="title">Title</label>
+                        </p-floatlabel>
+    
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.publisher"/>
+                                <p-inputicon class="pi pi-building-columns" />
+                            </p-iconfield>
+                            <label for="publisher">Publisher</label>
+                        </p-floatlabel>
+    
+                        <p-floatlabel variant="on" class="w-full custom-floatlabel">
+                            <p-datepicker inputId="created" showIcon iconDisplay="input" dateFormat="dd/mm/yy" 
+                                [(ngModel)]="material.created" fluid class="custom-input custom-datepicker"/>
+                            <label for="created">Created</label>
+                        </p-floatlabel>
+    
+                        <p-multiselect [options]="languageSelector.tags" [(ngModel)]="material.language"  placeholder="{{languageSelector.label}}" 
+                            class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
+    
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <textarea id="description" pTextarea [(ngModel)]="material.description" style="resize: none;" 
+                                    rows="4" class="w-full custom-textarea"></textarea>
+                            <label for="description">Description</label>
+                        </p-floatlabel>
+    
+                        <text-chips [fieldName]="'Authors/s'" [(chips)]="material.creator"></text-chips>
+                    </div>
+                    <div class="flex max-w-full flex-wrap mt-3">
+                        <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
+                    </div>
                 </ng-template>
             </p-step-panel>
     
             <p-step-panel [value]="2">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex my-2">
+                    <div class="flex flex-column gap-3">
+                        <p-multiselect [options]="typeSelector.tags" [(ngModel)]="material.type"  placeholder="{{typeSelector.label}}" 
+                        class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
 
+                        <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.format"  placeholder="{{formatSelector.label}}" 
+                        class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
+
+                        <p-multiselect [options]="eqfSelector.tags" [(ngModel)]="material.educationLevel"  placeholder="{{eqfSelector.label}}" 
+                        class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="audience" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.audience"/>
+                                <p-inputicon class="pi pi-users" />
+                            </p-iconfield>
+                            <label for="audience">Target Audience</label>
+                        </p-floatlabel>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <textarea id="assesment" pTextarea [(ngModel)]="material.abstract" style="resize: none;" 
+                                    rows="4" class="w-full custom-textarea"></textarea>
+                            <label for="assesment">Type of Assesment</label>
+                        </p-floatlabel>
+
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'"></text-chips>
+
+                        <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'"></text-chips>
+
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'"></text-chips>
                     </div>
-                    <div class="flex justify-content-between">
+                    <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
                         <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(3)" />
                     </div>
@@ -48,11 +90,42 @@
     
             <p-step-panel [value]="3">
                 <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex my-2">
+                    <div class="flex flex-column gap-3">
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <p-inputnumber id="duration" [min]="0" [useGrouping]="false" suffix=" Hours"
+                                    class="w-full custom-input" [(ngModel)]="material.SizeOrDuration"/>
+                                <p-inputicon class="pi pi-clock" />
+                            </p-iconfield>
+                            <label for="duration">Duration</label>
+                        </p-floatlabel>
+
+                        <p-multiselect [options]="licenseSelector.tags" [(ngModel)]="material.license"  placeholder="{{licenseSelector.label}}" 
+                        class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.source"/>
+                                <p-inputicon class="pi pi-link" />
+                            </p-iconfield>
+                            <label for="url">Source</label>
+                        </p-floatlabel>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="certification" autocomplete="off" class="w-full custom-input"/>
+                                <p-inputicon class="pi pi-trophy" />
+                            </p-iconfield>
+                            <label for="certification">Certification</label>
+                        </p-floatlabel>
+
+                        <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"></text-chips>
 
                     </div>
-                    <div class="flex">
+                    <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(2)" />
+                        <p-button class="custom-button" label="Submit"/>
+
                     </div>
                 </ng-template>
             </p-step-panel>

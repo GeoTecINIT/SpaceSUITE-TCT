@@ -48,7 +48,7 @@ export class BokModalComponent {
     this.componentRef = this.container.createComponent(BokComponent);
     this.componentRef.setInput('showDescription', false);
     this.componentRef.setInput('showVersions', false);
-    this.componentRef.setInput('showSearchEngine', false);
+    this.componentRef.setInput('showSearchEngine', true);
     this.componentRef.instance.codSelectedChange.subscribe((newCode: string) => {
       this.currentConcept = newCode;
       this.bokInfo.getConceptName(newCode).subscribe(name => this.currentConceptName = name);

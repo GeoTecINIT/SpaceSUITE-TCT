@@ -7,23 +7,6 @@
     --p-floatlabel-focus-color: var(--hover-color);
 }
 
-.textarea-iconfield {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-}
-
-.textarea-iconfield .p-inputicon {
-    position: absolute;
-    top: 17px;
-    left: 11px;
-    z-index: 1;
-}
-
-.custom-textarea {
-    padding-left: 2.5rem;
-}
-
 .custom-textarea:hover,
 .custom-textarea:focus {
     border-color: var(--hover-color) !important;
@@ -49,4 +32,36 @@
     --p-stepper-step-number-active-color: var(--hover-color);
     --p-stepper-step-title-active-color: var(--hover-color);
     --p-stepper-separator-active-background: var(--hover-color);
+    width: 50vw;
+}
+
+
+@media (max-width: 992px) {
+    .custom-stepper {
+        width: 100%;
+    }
+}
+
+
+.custom-multiselect {
+    --p-multiselect-focus-border-color: var(--hover-color);
+    --p-multiselect-hover-border-color: var(--hover-color);
+
+    --p-checkbox-checked-background: var(--secondary-color);
+    --p-checkbox-checked-border-color: var(--secondary-color);
+    --p-checkbox-checked-hover-background: var(--hover-color);
+    --p-checkbox-checked-hover-border-color: var(--hover-color);
+    --p-checkbox-checked-focus-border-color: var(--secondary-color);  
+    --p-checkbox-focus-ring-color: var(--secondary-color);
+
+    --p-inputtext-focus-border-color: var(--hover-color);
+    --p-inputtext-hover-border-color: var(--hover-color);
+
+}
+
+.custom-datepicker {
+    --p-button-text-primary-color: var(--secondary-color);
+    --p-button-text-primary-active-background: color-mix(in srgb, var(--secondary-color) 20%, rgba(0, 0, 0, 0) 80%);
+    --p-button-text-primary-hover-background: color-mix(in srgb, var(--secondary-color) 10%, rgba(0, 0, 0, 0) 90%);
+    --p-datepicker-date-selected-background: var(--secondary-color);
 }
