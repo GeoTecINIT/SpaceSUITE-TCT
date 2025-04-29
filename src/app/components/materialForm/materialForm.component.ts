@@ -17,6 +17,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { BokModalComponent } from "../bokModal/bokModal.component";
 import { FirebaseService } from "../../services/firebase.service";
+import { TrainingMaterialService } from "../../services/trainingMaterial.service";
+import { Router } from "@angular/router";
 
 @Component({
   standalone: true,
@@ -46,7 +48,9 @@ export class MaterialFormComponent {
     selection: []
   };
 
-  constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService) {
+  errorMap: Map<string, string | undefined> = new Map();
+
+  constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private trainingMaterialService: TrainingMaterialService, private router: Router) {
     this.languageSelector = this.cardFilterService.getOptionByLabel('Language');
     this.typeSelector = this.cardFilterService.getOptionByLabel('Course Type');
     this.formatSelector = this.cardFilterService.getOptionByLabel('Course Format');
@@ -61,7 +65,23 @@ export class MaterialFormComponent {
   }
 
   loadDivisions() {
-    this.material.division = '';
+    this.material.division = undefined;
     this.firebaseService.getOrganizationDivisions(this.material.organization!).subscribe(divisions => this.divisionSelector.tags = divisions);
+  }
+
+  getUserName() {
+    return this.firebaseService.getUserData()?.displayName ?? this.material.userId;
+  }
+
+  submitMaterial() {
+    this.errorMap = this.trainingMaterialService.validate(this.material)
+    const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
+    if (allValid) {
+      // TODO -  Firebase
+      this.router.navigate([''], { replaceUrl: true });
+    }
+    else {
+      // TODO
+    }
   }
 }

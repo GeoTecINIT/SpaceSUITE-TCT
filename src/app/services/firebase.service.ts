@@ -43,5 +43,8 @@ export class FirebaseService {
       map(data => data.divisions)
     );
   }
-    
+  
+  getUserData() {
+    return this.auth.currentUser;
+  }
 }

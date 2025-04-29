@@ -16,7 +16,7 @@
                                 <input pInputText id="title" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.title"/>
                                 <p-inputicon class="pi pi-pencil" />
                             </p-iconfield>
-                            <label for="title">Title</label>
+                            <label for="title">Title *</label>
                         </p-floatlabel>
     
                         <p-floatlabel variant="on" class="custom-floatlabel">
@@ -24,19 +24,19 @@
                                 <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.publisher"/>
                                 <p-inputicon class="pi pi-building-columns" />
                             </p-iconfield>
-                            <label for="publisher">Publisher</label>
+                            <label for="publisher">Publisher *</label>
                         </p-floatlabel>
     
                         <p-floatlabel variant="on" class="w-full custom-floatlabel">
                             <p-datepicker inputId="created" showIcon iconDisplay="input" dateFormat="dd/mm/yy" 
                                 [(ngModel)]="material.created" fluid class="custom-input custom-datepicker"/>
-                            <label for="created">Created</label>
+                            <label for="created">Created *</label>
                         </p-floatlabel>
     
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
                                 class="w-full custom-select" [checkmark]="true"/>
-                            <label for="lang">{{languageSelector.label}}</label>
+                            <label for="lang">{{languageSelector.label}} *</label>
                         </p-floatlabel>
     
                         <p-floatlabel variant="on" class="custom-floatlabel">
@@ -45,7 +45,7 @@
                             <label for="description">Description</label>
                         </p-floatlabel>
     
-                        <text-chips [fieldName]="'Authors/s'" [(chips)]="material.author"></text-chips>
+                        <text-chips [fieldName]="'Author/s'" [(chips)]="material.author"></text-chips>
                     </div>
                     <div class="flex max-w-full flex-wrap mt-3">
                         <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
@@ -59,7 +59,7 @@
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-select [options]="typeSelector.tags" [(ngModel)]="material.type"  inputId="type" 
                                 class="w-full custom-select" [checkmark]="true"/>
-                            <label for="type">{{typeSelector.label}}</label>
+                            <label for="type">{{typeSelector.label}} *</label>
                         </p-floatlabel>
                         
                         <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.format"  placeholder="{{formatSelector.label}}" 
@@ -104,13 +104,13 @@
                                     class="w-full custom-input" [(ngModel)]="material.SizeOrDuration"/>
                                 <p-inputicon class="pi pi-clock" />
                             </p-iconfield>
-                            <label for="duration">Duration</label>
+                            <label for="duration">Duration *</label>
                         </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
                                 class="w-full custom-select" [checkmark]="true" inputId="license"/>
-                            <label for="license">{{licenseSelector.label}}</label>
+                            <label for="license">{{licenseSelector.label}} *</label>
                         </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
@@ -118,7 +118,7 @@
                                 <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.source"/>
                                 <p-inputicon class="pi pi-link" />
                             </p-iconfield>
-                            <label for="url">Source</label>
+                            <label for="url">Source *</label>
                         </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
@@ -156,23 +156,23 @@
                     <div class="flex flex-column gap-3">
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
-                                <input pInputText id="user" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.userId" disabled/>
+                                <input pInputText id="user" autocomplete="off" class="w-full custom-input" [ngModel]="getUserName()" disabled/>
                                 <p-inputicon class="pi pi-user" />
                             </p-iconfield>
-                            <label for="user">User ID</label>
+                            <label for="user">User *</label>
                         </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-select inputId="org" [options]="organizationSelector.tags" [(ngModel)]="material.organization" (ngModelChange)="loadDivisions()"
                                 class="w-full custom-select" optionLabel="label" optionValue="value" [checkmark]="true"/>
-                            <label for="org">{{organizationSelector.label}}</label>
+                            <label for="org">{{organizationSelector.label}} *</label>
                         </p-floatlabel>
                         
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
                                 [disabled]="divisionSelector.tags.length == 0" [checkmark]="true" inputId="division"/>
-                            <label for="division">{{divisionSelector.label}}</label>
+                            <label for="division">{{divisionSelector.label}} *</label>
                         </p-floatlabel>
                         
                     </div>
