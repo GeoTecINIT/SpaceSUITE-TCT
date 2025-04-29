@@ -20,12 +20,18 @@ export class TextChipsComponent {
   @Input() chips: string[] = [];
   @Output() chipsChange: EventEmitter<string[]> = new EventEmitter();
   currentText: string = '';
+  lastText: string = '';
 
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';
 
-  addElement() {
-    this.chipsChange.emit(this.chips.concat(this.currentText));
+  mouseDown() {
+    this.lastText = this.currentText;
+  }
+
+  mouseUp() {
+    this.chipsChange.emit(this.chips.concat(this.lastText));
+    this.lastText = '';
     this.currentText = '';
   }
 
@@ -33,4 +39,9 @@ export class TextChipsComponent {
     this.chipsChange.emit(this.chips.filter(value => value != element));
   }
   
+  focusOut() {
+    setTimeout(() => {
+      if (this.lastText == '') this.currentText = '';
+    }, 100);
+  }
 }
