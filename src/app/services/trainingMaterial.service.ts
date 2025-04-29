@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { TrainingMaterial } from "../model/trainingMaterial";
-import { BehaviorSubject, filter, map, Observable, timeout } from "rxjs";
+import { BehaviorSubject, filter, map, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
+import { FirebaseService } from "./firebase.service";
 
 @Injectable({
     providedIn: 'root',
@@ -9,19 +10,12 @@ import { HttpClient } from "@angular/common/http";
 export class TrainingMaterialService {
     private trainingMaterialArray: BehaviorSubject<TrainingMaterial[] | undefined> = new BehaviorSubject<TrainingMaterial[] | undefined>(undefined);
 
-    private jsonUrl = 'assets/data.json'; // Path to your JSON file
-
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private firebaseService: FirebaseService) { }
 
     public getTrainingMaterials(): Observable<TrainingMaterial[] | undefined> {
         let currentTrainingMaterial: TrainingMaterial[] | undefined = this.trainingMaterialArray.getValue();
         if (!currentTrainingMaterial || currentTrainingMaterial.length == 0) {
-            this.http.get<TrainingMaterial[]>(this.jsonUrl).subscribe(
-                data => {
-                    setTimeout(() => this.trainingMaterialArray.next(data), 2000);
-                }
-            )
-
+            setTimeout(() => this.trainingMaterialArray.next([]), 2000);
         }
         return this.trainingMaterialArray.asObservable();
     }

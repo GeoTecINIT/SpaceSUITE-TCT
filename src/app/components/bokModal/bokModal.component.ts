@@ -23,7 +23,7 @@ export class BokModalComponent {
   currentConcept = '';
   currentConceptName = '';
 
-  selectedConcepts: string[] = [];
+  @Input() selectedConcepts: string[] = [];
   selectedConceptsColor: Map<string, string> = new Map();
   selectedConceptsTooltip: Map<string, string> = new Map();
   @Output() selectedConceptsChange: EventEmitter<string[]> = new EventEmitter();

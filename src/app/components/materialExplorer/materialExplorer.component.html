@@ -3,11 +3,12 @@
         (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)"
         [(multiSelectUserOptions)]="userFilterOptions" (multiSelectUserOptionsChange)="filterTrainingMaterial()" 
         (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()"></filters>
-    <div class="flex align-items-start justify-content-center gap-5 flex-wrap">
+    <div class="flex align-items-start justify-content-center gap-5 flex-wrap mx-auto">
         <ng-container *ngIf="!loading else cardSkeleton">
             <ng-container *ngFor="let material of finalTrainingMaterial">
                 <card [trainingMaterial]="material"></card>
             </ng-container >
+            <p *ngIf="finalTrainingMaterial.length == 0" class="font-italic">No material found</p>
         </ng-container>
     </div>
 </div>

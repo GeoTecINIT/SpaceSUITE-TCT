@@ -124,12 +124,12 @@ export class CardFilterService {
       case 'EQF Level':
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
       case 'Course Type':
-        return filter.selection.some(selection => material.type.toLowerCase().includes(selection.toLowerCase()));
+        return filter.selection.some(selection => material.type?.toLowerCase().includes(selection.toLowerCase()));
       case 'Course Format':
         // TODO
         return true;
       case 'Language':
-        return filter.selection.some(selection => material.language.toLowerCase().includes(this.languageService.getIsoCode(selection)));
+        return filter.selection.some(selection => material.language?.toLowerCase().includes(this.languageService.getIsoCode(selection)));
       case 'User Organizations':
         return filter.selection.some(selection => material.organization?.toLowerCase().includes(selection.toLowerCase()));
       default:

@@ -5,6 +5,7 @@
             <p-step [value]="1">General Information</p-step>
             <p-step [value]="2">Material Content</p-step>
             <p-step [value]="3">Additional Information</p-step>
+            <p-step [value]="4">User Information</p-step>
         </p-step-list>
         <p-step-panels>
             <p-step-panel [value]="1">
@@ -32,8 +33,11 @@
                             <label for="created">Created</label>
                         </p-floatlabel>
     
-                        <p-multiselect [options]="languageSelector.tags" [(ngModel)]="material.language"  placeholder="{{languageSelector.label}}" 
-                            class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
+                                class="w-full custom-select" [checkmark]="true"/>
+                            <label for="lang">{{languageSelector.label}}</label>
+                        </p-floatlabel>
     
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="description" pTextarea [(ngModel)]="material.description" style="resize: none;" 
@@ -41,7 +45,7 @@
                             <label for="description">Description</label>
                         </p-floatlabel>
     
-                        <text-chips [fieldName]="'Authors/s'" [(chips)]="material.creator"></text-chips>
+                        <text-chips [fieldName]="'Authors/s'" [(chips)]="material.author"></text-chips>
                     </div>
                     <div class="flex max-w-full flex-wrap mt-3">
                         <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
@@ -52,9 +56,12 @@
             <p-step-panel [value]="2">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
-                        <p-multiselect [options]="typeSelector.tags" [(ngModel)]="material.type"  placeholder="{{typeSelector.label}}" 
-                        class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
-
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-select [options]="typeSelector.tags" [(ngModel)]="material.type"  inputId="type" 
+                                class="w-full custom-select" [checkmark]="true"/>
+                            <label for="type">{{typeSelector.label}}</label>
+                        </p-floatlabel>
+                        
                         <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.format"  placeholder="{{formatSelector.label}}" 
                         class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
 
@@ -70,16 +77,16 @@
                         </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
-                            <textarea id="assesment" pTextarea [(ngModel)]="material.abstract" style="resize: none;" 
+                            <textarea id="assesment" pTextarea [(ngModel)]="material.assesment" style="resize: none;" 
                                     rows="4" class="w-full custom-textarea"></textarea>
                             <label for="assesment">Type of Assesment</label>
                         </p-floatlabel>
 
-                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'"></text-chips>
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites"></text-chips>
 
-                        <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'"></text-chips>
+                        <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="material.learningOutcomes"></text-chips>
 
-                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'"></text-chips>
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="material.tableOfContents"></text-chips>
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
@@ -100,8 +107,11 @@
                             <label for="duration">Duration</label>
                         </p-floatlabel>
 
-                        <p-multiselect [options]="licenseSelector.tags" [(ngModel)]="material.license"  placeholder="{{licenseSelector.label}}" 
-                        class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"/>
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
+                                class="w-full custom-select" [checkmark]="true" inputId="license"/>
+                            <label for="license">{{licenseSelector.label}}</label>
+                        </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
@@ -113,19 +123,62 @@
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
-                                <input pInputText id="certification" autocomplete="off" class="w-full custom-input"/>
+                                <input pInputText id="certification" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.certification" />
                                 <p-inputicon class="pi pi-trophy" />
                             </p-iconfield>
                             <label for="certification">Certification</label>
                         </p-floatlabel>
 
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="image" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.image" />
+                                <p-inputicon class="pi pi-image" />
+                            </p-iconfield>
+                            <label for="image">Image URL</label>
+                        </p-floatlabel>
+
                         <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"></text-chips>
+
+                        <div class="custom-border p-2" style="color: #64748b;">
+                            <bokModal [(selectedConcepts)]="material.relation"></bokModal>
+                        </div>
 
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(2)" />
-                        <p-button class="custom-button" label="Submit"/>
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(4)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
 
+            <p-step-panel [value]="4">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-column gap-3">
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="user" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.userId" disabled/>
+                                <p-inputicon class="pi pi-user" />
+                            </p-iconfield>
+                            <label for="user">User ID</label>
+                        </p-floatlabel>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-select inputId="org" [options]="organizationSelector.tags" [(ngModel)]="material.organization" (ngModelChange)="loadDivisions()"
+                                class="w-full custom-select" optionLabel="label" optionValue="value" [checkmark]="true"/>
+                            <label for="org">{{organizationSelector.label}}</label>
+                        </p-floatlabel>
+                        
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
+                                [disabled]="divisionSelector.tags.length == 0" [checkmark]="true" inputId="division"/>
+                            <label for="division">{{divisionSelector.label}}</label>
+                        </p-floatlabel>
+                        
+                    </div>
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(3)" />
+                        <p-button class="custom-button" label="Submit"/>
                     </div>
                 </ng-template>
             </p-step-panel>
