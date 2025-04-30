@@ -1,7 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { Auth, authState } from "@angular/fire/auth";
-import { collection, collectionData, CollectionReference, doc, docData, Firestore } from '@angular/fire/firestore';
-import { concatMap, map, Observable, of } from 'rxjs';
+import { collection, collectionData, CollectionReference, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
+import { concatMap, from, map, Observable, of } from 'rxjs';
+import { TrainingMaterial } from "../model/trainingMaterial";
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +11,7 @@ export class FirebaseService {
   private auth: Auth;
   private db: Firestore;
   private orgCollection: CollectionReference;
+  private materialCollection: CollectionReference;
 
   userId: string = '';
 
@@ -17,6 +19,7 @@ export class FirebaseService {
       this.auth = inject(Auth);
       this.db = inject(Firestore);
       this.orgCollection = collection(this.db, 'Organizations');
+      this.materialCollection = collection(this.db, 'TrainingMaterials');
 
       authState(this.auth).subscribe(user => this.userId = user?.uid ?? '');
   }
@@ -46,5 +49,13 @@ export class FirebaseService {
   
   getUserData() {
     return this.auth.currentUser;
+  }
+
+  setTrainingMaterial(newMaterial: TrainingMaterial): Observable<void> {
+    const newDocRef = doc(this.materialCollection);
+    const timestamp = serverTimestamp();
+    newMaterial.updatedAt = timestamp;
+    newMaterial._id = newDocRef.id;
+    return from(setDoc(newDocRef, newMaterial.toPlain()));
   }
 }

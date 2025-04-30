@@ -15,9 +15,10 @@ export type ValidationError = {
 export class TrainingMaterialService {
   private trainingMaterialArray: BehaviorSubject<TrainingMaterial[] | undefined> = new BehaviorSubject<TrainingMaterial[] | undefined>(undefined);
 
-  constructor(private http: HttpClient, private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService) { }
 
-  validate(material: TrainingMaterial): Map<string, string | undefined> {
+  public validate(material: TrainingMaterial): Map<string, string | undefined> {
+    const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/\S*)?$/;
     const errors: Map<string, string | undefined> = new Map();
   
     const setError = (field: string, condition: boolean, message: string) => {
@@ -27,17 +28,18 @@ export class TrainingMaterialService {
     // String fields
     setError('title', !material.title.trim(), 'Title is required.');
     setError('publisher', !material.publisher.trim(), 'Publisher is required.');
-    setError('created', !material.created.trim(), 'Creation date is required.');
-    if (material.created && isNaN(Date.parse(material.created))) {
+    setError('created', !material.created, 'Creation date is required.');
+    if (material.created && isNaN(Date.parse(material.created.toISOString()))) {
       errors.set('created', 'Creation date format is invalid.');
     }
   
     setError('language', !material.language?.trim(), 'Language is required.');
     setError('type', !material.type?.trim(), 'Type is required.');
     setError('userId', !material.userId.trim(), 'User ID is required.');
-    setError('organization', !material.organization?.trim(), 'Organization is required.');
+    setError('organization', !material.orgId?.trim(), 'Organization is required.');
     setError('division', !material.division?.trim(), 'Division is required.');
     setError('source', !material.source.trim(), 'Source is required.');
+    if (!errors.get('source')) setError('source', !urlRegex.test(material.source), 'Invalid source format.');
     setError('license', !material.license?.trim(), 'License is required.');
   
     // Array fields
@@ -54,13 +56,17 @@ export class TrainingMaterialService {
     return errors;
   }
 
+  public submitNewMaterial(newMaterial: TrainingMaterial): Observable<void> {
+    return this.firebaseService.setTrainingMaterial(newMaterial);
+  }
+
   public getTrainingMaterials(): Observable<TrainingMaterial[] | undefined> {
     let currentTrainingMaterial: TrainingMaterial[] | undefined = this.trainingMaterialArray.getValue();
     if (!currentTrainingMaterial || currentTrainingMaterial.length == 0) {
       setTimeout(() => this.trainingMaterialArray.next([]), 2000);
     }
     return this.trainingMaterialArray.asObservable();
-}
+  }
 
   public getTrainingMaterial(materialName: string): Observable<TrainingMaterial | undefined> {
     return this.getTrainingMaterials().pipe(

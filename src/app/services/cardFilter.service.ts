@@ -131,7 +131,7 @@ export class CardFilterService {
       case 'Language':
         return filter.selection.some(selection => material.language?.toLowerCase().includes(this.languageService.getIsoCode(selection)));
       case 'User Organizations':
-        return filter.selection.some(selection => material.organization?.toLowerCase().includes(selection.toLowerCase()));
+        return filter.selection.some(selection => material.orgId?.toLowerCase().includes(selection.toLowerCase()));
       default:
         return true;
     }

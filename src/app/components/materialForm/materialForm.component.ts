@@ -22,6 +22,7 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
+import { take } from "rxjs";
 
 @Component({
   standalone: true,
@@ -69,9 +70,11 @@ export class MaterialFormComponent {
     ));
   }
 
-  loadDivisions() {
+  loadDivisions(newValue: {label: string, value: string}) {
+    this.material.orgId = newValue.value;
+    this.material.orgName = newValue.label;
     this.material.division = undefined;
-    this.firebaseService.getOrganizationDivisions(this.material.organization!).subscribe(divisions => this.divisionSelector.tags = divisions);
+    this.firebaseService.getOrganizationDivisions(this.material.orgId!).subscribe(divisions => this.divisionSelector.tags = divisions);
   }
 
   getUserName() {
@@ -79,12 +82,13 @@ export class MaterialFormComponent {
   }
 
   submitMaterial() {
+    console.log(this.material)
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
-    console.log(this.errorMap.get('title'))
     if (allValid) {
-      // TODO -  Firebase
-      this.router.navigate([''], { replaceUrl: true });
+      this.trainingMaterialService.submitNewMaterial(this.material).pipe(take(1)).subscribe(() => {
+        this.router.navigate([''], { replaceUrl: true });
+      })
     }
     else {
       this.messageService.add({ 
