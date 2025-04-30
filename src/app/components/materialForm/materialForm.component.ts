@@ -19,13 +19,14 @@ import { BokModalComponent } from "../bokModal/bokModal.component";
 import { FirebaseService } from "../../services/firebase.service";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 @Component({
   standalone: true,
   selector: 'material-form',
   templateUrl: './materialForm.component.html',
   styleUrls: ['./materialForm.component.css'],
-  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule,
+  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent],
 })
 export class MaterialFormComponent {
@@ -76,6 +77,7 @@ export class MaterialFormComponent {
   submitMaterial() {
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
+    console.log(this.errorMap.get('title'))
     if (allValid) {
       // TODO -  Firebase
       this.router.navigate([''], { replaceUrl: true });
