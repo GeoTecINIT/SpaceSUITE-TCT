@@ -46,7 +46,7 @@ export class TrainingMaterialService {
   
     // Numeric field
     if (typeof material.SizeOrDuration !== 'number' || material.SizeOrDuration <= 0) {
-      errors.set('SizeOrDuration', 'A valid size or duration greater than 0 is required.');
+      errors.set('SizeOrDuration', 'A valid duration greater than 0 is required.');
     } else {
       errors.set('SizeOrDuration', undefined);
     }

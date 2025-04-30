@@ -11,39 +11,51 @@
             <p-step-panel [value]="1">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
-                        <p-floatlabel variant="on" class="custom-floatlabel">
-                            <p-iconfield>
-                                <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
-                                    [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
-                                    [(ngModel)]="material.title"/>
-                                <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
-                            </p-iconfield>
-                            <label for="title">Title *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
+                                        [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
+                                        [(ngModel)]="material.title"/>
+                                    <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
+                                </p-iconfield>
+                                <label for="title">Title *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('title')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('title')}}</p>
+                        </div>
     
-                        <p-floatlabel variant="on" class="custom-floatlabel">
-                            <p-iconfield>
-                                <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" 
-                                    [class.ng-invalid]="errorMap.get('publisher') != undefined" [class.ng-dirty]="errorMap.get('publisher') != undefined" 
-                                    [(ngModel)]="material.publisher"/>
-                                <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
-                            </p-iconfield>
-                            <label for="publisher">Publisher *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" 
+                                        [class.ng-invalid]="errorMap.get('publisher') != undefined" [class.ng-dirty]="errorMap.get('publisher') != undefined" 
+                                        [(ngModel)]="material.publisher"/>
+                                    <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="publisher">Publisher *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('publisher')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('publisher')}}</p>
+                        </div>
     
-                        <p-floatlabel variant="on" class="w-full custom-floatlabel">
-                            <p-datepicker inputId="created" showIcon iconDisplay="input" dateFormat="dd/mm/yy" 
-                                [(ngModel)]="material.created" fluid class="custom-input custom-datepicker"
-                                [class.ng-invalid]="errorMap.get('created') != undefined" [class.ng-dirty]="errorMap.get('created') != undefined"
-                                [class.custom-datepicker-icon-error]="errorMap.get('created') != undefined"/>
-                            <label for="created">Created *</label>
-                        </p-floatlabel>
-    
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('language') != undefined">
-                            <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
-                                class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('language') != undefined"/>
-                            <label for="lang">{{languageSelector.label}} *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="w-full custom-floatlabel">
+                                <p-datepicker inputId="created" showIcon iconDisplay="input" dateFormat="dd/mm/yy" 
+                                    [(ngModel)]="material.created" fluid class="custom-input custom-datepicker"
+                                    [class.ng-invalid]="errorMap.get('created') != undefined" [class.ng-dirty]="errorMap.get('created') != undefined"
+                                    [class.custom-datepicker-icon-error]="errorMap.get('created') != undefined"/>
+                                <label for="created">Created *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('created')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('created')}}</p>
+                        </div>
+
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('language') != undefined">
+                                <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
+                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('language') != undefined"/>
+                                <label for="lang">{{languageSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
+                        </div>
     
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="description" pTextarea [(ngModel)]="material.description" style="resize: none;" 
@@ -62,25 +74,35 @@
             <p-step-panel [value]="2">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('type') != undefined">
-                            <p-select [options]="typeSelector.tags" [(ngModel)]="material.type" inputId="type" 
-                                class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('type') != undefined"/>
-                            <label for="type">{{typeSelector.label}} *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('type') != undefined">
+                                <p-select [options]="typeSelector.tags" [(ngModel)]="material.type" inputId="type" 
+                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('type') != undefined"/>
+                                <label for="type">{{typeSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('type')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('type')}}</p>
+                        </div>
                         
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('format') != undefined">
-                            <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.format" inputId="format"
-                                class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
-                                [class.invalid-multiselect]="errorMap.get('format') != undefined"/>
-                            <label for="format">{{formatSelector.label}} *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('format') != undefined">
+                                <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.format" inputId="format"
+                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
+                                    [class.invalid-multiselect]="errorMap.get('format') != undefined"/>
+                                <label for="format">{{formatSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('format')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('format')}}</p>
+                        </div>
 
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('educationLevel') != undefined">
-                            <p-multiselect [options]="eqfSelector.tags" [(ngModel)]="material.educationLevel" inputId="eqf" 
-                                class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"
-                                [class.invalid-multiselect]="errorMap.get('educationLevel') != undefined"/>
-                            <label for="eqf">{{eqfSelector.label}} *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('educationLevel') != undefined">
+                                <p-multiselect [options]="eqfSelector.tags" [(ngModel)]="material.educationLevel" inputId="eqf" 
+                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"
+                                    [class.invalid-multiselect]="errorMap.get('educationLevel') != undefined"/>
+                                <label for="eqf">{{eqfSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
+                        </div>
+
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
@@ -112,30 +134,39 @@
             <p-step-panel [value]="3">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
-                        <p-floatlabel variant="on" class="custom-floatlabel">
-                            <p-iconfield>
-                                <p-inputnumber id="duration" [min]="0" [useGrouping]="false" suffix=" Hours"
-                                    class="w-full custom-input" [(ngModel)]="material.SizeOrDuration"
-                                    [class.ng-invalid]="errorMap.get('SizeOrDuration') != undefined" [class.ng-dirty]="errorMap.get('SizeOrDuration') != undefined"/>
-                                <p-inputicon class="pi pi-clock" [style]="errorMap.get('SizeOrDuration') != undefined ? 'color: var(--danger-color)' : ''"/>
-                            </p-iconfield>
-                            <label for="duration">Duration *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <p-inputnumber id="duration" [min]="0" [useGrouping]="false" suffix=" Hours"
+                                        class="w-full custom-input" [(ngModel)]="material.SizeOrDuration"
+                                        [class.ng-invalid]="errorMap.get('SizeOrDuration') != undefined" [class.ng-dirty]="errorMap.get('SizeOrDuration') != undefined"/>
+                                    <p-inputicon class="pi pi-clock" [style]="errorMap.get('SizeOrDuration') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="duration">Duration *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('SizeOrDuration')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('SizeOrDuration')}}</p>
+                        </div>
 
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
-                            <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
-                                class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"/>
-                            <label for="license">{{licenseSelector.label}} *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
+                                <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
+                                    class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"/>
+                                <label for="license">{{licenseSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
+                        </div>
 
-                        <p-floatlabel variant="on" class="custom-floatlabel">
-                            <p-iconfield>
-                                <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.source"
-                                    [class.ng-invalid]="errorMap.get('source') != undefined" [class.ng-dirty]="errorMap.get('source') != undefined" />
-                                <p-inputicon class="pi pi-link" [style]="errorMap.get('source') != undefined ? 'color: var(--danger-color)' : ''"/>
-                            </p-iconfield>
-                            <label for="url">Source *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.source"
+                                        [class.ng-invalid]="errorMap.get('source') != undefined" [class.ng-dirty]="errorMap.get('source') != undefined" />
+                                    <p-inputicon class="pi pi-link" [style]="errorMap.get('source') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="url">Source *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('source')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('source')}}</p>
+                        </div>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
@@ -178,20 +209,25 @@
                             <label for="user">User *</label>
                         </p-floatlabel>
 
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('organization') != undefined">
-                            <p-select inputId="org" [options]="organizationSelector.tags" [(ngModel)]="material.organization" (ngModelChange)="loadDivisions()"
-                                class="w-full custom-select" optionLabel="label" optionValue="value" [checkmark]="true" 
-                                [class.invalid-select]="errorMap.get('organization') != undefined"/>
-                            <label for="org">{{organizationSelector.label}} *</label>
-                        </p-floatlabel>
-                        
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('organization') != undefined">
+                                <p-select inputId="org" [options]="organizationSelector.tags" [(ngModel)]="material.organization" (ngModelChange)="loadDivisions()"
+                                    class="w-full custom-select" optionLabel="label" optionValue="value" [checkmark]="true" 
+                                    [class.invalid-select]="errorMap.get('organization') != undefined"/>
+                                <label for="org">{{organizationSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('organization')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('organization')}}</p>
+                        </div>
 
-                        <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('division') != undefined">
-                            <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
-                                [disabled]="divisionSelector.tags.length == 0" [checkmark]="true" inputId="division"
-                                [class.invalid-select]="errorMap.get('division') != undefined"/>
-                            <label for="division">{{divisionSelector.label}} *</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('division') != undefined">
+                                <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
+                                    [disabled]="divisionSelector.tags.length == 0" [checkmark]="true" inputId="division"
+                                    [class.invalid-select]="errorMap.get('division') != undefined"/>
+                                <label for="division">{{divisionSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('division')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('division')}}</p>
+                        </div>
                         
                     </div>
                     <div class="flex justify-content-between mt-3">
