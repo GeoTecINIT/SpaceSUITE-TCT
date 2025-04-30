@@ -19,6 +19,8 @@ import { BokModalComponent } from "../bokModal/bokModal.component";
 import { FirebaseService } from "../../services/firebase.service";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { Router } from "@angular/router";
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
 
 @Component({
@@ -27,7 +29,8 @@ import { CommonModule } from "@angular/common";
   templateUrl: './materialForm.component.html',
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule,
-    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent],
+    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule],
+  providers: [MessageService]
 })
 export class MaterialFormComponent {
 
@@ -51,7 +54,8 @@ export class MaterialFormComponent {
 
   errorMap: Map<string, string | undefined> = new Map();
 
-  constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private trainingMaterialService: TrainingMaterialService, private router: Router) {
+  constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private messageService: MessageService,
+              private trainingMaterialService: TrainingMaterialService, private router: Router) {
     this.languageSelector = this.cardFilterService.getOptionByLabel('Language');
     this.typeSelector = this.cardFilterService.getOptionByLabel('Course Type');
     this.formatSelector = this.cardFilterService.getOptionByLabel('Course Format');
@@ -83,7 +87,13 @@ export class MaterialFormComponent {
       this.router.navigate([''], { replaceUrl: true });
     }
     else {
-      // TODO
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'There are incomplete mandatory fields. Please review the form and try to submit again.', 
+        life: 3000, 
+        closable: true 
+      });
     }
   }
 }
