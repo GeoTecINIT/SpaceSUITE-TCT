@@ -77,7 +77,7 @@
                     <div class="flex flex-column gap-3">
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('type') != undefined">
-                                <p-select [options]="typeSelector.tags" [(ngModel)]="material.type" inputId="type" 
+                                <p-select [options]="typeSelector.tags" [(ngModel)]="material.materialType" inputId="type" 
                                     class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('type') != undefined"/>
                                 <label for="type">{{typeSelector.label}} *</label>
                             </p-floatlabel>

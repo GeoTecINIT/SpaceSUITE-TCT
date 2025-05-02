@@ -23,8 +23,8 @@ export class TrainingMaterial extends OldTrainingMaterial {
     super(data);
     this.publisher = data?.publisher ?? '';
     this.created = data?.created ?? undefined;
-    this.language = data?.language;
-    this.materialType = data?.materialType;
+    this.language = data?.language ?? undefined;
+    this.materialType = data?.materialType ?? undefined;
     this.materialFormat = data?.materialFormat ?? [];
     this.educationLevel = data?.educationLevel ?? [];
     this.audience = data?.audience ?? '';
@@ -33,11 +33,11 @@ export class TrainingMaterial extends OldTrainingMaterial {
     this.learningOutcomes = data?.learningOutcomes ?? [];
     this.tableOfContents = data?.tableOfContents ?? [];
     this.SizeOrDuration = data?.SizeOrDuration ?? 0;
-    this.license = data?.license;
+    this.license = data?.license ?? undefined;
     this.certification = data?.certification ?? '';
     this.subject = data?.subject ?? [];
     this.image = data?.image ?? '';
-    this.division = data?.division;
+    this.division = data?.division ?? undefined;
   }
 
   override toPlain(): Record<string, any> {
