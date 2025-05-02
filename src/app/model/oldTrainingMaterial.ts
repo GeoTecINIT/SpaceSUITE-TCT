@@ -36,7 +36,7 @@ export class OldTrainingMaterial {
       this.orgName = data?.orgName;
       this.title = data?.title ?? '';
       this.type = data?.type ?? 4;
-      this.updatedAt = data?.updatedAt ?? null;
+      this.updatedAt = data?.updatedAt ?? undefined;
       this.url = data?.url ?? '';
       this.userId = data?.userId ?? '';
     }

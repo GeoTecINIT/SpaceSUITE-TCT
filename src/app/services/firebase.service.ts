@@ -51,6 +51,10 @@ export class FirebaseService {
     return this.auth.currentUser;
   }
 
+  getTrainingMaterial(): Observable<TrainingMaterial[]> {
+    return collectionData(this.materialCollection) as Observable<TrainingMaterial[]>;
+  }
+
   setTrainingMaterial(newMaterial: TrainingMaterial): Observable<void> {
     const newDocRef = doc(this.materialCollection);
     const timestamp = serverTimestamp();

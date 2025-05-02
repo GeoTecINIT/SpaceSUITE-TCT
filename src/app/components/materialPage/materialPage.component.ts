@@ -38,7 +38,6 @@ export class MaterialPageComponent {
           (newMaterial: TrainingMaterial | undefined) => {
             if (newMaterial) {
               this.material = newMaterial;
-              this.material.concepts = this.material.concepts.map(element => element.replace(/^eo4geo:/, ""));
               this.material.concepts.forEach(concept => {
                 this.bokInfo.getConceptColor(concept).subscribe(
                   color => {

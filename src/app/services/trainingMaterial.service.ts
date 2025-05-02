@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { BehaviorSubject, filter, map, Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
 import { FirebaseService } from "./firebase.service";
 
 export type ValidationError = {
@@ -14,6 +13,7 @@ export type ValidationError = {
 })
 export class TrainingMaterialService {
   private trainingMaterialArray: BehaviorSubject<TrainingMaterial[] | undefined> = new BehaviorSubject<TrainingMaterial[] | undefined>(undefined);
+  private imagePlaceholder: string = "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2022/08/meteosat_third_generation_weather_satellites/24390136-5-eng-GB/Meteosat_Third_Generation_weather_satellites_pillars.jpg";
 
   constructor(private firebaseService: FirebaseService) { }
 
@@ -64,7 +64,10 @@ export class TrainingMaterialService {
   public getTrainingMaterials(): Observable<TrainingMaterial[] | undefined> {
     let currentTrainingMaterial: TrainingMaterial[] | undefined = this.trainingMaterialArray.getValue();
     if (!currentTrainingMaterial || currentTrainingMaterial.length == 0) {
-      setTimeout(() => this.trainingMaterialArray.next([]), 2000);
+      this.firebaseService.getTrainingMaterial().subscribe( newTrainingMaterials => {
+        const cleanedMaterials = this.formatTrainingMaterials(newTrainingMaterials);
+        this.trainingMaterialArray.next(cleanedMaterials)
+      });
     }
     return this.trainingMaterialArray.asObservable();
   }
@@ -76,5 +79,22 @@ export class TrainingMaterialService {
         return trainingMaterials.find(material => material.title.replace(/\s+/g, '_').toLowerCase() == materialName)
       })
     );
+  }
+
+  private formatTrainingMaterials(trainingMaterials: TrainingMaterial[]): TrainingMaterial[] {
+    return trainingMaterials.map(material => {
+      const newMaterial = new TrainingMaterial(material);
+      newMaterial.concepts = this.formatFirestoreConcepts(newMaterial.concepts);
+      if (!newMaterial.image) newMaterial.image = this.imagePlaceholder;
+      if (newMaterial.eqf != '') newMaterial.educationLevel.push(newMaterial.eqf);
+      if (!newMaterial.created) newMaterial.created = newMaterial.updatedAt.toDate().toLocaleDateString(); 
+      return newMaterial;
+    });
+  }
+
+  private formatFirestoreConcepts(concepts: string[]){
+    const regex = /\[(.*?)\]/;
+    return concepts.map(concept => concept.match(regex)?.[1])
+    .filter(Boolean) as string[];
   }
 }

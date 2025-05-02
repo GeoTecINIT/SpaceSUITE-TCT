@@ -6,17 +6,17 @@
             |
             <div class="text-sm"><strong>EQF Level:</strong> {{material.educationLevel}}</div>
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.type?.toUpperCase()}}</div>
+            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.materialType?.toUpperCase()}}</div>
             |
             <div class="text-sm"><strong>Created:</strong> {{material.created}}</div>
             |
             <div class="text-sm overflow-hidden text-overflow-ellipsis">
-                <a href="{{material.source}}" target="_blank" class="icon-link">
+                <a href="{{material.url}}" target="_blank" class="icon-link">
                     <i class="pi pi-external-link"></i>
                 </a>
             </div>
         </div>
-        <div style="color: var(--secondary-color);" class="my-2">{{this.material.author.join(', ') || ""}}</div>
+        <div style="color: var(--secondary-color);" class="my-2">{{this.material.creators.join(', ') || ""}}</div>
         <p-tabs value="0" scrollable class="custom-tabs">
             <p-tablist>
                 <p-tab value="0">Description</p-tab>

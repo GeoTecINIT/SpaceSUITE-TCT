@@ -32,7 +32,6 @@ export class CardComponent {
   constructor(private bokInfo: BokInformationService, private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit() {
-    this.trainingMaterial.concepts = this.trainingMaterial.concepts.map(element => element.replace(/^eo4geo:/, ""));
     this.trainingMaterial.concepts.forEach(concept => {
       this.concepts.push(concept)
       this.bokInfo.getConceptColor(concept).subscribe(
