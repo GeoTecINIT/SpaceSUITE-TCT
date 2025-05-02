@@ -38,8 +38,8 @@ export class MaterialPageComponent {
           (newMaterial: TrainingMaterial | undefined) => {
             if (newMaterial) {
               this.material = newMaterial;
-              this.material.relation = this.material.relation.map(element => element.replace(/^eo4geo:/, ""));
-              this.material.relation.forEach(concept => {
+              this.material.concepts = this.material.concepts.map(element => element.replace(/^eo4geo:/, ""));
+              this.material.concepts.forEach(concept => {
                 this.bokInfo.getConceptColor(concept).subscribe(
                   color => {
                     const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';

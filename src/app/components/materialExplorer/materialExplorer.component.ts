@@ -92,7 +92,7 @@ export class MaterialExplorerComponent {
     this.finalTrainingMaterial = [];
     for (let filterConcept of filterConcepts){
       let partialTrainingMaterial = this.filteredTrainingMaterial.filter(material =>
-          material.relation.some(concept => concept.replace(/^eo4geo:/, "") === filterConcept)
+          material.concepts.some(concept => concept.replace(/^eo4geo:/, "") === filterConcept)
       );
       this.finalTrainingMaterial = this.finalTrainingMaterial.concat(partialTrainingMaterial);
     }

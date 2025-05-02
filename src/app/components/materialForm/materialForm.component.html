@@ -64,7 +64,7 @@
                             <label for="description">Description</label>
                         </p-floatlabel>
     
-                        <text-chips [fieldName]="'Author/s'" [(chips)]="material.author"></text-chips>
+                        <text-chips [fieldName]="'Author/s'" [(chips)]="material.creators"></text-chips>
                     </div>
                     <div class="flex max-w-full flex-wrap mt-3">
                         <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
@@ -86,7 +86,7 @@
                         
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('format') != undefined">
-                                <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.format" inputId="format"
+                                <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.materialFormat" inputId="format"
                                     class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
                                     [class.invalid-multiselect]="errorMap.get('format') != undefined"/>
                                 <label for="format">{{formatSelector.label}} *</label>
@@ -160,7 +160,7 @@
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel">
                                 <p-iconfield>
-                                    <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.source"
+                                    <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.url"
                                         [class.ng-invalid]="errorMap.get('source') != undefined" [class.ng-dirty]="errorMap.get('source') != undefined" />
                                     <p-inputicon class="pi pi-link" [style]="errorMap.get('source') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
@@ -177,18 +177,22 @@
                             <label for="certification">Certification</label>
                         </p-floatlabel>
 
-                        <p-floatlabel variant="on" class="custom-floatlabel">
-                            <p-iconfield>
-                                <input pInputText id="image" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.image" />
-                                <p-inputicon class="pi pi-image" />
-                            </p-iconfield>
-                            <label for="image">Image URL</label>
-                        </p-floatlabel>
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="image" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.image" 
+                                        [class.ng-invalid]="errorMap.get('image') != undefined" [class.ng-dirty]="errorMap.get('image') != undefined" />
+                                    <p-inputicon class="pi pi-image" [style]="errorMap.get('image') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="image">Image URL</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('image')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('image')}}</p>
+                        </div>
 
                         <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"></text-chips>
 
                         <div class="custom-border p-2" style="color: #64748b;">
-                            <bokModal [(selectedConcepts)]="material.relation"></bokModal>
+                            <bokModal [(selectedConcepts)]="material.concepts"></bokModal>
                         </div>
 
                     </div>

@@ -82,7 +82,6 @@ export class MaterialFormComponent {
   }
 
   submitMaterial() {
-    console.log(this.material)
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {

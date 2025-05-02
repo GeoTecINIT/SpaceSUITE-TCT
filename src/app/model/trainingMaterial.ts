@@ -1,13 +1,11 @@
-export class TrainingMaterial {
-  _id: string;
-  title: string;
+import { OldTrainingMaterial } from "./oldTrainingMaterial";
+
+export class TrainingMaterial extends OldTrainingMaterial {
   publisher: string;
   created?: Date;
   language?: string;
-  description: string;
-  author: string[];
-  type?: string;
-  format: string[];
+  materialType?: string;
+  materialFormat: string[];
   educationLevel: string[];
   audience: string;
   assesment: string;
@@ -16,60 +14,40 @@ export class TrainingMaterial {
   tableOfContents: string[];
   SizeOrDuration: number;
   license?: string;
-  source: string;
   certification: string;
   subject: string[];
-  relation: string[];
   image: string;
-
-  updatedAt: any;
-
-  userId: string;
-  orgId?: string;
-  orgName?: string;
   division?: string;
 
-  constructor(init?: Partial<TrainingMaterial>) {
-    this._id = init?._id ?? '';
-    this.title = init?.title ?? '';
-    this.publisher = init?.publisher ?? '';
-    this.created = init?.created ?? undefined;
-    this.language = init?.language;
-    this.description = init?.description ?? '';
-    this.author = init?.author ?? [];
-    this.type = init?.type;
-    this.format = init?.format ?? [];
-    this.educationLevel = init?.educationLevel ?? [];
-    this.audience = init?.audience ?? '';
-    this.assesment = init?.assesment ?? '';
-    this.prerequisites = init?.prerequisites ?? [];
-    this.learningOutcomes = init?.learningOutcomes ?? [];
-    this.tableOfContents = init?.tableOfContents ?? [];
-    this.SizeOrDuration = init?.SizeOrDuration ?? 0;
-    this.license = init?.license;
-    this.source = init?.source ?? '';
-    this.certification = init?.certification ?? '';
-    this.subject = init?.subject ?? [];
-    this.relation = init?.relation ?? [];
-    this.image = init?.image ?? '';
-    this.updatedAt = init?.updatedAt ?? undefined;
-    this.userId = init?.userId ?? '';
-    this.orgId = init?.orgId ?? undefined;
-    this.orgName = init?.orgName ?? undefined;
-    this.division = init?.division;
+  constructor(data?: Partial<TrainingMaterial>) {
+    super(data);
+    this.publisher = data?.publisher ?? '';
+    this.created = data?.created ?? undefined;
+    this.language = data?.language;
+    this.materialType = data?.materialType;
+    this.materialFormat = data?.materialFormat ?? [];
+    this.educationLevel = data?.educationLevel ?? [];
+    this.audience = data?.audience ?? '';
+    this.assesment = data?.assesment ?? '';
+    this.prerequisites = data?.prerequisites ?? [];
+    this.learningOutcomes = data?.learningOutcomes ?? [];
+    this.tableOfContents = data?.tableOfContents ?? [];
+    this.SizeOrDuration = data?.SizeOrDuration ?? 0;
+    this.license = data?.license;
+    this.certification = data?.certification ?? '';
+    this.subject = data?.subject ?? [];
+    this.image = data?.image ?? '';
+    this.division = data?.division;
   }
 
-  toPlain() {
+  override toPlain(): Record<string, any> {
     return {
-      _id: this._id,
-      title: this.title,
+      ...super.toPlain(),
       publisher: this.publisher,
-      created: this.created,
+      created: this.created?.toISOString(),
       language: this.language,
-      description: this.description,
-      author: this.author,
-      type: this.type,
-      format: this.format,
+      materialType: this.materialType,
+      materialFormat: this.materialFormat,
       educationLevel: this.educationLevel,
       audience: this.audience,
       assesment: this.assesment,
@@ -78,16 +56,10 @@ export class TrainingMaterial {
       tableOfContents: this.tableOfContents,
       SizeOrDuration: this.SizeOrDuration,
       license: this.license,
-      source: this.source,
       certification: this.certification,
       subject: this.subject,
-      relation: this.relation,
       image: this.image,
-      updatedAt: this.updatedAt,
-      userId: this.userId,
-      orgId: this.orgId,
-      orgName: this.orgName,
-      division: this.division
+      division: this.division,
     };
   }
 }

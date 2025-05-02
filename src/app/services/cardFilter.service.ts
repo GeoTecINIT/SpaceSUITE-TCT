@@ -124,7 +124,7 @@ export class CardFilterService {
       case 'EQF Level':
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
       case 'Course Type':
-        return filter.selection.some(selection => material.type?.toLowerCase().includes(selection.toLowerCase()));
+        return filter.selection.some(selection => material.materialType?.toLowerCase().includes(selection.toLowerCase()));
       case 'Course Format':
         // TODO
         return true;

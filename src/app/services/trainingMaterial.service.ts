@@ -34,16 +34,17 @@ export class TrainingMaterialService {
     }
   
     setError('language', !material.language?.trim(), 'Language is required.');
-    setError('type', !material.type?.trim(), 'Type is required.');
+    setError('type', !material.materialType?.trim(), 'Type is required.');
     setError('userId', !material.userId.trim(), 'User ID is required.');
     setError('organization', !material.orgId?.trim(), 'Organization is required.');
     setError('division', !material.division?.trim(), 'Division is required.');
-    setError('source', !material.source.trim(), 'Source is required.');
-    if (!errors.get('source')) setError('source', !urlRegex.test(material.source), 'Invalid source format.');
+    setError('source', !material.url.trim(), 'Source is required.');
+    if (!errors.get('source')) setError('source', !urlRegex.test(material.url), 'Invalid source format.');
+    if (material.image) setError('image', !urlRegex.test(material.image), 'Invalid image url format.');
     setError('license', !material.license?.trim(), 'License is required.');
   
     // Array fields
-    setError('format', material.format.length === 0, 'At least one format is required.');
+    setError('format', material.materialFormat.length === 0, 'At least one format is required.');
     setError('educationLevel', material.educationLevel.length === 0, 'Education level is required.');
   
     // Numeric field
