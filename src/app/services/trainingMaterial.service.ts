@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { TrainingMaterial } from "../model/trainingMaterial";
-import { BehaviorSubject, filter, map, Observable } from "rxjs";
+import { BehaviorSubject, concatMap, filter, forkJoin, map, Observable, of, take } from "rxjs";
 import { FirebaseService } from "./firebase.service";
+import { LanguageService } from "./language.service";
+import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 
 export type ValidationError = {
   field: string;
@@ -13,9 +15,9 @@ export type ValidationError = {
 })
 export class TrainingMaterialService {
   private trainingMaterialArray: BehaviorSubject<TrainingMaterial[] | undefined> = new BehaviorSubject<TrainingMaterial[] | undefined>(undefined);
-  private imagePlaceholder: string = "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2022/08/meteosat_third_generation_weather_satellites/24390136-5-eng-GB/Meteosat_Third_Generation_weather_satellites_pillars.jpg";
+  private imagePlaceholder: string = "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg";
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) { }
 
   public validate(material: TrainingMaterial): Map<string, string | undefined> {
     const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/\S*)?$/;
@@ -58,7 +60,21 @@ export class TrainingMaterialService {
   }
 
   public submitNewMaterial(newMaterial: TrainingMaterial): Observable<void> {
-    return this.firebaseService.setTrainingMaterial(newMaterial);
+    newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
+    newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
+    const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>
+      this.bokInfoService.getConceptName(concept).pipe(
+        take(1),
+        map(conceptName => `[${concept}] ${conceptName}`)
+      )
+    ))
+    : of([]);
+    return conceptObservables.pipe(
+      concatMap(formatedConcepts => {
+        newMaterial.concepts = formatedConcepts;
+        return this.firebaseService.setTrainingMaterial(newMaterial);
+      })
+    );
   }
 
   public getTrainingMaterials(): Observable<TrainingMaterial[] | undefined> {
@@ -87,7 +103,8 @@ export class TrainingMaterialService {
       newMaterial.concepts = this.formatFirestoreConcepts(newMaterial.concepts);
       if (!newMaterial.image) newMaterial.image = this.imagePlaceholder;
       if (newMaterial.eqf != '') newMaterial.educationLevel.push(newMaterial.eqf);
-      if (!newMaterial.created) newMaterial.created = newMaterial.updatedAt.toDate().toLocaleDateString(); 
+      if (!newMaterial.created) newMaterial.created = newMaterial.updatedAt.toDate();
+      else newMaterial.created = newMaterial.created.toDate();
       return newMaterial;
     });
   }

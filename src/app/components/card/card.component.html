@@ -12,7 +12,7 @@
             </a>
         </div>
     </ng-template>
-    <ng-template #subtitle>{{trainingMaterial.created}}</ng-template>
+    <ng-template #subtitle>{{trainingMaterial.created?.toLocaleDateString()}}</ng-template>
     <div #container class="mt-2 h-4rem overflow-hidden">
         <div #subjects class="flex align-items-start align-items-center gap-2 flex-wrap">
             <ng-content *ngFor="let concept of visibleConcepts">
@@ -26,11 +26,11 @@
     <ng-template #footer>
         <p-divider class="mt-2"/>
         <div class="flex align-items-end gap-2 flex-nowrap white-space-nowrap">
-            <div class="text-sm"><strong>{{trainingMaterial.language}}</strong></div>
+            <div class="text-sm"><strong>{{trainingMaterial.language ?? 'Undefined'}}</strong></div>
             |
             <div class="text-sm"><strong>EQF: {{trainingMaterial.educationLevel}}</strong></div>
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>{{trainingMaterial.materialType?.toUpperCase()}}</strong></div>
+            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>{{trainingMaterial.materialType?.toUpperCase() ?? 'Undefined'}}</strong></div>
         </div>
     </ng-template>
 </p-card>

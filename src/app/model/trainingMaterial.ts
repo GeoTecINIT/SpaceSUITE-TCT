@@ -2,7 +2,7 @@ import { OldTrainingMaterial } from "./oldTrainingMaterial";
 
 export class TrainingMaterial extends OldTrainingMaterial {
   publisher: string;
-  created?: Date;
+  created: any;
   language?: string;
   materialType?: string;
   materialFormat: string[];
@@ -44,7 +44,7 @@ export class TrainingMaterial extends OldTrainingMaterial {
     return {
       ...super.toPlain(),
       publisher: this.publisher,
-      created: this.created?.toISOString(),
+      created: this.created,
       language: this.language,
       materialType: this.materialType,
       materialFormat: this.materialFormat,

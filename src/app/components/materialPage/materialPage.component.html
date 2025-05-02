@@ -2,13 +2,13 @@
     <div class="flex flex-column overflow-auto">
         <h1 class="mb-2">{{material.title}}</h1>
         <div class="flex align-items-end gap-2 flex-wrap white-space-nowrap mb-2">
-            <div class="text-sm"><strong>Language:</strong> {{material.language}}</div>
+            <div class="text-sm"><strong>Language:</strong> {{material.language ?? 'Undefined'}}</div>
             |
             <div class="text-sm"><strong>EQF Level:</strong> {{material.educationLevel}}</div>
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.materialType?.toUpperCase()}}</div>
+            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.materialType?.toUpperCase() ?? 'Undefined'}}</div>
             |
-            <div class="text-sm"><strong>Created:</strong> {{material.created}}</div>
+            <div class="text-sm"><strong>Created:</strong> {{material.created?.toLocaleDateString()}}</div>
             |
             <div class="text-sm overflow-hidden text-overflow-ellipsis">
                 <a href="{{material.url}}" target="_blank" class="icon-link">
@@ -28,11 +28,16 @@
                     <p class="m-0">
                         {{material.description}}
                     </p>
+                    <p class="m-0 mt-2">
+                        {{material.abstract}}
+                    </p>
                 </p-tabpanel>
                 <p-tabpanel value="1">
-                    <p class="m-0">
-                        {{material.tableOfContents}}
-                    </p>
+                    <ul>
+                        <li *ngFor="let content of material.tableOfContents">
+                            {{content}}
+                        </li>
+                    </ul>
                 </p-tabpanel>
                 <p-tabpanel value="2">
 
@@ -45,7 +50,7 @@
 
         <img src="{{material.image}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
 
-        <p-panel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" class="my-2 custom-panel">            
+        <p-panel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" [collapsed]="currentConcepts.length > 12" class="my-2 custom-panel">            
             <div class="flex align-items-start align-items-center gap-2 flex-wrap">
                 <ng-content *ngFor="let concept of currentConcepts">
                     <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
