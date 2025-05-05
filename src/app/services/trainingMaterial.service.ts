@@ -17,7 +17,7 @@ export class TrainingMaterialService {
   private trainingMaterialMap: BehaviorSubject<Map<string, TrainingMaterial> | undefined> = new BehaviorSubject<Map<string, TrainingMaterial> | undefined>(undefined);
   private imagePlaceholder: string = "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg";
 
-  constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) { }
+  constructor(private firebaseService: FirebaseService, private bokInfoService: BokInformationService) {}
 
   public validate(material: TrainingMaterial): Map<string, string | undefined> {
     const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/\S*)?$/;
@@ -60,8 +60,8 @@ export class TrainingMaterialService {
   }
 
   public submitNewMaterial(newMaterial: TrainingMaterial): Observable<void> {
-    newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
-    newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
+    //newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
+    //newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>
       this.bokInfoService.getConceptName(concept).pipe(
         take(1),

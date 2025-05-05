@@ -17,31 +17,32 @@
             </div>
         </div>
         <div style="color: var(--secondary-color);" class="my-2">{{this.material.creators.join(', ') || ""}}</div>
-        <p-tabs value="0" scrollable class="custom-tabs">
+        <p-tabs value="1" scrollable class="custom-tabs">
             <p-tablist>
-                <p-tab value="0">Description</p-tab>
                 <p-tab value="1">Table Of Contents</p-tab>
                 <p-tab value="2">Material Information</p-tab>
                 <p-tab value="3">Additional Information</p-tab>
             </p-tablist>
             <p-tabpanels>
-                <p-tabpanel value="0">
-                    <p class="m-0">
-                        {{material.description}}
-                    </p>
-                    <p class="m-0 mt-2">
-                        {{material.abstract}}
-                    </p>
-                </p-tabpanel>
                 <p-tabpanel value="1">
-                    <ul>
-                        <li *ngFor="let content of material.tableOfContents">
-                            {{content}}
-                        </li>
-                    </ul>
+                    <div class="mb-2">
+                        <strong>Table Of Contents:</strong>
+                        <ul>
+                            <li *ngFor="let content of material.tableOfContents">
+                                {{content}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Description:</strong>
+                    </div>
+                    <div class="mb-2">
+                        {{material.description}}
+                        {{material.abstract}}
+                    </div>
                 </p-tabpanel>
                 <p-tabpanel value="2">
-                    <div class="mb-2"><strong>Size or Duration:</strong> {{material.SizeOrDuration}}</div>
+                    <div class="mb-2"><strong>Size or Duration:</strong> {{material.SizeOrDuration}} Hours</div>
                     <div class="mb-2"><strong>Language:</strong> {{material.language}}</div>
                     <div class="mb-2">
                         <strong>Material Format:</strong>

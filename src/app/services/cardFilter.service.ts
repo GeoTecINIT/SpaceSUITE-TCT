@@ -35,8 +35,8 @@ export class CardFilterService {
     {
       label: 'Course Format',
       tags: [
-        'MP4 Video',
-        'MP3 Audio',
+        'Video File',
+        'Audio File',
         'PDF File',
         'HTML Document',
         'PPTX Slides'
@@ -124,15 +124,15 @@ export class CardFilterService {
       case 'EQF Level':
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
       case 'Course Type':
-        return filter.selection.some(selection => material.materialType?.toLowerCase().includes(selection.toLowerCase()));
+        return filter.selection.some(selection => material.materialType?.toLowerCase() == selection.toLowerCase());
       case 'Course Format':
         return filter.selection.some(selection => material.materialFormat?.includes(selection));
       case 'License':
-        return filter.selection.some(selection => material.license?.includes(selection));
+        return filter.selection.some(selection => material.license! == selection);
       case 'Language':
-        return filter.selection.some(selection => material.language?.toLowerCase().includes(this.languageService.getIsoCode(selection)));
+        return filter.selection.some(selection => material.language?.toLowerCase() == this.languageService.getIsoCode(selection));
       case 'User Organizations':
-        return filter.selection.some(selection => material.orgName?.toLowerCase().includes(selection.toLowerCase()));
+        return filter.selection.some(selection => material.orgName?.toLowerCase() == selection.toLowerCase());
       default:
         return true;
     }

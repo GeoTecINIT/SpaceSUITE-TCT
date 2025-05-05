@@ -1,257 +1,5 @@
 [
   {
-    "title": "Spark! - Earth Observation and Geographic Information: a crucial tool to monitor and tackle climate change",
-    "creator": ["Juliette Hunault"],
-    "publisher": "EIT Climate-KIC",
-    "subject": [
-      "Teach students and young innovators what information is available",
-      "how EO*GI is used today and which stakeholders can support them to tackle climate challenges"
-    ],
-    "abstract": "Spark! is an initiative from EIT Climate-KIC to inspire university students, PhD students and citizens to take climate action. For this October edition, EIT Climate-KIC and EO4GEO have partnered to give the participants of",
-    "tableOfContents": "(1) Spark!; \n\t\t\t\t\t\t\t     (2) The context of EO*GI in EUrope, EUSPA; \n\t\t\t\t\t\t\t     (3) Copernicus data for renewable energy, University of Patras; \n\t\t\t\t\t\t\t     (4) Satellite and remote sensing data for forest conservation, Pachamas; \n\t\t\t\t\t\t\t     (5) Conclusion;",
-    "description": "Learning outcomes: Understand remote sensing workflow including image acquisition, (pixel-based) image analysis, classification and validation; get to know online portals, data catalogues, and pricing schemes for satellite data; Familiarize with the European Copernicus Earth observation programme; Master standard image analysis routines as implemented in ArcGIS Pro",
-    "contributor": [""],
-    "created": "2021-10-26",
-    "type": "teaching material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "75 min",
-    "audience": "Master and PhD European students from various backgrounds (also non-technical),Young professionals, Citizens",
-    "educationLevel": "EQF 4",
-    "source": "https://atmosphere.copernicus.eu/",
-    "rightsHolder": "EIT Climate-KIC",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": [
-      "eo4geo:CF",
-      "eo4geo:GS",
-      "eo4geo:GS3-4",
-      "eo4geo:OI",
-      "eo4geo:OI5-1",
-      "eo4geo:IP",
-      "eo4geo:TA",
-      "eo4geo:TA12"    
-    ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "Copernicus Atmosphere Monitoring Service",
-    "creator": ["Kevin Ramirez"],
-    "publisher": "Climate-KIC",
-    "subject": [
-      "Copernicus",
-      "Atmosphere Monitoring",
-      "Satellite",
-      "Earth Observation",
-      "Atmosphere Monitoring Service"
-    ],
-    "abstract": "This course is an introduction to the European Union's Earth Observation Programme and focuses on the Copernicus Atmosphere Monitoring Service.",
-    "tableOfContents": "\n                                         (1) What is Copernicus?; \n                                         (2) The objective of Copernicus; \n                                         (3) The Components of Copernicus; \n                                         (4) The Copernicus Atmosphere Monitoring Service; \n                                            (a) What does the service do?\n                                            (b) Observations\n                                            (c) Satellite observations\n                                            (d) In situ observations\n                                            (e) Production systems\n                                            (f) Thematic output areas",
-    "description": "Familiarise with the European Union's Earth Observation Programme; Understand the mission and goals of the Copernicus Atmosphere Monitoring Service; Learn about Earth observations and atmospheric production systems; Understand how the Copernicus Atmosphere Monitoring Service supports users in different societal domains- thematic output areas",
-    "contributor": ["Kevin Ramirez", "Aneta Zienkiewicz"],
-    "created": "2020-11-30",
-    "type": "self-learning material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "45min",
-    "audience": "general public",
-    "educationLevel": "EQF 5",
-    "source": "https://atmosphere.copernicus.eu/",
-    "rightsHolder": "Kevin Ramirez",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": ["eo4geo:TA13-1-1", "eo4geo:TA13-1-3"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "Copernicus Climate Change Service",
-    "creator": ["Kevin Ramirez"],
-    "publisher": "Climate-KIC",
-    "subject": [
-      "Copernicus",
-      "Climate Change",
-      "Satellite",
-      "Earth Observation",
-      "Copernicus Climate Change Service"
-    ],
-    "abstract": "This course is an introduction to the European Union's Earth Observation Programme and focuses on the Copernicus Climate Change Service.",
-    "tableOfContents": "(1) What is Copernicus?; \n                                                             (2) The objective of Copernicus; \n                                                             (3) The Components of Copernicus; \n                                                             (4) The Copernicus Climate Change Service; \n                                                                (a) What does the service do?\n                                                                (b) Observations\n                                                                (c) Climate datasets\n                                                                (d) Seasonal forecasts\n                                                                (e) Climate projections\n                                                                (f) Tools for using climate data\n                                                                (g) Quality assurance\n                                                                (h) Sectoral impacts\n                                                                (i) Demonstration projects",
-    "description": "Learning outcomes: Familiarise with the European Union's Earth Observation Programme; Get to know the mission and goals of the Copernicus Climate Change Service; Learn about climate datasets and projections; Understand how the Copernicus Climate Change Service can help the private and public; sectors deal with climate-related decision-making and planning",
-    "contributor": ["Kevin Ramirez", "Aneta Zienkiewicz"],
-    "created": "2020-11-30",
-    "type": "self-learning material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "45min",
-    "audience": "general public",
-    "educationLevel": "EQF 5",
-    "source": "https://climate.copernicus.eu/",
-    "rightsHolder": "Kevin Ramirez",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": ["eo4geo:TA13-1-2", "eo4geo:TA12-1", "eo4geo:TA12-10"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "A new Common Agricultural Policy (CAP) based on Copernicus programme and EO4GEO tools",
-    "creator": ["Livio Rossi"],
-    "publisher": "CRN-IRNEA",
-    "subject": [
-      "The webinar has the overall objective to promote the new opportunities offered by the Copernicus Programme in dealing with the Common Agriculture Policy. The EU Commission has indeed encouraged Member States for the use of Earth Observation (EO) technologies",
-      "especially for monitoring in a continuous way the correct payment of all declared areas for aid. This initiative arises in the context of the EO4GEO project Sector Skills Alliance and its tools concerning EO*GI. Participants will be also addressed on how to use EO*GI in the agricultural domain",
-      "exploiting the opportunity to access to free training data."
-    ],
-    "abstract": "European agriculture is facing a number of challenges such as increasing urbanization, loss of historical rural and agricultural landscapes, vulnerability by climate change effects, new competition by imported goods etc. These challenges lead to lower incomes and loss of sector attractivity, especially for younger generations.\n\t\t\t\t\t\t\tThe Common Agricultural Policy (CAP) and the forthcoming new legislation is aimed at the agro- environmental sustainability.\n\t\t\t\t\t\t\tThe objectives of the CAP are to ensure a stable and affordable food supply promoting the local\n\t\t\t\t\t\t\tand EU own food production, reducing the import of primary goods, enable farmers to obtain a stable living, promote sustainable use of resources, maintain rural landscapes and the agro- environment safeguard of the countryside, supporting the rural economy.\n\t\t\t\t\t\t\tThe CAP started at the end of 1970 for the European organization of the agro-market, but since 1992 became geographical-based through the support of satellite data.\n\t\t\t\t\t\t\tIt currently consists of around 40 Billion euros of annual subsidies distributed to 8 million of European farmers and has been promoting the Remote Sensing Agricultural sector in Europe. The in-act modernization of the CAP is successfully including the opportunities offered by the Copernicus programme, such as EO*GI solutions and each EU farmer (also through farmer associations, agencies, etc) is stimulated to improve his/her “e-governance”.\n\t\t\t\t\t\t\tAfter specific analyses/controls at national and regional level, nowadays well supported by the Copernicus Programme, EU officers authorize the final funds transferring to each EU Member States and then to each single beneficiary.",
-    "tableOfContents": "This training is addressed to non-experts in EO and modelling, but for students who may be using EO data for agricultural management in the future or at their current work. By participating in the webinar, students will understand how to acquire data using remote sensing methods and how such collected data can be used to improve knowledge concerning Vegetation Indeces.",
-    "description": "Learning outcomes: Understand the importance of the CAP in Europe; Identify which EO data/products can support the CAP and how, Understand how to interpret and integrate EO time series useful for agriculture; Understand how to derive agro-parcel layers by EO data, to be integrated with other relevant information; Recognize how to re-use EO data derived information for a sustainable agriculture and climate changes limitation actions; Become aware of the possibilities offered by the correct use of EO data through spatial and temporal resolutions",
-    "contributor": [""],
-    "created": "2021-04-28",
-    "type": "teaching material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "90min",
-    "audience": "farmers, farmer's organizations, citizens interested in this secor",
-    "educationLevel": "EQF 3",
-    "source": "",
-    "rightsHolder": "CNR-IRNEA",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": [
-      "eo4geo:IP",
-      "eo4geo:IP3",
-      "eo4geo:IP3-11",
-      "eo4geo:CF",
-      "eo4geo:DM1"    
-    ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "What is Copernicus?",
-    "creator": ["Stefan Lang"],
-    "publisher": "University of Salzburg",
-    "subject": [
-      "Copernicus",
-      "EO4GEO",
-      "WP5",
-      "Satellite",
-      "Earth Observation"
-    ],
-    "abstract": "This is a template slideset for EO4GEO Partners to familiarize with EO4GEO, introducing the idea of Copernicus and its services. Nevertheless, content-generation is not the prime concern of the template",
-    "tableOfContents": "Learning outcomes: Understand remote sensing workflow including image acquisition, (pixel-based) image analysis, classification and validation; get to know online portals, data catalogues, and pricing schemes for satellite data; Familiarize with the European Copernicus Earth observation programme; Master standard image analysis routines as implemented in ArcGIS Pro",
-    "description": "",
-    "contributor": ["Barbara Hofer", "Eva Missoni"],
-    "created": "2020-06-20",
-    "type": "teaching material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "45min",
-    "audience": "students",
-    "educationLevel": "EQF 6",
-    "source": "",
-    "rightsHolder": "Stefan Lang",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": [
-      "eo4geo:IP1-3-2",
-      "eo4geo:IP1-7",
-      "eo4geo:IP1",
-      "eo4geo:IP3-4",
-      "eo4geo:IP4-2-1"
-    ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "Identification of heat islands to support city planning",
-    "creator": [
-      "Greger Lindeberg",
-      "Sara Wiman",
-      "Giacomo Martirano",
-      "Lisa Bilotti"
-    ],
-    "publisher": "GIB, EPSIT",
-    "subject": [
-      "Learning to interpret EO-derived temperature maps for use in urban planning. Learning to identify local heat islands and analyse them in an urban planning context. Discuss how EO-derived temperature maps can be used in spatial planning and how this information can be used when planning for particularly vulnerable groups (pre-school children",
-      "elderly)."
-    ],
-    "abstract": "This is a slideset for city planners about Urban Heat Islands and the importance of their identification in a spatial planning context. The slideset introduces the EO surface temperature maps, with their potential and their limitations",
-    "tableOfContents": "(1) Intro UHI and local heat islands LHI; \n\t\t\t\t\t\t\t     (2) Addressing planning issues connected to UHI/LHI; \n\t\t\t\t\t\t\t     (3) Technical background EO derived data; \n\t\t\t\t\t\t\t     (4) Description of the selected case; \n\t\t\t\t\t\t\t     (5) Conclusions;",
-    "description": "Understand the importance of identifying UHIs in a spatial planning context; Understand how EO surface temperature time series can support identification of UHIs; Understand how to interpret EO surface temperature time series to identify UHIs; Understand how to derive maps from EO surface temperature data, to be integrated with other relevant information related to UHI identification in a spatial planning context; Understand how to analyse information derived from EO surface temperature data integrated with other relevant information related to UHI identification in a spatial planning context; Understand the limitations of the EO surface temperature data due to the spatial resolution",
-    "contributor": ["SpaSe", "GEOF"],
-    "created": "2021-03-21",
-    "type": "teaching material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "65min",
-    "audience": "city planners;climate adaption managers",
-    "educationLevel": "EQF 4",
-    "source": "Existing slideset",
-    "rightsHolder": "SpaSe; GEOF, GIB, EPSIT",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": [
-      "eo4geo:PP1-6-5",
-      "eo4geo:IP3-11"
-    ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "Identification of heat islands to support city planning",
-    "creator": [
-      "Greger Lindeberg",
-      "Sara Wiman",
-      "Giacomo Martirano",
-      "Lisa Bilotti"
-    ],
-    "publisher": "GIB, EPSIT",
-    "subject": [
-      "Learning to interpret EO-derived temperature maps for use in urban planning. Learning to identify local heat islands and analyse them in an urban planning context. Discuss how EO-derived temperature maps can be used in spatial planning and how this information can be used when planning for particularly vulnerable groups (pre-school children",
-      "elderly)."
-    ],
-    "abstract": "This is a slideset for city planners about Urban Heat Islands and the importance of their identification in a spatial planning context. The slideset introduces the EO surface temperature maps, with their potential and their limitations",
-    "tableOfContents": "(1) Intro UHI and local heat islands LHI; \n\t\t\t\t\t\t\t     (2) Addressing planning issues connected to UHI/LHI; \n\t\t\t\t\t\t\t     (3) Technical background EO derived data; \n\t\t\t\t\t\t\t     (4) Description of the selected case; \n\t\t\t\t\t\t\t     (5) Conclusions;",
-    "description": "Understand the importance of identifying UHIs in a spatial planning context; Understand how EO surface temperature time series can support identification of UHIs; Understand how to interpret EO surface temperature time series to identify UHIs; Understand how to derive maps from EO surface temperature data, to be integrated with other relevant information related to UHI identification in a spatial planning context; Understand how to analyse information derived from EO surface temperature data integrated with other relevant information related to UHI identification in a spatial planning context; Understand the limitations of the EO surface temperature data due to the spatial resolution",
-    "contributor": ["SpaSe", "GEOF"],
-    "created": "2021-03-21",
-    "type": "teaching material",
-    "format": "video",
-    "language": "EN",
-    "SizeOrDuration": "65min",
-    "audience": "city planners;climate adaption managers",
-    "educationLevel": "EQF 4",
-    "source": "Existing slideset",
-    "rightsHolder": "SpaSe; GEOF, GIB, EPSIT",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": [
-      "eo4geo:PP1-6-5",
-      "eo4geo:IP3-11"
-    ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
-    "title": "Flood mapping with Synthetic Aperture Radar",
-    "creator": ["Martyna Stelmaszczuk-Górska"],
-    "publisher": "University of Jena",
-    "subject": [
-      "Synthetic Aperture Radar",
-      "Flood",
-      "Copernicus",
-      "Earth Observation",
-      "Sentinel-1",
-      "EO4GEO",
-      "WP5"
-    ],
-    "abstract": "This presentation gives a basic overview on the use of Earth observation data from Synthetic Aperture Radar (SAR) systems for flood mapping. It was prepared using modified EO College resources.",
-    "tableOfContents": "(1) What is a flood?; \n\t\t\t\t\t\t\t     (2) Why use radar remote sensing?; \n\t\t\t\t\t\t\t     (3) Physical properties of water; \n\t\t\t\t\t\t\t     (4) Principles of imaging radar; \n\t\t\t\t\t\t\t     (5) Parameters influencing radar image; \n\t\t\t\t\t\t\t     (6) SAR backscatter from water;\n\t\t\t\t\t\t\t     (7) Flood mapping: best practice; \n\t\t\t\t\t\t\t     (8) Flood mapping: hands-on; \n\t\t\t\t\t\t\t     (9) Reference list",
-    "description": "Learning outcomes: Understand the basics of imaging radar; Understand interaction bewteen Synthetic Aperture Radar (SAR) signal and water; Apply flood mapping using SAR data",
-    "contributor": ["Clémence Dubois", "Carsten Pathe"],
-    "created": "2020-11-13",
-    "type": "teaching material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "90min",
-    "audience": "professionals",
-    "educationLevel": "EQF 6",
-    "source": "EO College",
-    "rightsHolder": "EO College",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": ["eo4geo:PP2", "eo4geo:PS1-3-1-1", "eo4geo:TA13-3-1"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
-  },
-  {
     "title": "Basic GIS knowledge vector and raster data - for the case of Urban Heat Islands",
     "creator": ["Marijan Grgic", "mgrgic@geof.hr"],
     "publisher": "University of Zagreb, Faculty of Geodesy",
@@ -283,7 +31,7 @@
       "eo4geo:PP1-7-1",
       "eo4geo:TA13-5-1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Copernicus Service - Land",
@@ -317,7 +65,7 @@
       "eo4geo:TA13",
       "eo4geo:TA14"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "EO Data Sources",
@@ -345,7 +93,7 @@
     "rightsHolder": "Andrija Krtalic, University of Zagreb Faculty of Geodesy",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:CV2-1", "eo4geo:GD2-3", "eo4geo:AM10-2"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Fast disaster response – satellite technologies for surface displacement monitoring",
@@ -370,7 +118,7 @@
     "rightsHolder": "GEOF",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:DM1", "eo4geo:GS3-4", "eo4geo:TA12"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Preprocessing of EO Data",
@@ -398,7 +146,7 @@
     "rightsHolder": "Andrija Krtalic, University of Zagreb Faculty of Geodesy",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:GD", "eo4geo:GIST", "eo4geo:IP"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Understanding the concept of EO time series - the case of Urban Heat Islands",
@@ -420,7 +168,7 @@
     "rightsHolder": "Marijan Grgic, University of Zagreb Faculty of Geodesy",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:IP3-11", "eo4geo:PP1-7-1", "eo4geo:TA13-5-1"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Validation of EO Products",
@@ -448,7 +196,7 @@
     "rightsHolder": "Andija Krtalic, University of Zagreb Faculty of Geodesy",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:GD4", "eo4geo:TA14", "eo4geo:IP4"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Smart cities, UHI and urban green (workshop)",
@@ -476,7 +224,7 @@
       "eo4geo:PP1-6-5",
       "eo4geo:IP3-11"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Smart cities, UHI and urban green (webinar)",
@@ -504,7 +252,7 @@
       "eo4geo:PP1-6-5",
       "eo4geo:IP3-11"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Evaluation and planning of urban green structures",
@@ -536,7 +284,7 @@
       "eo4geo:IP1",
       "eo4geo:IP3-1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "The EO4GEO project",
@@ -571,7 +319,7 @@
     "rightsHolder": "EO4GEO Consortium",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:OI5", "eo4geo:OI1", "eo4geo:OI2"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Earth Observation for Decision Makers",
@@ -616,7 +364,7 @@
       "eo4geo:TA1-4",
       "eo4geo:CV6"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Data-driven platform for efficient farm management combining EO, IoT and GIS data",
@@ -649,7 +397,7 @@
       "eo4geo:TA11-1-1",
       "eo4geo:AM7-4"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Introduction to Remote Sensing",
@@ -682,7 +430,7 @@
     "rightsHolder": "Agata Hościło, Institute of Geodesy and Cartography",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:IP1-3-2", "eo4geo:IP1-7"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Sentinel-2 data and vegetation indices",
@@ -717,7 +465,7 @@
     "rightsHolder": "Agata Hościło, Institute of Geodesy and Cartography",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:IP3-1-2", "eo4geo:PP1-3-4", "eo4geo:PP1-1"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Landslide affecting Cultural Heritage sites - Roman Thermae of Baia",
@@ -758,7 +506,7 @@
       "eo4geo:GD11-4",
       "eo4geo:GD11-3"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Management view on Spatial Data Infrastructures",
@@ -790,7 +538,7 @@
       "eo4geo:OI4-7",
       "eo4geo:OI4-3"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Introduction to SDI Architecture and Components",
@@ -833,7 +581,7 @@
       "eo4geo:DM1-7",
       "eo4geo:DM1-8"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "CO2 budgets for municipalities - An introduction",
@@ -859,7 +607,7 @@
     "rightsHolder": "Anders Östman",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:IP5-3-1", "eo4geo:DM4-5"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "What is Copernicus?",
@@ -893,7 +641,7 @@
       "eo4geo:IP3-4",
       "eo4geo:IP4-2-1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "The rise of Artificial Intelligence for Earth Observation",
@@ -919,7 +667,7 @@
     "rightsHolder": "PLANETEK",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:AM8", "eo4geo:CV2", "eo4geo:CF5"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "EOlab Deep learning",
@@ -947,7 +695,7 @@
     "rightsHolder": "",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": [],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Object-based Image Analysis - An Introduction",
@@ -991,7 +739,7 @@
       "eo4geo:IP3-7-4-2",
       "eo4geo:IP3-7-4-3"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Object-based Image Analysis",
@@ -1024,7 +772,7 @@
     "rightsHolder": "Stefan Lang, University of Salzburg",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": [],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Practice: image processing and analysis",
@@ -1058,7 +806,7 @@
       "eo4geo:IP3-4",
       "eo4geo:IP4-2-1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Change Detection Using EO Data",
@@ -1085,7 +833,7 @@
     "rightsHolder": "Ioana-Maria Vlad Sandru, Romanian Space Agency",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:IP", "eo4geo:TA12", "eo4geo:TA13"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Change detection using EO data",
@@ -1122,7 +870,7 @@
       "eo4geo:GD2-2",
       "eo4geo:GD11-3"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Active fire detection with Sentinel-3",
@@ -1161,7 +909,7 @@
       "eo4geo:TA13-3",
       "eo4geo:TA13-3-2"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Urban Heat Islands",
@@ -1204,7 +952,7 @@
       "eo4geo:IP6",
       "eo4geo:PS1-5-3"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Observando desde el espacio: agricultura y medio ambiente",
@@ -1236,7 +984,7 @@
       "eo4geo:CF1-1b",
       "eo4geo:IP3-1-1-2"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Programación SIG en entornos Web. Introducción a Leaflet.js",
@@ -1265,7 +1013,7 @@
       "eo4geo:WB7-1",
       "eo4geo:DM4-4"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Reproducibility Research in the Geosciences",
@@ -1293,7 +1041,7 @@
     "rightsHolder": "Carlos Granell, Universitat Jaume I de Castelló, Spain",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:GC4", "eo4geo:IP4-1-6"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "EO for urban greenery management",
@@ -1325,7 +1073,7 @@
       "eo4geo:PS3-4",
       "eo4geo:IP3-11"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "EO for urban greenery management",
@@ -1357,7 +1105,7 @@
       "eo4geo:PS3-4",
       "eo4geo:IP3-11"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Introduction to GIS",
@@ -1394,7 +1142,7 @@
       "eo4geo:CF6-3",
       "eo4geo:CV3-1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Fundaments of optical remote sensing",
@@ -1458,7 +1206,7 @@
       "eo4geo:IP4-3-1",
       "eo4geo:TA14-2-2-1-3"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Air Quality Monitoring and Management",
@@ -1497,7 +1245,7 @@
       "eo4geo:OI1",
       "eo4geo:TA1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Air Quality Monitoring and Management",
@@ -1525,7 +1273,7 @@
       "eo4geo:TA14",
       "eo4geo:TA14-2"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Early Warning for Mosquito-borne epidemics at regional level",
@@ -1559,7 +1307,7 @@
       "eo4geo:TA1",
       "eo4geo:TA2"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Solar potential maps at municipality level",
@@ -1606,7 +1354,7 @@
       "eo4geo:TA2",
       "eo4geo:PP1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Classification: Decision Trees",
@@ -1633,7 +1381,7 @@
       "eo4geo:AM10-2",
       "eo4geo:IP3-4-9"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Classification: Random Forests",
@@ -1660,7 +1408,7 @@
       "eo4geo:AM10-2",
       "eo4geo:IP3-4-9"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Accessing EO Data Using Terrascope Platform",
@@ -1689,7 +1437,7 @@
       "eo4geo:IP3-1-1",
       "eo4geo:WB1-4"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Delineating agricultural parcels using deep learning",
@@ -1733,7 +1481,7 @@
       "eo4geo:IP3-4-7",
       "eo4geo:IP3-4-6-1"
     ],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   },
   {
     "title": "Terrascope Application Development",
@@ -1755,6 +1503,6 @@
     "rightsHolder": "VITO - Vlaamse Instelling voor Technologisch Onderzoek",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
     "relation": ["eo4geo:IP5-1", "eo4geo:IP3-11", "eo4geo:IP3-1"],
-    "image": "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg"
+    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
   }
 ]
