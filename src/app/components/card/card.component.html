@@ -1,13 +1,13 @@
 <p-card [style]="{ width: '19rem', height: '27.5rem', overflow: 'auto'}" class="custom-color">
     <ng-template #header>
-        <a class="image-container" href="/{{getCardURI()}}" target="_self" (click)="onClickTitle($event)">
+        <a class="image-container" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)">
             <img src="{{trainingMaterial.image}}" alt="Image" />
             <div class="overlay"><i class="pi pi-link"></i></div>
         </a>
     </ng-template>
     <ng-template #title>
         <div class="overflow-hidden" style="max-height: 3.25rem;">
-            <a class="card-title" href="/{{getCardURI()}}" target="_self" (click)="onClickTitle($event)">
+            <a class="card-title" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)">
                 <strong class="text-overflow-multiline">{{trainingMaterial.title}}</strong>
             </a>
         </div>

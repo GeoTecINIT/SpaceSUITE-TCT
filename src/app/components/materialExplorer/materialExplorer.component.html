@@ -3,7 +3,7 @@
         (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)"
         [(multiSelectUserOptions)]="userFilterOptions" (multiSelectUserOptionsChange)="filterTrainingMaterial()" 
         (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()"></filters>
-    <div class="flex align-items-start justify-content-center gap-5 flex-wrap mx-auto">
+    <div class="flex align-items-start justify-content-start gap-5 flex-wrap">
         <ng-container *ngIf="!loading else cardSkeleton">
             <ng-container *ngFor="let material of finalTrainingMaterial">
                 <card [trainingMaterial]="material"></card>

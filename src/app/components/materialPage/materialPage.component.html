@@ -21,7 +21,8 @@
             <p-tablist>
                 <p-tab value="0">Description</p-tab>
                 <p-tab value="1">Table Of Contents</p-tab>
-                <p-tab value="2">Additional Information</p-tab>
+                <p-tab value="2">Material Information</p-tab>
+                <p-tab value="3">Additional Information</p-tab>
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
@@ -40,8 +41,42 @@
                     </ul>
                 </p-tabpanel>
                 <p-tabpanel value="2">
-
+                    <div class="mb-2"><strong>Size or Duration:</strong> {{material.SizeOrDuration}}</div>
+                    <div class="mb-2"><strong>Language:</strong> {{material.language}}</div>
+                    <div class="mb-2">
+                        <strong>Material Format:</strong>
+                        <ul>
+                            <li *ngFor="let format of material.materialFormat">
+                                {{format}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Prerequisites:</strong>
+                        <ul>
+                            <li *ngFor="let requisite of material.prerequisites">
+                                {{requisite}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Learning Outcomes:</strong>
+                        <ul>
+                            <li *ngFor="let outcome of material.learningOutcomes">
+                                {{outcome}}
+                            </li>
+                        </ul>
+                    </div>
+                    
                 </p-tabpanel>
+                <p-tabpanel value="3">
+                    <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
+                    <div class="mb-2"><strong>Audience:</strong> {{material.audience}}</div>
+                    <div class="mb-2"><strong>Certification:</strong> {{material.certification}}</div>
+                    <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
+                    <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
+                    <div class="mb-2"><strong>Division:</strong> {{material.division ?? 'Not specified'}}</div>
+                  </p-tabpanel>
             </p-tabpanels>
         </p-tabs>
         <p-button label="Return To Homepage" class="hidden md:flex custom-button mt-auto mb-2" (onClick)="goToMainPage()"></p-button>

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TrainingMaterial } from "../model/trainingMaterial";
-import { BehaviorSubject, concatMap, filter, forkJoin, map, Observable, of, take } from "rxjs";
+import { BehaviorSubject, concatMap, filter, forkJoin, map, Observable, of, take, tap } from "rxjs";
 import { FirebaseService } from "./firebase.service";
 import { LanguageService } from "./language.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
@@ -14,7 +14,7 @@ export type ValidationError = {
   providedIn: 'root',
 })
 export class TrainingMaterialService {
-  private trainingMaterialArray: BehaviorSubject<TrainingMaterial[] | undefined> = new BehaviorSubject<TrainingMaterial[] | undefined>(undefined);
+  private trainingMaterialMap: BehaviorSubject<Map<string, TrainingMaterial> | undefined> = new BehaviorSubject<Map<string, TrainingMaterial> | undefined>(undefined);
   private imagePlaceholder: string = "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg";
 
   constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) { }
@@ -78,22 +78,28 @@ export class TrainingMaterialService {
   }
 
   public getTrainingMaterials(): Observable<TrainingMaterial[] | undefined> {
-    let currentTrainingMaterial: TrainingMaterial[] | undefined = this.trainingMaterialArray.getValue();
-    if (!currentTrainingMaterial || currentTrainingMaterial.length == 0) {
+    let currentTrainingMaterials: Map<string, TrainingMaterial> | undefined = this.trainingMaterialMap.value;
+    let currentTrainingMaterialsArray = currentTrainingMaterials ? Array.from(currentTrainingMaterials.values()) : [];
+    if (currentTrainingMaterialsArray.length == 0) {
       this.firebaseService.getTrainingMaterial().subscribe( newTrainingMaterials => {
         const cleanedMaterials = this.formatTrainingMaterials(newTrainingMaterials);
-        this.trainingMaterialArray.next(cleanedMaterials)
+        const newTrainignMaterialMap: Map<string, TrainingMaterial> = new Map();
+        cleanedMaterials.forEach( material => newTrainignMaterialMap.set(material._id, material));
+        this.trainingMaterialMap.next(newTrainignMaterialMap)
       });
     }
-    return this.trainingMaterialArray.asObservable();
+    return this.getTrainingMaterialArray();
   }
 
-  public getTrainingMaterial(materialName: string): Observable<TrainingMaterial | undefined> {
-    return this.getTrainingMaterials().pipe(
-      filter( material => material != undefined),
-      map((trainingMaterials: TrainingMaterial[]) => {
-        return trainingMaterials.find(material => material.title.replace(/\s+/g, '_').toLowerCase() == materialName)
-      })
+  public getTrainingMaterial(materialId: string): Observable<TrainingMaterial | undefined> {
+    return this.trainingMaterialMap.asObservable().pipe(
+      tap( value => {
+        if (value == undefined) {
+          this.getTrainingMaterials();
+        }
+      }),
+      filter(value => value != undefined),
+      map(materiaMap => materiaMap.get(materialId))
     );
   }
 
@@ -113,5 +119,11 @@ export class TrainingMaterialService {
     const regex = /\[(.*?)\]/;
     return concepts.map(concept => concept.match(regex)?.[1])
     .filter(Boolean) as string[];
+  }
+
+  private getTrainingMaterialArray(): Observable<TrainingMaterial[] | undefined> {
+    return this.trainingMaterialMap.asObservable().pipe(
+      map(map => map ? Array.from(map.values()) : undefined)
+    );
   }
 }

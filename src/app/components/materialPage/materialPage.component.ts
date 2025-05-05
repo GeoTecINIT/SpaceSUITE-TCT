@@ -29,11 +29,12 @@ export class MaterialPageComponent {
   selectedConceptsColor: Map<string, string> = new Map();
   selectedConceptsTooltip: Map<string, string> = new Map();  
 
-  constructor(private route: ActivatedRoute, private router: Router, private trainingMaterialService: TrainingMaterialService, private utilsService: UtilsService, private bokInfo: BokInformationService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private trainingMaterialService: TrainingMaterialService, 
+              private utilsService: UtilsService, private bokInfo: BokInformationService) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-        const materialName = params.get('dynamicValue') || 'GIST';
+        const materialName = params.get('dynamicValue') || '';
         this.trainingMaterialService.getTrainingMaterial(materialName).subscribe(
           (newMaterial: TrainingMaterial | undefined) => {
             if (newMaterial) {

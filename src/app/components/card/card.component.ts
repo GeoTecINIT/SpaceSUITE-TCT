@@ -85,11 +85,7 @@ export class CardComponent {
 
   onClickTitle(event: MouseEvent) {
     event.preventDefault(); 
-    this.router.navigate([this.getCardURI()], { replaceUrl: true });
-  }
-
-  getCardURI() {
-    return this.trainingMaterial.title.replace(/\s+/g, '_').toLowerCase();
+    this.router.navigate([this.trainingMaterial._id], { replaceUrl: true });
   }
 
   getTooltipClass(tooltipContent: string): string {

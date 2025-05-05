@@ -35,6 +35,7 @@
     --p-tabs-active-bar-background: var(--hover-color);
     --p-tabs-tab-hover-color: var(--primary-color);
     --p-tabs-tab-color: color-mix(in srgb, var(--primary-color) 60%, rgba(255, 255, 255, 0) 40%);
+    --p-tabs-tabpanel-color: var(--primary-color);
 }
 
 .rounded-image {
