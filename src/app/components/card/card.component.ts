@@ -29,6 +29,8 @@ export class CardComponent {
   selectedConceptsTooltip: Map<string, string> = new Map();
   overflow: boolean = false;
 
+  imagePlaceholder: string = "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg";
+
   constructor(private bokInfo: BokInformationService, private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit() {

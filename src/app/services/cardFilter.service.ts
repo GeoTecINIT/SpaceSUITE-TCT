@@ -92,12 +92,9 @@ export class CardFilterService {
         'OER-Compatible',
       ],
       selection: []
-    }
-  ];
-
-  private userFilterOptions: FilterOption[] = [
+    },
     {
-      label: 'User Organizations',
+      label: 'Organizations',
       tags: [],
       selection: []
     }
@@ -108,15 +105,11 @@ export class CardFilterService {
   public userMaterialFilter: boolean = false;
 
   constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService){
-    this.firebase.getUserOrganizationList().subscribe( organizations => this.userFilterOptions[0].tags = organizations.map(value => value.name));
+    this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].tags = organizations.map(value => value.name));
   }
 
   public getFilterOptions(): FilterOption[] {
     return this.filterOptions;
-  }
-
-  public getUserFilterOptions(): FilterOption[] {
-    return this.userFilterOptions;
   }
 
   public checkMaterial(material: TrainingMaterial, filter: FilterOption): boolean {
@@ -131,7 +124,7 @@ export class CardFilterService {
         return filter.selection.some(selection => material.license! == selection);
       case 'Language':
         return filter.selection.some(selection => material.language?.toLowerCase() == this.languageService.getIsoCode(selection));
-      case 'User Organizations':
+      case 'Organizations':
         return filter.selection.some(selection => material.orgName?.toLowerCase() == selection.toLowerCase());
       default:
         return true;

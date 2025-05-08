@@ -8,7 +8,7 @@
     </p-floatlabel>
     <div class="flex mt-3 flex-wrap gap-2">
         <ng-content *ngFor="let chip of chips">
-            <p-chip [label]="chip" [removable]="true" class="white-space-nowrap" (onRemove)="deleteElement(chip)"/>
+            <p-chip [label]="chip" [removable]="true" (onRemove)="deleteElement(chip)"/>
         </ng-content>
         <p-button icon="pi pi-plus" rounded class="custom-button" (mousedown)="mouseDown()" (mouseup)="mouseUp()" [disabled]="currentText == '' && lastText == ''"></p-button>
     </div>

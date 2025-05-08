@@ -70,6 +70,10 @@ export class MaterialPageComponent {
     this.router.navigate([''], { replaceUrl: true });
   }
 
+  editMaterial() {
+    this.router.navigate(['edit/' + this.material?._id], { replaceUrl: true });
+  }
+
   onClickConcept(code: string) {
     window.open('https://bok.eo4geo.eu/' + code)
   }

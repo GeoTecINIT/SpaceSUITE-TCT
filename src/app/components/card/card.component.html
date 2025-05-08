@@ -1,7 +1,7 @@
 <p-card [style]="{ width: '19rem', height: '27.5rem', overflow: 'auto'}" class="custom-color">
     <ng-template #header>
         <a class="image-container" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)">
-            <img src="{{trainingMaterial.image}}" alt="Image" />
+            <img src="{{trainingMaterial.image == '' ? imagePlaceholder : trainingMaterial.image}}" alt="Image" />
             <div class="overlay"><i class="pi pi-link"></i></div>
         </a>
     </ng-template>

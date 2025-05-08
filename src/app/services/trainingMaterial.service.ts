@@ -15,9 +15,8 @@ export type ValidationError = {
 })
 export class TrainingMaterialService {
   private trainingMaterialMap: BehaviorSubject<Map<string, TrainingMaterial> | undefined> = new BehaviorSubject<Map<string, TrainingMaterial> | undefined>(undefined);
-  private imagePlaceholder: string = "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg";
 
-  constructor(private firebaseService: FirebaseService, private bokInfoService: BokInformationService) {}
+  constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) {}
 
   public validate(material: TrainingMaterial): Map<string, string | undefined> {
     const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/\S*)?$/;
@@ -59,9 +58,9 @@ export class TrainingMaterialService {
     return errors;
   }
 
-  public submitNewMaterial(newMaterial: TrainingMaterial): Observable<void> {
-    //newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
-    //newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
+  public submitMaterial(newMaterial: TrainingMaterial, update: boolean = false): Observable<void> {
+    newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
+    newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>
       this.bokInfoService.getConceptName(concept).pipe(
         take(1),
@@ -72,6 +71,7 @@ export class TrainingMaterialService {
     return conceptObservables.pipe(
       concatMap(formatedConcepts => {
         newMaterial.concepts = formatedConcepts;
+        if (update) return this.firebaseService.updateTrainingMaterial(newMaterial);
         return this.firebaseService.setTrainingMaterial(newMaterial);
       })
     );
@@ -107,8 +107,6 @@ export class TrainingMaterialService {
     return trainingMaterials.map(material => {
       const newMaterial = new TrainingMaterial(material);
       newMaterial.concepts = this.formatFirestoreConcepts(newMaterial.concepts);
-      if (!newMaterial.image) newMaterial.image = this.imagePlaceholder;
-      if (newMaterial.eqf != '') newMaterial.educationLevel.push(newMaterial.eqf);
       if (!newMaterial.created) newMaterial.created = newMaterial.updatedAt.toDate();
       else newMaterial.created = newMaterial.created.toDate();
       return newMaterial;

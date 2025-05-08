@@ -1,24 +1,14 @@
 <div class="flex flex-column xl:flex-row h-full xl:w-23rem">
     <div class="mx-2">
         <ng-container *ngIf="logged">
-            <h2>Create Material</h2>
+            <h2>User Materials</h2>
             <p-divider class="flex-grow-1"/>
-            <p-button (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add" class="custom-button my-4"/>
-            <h2>User Filters</h2>
-            <p-divider class="flex-grow-1"/>
-            <div class="flex flex-column gap-2 my-4">
-                User Materials Filter
-                <p-selectbutton [options]="filterUserMaterialOptions" [(ngModel)]="filterUserMaterial" allowEmpty="false" 
-                                optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserMaterial()"/>
+            <div class="flex flex-wrap gap-5 my-4">
+                <p-button (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add" class="custom-button" size="small"/>
+                <p-togglebutton [(ngModel)]="filterUserMaterial" [onLabel]="'My Materials'" [offLabel]="'All Materials'" 
+                                [onIcon]="'pi pi-user'" [offIcon]="'pi pi-globe'" size="small" class="custom-togglebutton"
+                                (ngModelChange)="updateFilterUserMaterial()"/>
             </div>
-            <ng-container *ngFor="let option of multiSelectUserOptions">
-                <div class="flex flex-column my-4">
-                    {{option.label}}
-                    <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateUserOptions()" 
-                        placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" [disabled]="loading" [showClear]="true"
-                        (onClear)="clearUserOptions(option.label)" [maxSelectedLabels]="1"/>
-                </div>
-            </ng-container>
         </ng-container>
         <h2>Filters</h2>
         <p-divider class="flex-grow-1"/>
@@ -33,7 +23,7 @@
             <div class="flex flex-column my-4">
                 {{option.label}}
                 <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateOptions()" 
-                    placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" [disabled]="loading" [showClear]="true"
+                    placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" panelStyleClass="max-w-21rem" [disabled]="loading" [showClear]="true"
                     (onClear)="clearOptions(option.label)" [maxSelectedLabels]="1"/>
             </div>
         </ng-container>

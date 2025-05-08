@@ -37,6 +37,20 @@ export class BokModalComponent {
     filterService.bokConcepts.forEach(concept => this.addConceptWithName(concept));
   }
 
+  ngOnInit() {
+    this.selectedConcepts.forEach( concept => {
+      this.bokInfo.getConceptColor(concept).subscribe(
+        color => {
+          const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
+          this.selectedConceptsColor.set(concept, softColor)
+        }
+      )
+      this.bokInfo.getConceptName(concept).subscribe(
+        tooltip => this.selectedConceptsTooltip.set(concept, tooltip)
+      );
+    })
+  }
+
   showDialog() {
     this.visible = true;
   }

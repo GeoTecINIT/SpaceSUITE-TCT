@@ -6,8 +6,8 @@ import { InputIcon } from 'primeng/inputicon';
 import { ButtonModule } from "primeng/button";
 import { IconField } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext'
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FilterOption } from "../../model/filterOption";
 import { BokModalComponent } from "../bokModal/bokModal.component";
 import { CardFilterService } from "../../services/cardFilter.service";
@@ -18,7 +18,7 @@ import { Router } from "@angular/router";
   selector: 'filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css'],
-  imports: [CommonModule, FormsModule, DividerModule, InputIcon, IconField, InputTextModule, MultiSelectModule, BokModalComponent, ButtonModule, SelectButtonModule],
+  imports: [CommonModule, FormsModule, DividerModule, InputIcon, IconField, InputTextModule, MultiSelectModule, BokModalComponent, ButtonModule, ToggleButtonModule],
 })
 export class FiltersComponent {
   @Input() multiSelectOptions: FilterOption[] = [];
@@ -31,12 +31,8 @@ export class FiltersComponent {
 
   @Output() bokConceptsChange: EventEmitter<string[]> = new EventEmitter();
 
-  filterUserMaterialOptions: any[] = [{ label: 'On', value: true },{ label: 'Off', value: false }];
   filterUserMaterial: boolean = false;
   @Output() filterUserMaterialChange: EventEmitter<boolean> = new EventEmitter();
-
-  @Input() multiSelectUserOptions: FilterOption[] = [];
-  @Output() multiSelectUserOptionsChange: EventEmitter<FilterOption[]> = new EventEmitter();
 
   @Input() logged: boolean = false;
 
@@ -49,10 +45,6 @@ export class FiltersComponent {
     this.multiSelectOptionsChange.emit(this.multiSelectOptions);
   }
 
-  updateUserOptions() {
-    this.multiSelectUserOptionsChange.emit(this.multiSelectUserOptions);
-  }
-
   updateSearchValue() {
     this.searchValueChange.emit(this.searchValue);
   }
@@ -63,12 +55,6 @@ export class FiltersComponent {
 
   clearOptions(label: string) {
     let currentOption = this.multiSelectOptions.find(option => option.label === label);
-    if (currentOption) currentOption.selection = [];
-    this.updateOptions();
-  }
-
-  clearUserOptions(label: string) {
-    let currentOption = this.multiSelectUserOptions.find(option => option.label === label);
     if (currentOption) currentOption.selection = [];
     this.updateOptions();
   }

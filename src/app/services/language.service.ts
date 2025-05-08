@@ -74,8 +74,18 @@ export class LanguageService {
         Samoan: "sm"
     };
       
-    public getIsoCode(name: string): string {
-        return this.languages[name];
+    public getIsoCode(value: string): string {
+        return this.languages[value];
+    }
+
+    public getLanguage(value: string): string | undefined {
+        const lowerCaseValue = value.toLowerCase()
+        for (const [name, code] of Object.entries(this.languages)) {
+            if (code === lowerCaseValue) {
+                return name;
+            }
+        }
+        return undefined;
     }
     
 }

@@ -13,11 +13,13 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MaterialFormComponent } from './app/components/materialForm/materialForm.component';
+import { EditPageComponent } from './app/components/editPage/editPage.component';
 
 const routes: Routes = [
     { path: '', component: MaterialExplorerComponent },
     { path: 'not_found', component: NotFoundPageComponent},
     { path: 'new', component: MaterialFormComponent, canActivate: [AuthGuard]},
+    { path: 'edit/:dynamicValue', component: EditPageComponent, canActivate: [AuthGuard]},
     { path: 'profile', component: UserPageComponent, canActivate: [AuthGuard]},
     { path: 'organizations', component: OrganizationPageComponent, canActivate: [AuthGuard]},
     { path: ':dynamicValue', component: MaterialPageComponent },

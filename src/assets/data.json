@@ -1,39 +1,5 @@
 [
   {
-    "title": "Basic GIS knowledge vector and raster data - for the case of Urban Heat Islands",
-    "creator": ["Marijan Grgic", "mgrgic@geof.hr"],
-    "publisher": "University of Zagreb, Faculty of Geodesy",
-    "subject": [
-      "Copernicus",
-      "EO4GEO",
-      "WP4",
-      "Satellite",
-      "Earth Observation"
-    ],
-    "abstract": "This is a lesson on monitoring the urban heat islands. This beginner's lesson introduces the student to GIS and vector/raster data",
-    "tableOfContents": "What is urban heat island? \n\t\t\t\t\t\t\t     How to detect it? \n\t\t\t\t\t\t\t     What are the measuring techniques? \n\t\t\t\t\t\t\t     Which data could be used in GIS for that purpose? Raster vs vector data.",
-    "description": "Design and develop methods for local heat islands detection to support city planning, Understand basics of RS/EO/GI knowledge, Modify spatial data, Understand GIS vector and raster data, Identify different remote sensing methods",
-    "contributor": ["Marijan Grgic", "mgrgic@geof.hr"],
-    "created": "2020-09-20",
-    "type": "teaching material",
-    "format": "html",
-    "language": "EN",
-    "SizeOrDuration": "45min",
-    "audience": "students",
-    "educationLevel": "EQF 6",
-    "source": "",
-    "rightsHolder": "Marijan Grgic, University of Zagreb Faculty of Geodesy",
-    "license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "relation": [
-      "eo4geo:DA3-7",
-      "eo4geo:AM13-4",
-      "eo4geo:IP3-11",
-      "eo4geo:PP1-7-1",
-      "eo4geo:TA13-5-1"
-    ],
-    "image": "http://www.eo4geo.eu/wp-content/uploads/2020/10/news-website.jpg"
-  },
-  {
     "title": "Copernicus Service - Land",
     "creator": ["Andrija Krtalic"],
     "publisher": "University of Zagreb, Faculty of Geodesy",

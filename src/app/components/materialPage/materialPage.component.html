@@ -17,25 +17,22 @@
             </div>
         </div>
         <div style="color: var(--secondary-color);" class="my-2">{{this.material.creators.join(', ') || ""}}</div>
-        <p-tabs value="1" scrollable class="custom-tabs">
+        <p-tabs value="0" scrollable class="custom-tabs">
             <p-tablist>
-                <p-tab value="1">Table Of Contents</p-tab>
-                <p-tab value="2">Material Information</p-tab>
+                <p-tab value="0">Table of Contents</p-tab>
+                <p-tab value="1">Description</p-tab>
+                <p-tab value="2">Material Detail</p-tab>
                 <p-tab value="3">Additional Information</p-tab>
             </p-tablist>
             <p-tabpanels>
+                <p-tabpanel value="0">
+                    <ul class="m-0 mb-2">
+                        <li *ngFor="let content of material.tableOfContents">
+                            {{content}}
+                        </li>
+                    </ul>
+                </p-tabpanel>
                 <p-tabpanel value="1">
-                    <div class="mb-2">
-                        <strong>Table Of Contents:</strong>
-                        <ul>
-                            <li *ngFor="let content of material.tableOfContents">
-                                {{content}}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mb-2">
-                        <strong>Description:</strong>
-                    </div>
                     <div class="mb-2">
                         {{material.description}}
                         {{material.abstract}}
@@ -80,7 +77,9 @@
                   </p-tabpanel>
             </p-tabpanels>
         </p-tabs>
+        <p-button label="Edit Material" class="hidden md:flex custom-button mt-auto mb-2" (onClick)="editMaterial()"></p-button>
         <p-button label="Return To Homepage" class="hidden md:flex custom-button mt-auto mb-2" (onClick)="goToMainPage()"></p-button>
+
     </div>
     <div class="flex flex-column image-column">
 

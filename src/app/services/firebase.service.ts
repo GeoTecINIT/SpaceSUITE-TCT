@@ -24,6 +24,10 @@ export class FirebaseService {
       authState(this.auth).subscribe(user => this.userId = user?.uid ?? '');
   }
 
+  getOrganizationList(): Observable<{ _id: string, name: string }[]> {
+    return collectionData(this.orgCollection) as Observable<{ _id: string, name: string}[]>
+  }
+
   getUserOrganizationList(): Observable<{ _id: string, name: string }[]> {
     let uid = ''
     return authState(this.auth).pipe(
@@ -61,5 +65,12 @@ export class FirebaseService {
     newMaterial.updatedAt = timestamp;
     newMaterial._id = newDocRef.id;
     return from(setDoc(newDocRef, newMaterial.toPlain()));
+  }
+
+  updateTrainingMaterial(material: TrainingMaterial): Observable<void> {
+    const newDocRef = doc(this.materialCollection, material._id);
+    const timestamp = serverTimestamp();
+    material.updatedAt = timestamp;
+    return from(setDoc(newDocRef, material.toPlain()));
   }
 }

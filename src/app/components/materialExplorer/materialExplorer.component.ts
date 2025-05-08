@@ -24,7 +24,6 @@ export class MaterialExplorerComponent {
   filteredTrainingMaterial: TrainingMaterial[] = [];
   finalTrainingMaterial: TrainingMaterial[] = [];
   filterOptions: FilterOption[] = [];
-  userFilterOptions: FilterOption[] = [];
   filterByUserMaterial: boolean = false;
   loading: boolean = true;
   skelletonElements: number[] = [];
@@ -35,7 +34,6 @@ export class MaterialExplorerComponent {
 
   ngOnInit() {
     this.filterOptions = this.filterService.getFilterOptions();
-    this.userFilterOptions = this.filterService.getUserFilterOptions();
     this.trainingMaterialService.getTrainingMaterials().pipe(
       filter(value => value !== undefined)
     ).subscribe(
@@ -58,9 +56,7 @@ export class MaterialExplorerComponent {
   }
 
   filterTrainingMaterial() {
-    if (this.filterOptions.every(filter => !filter.selection || filter.selection.length === 0) &&
-        this.userFilterOptions.every(filter => !filter.selection || filter.selection.length === 0) &&
-        !this.filterByUserMaterial) {
+    if (this.filterOptions.every(filter => !filter.selection || filter.selection.length === 0) && !this.filterByUserMaterial) {
       this.filteredTrainingMaterial = this.searchedTrainingMaterial;
     }
     else{
@@ -71,10 +67,6 @@ export class MaterialExplorerComponent {
       }
       newFilteredMaterial = newFilteredMaterial.filter(material => 
         this.filterOptions.every(filter => 
-          !filter.selection || filter.selection.length === 0|| this.filterService.checkMaterial(material, filter)
-        ) 
-      ).filter(material => 
-        this.userFilterOptions.every(filter => 
           !filter.selection || filter.selection.length === 0|| this.filterService.checkMaterial(material, filter)
         ) 
       );

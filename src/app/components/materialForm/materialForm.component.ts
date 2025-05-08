@@ -35,7 +35,8 @@ import { take } from "rxjs";
 })
 export class MaterialFormComponent {
 
-  @Input() material: TrainingMaterial = new TrainingMaterial();
+  @Input() inputMaterial?: TrainingMaterial;
+  material: TrainingMaterial = new TrainingMaterial();
 
   languageSelector: FilterOption;
   typeSelector: FilterOption;
@@ -70,6 +71,13 @@ export class MaterialFormComponent {
     ));
   }
 
+  ngOnInit() {
+    if (this.inputMaterial) {
+      this.material = this.inputMaterial;
+      this.firebaseService.getOrganizationDivisions(this.material.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
+    }
+  }
+
   loadDivisions(newValue: {label: string, value: string}) {
     this.material.orgId = newValue.value;
     this.material.orgName = newValue.label;
@@ -85,7 +93,7 @@ export class MaterialFormComponent {
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
-      this.trainingMaterialService.submitNewMaterial(this.material).pipe(take(1)).subscribe(() => {
+      this.trainingMaterialService.submitMaterial(this.material, this.inputMaterial != undefined).pipe(take(1)).subscribe(() => {
         this.router.navigate([''], { replaceUrl: true });
       })
     }
