@@ -35,6 +35,7 @@ import { take } from "rxjs";
 })
 export class MaterialFormComponent {
 
+  @Input() pageName: string = 'Create New Material';
   @Input() inputMaterial?: TrainingMaterial;
   material: TrainingMaterial = new TrainingMaterial();
 

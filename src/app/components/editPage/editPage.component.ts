@@ -10,7 +10,7 @@ import { LanguageService } from "../../services/language.service";
 @Component({
   standalone: true,
   selector: 'edit-page',
-  template: '<material-form *ngIf="material" [inputMaterial]="material">',
+  template: '<material-form *ngIf="material" [inputMaterial]="material" pageName="Edit Material">',
   imports: [MaterialFormComponent, CommonModule],
 })
 export class EditPageComponent {

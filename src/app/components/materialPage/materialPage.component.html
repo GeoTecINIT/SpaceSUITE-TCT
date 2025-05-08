@@ -1,5 +1,5 @@
 <div *ngIf="material; else spinner" class="flex flex-column md:flex-row justify-content-between md:gap-4">
-    <div class="flex flex-column overflow-auto">
+    <div class="flex flex-column overflow-auto flex-auto">
         <h1 class="mb-2">{{material.title}}</h1>
         <div class="flex align-items-end gap-2 flex-wrap white-space-nowrap mb-2">
             <div class="text-sm"><strong>Language:</strong> {{material.language ?? 'Undefined'}}</div>
@@ -77,9 +77,10 @@
                   </p-tabpanel>
             </p-tabpanels>
         </p-tabs>
-        <p-button label="Edit Material" class="hidden md:flex custom-button mt-auto mb-2" (onClick)="editMaterial()"></p-button>
-        <p-button label="Return To Homepage" class="hidden md:flex custom-button mt-auto mb-2" (onClick)="goToMainPage()"></p-button>
-
+        <div class="hidden md:flex justify-content-between mb-2 mt-auto">
+            <p-button label="Homepage" icon="pi pi-home" class="custom-button" (onClick)="goToMainPage()"></p-button>
+            <p-button label="Edit Material" icon="pi pi-pencil" class="custom-button" (onClick)="editMaterial()"></p-button>
+        </div>
     </div>
     <div class="flex flex-column image-column">
 
@@ -109,7 +110,8 @@
                 </ng-content>
             </div>
         </p-panel>
-        <p-button label="Return To Homepage" class="flex md:hidden justify-content-center custom-button my-2" (onClick)="goToMainPage()"></p-button>
+        <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()"></p-button>
+        <p-button label="Homepage" icon="pi pi-home" class="flex md:hidden justify-content-center custom-button my-2" (onClick)="goToMainPage()"></p-button>
     </div>
 </div>
 
