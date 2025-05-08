@@ -25,7 +25,10 @@ export class FirebaseService {
   }
 
   getOrganizationList(): Observable<{ _id: string, name: string }[]> {
-    return collectionData(this.orgCollection) as Observable<{ _id: string, name: string}[]>
+    const organizations = collectionData(this.orgCollection) as Observable<{ _id: string, name: string}[]>
+    return organizations.pipe(
+      map( orgs => orgs.sort((a, b) => a.name.localeCompare(b.name)))
+    );
   }
 
   getUserOrganizationList(): Observable<{ _id: string, name: string }[]> {
