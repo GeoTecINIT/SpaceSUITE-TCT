@@ -78,8 +78,8 @@
             </p-tabpanels>
         </p-tabs>
         <div class="hidden md:flex justify-content-between mb-2 mt-auto">
-            <p-button label="Homepage" icon="pi pi-home" class="custom-button" (onClick)="goToMainPage()"></p-button>
-            <p-button label="Edit Material" icon="pi pi-pencil" class="custom-button" (onClick)="editMaterial()" *ngIf="checkUser()"></p-button>
+            <p-button label="Homepage" icon="pi pi-home" class="custom-button" (onClick)="goToMainPage()" size="small"></p-button>
+            <p-button label="Edit Material" icon="pi pi-pencil" class="custom-button" (onClick)="editMaterial()" size="small" *ngIf="checkUser()"></p-button>
         </div>
     </div>
     <div class="flex flex-column image-column">
@@ -110,8 +110,8 @@
                 </ng-content>
             </div>
         </p-panel>
-        <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()" *ngIf="checkUser()"></p-button>
-        <p-button label="Homepage" icon="pi pi-home" class="flex md:hidden justify-content-center custom-button my-2" (onClick)="goToMainPage()"></p-button>
+        <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()" size="small" *ngIf="checkUser()"></p-button>
+        <p-button label="Homepage" icon="pi pi-home" class="flex md:hidden justify-content-center custom-button my-2" (onClick)="goToMainPage()" size="small"></p-button>
     </div>
 </div>
 
