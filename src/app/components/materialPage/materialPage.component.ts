@@ -40,6 +40,8 @@ export class MaterialPageComponent {
           (newMaterial: TrainingMaterial | undefined) => {
             if (newMaterial) {
               this.material = newMaterial;
+              this.currentConcepts = [];
+              this.deprecatedConcepts = [];
               this.material.concepts.forEach(concept => {
                 this.bokInfo.getConceptColor(concept).subscribe(
                   color => {
