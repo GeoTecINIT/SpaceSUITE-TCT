@@ -12,6 +12,7 @@ import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
+import { take, tap } from "rxjs";
 
 @Component({
   standalone: true,
@@ -36,7 +37,7 @@ export class MaterialPageComponent {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
         const materialName = params.get('dynamicValue') || '';
-        this.trainingMaterialService.getTrainingMaterial(materialName).subscribe(
+        this.trainingMaterialService.getTrainingMaterial(materialName).pipe(take(1)).subscribe(
           (newMaterial: TrainingMaterial | undefined) => {
             if (newMaterial) {
               this.material = newMaterial;
@@ -75,6 +76,13 @@ export class MaterialPageComponent {
 
   editMaterial() {
     this.router.navigate(['edit/' + this.material?._id], { replaceUrl: true });
+  }
+
+  deleteMaterial() {
+    this.trainingMaterialService.deleteTrainingMaterial(this.material!).pipe(
+      tap(() => this.material = undefined),
+      take(1)
+    ).subscribe(() => this.goToMainPage());
   }
 
   checkUser() {

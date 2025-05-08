@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { Auth, authState } from "@angular/fire/auth";
-import { collection, collectionData, CollectionReference, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
+import { collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
 import { concatMap, from, map, Observable, of } from 'rxjs';
 import { TrainingMaterial } from "../model/trainingMaterial";
 
@@ -72,5 +72,10 @@ export class FirebaseService {
     const timestamp = serverTimestamp();
     material.updatedAt = timestamp;
     return from(setDoc(newDocRef, material.toPlain()));
+  }
+
+  deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
+    const docRef = doc(this.materialCollection, material._id);
+    return from(deleteDoc(docRef));
   }
 }

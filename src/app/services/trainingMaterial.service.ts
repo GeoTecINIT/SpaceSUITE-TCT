@@ -124,4 +124,8 @@ export class TrainingMaterialService {
       map(map => map ? Array.from(map.values()) : undefined)
     );
   }
+
+  public deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
+    return this.firebaseService.deleteTrainingMaterial(material);
+  }
 }
