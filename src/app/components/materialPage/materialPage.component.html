@@ -17,7 +17,7 @@
             </div>
         </div>
         <div style="color: var(--secondary-color);" class="my-2">{{this.material.creators.join(', ') || ""}}</div>
-        <p-tabs value="0" scrollable class="custom-tabs">
+        <p-tabs value="0" scrollable class="custom-tabs mb-2">
             <p-tablist>
                 <p-tab value="0">Table of Contents</p-tab>
                 <p-tab value="1">Description</p-tab>
@@ -79,7 +79,7 @@
         </p-tabs>
         <div class="hidden md:flex justify-content-between mb-2 mt-auto">
             <p-button label="Homepage" icon="pi pi-home" class="custom-button" (onClick)="goToMainPage()"></p-button>
-            <p-button label="Edit Material" icon="pi pi-pencil" class="custom-button" (onClick)="editMaterial()"></p-button>
+            <p-button label="Edit Material" icon="pi pi-pencil" class="custom-button" (onClick)="editMaterial()" *ngIf="checkUser()"></p-button>
         </div>
     </div>
     <div class="flex flex-column image-column">
@@ -110,7 +110,7 @@
                 </ng-content>
             </div>
         </p-panel>
-        <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()"></p-button>
+        <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()" *ngIf="checkUser()"></p-button>
         <p-button label="Homepage" icon="pi pi-home" class="flex md:hidden justify-content-center custom-button my-2" (onClick)="goToMainPage()"></p-button>
     </div>
 </div>

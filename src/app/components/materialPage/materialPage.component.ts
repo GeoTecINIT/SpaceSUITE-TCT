@@ -11,6 +11,7 @@ import { TabsModule } from 'primeng/tabs';
 import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
+import { FirebaseService } from "../../services/firebase.service";
 
 @Component({
   standalone: true,
@@ -30,7 +31,7 @@ export class MaterialPageComponent {
   selectedConceptsTooltip: Map<string, string> = new Map();  
 
   constructor(private route: ActivatedRoute, private router: Router, private trainingMaterialService: TrainingMaterialService, 
-              private utilsService: UtilsService, private bokInfo: BokInformationService) {}
+              private utilsService: UtilsService, private bokInfo: BokInformationService, private firebaseService: FirebaseService) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -72,6 +73,10 @@ export class MaterialPageComponent {
 
   editMaterial() {
     this.router.navigate(['edit/' + this.material?._id], { replaceUrl: true });
+  }
+
+  checkUser() {
+    return (this.firebaseService.userId == this.material?.userId);
   }
 
   onClickConcept(code: string) {
