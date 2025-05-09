@@ -12,7 +12,7 @@ import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
-import { take, tap } from "rxjs";
+import { catchError, finalize, of, take, tap } from "rxjs";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
@@ -142,11 +142,21 @@ export class MaterialPageComponent {
 
   deleteMaterial() {
     this.trainingMaterialService.deleteTrainingMaterial(this.material!).pipe(
-      tap(() => this.material = undefined),
-      take(1)
-    ).subscribe(() => {
-      this.router.navigate([''], { replaceUrl: true, queryParams: { submited: true, mode: 'delete' }});
-    });
+      take(1),
+      catchError((error) => {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: error.message ?? 'Something went wrong. Try again later or contact the administrator.', 
+          life: 3000, 
+          closable: true 
+        });
+        return of(null)
+      }),
+      finalize(() => {
+        this.router.navigate([''], { replaceUrl: true, queryParams: { submited: true, mode: 'delete' }});
+      })
+    ).subscribe();
   }
 
   checkUser() {
