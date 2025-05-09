@@ -98,9 +98,4 @@
     --p-toast-error-border-color: var(--danger-color);
     --p-toast-error-color: var(--danger-color);
     --p-toast-error-detail-color: var(--primary-color);
-
-    --p-toast-warn-background: color-mix(in srgb, var(--warning-color) 10%, rgba(255, 255, 255, 0.9) 90%);
-    --p-toast-warn-border-color: var(--warning-color);
-    --p-toast-warn-color: var(--warning-color);
-    --p-toast-warn-detail-color: var(--primary-color);
 }

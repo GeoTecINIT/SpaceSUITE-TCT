@@ -77,7 +77,9 @@ export class MaterialPageComponent {
           }
         )
     });
+  }
 
+  ngAfterViewInit() {
     this.route.queryParams.subscribe(params => {
       const submited: boolean = params['submited'];
       const mode: string = params['mode'];
@@ -142,7 +144,9 @@ export class MaterialPageComponent {
     this.trainingMaterialService.deleteTrainingMaterial(this.material!).pipe(
       tap(() => this.material = undefined),
       take(1)
-    ).subscribe(() => this.goToMainPage());
+    ).subscribe(() => {
+      this.router.navigate([''], { replaceUrl: true, queryParams: { submited: true, mode: 'delete' }});
+    });
   }
 
   checkUser() {

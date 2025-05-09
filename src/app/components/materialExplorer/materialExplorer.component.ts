@@ -10,13 +10,17 @@ import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
 import { FirebaseService } from "../../services/firebase.service";
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from "primeng/api";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   standalone: true,
   selector: 'material-explorer',
   templateUrl: './materialExplorer.component.html',
   styleUrls: ['./materialExplorer.component.css'],
-  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, ScrollTopModule],
+  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, ScrollTopModule, ToastModule],
+  providers: [MessageService]
 })
 export class MaterialExplorerComponent {
   trainingMaterialArray: TrainingMaterial[] = [];
@@ -28,7 +32,8 @@ export class MaterialExplorerComponent {
   loading: boolean = true;
   skelletonElements: number[] = [];
 
-  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private firebase: FirebaseService) {
+  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, 
+              private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
     this.skelletonElements = Array(16).fill(null);
   }
 
@@ -42,6 +47,26 @@ export class MaterialExplorerComponent {
       this.filterByUserMaterial = this.filterService.userMaterialFilter;
       this.searchTrainingMaterial(this.filterService.searchOption);
       this.loading = false;
+    });
+  }
+
+  ngAfterViewInit() {
+    this.route.queryParams.subscribe(params => {
+      const submited: boolean = params['submited'];
+      const mode: string = params['mode'];
+      if (submited){
+        switch (mode){
+          case 'delete':
+            this.messageService.add({ 
+              severity: 'info', 
+              summary: 'Info', 
+              detail: `Material deleted without problems.`,
+              life: 3000, 
+              closable: true 
+            }); 
+            break
+        }
+      }
     });
   }
 

@@ -19,7 +19,7 @@ export class TrainingMaterialService {
   constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) {}
 
   public validate(material: TrainingMaterial): Map<string, string | undefined> {
-    const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/\S*)?$/;
+    const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/\S*)?$/;
     const errors: Map<string, string | undefined> = new Map();
   
     const setError = (field: string, condition: boolean, message: string) => {
