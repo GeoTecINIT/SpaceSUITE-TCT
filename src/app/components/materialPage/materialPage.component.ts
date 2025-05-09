@@ -13,13 +13,17 @@ import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
 import { take, tap } from "rxjs";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   standalone: true,
   selector: 'material-page',
   templateUrl: './materialPage.component.html',
   styleUrls: ['./materialPage.component.css'],
-  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, TagModule, PanelModule, TabsModule, DividerModule],
+  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, TagModule, PanelModule, TabsModule, DividerModule, ConfirmDialogModule, ToastModule],
+  providers: [ConfirmationService, MessageService]
 })
 export class MaterialPageComponent {
 
@@ -31,8 +35,13 @@ export class MaterialPageComponent {
   selectedConceptsColor: Map<string, string> = new Map();
   selectedConceptsTooltip: Map<string, string> = new Map();  
 
+  imagePlaceholder: string;
+
   constructor(private route: ActivatedRoute, private router: Router, private trainingMaterialService: TrainingMaterialService, 
-              private utilsService: UtilsService, private bokInfo: BokInformationService, private firebaseService: FirebaseService) {}
+              private utilsService: UtilsService, private bokInfo: BokInformationService, private firebaseService: FirebaseService,
+              private confirmationService: ConfirmationService,private messageService: MessageService) {
+                this.imagePlaceholder = this.utilsService.imagePlaceholder;
+              }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -68,6 +77,33 @@ export class MaterialPageComponent {
           }
         )
     });
+
+    this.route.queryParams.subscribe(params => {
+      const submited: boolean = params['submited'];
+      const mode: string = params['mode'];
+      if (submited){
+        switch (mode){
+          case 'update':
+            this.messageService.add({ 
+              severity: 'info', 
+              summary: 'Info', 
+              detail: `Material updated without problems.`,
+              life: 3000, 
+              closable: true 
+            }); 
+            break
+          case 'create':
+            this.messageService.add({ 
+              severity: 'info', 
+              summary: 'Info', 
+              detail: `Material created without problems.`,
+              life: 3000, 
+              closable: true 
+            }); 
+            break
+        }
+      }
+    });
   }
 
   goToMainPage() {
@@ -76,6 +112,30 @@ export class MaterialPageComponent {
 
   editMaterial() {
     this.router.navigate(['edit/' + this.material?._id], { replaceUrl: true });
+  }
+
+  deleteModal(event: Event) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Do you want to delete this training material?',
+        header: 'Delete Material',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Cancel',
+        rejectButtonProps: {
+            label: 'Cancel',
+            severity: 'secondary',
+        },
+        acceptButtonProps: {
+            label: 'Delete',
+            severity: 'primary',
+        },
+
+        accept: () => {
+          this.deleteMaterial();
+        },
+        reject: () => {
+        },
+    });
   }
 
   deleteMaterial() {

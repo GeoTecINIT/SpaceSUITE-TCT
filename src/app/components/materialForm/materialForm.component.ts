@@ -22,7 +22,7 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { take } from "rxjs";
+import { catchError, of, take } from "rxjs";
 
 @Component({
   standalone: true,
@@ -94,9 +94,32 @@ export class MaterialFormComponent {
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
-      this.trainingMaterialService.submitMaterial(this.material, this.inputMaterial != undefined).pipe(take(1)).subscribe(() => {
-        this.router.navigate([''], { replaceUrl: true });
-      })
+      this.trainingMaterialService.submitMaterial(this.material, this.inputMaterial != undefined).pipe(
+        take(1),
+        catchError( () => {
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: 'Error', 
+            detail: 'Something went wrong. Try again later or contact the administrator.', 
+            life: 3000, 
+            closable: true 
+          });
+          return of(null)
+        })
+      ).subscribe(materialId => {
+        if (materialId != null) {
+          this.router.navigate(
+            [materialId], 
+            { 
+              replaceUrl: true, 
+              queryParams: { 
+                submited: true, 
+                mode: this.inputMaterial != undefined ? 'update' : 'create' 
+              } 
+            }
+          );
+        }
+      });
     }
     else {
       this.messageService.add({ 

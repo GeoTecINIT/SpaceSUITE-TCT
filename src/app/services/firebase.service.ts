@@ -62,19 +62,19 @@ export class FirebaseService {
     return collectionData(this.materialCollection) as Observable<TrainingMaterial[]>;
   }
 
-  setTrainingMaterial(newMaterial: TrainingMaterial): Observable<void> {
+  setTrainingMaterial(newMaterial: TrainingMaterial): Observable<string> {
     const newDocRef = doc(this.materialCollection);
     const timestamp = serverTimestamp();
     newMaterial.updatedAt = timestamp;
     newMaterial._id = newDocRef.id;
-    return from(setDoc(newDocRef, newMaterial.toPlain()));
+    return from(setDoc(newDocRef, newMaterial.toPlain())).pipe(map(() => newMaterial._id));
   }
 
-  updateTrainingMaterial(material: TrainingMaterial): Observable<void> {
+  updateTrainingMaterial(material: TrainingMaterial): Observable<string> {
     const newDocRef = doc(this.materialCollection, material._id);
     const timestamp = serverTimestamp();
     material.updatedAt = timestamp;
-    return from(setDoc(newDocRef, material.toPlain()));
+    return from(setDoc(newDocRef, material.toPlain())).pipe(map(() => material._id));
   }
 
   deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
