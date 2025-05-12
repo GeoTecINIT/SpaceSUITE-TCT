@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output} from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import { InputTextModule } from "primeng/inputtext";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { FormsModule } from "@angular/forms";
@@ -20,18 +20,14 @@ export class TextChipsComponent {
   @Input() chips: string[] = [];
   @Output() chipsChange: EventEmitter<string[]> = new EventEmitter();
   currentText: string = '';
-  lastText: string = '';
 
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';
 
-  mouseDown() {
-    this.lastText = this.currentText;
-  }
+  @ViewChild('component', { static: true }) containerRef!: ElementRef;
 
-  mouseUp() {
-    this.chipsChange.emit(this.chips.concat(this.lastText));
-    this.lastText = '';
+  clickButton() {
+    this.chipsChange.emit(this.chips.concat(this.currentText));
     this.currentText = '';
   }
 
@@ -39,9 +35,12 @@ export class TextChipsComponent {
     this.chipsChange.emit(this.chips.filter(value => value != element));
   }
   
-  focusOut() {
+  focusOut(event: FocusEvent) {
+    const relatedTarget = event.relatedTarget as HTMLElement | null;
+    const isInside = relatedTarget && this.containerRef.nativeElement.contains(relatedTarget);
+    console.log(isInside)
     setTimeout(() => {
-      if (this.lastText == '') this.currentText = '';
+      if (!isInside) this.currentText = '';
     }, 100);
   }
 }

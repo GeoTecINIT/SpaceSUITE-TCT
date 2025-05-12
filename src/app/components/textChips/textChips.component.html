@@ -1,7 +1,7 @@
-<div class="p-2 custom-border">
+<div #component class="p-2 custom-border">
     <p-floatlabel variant="on" class="custom-floatlabel">
         <p-iconfield>
-            <input pInputText id="label" autocomplete="off" class="w-full custom-input" [(ngModel)]="currentText" (focusout)="focusOut()"/>
+            <input pInputText id="label" autocomplete="off" class="w-full custom-input" [(ngModel)]="currentText" (focusout)="focusOut($event)"/>
             <p-inputicon [class]="icon"></p-inputicon>
         </p-iconfield>
         <label for="label">{{fieldName}}</label>
@@ -10,6 +10,6 @@
         <ng-content *ngFor="let chip of chips">
             <p-chip [label]="chip" [removable]="true" (onRemove)="deleteElement(chip)"/>
         </ng-content>
-        <p-button icon="pi pi-plus" rounded class="custom-button" (mousedown)="mouseDown()" (mouseup)="mouseUp()" [disabled]="currentText == '' && lastText == ''"></p-button>
+        <p-button icon="pi pi-plus" rounded class="custom-button" (onClick)="clickButton()" [disabled]="currentText == ''"></p-button>
     </div>
 </div>
