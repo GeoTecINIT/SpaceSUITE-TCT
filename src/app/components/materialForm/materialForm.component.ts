@@ -60,6 +60,7 @@ export class MaterialFormComponent {
   errorMap: Map<string, string | undefined> = new Map();
 
   uploadedImage: File | undefined;
+  uploadedImageB64: string | undefined;
 
   constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router) {
@@ -141,6 +142,11 @@ export class MaterialFormComponent {
       const file = input.files[0];
       if (!file.type.includes('image/')) return;
       this.uploadedImage = file;
+      const reader = new FileReader();
+      reader.readAsDataURL(file); 
+      reader.onload = (_event) => { 
+          this.uploadedImageB64 = reader.result?.toString() ?? undefined; 
+      }
     }
   }
 }

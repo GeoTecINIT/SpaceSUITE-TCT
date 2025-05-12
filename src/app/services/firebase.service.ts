@@ -110,7 +110,7 @@ export class FirebaseService {
   }
 
   private uploadMaterialImage(file: File, materialId: string): Observable<string> {
-    const path = `Training_Material_Images/${materialId}}`;
+    const path = `Training_Material_Images/${materialId}`;
     const storageRef = ref(this.storage, path);
     return from(uploadBytes(storageRef, file)).pipe(
       concatMap(() => getDownloadURL(storageRef))

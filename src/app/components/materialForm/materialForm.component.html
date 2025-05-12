@@ -178,14 +178,15 @@
                         </p-floatlabel>
 
                         <div>
-                            <p-fileupload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" (uploadHandler)="onFileSelected($event)"
-                                class="custom-button custom-secondary-button custom-fileupload" chooseLabel="Choose Image" [chooseButtonProps]="{size: 'small'}"
-                                [uploadButtonProps]="{size: 'small', severity: 'secondary'}" [cancelButtonProps]="{size: 'small', severity: 'secondary'}">
-                                <ng-template *ngIf="material.image != ''" #content>
+                            <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" chooseLabel="Choose Image"
+                                class="custom-button custom-secondary-button custom-fileupload" (uploadHandler)="onFileSelected($event); fileUpload.clear();"
+                                [chooseButtonProps]="{size: 'small'}" [uploadButtonProps]="{size: 'small', severity: 'secondary'}" 
+                                [cancelButtonProps]="{size: 'small', severity: 'secondary'}">
+                                <ng-template *ngIf="material.image != '' || uploadedImage" #content>
                                     <p-divider class="my-2"></p-divider>
                                     <div class="flex flex-column gap-2 align-items-center">
                                         <div>Current Image</div>
-                                        <img [src]="material.image" class="w-full max-w-30rem">
+                                        <img [src]="uploadedImageB64 ?? material.image" class="w-full max-w-30rem">
                                     </div>
                                 </ng-template>
                             </p-fileupload>
