@@ -41,7 +41,6 @@ export class TrainingMaterialService {
     setError('division', !material.division?.trim(), 'Division is required.');
     setError('source', !material.url.trim(), 'Source is required.');
     if (!errors.get('source')) setError('source', !urlRegex.test(material.url), 'Invalid source format.');
-    if (material.image) setError('image', !urlRegex.test(material.image), 'Invalid image url format.');
     setError('license', !material.license?.trim(), 'License is required.');
   
     // Array fields
@@ -58,7 +57,7 @@ export class TrainingMaterialService {
     return errors;
   }
 
-  public submitMaterial(newMaterial: TrainingMaterial, update: boolean = false): Observable<string> {
+  public submitMaterial(newMaterial: TrainingMaterial, image: File | undefined, update: boolean = false): Observable<string> {
     newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
     newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>
@@ -71,8 +70,8 @@ export class TrainingMaterialService {
     return conceptObservables.pipe(
       concatMap(formatedConcepts => {
         newMaterial.concepts = formatedConcepts;
-        if (update) return this.firebaseService.updateTrainingMaterial(newMaterial);
-        return this.firebaseService.setTrainingMaterial(newMaterial);
+        if (update) return this.firebaseService.updateTrainingMaterial(newMaterial, image);
+        return this.firebaseService.setTrainingMaterial(newMaterial, image);
       })
     );
   }
@@ -127,9 +126,5 @@ export class TrainingMaterialService {
 
   public deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
     return this.firebaseService.deleteTrainingMaterial(material);
-  }
-
-  public uploadMaterialImage(file: File, materialId: string): Observable<string> {
-    return this.firebaseService.uploadMaterialImage(file, materialId);
   }
 }

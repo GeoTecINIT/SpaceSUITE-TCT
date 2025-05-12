@@ -3,7 +3,7 @@ import { Auth, authState } from "@angular/fire/auth";
 import { collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
 import { concatMap, from, map, Observable, of } from 'rxjs';
 import { TrainingMaterial } from "../model/trainingMaterial";
-import { getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
+import { deleteObject, getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
 
 @Injectable({
     providedIn: 'root',
@@ -65,27 +65,51 @@ export class FirebaseService {
     return collectionData(this.materialCollection) as Observable<TrainingMaterial[]>;
   }
 
-  setTrainingMaterial(newMaterial: TrainingMaterial): Observable<string> {
+  setTrainingMaterial(newMaterial: TrainingMaterial, image: File | undefined): Observable<string> {
     const newDocRef = doc(this.materialCollection);
     const timestamp = serverTimestamp();
     newMaterial.updatedAt = timestamp;
     newMaterial._id = newDocRef.id;
-    return from(setDoc(newDocRef, newMaterial.toPlain())).pipe(map(() => newMaterial._id));
+    if(image) {
+      return this.uploadMaterialImage(image, newMaterial._id).pipe(
+        concatMap( url => {
+          newMaterial.image = url;
+          return setDoc(newDocRef, newMaterial.toPlain());
+        }),
+        map(() => newMaterial._id)
+      )
+    }
+    return of(setDoc(newDocRef, newMaterial.toPlain())).pipe(map(() => newMaterial._id));
   }
 
-  updateTrainingMaterial(material: TrainingMaterial): Observable<string> {
+  updateTrainingMaterial(material: TrainingMaterial, image: File | undefined): Observable<string> {
     const newDocRef = doc(this.materialCollection, material._id);
     const timestamp = serverTimestamp();
     material.updatedAt = timestamp;
+    if (image) {
+      return this.uploadMaterialImage(image, material._id).pipe(
+        concatMap( url => {
+          material.image = url;
+          return setDoc(newDocRef, material.toPlain());
+        }),
+        map(() => material._id)
+      )
+    }
     return from(setDoc(newDocRef, material.toPlain())).pipe(map(() => material._id));
   }
 
   deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
     const docRef = doc(this.materialCollection, material._id);
-    return from(deleteDoc(docRef));
+    return from(deleteDoc(docRef)).pipe(
+      concatMap(() => {
+        const path = `Training_Material_Images/${material._id}}`;
+        const storageRef = ref(this.storage, path);
+        return from(deleteObject(storageRef));
+      })
+    );
   }
 
-  uploadMaterialImage(file: File, materialId: string): Observable<string> {
+  private uploadMaterialImage(file: File, materialId: string): Observable<string> {
     const path = `Training_Material_Images/${materialId}}`;
     const storageRef = ref(this.storage, path);
     return from(uploadBytes(storageRef, file)).pipe(

@@ -189,7 +189,6 @@
                                     </div>
                                 </ng-template>
                             </p-fileupload>
-                            <p *ngIf="errorMap.get('image')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('image')}}</p>
                         </div>
 
                         <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"></text-chips>

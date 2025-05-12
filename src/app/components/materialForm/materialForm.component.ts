@@ -59,6 +59,8 @@ export class MaterialFormComponent {
 
   errorMap: Map<string, string | undefined> = new Map();
 
+  uploadedImage: File | undefined;
+
   constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router) {
     this.languageSelector = this.cardFilterService.getOptionByLabel('Language');
@@ -96,7 +98,7 @@ export class MaterialFormComponent {
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
-      this.trainingMaterialService.submitMaterial(this.material, this.inputMaterial != undefined).pipe(
+      this.trainingMaterialService.submitMaterial(this.material, this.uploadedImage, this.inputMaterial != undefined).pipe(
         take(1),
         catchError( () => {
           this.messageService.add({ 
@@ -138,9 +140,7 @@ export class MaterialFormComponent {
     if (input.files.length == 1) {
       const file = input.files[0];
       if (!file.type.includes('image/')) return;
-      this.trainingMaterialService.uploadMaterialImage(file, this.material._id).subscribe(
-        url => this.material.image = url
-      )
+      this.uploadedImage = file;
     }
   }
 }
