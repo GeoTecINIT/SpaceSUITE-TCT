@@ -3,6 +3,7 @@ import { Auth, authState } from "@angular/fire/auth";
 import { collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
 import { concatMap, from, map, Observable, of } from 'rxjs';
 import { TrainingMaterial } from "../model/trainingMaterial";
+import { getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +11,7 @@ import { TrainingMaterial } from "../model/trainingMaterial";
 export class FirebaseService {
   private auth: Auth;
   private db: Firestore;
+  private storage: Storage;
   private orgCollection: CollectionReference;
   private materialCollection: CollectionReference;
 
@@ -18,6 +20,7 @@ export class FirebaseService {
   constructor() {
       this.auth = inject(Auth);
       this.db = inject(Firestore);
+      this.storage = inject(Storage)
       this.orgCollection = collection(this.db, 'Organizations');
       this.materialCollection = collection(this.db, 'TrainingMaterials');
 
@@ -80,5 +83,13 @@ export class FirebaseService {
   deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
     const docRef = doc(this.materialCollection, material._id);
     return from(deleteDoc(docRef));
+  }
+
+  uploadMaterialImage(file: File, materialId: string): Observable<string> {
+    const path = `Training_Material_Images/${materialId}}`;
+    const storageRef = ref(this.storage, path);
+    return from(uploadBytes(storageRef, file)).pipe(
+      concatMap(() => getDownloadURL(storageRef))
+    );
   }
 }

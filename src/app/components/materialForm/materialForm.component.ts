@@ -23,14 +23,16 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
 import { catchError, of, take } from "rxjs";
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   standalone: true,
   selector: 'material-form',
   templateUrl: './materialForm.component.html',
   styleUrls: ['./materialForm.component.css'],
-  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule,
-    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule],
+  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
+    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule],
   providers: [MessageService]
 })
 export class MaterialFormComponent {
@@ -129,6 +131,16 @@ export class MaterialFormComponent {
         life: 3000, 
         closable: true 
       });
+    }
+  }
+
+  onFileSelected(input: FileUploadHandlerEvent) {
+    if (input.files.length == 1) {
+      const file = input.files[0];
+      if (!file.type.includes('image/')) return;
+      this.trainingMaterialService.uploadMaterialImage(file, this.material._id).subscribe(
+        url => this.material.image = url
+      )
     }
   }
 }

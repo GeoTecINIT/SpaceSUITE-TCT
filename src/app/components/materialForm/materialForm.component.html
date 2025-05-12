@@ -59,7 +59,7 @@
                         </div>
     
                         <p-floatlabel variant="on" class="custom-floatlabel">
-                            <textarea id="description" pTextarea [(ngModel)]="material.description" style="resize: none;" 
+                            <textarea id="description" pTextarea [(ngModel)]="material.description"
                                     rows="4" class="w-full custom-textarea"></textarea>
                             <label for="description">Description</label>
                         </p-floatlabel>
@@ -114,7 +114,7 @@
                         </p-floatlabel>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
-                            <textarea id="assesment" pTextarea [(ngModel)]="material.assesment" style="resize: none;" 
+                            <textarea id="assesment" pTextarea [(ngModel)]="material.assesment"
                                     rows="4" class="w-full custom-textarea"></textarea>
                             <label for="assesment">Type of Assesment</label>
                         </p-floatlabel>
@@ -136,10 +136,10 @@
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-floatlabel variant="on" class="w-full custom-floatlabel">
                                 <p-iconfield>
                                     <p-inputnumber id="duration" [min]="0" [useGrouping]="false" suffix=" Hours"
-                                        class="w-full custom-input" [(ngModel)]="material.SizeOrDuration"
+                                        class="custom-input" [(ngModel)]="material.SizeOrDuration" fluid
                                         [class.ng-invalid]="errorMap.get('SizeOrDuration') != undefined" [class.ng-dirty]="errorMap.get('SizeOrDuration') != undefined"/>
                                     <p-inputicon class="pi pi-clock" [style]="errorMap.get('SizeOrDuration') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
@@ -178,14 +178,17 @@
                         </p-floatlabel>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <p-iconfield>
-                                    <input pInputText id="image" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.image" 
-                                        [class.ng-invalid]="errorMap.get('image') != undefined" [class.ng-dirty]="errorMap.get('image') != undefined" />
-                                    <p-inputicon class="pi pi-image" [style]="errorMap.get('image') != undefined ? 'color: var(--danger-color)' : ''"/>
-                                </p-iconfield>
-                                <label for="image">Image URL</label>
-                            </p-floatlabel>
+                            <p-fileupload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" (uploadHandler)="onFileSelected($event)"
+                                class="custom-button custom-secondary-button custom-fileupload" chooseLabel="Choose Image" [chooseButtonProps]="{size: 'small'}"
+                                [uploadButtonProps]="{size: 'small', severity: 'secondary'}" [cancelButtonProps]="{size: 'small', severity: 'secondary'}">
+                                <ng-template *ngIf="material.image != ''" #content>
+                                    <p-divider class="my-2"></p-divider>
+                                    <div class="flex flex-column gap-2 align-items-center">
+                                        <div>Current Image</div>
+                                        <img [src]="material.image" class="w-full max-w-30rem">
+                                    </div>
+                                </ng-template>
+                            </p-fileupload>
                             <p *ngIf="errorMap.get('image')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('image')}}</p>
                         </div>
 

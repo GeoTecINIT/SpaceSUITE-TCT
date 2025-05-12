@@ -128,4 +128,8 @@ export class TrainingMaterialService {
   public deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
     return this.firebaseService.deleteTrainingMaterial(material);
   }
+
+  public uploadMaterialImage(file: File, materialId: string): Observable<string> {
+    return this.firebaseService.uploadMaterialImage(file, materialId);
+  }
 }

@@ -30,6 +30,21 @@
     --p-button-secondary-active-color: var(--primary-color);
 }
 
+.custom-fileupload {
+    --p-fileupload-color: var(--primary-color);
+    --p-fileupload-header-color: var(--primary-color);
+    --p-button-text-danger-color: var(--danger-color);
+    --p-fileupload-border-color: #cbd5e1;
+}
+
+.custom-fileupload:hover {
+    --p-fileupload-border-color: var(--hover-color);
+}
+
+::ng-deep .p-fileupload-advanced {
+    transition: border-color 0.2s;
+}
+
 .custom-stepper {
     --p-stepper-step-number-active-color: var(--hover-color);
     --p-stepper-step-title-active-color: var(--hover-color);

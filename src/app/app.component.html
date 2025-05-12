@@ -1,8 +1,7 @@
 <div class="flex flex-column min-h-screen">
     <header [items]="headerItems" [toolName]="'Training Catalog Tool'" [login]="true" (profileClick)="redirectToProfile()" (organizationClick)="redirectToOrganizations()"></header>
-    <div class="mx-4 lg:mx-8 p-2">
+    <div class="mx-4 xl:mx-6 p-2">
         <router-outlet></router-outlet>
     </div>
     <footer class="mt-auto"></footer>
 </div>
-
