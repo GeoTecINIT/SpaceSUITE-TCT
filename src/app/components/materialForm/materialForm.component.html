@@ -139,7 +139,7 @@
                             <p-floatlabel variant="on" class="w-full custom-floatlabel">
                                 <p-iconfield>
                                     <p-inputnumber id="duration" [min]="0" [useGrouping]="false" suffix=" Hours"
-                                        class="custom-input" [(ngModel)]="material.SizeOrDuration" fluid
+                                        class="custom-input" [(ngModel)]="material.SizeOrDuration" fluid mode="decimal" [minFractionDigits]="2"
                                         [class.ng-invalid]="errorMap.get('SizeOrDuration') != undefined" [class.ng-dirty]="errorMap.get('SizeOrDuration') != undefined"/>
                                     <p-inputicon class="pi pi-clock" [style]="errorMap.get('SizeOrDuration') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
