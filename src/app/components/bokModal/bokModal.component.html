@@ -4,7 +4,7 @@
         <ng-container *ngFor="let concept of selectedConcepts">
             <div [pTooltip]="selectedConceptsTooltip.get(concept)" tooltipPosition="top">
                 <p-chip [label]="concept" [removable]="true" [style.background]="selectedConceptsColor.get(concept)" (onRemove)="removeChip(concept)" 
-                [style.color]="'var(--primary-color)'" [style]="{'--p-chip-remove-icon-color':'var(--primary-color)'}" class="white-space-nowrap" />
+                [style.color]="'var(--primary-color)'" [style]="{'--p-chip-remove-icon-color':'var(--primary-color)', '--p-chip-remove-icon-focus-ring-color':'var(--primary-color)'}"/>
             </div>
         </ng-container>
         <p-button (click)="showDialog()" [rounded]="true" icon="pi pi-plus" class="white-space-nowrap custom-button" [disabled]="disabled"/>

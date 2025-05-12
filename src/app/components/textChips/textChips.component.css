@@ -35,7 +35,7 @@
     --p-button-primary-border-color: var(--secondary-color);
     --p-button-primary-hover-background: var(--hover-color);
     --p-button-primary-hover-border-color: var(--hover-color);
-    --p-button-primary-focus-ring-color: var(--hover-color);
+    --p-button-primary-focus-ring-color: var(--secondary-color);
     --p-button-primary-active-background: color-mix(in srgb, var(--hover-color) 80%, black 20%);
     --p-button-primary-active-border-color: color-mix(in srgb, var(--hover-color) 90%, black 10%);
 }
@@ -49,4 +49,10 @@
 
 .custom-border:hover {
     border-color: var(--hover-color);
+}
+
+.custom-chip {
+    --p-chip-color:var(--primary-color);
+    --p-chip-remove-icon-color:var(--primary-color);
+    --p-chip-remove-icon-focus-ring-color: var(--primary-color);
 }
