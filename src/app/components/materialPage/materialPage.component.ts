@@ -141,6 +141,7 @@ export class MaterialPageComponent {
   }
 
   deleteMaterial() {
+    let deleteError = false;
     this.trainingMaterialService.deleteTrainingMaterial(this.material!).pipe(
       take(1),
       catchError((error) => {
@@ -151,10 +152,11 @@ export class MaterialPageComponent {
           life: 3000, 
           closable: true 
         });
+        deleteError = true;
         return of(null)
       }),
       finalize(() => {
-        this.router.navigate([''], { replaceUrl: true, queryParams: { submited: true, mode: 'delete' }});
+        if (!deleteError) this.router.navigate([''], { replaceUrl: true, queryParams: { submited: true, mode: 'delete' }});
       })
     ).subscribe();
   }
