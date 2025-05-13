@@ -1,4 +1,7 @@
 .custom-input {
+    color: var(--primary-color);
+    --p-inputtext-placeholder-color: var(--primary-color);
+    --p-inputtext-color: var(--primary-color);
     --p-inputtext-focus-border-color: var(--hover-color);
     --p-inputtext-hover-border-color: var(--hover-color);
     --p-inputtext-invalid-placeholder-color: var(--danger-color);
@@ -7,6 +10,10 @@
 
 .custom-floatlabel {
     --p-floatlabel-focus-color: var(--hover-color);
+}
+
+.custom-textarea {
+    color: var(--primary-color);
 }
 
 .custom-textarea:hover,
@@ -62,6 +69,9 @@
 
 
 .custom-multiselect {
+    --p-multiselect-color: var(--primary-color);
+    --p-multiselect-option-focus-color: var(--primary-color);
+    --p-multiselect-option-color: var(--primary-color);
     --p-multiselect-focus-border-color: var(--hover-color);
     --p-multiselect-hover-border-color: var(--hover-color);
 
@@ -78,6 +88,11 @@
 }
 
 .custom-datepicker {
+    --p-datepicker-select-month-color: var(--primary-color);
+    --p-datepicker-select-year-color: var(--primary-color);
+    --p-datepicker-week-day-color: var(--primary-color);
+    --p-datepicker-date-color: var(--primary-color);
+    --p-inputtext-color: var(--primary-color);
     --p-button-text-primary-color: var(--secondary-color);
     --p-button-text-primary-active-background: color-mix(in srgb, var(--secondary-color) 20%, rgba(0, 0, 0, 0) 80%);
     --p-button-text-primary-hover-background: color-mix(in srgb, var(--secondary-color) 10%, rgba(0, 0, 0, 0) 90%);
@@ -100,6 +115,10 @@
 }
 
 .custom-select {
+    --p-select-checkmark-color: var(--primary-color);
+    --p-select-color: var(--primary-color);
+    --p-select-option-color: var(--primary-color);
+    --p-select-option-focus-color: var(--primary-color);
     --p-select-hover-border-color: var(--hover-color);
     --p-select-focus-border-color: var(--hover-color);
 }

@@ -1,4 +1,5 @@
 .custom-input {
+    color: var(--primary-color);
     --p-inputtext-focus-border-color: var(--hover-color);
     --p-inputtext-hover-border-color: var(--hover-color);
 }
