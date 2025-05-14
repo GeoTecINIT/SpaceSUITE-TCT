@@ -10,6 +10,8 @@
             |
             <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.materialType?.toUpperCase() ?? 'Undefined'}}</div>
             |
+            <div class="text-sm"><strong>Publisher:</strong> {{material.publisher}}</div>
+            |
             <div class="text-sm"><strong>Created:</strong> {{material.created?.toLocaleDateString()}}</div>
             |
             <div class="text-sm overflow-hidden text-overflow-ellipsis">
@@ -21,24 +23,24 @@
         <div style="color: var(--secondary-color);" class="my-2">{{this.material.creators.join(', ') || ""}}</div>
         <p-tabs value="0" scrollable class="custom-tabs mb-2">
             <p-tablist>
-                <p-tab value="0">Table of Contents</p-tab>
-                <p-tab value="1">Description</p-tab>
+                <p-tab value="0">Description</p-tab>
+                <p-tab value="1">Table of Contents</p-tab>
                 <p-tab value="2">Material Detail</p-tab>
                 <p-tab value="3">Additional Information</p-tab>
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
+                    <div class="mb-2">
+                        {{material.description}}
+                        {{material.abstract}}
+                    </div>
+                </p-tabpanel>
+                <p-tabpanel value="1">
                     <ul class="m-0 mb-2">
                         <li *ngFor="let content of material.tableOfContents">
                             {{content}}
                         </li>
                     </ul>
-                </p-tabpanel>
-                <p-tabpanel value="1">
-                    <div class="mb-2">
-                        {{material.description}}
-                        {{material.abstract}}
-                    </div>
                 </p-tabpanel>
                 <p-tabpanel value="2">
                     <div class="mb-2"><strong>Size or Duration:</strong> {{material.SizeOrDuration}} Hours</div>
@@ -91,7 +93,11 @@
 
         <img src="{{material.image != '' ? material.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
 
-        <p-panel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" [collapsed]="currentConcepts.length > 12" class="my-2 custom-panel">            
+        <p-panel #conceptsPanel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" [collapsed]="currentConcepts.length > 12" class="my-2 custom-panel">
+            <ng-template #headericons>
+                <p-button *ngIf="!conceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
+                <p-button *ngIf="conceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
+            </ng-template>      
             <div class="flex align-items-start align-items-center gap-2 flex-wrap">
                 <ng-content *ngFor="let concept of currentConcepts">
                     <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
@@ -99,7 +105,11 @@
                 </ng-content>
             </div>
         </p-panel>
-        <p-panel *ngIf="deprecatedConcepts.length > 0" [header]="'Deprecated BoK Concepts (' + deprecatedConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">            
+        <p-panel #deprecatedConceptsPanel *ngIf="deprecatedConcepts.length > 0" [header]="'Deprecated BoK Concepts (' + deprecatedConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
+            <ng-template #headericons>
+                <p-button *ngIf="!deprecatedConceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
+                <p-button *ngIf="deprecatedConceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
+            </ng-template>  
             <div class="text-xs mb-3" style="color: var(--danger-color);">*These are obsolete concepts, so they are not present in the current version of the Bok.</div>
             <div class="flex align-items-start align-items-center gap-2 flex-wrap">
                 <ng-content *ngFor="let concept of deprecatedConcepts">
@@ -108,7 +118,11 @@
                 </ng-content>
             </div>
         </p-panel>
-        <p-panel [header]="'Subjects (' + material.subject.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
+        <p-panel #subjectsPanel [header]="'Subjects (' + material.subject.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
+            <ng-template #headericons>
+                <p-button *ngIf="!subjectsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
+                <p-button *ngIf="subjectsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
+            </ng-template>  
             <div class="flex align-items-start align-items-center gap-2 flex-wrap">
                 <ng-content *ngFor="let subject of material.subject">
                     <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
