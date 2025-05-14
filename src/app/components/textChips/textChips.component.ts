@@ -27,7 +27,10 @@ export class TextChipsComponent {
   @ViewChild('component', { static: true }) containerRef!: ElementRef;
 
   clickButton() {
-    this.chipsChange.emit(this.chips.concat(this.currentText));
+    const inputValue: string = this.currentText.trim();
+    if (inputValue != ''){
+      this.chipsChange.emit(this.chips.concat(inputValue));
+    }
     this.currentText = '';
   }
 
@@ -38,7 +41,6 @@ export class TextChipsComponent {
   focusOut(event: FocusEvent) {
     const relatedTarget = event.relatedTarget as HTMLElement | null;
     const isInside = relatedTarget && this.containerRef.nativeElement.contains(relatedTarget);
-    console.log(isInside)
     setTimeout(() => {
       if (!isInside) this.currentText = '';
     }, 100);
