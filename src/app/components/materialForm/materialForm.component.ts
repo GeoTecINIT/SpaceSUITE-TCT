@@ -149,4 +149,8 @@ export class MaterialFormComponent {
       }
     }
   }
+
+  returnToHomepage() {
+    this.router.navigate([''], { replaceUrl: true });
+  }
 }

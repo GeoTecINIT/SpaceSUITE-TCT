@@ -1,17 +1,18 @@
 <div class="flex flex-column xl:flex-row h-full xl:w-23rem">
     <div class="mx-2">
-        <ng-container *ngIf="logged">
-            <h2>User Materials</h2>
-            <p-divider class="flex-grow-1"/>
-            <div class="flex flex-wrap gap-5 my-4">
-                <p-button (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add" class="custom-button" size="small"/>
-                <p-togglebutton [(ngModel)]="filterUserMaterial" [onLabel]="'My Materials'" [offLabel]="'All Materials'" 
-                                [onIcon]="'pi pi-user'" [offIcon]="'pi pi-globe'" size="small" class="custom-togglebutton"
-                                (ngModelChange)="updateFilterUserMaterial()"/>
-            </div>
-        </ng-container>
         <h2>Filters</h2>
         <p-divider class="flex-grow-1"/>
+        <div class="my-4">
+            <p-selectbutton [(ngModel)]="filterUserMaterial" [options]="filterUserMaterialOptions" class="custom-togglebutton" 
+                            optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserMaterial()" *ngIf="logged">
+                <ng-template #item let-item>
+                    <div class="row">
+                        <i [class]="item.icon"></i>
+                        {{item.label}}
+                    </div>
+                </ng-template>
+            </p-selectbutton>
+        </div>
         <div class="my-4">
             Search by Title
             <p-iconfield class="mt-1">
@@ -28,7 +29,7 @@
             </div>
         </ng-container>
         <div class="flex my-4">
-            <bokModal class="mt-1" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading"></bokModal>
+            <bokModal class="mt-1" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading" [label]="'Search by BoK Concepts'"></bokModal>
         </div>
     </div>
     <p-divider layout="vertical" class="flex-grow-1 hidden xl:flex"/>

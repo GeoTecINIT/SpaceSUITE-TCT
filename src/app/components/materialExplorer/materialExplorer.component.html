@@ -3,16 +3,19 @@
     <filters [(multiSelectOptions)]="filterOptions" [loading]="loading" (multiSelectOptionsChange)="filterTrainingMaterial()" 
         (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)" 
         (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()"></filters>
-    <div class="flex gap-5 flex-wrap align-content-start justify-content-center xl:justify-content-start">
-        <ng-container *ngIf="!loading else cardSkeleton">
-            <ng-container *ngFor="let material of finalTrainingMaterial">
-                <card [trainingMaterial]="material"></card>
-            </ng-container >
-        </ng-container>
+    <div class="flex flex-column w-full justify-content-between">
+        <div class="flex gap-5 flex-wrap align-content-start justify-content-center xl:justify-content-start mb-4">
+            <ng-container *ngIf="!loading else cardSkeleton">
+                <ng-container *ngFor="let material of paginationTrainingMaterial">
+                    <card [trainingMaterial]="material"></card>
+                </ng-container >
+            </ng-container>
+        </div>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="finalTrainingMaterial.length" [rowsPerPageOptions]="[8, 16, 24]" class="custom-paginator"/>
     </div>
     <p *ngIf="finalTrainingMaterial.length == 0 && !loading" class="font-italic flex mx-auto justify-content-center">No material found</p>
 </div>
-<p-scrolltop class="scroll-top"/>
+<p-button *ngIf="isLogged()" (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add Material" class="custom-button floating-button"/>
 
 <ng-template #cardSkeleton>
     <ng-content *ngFor="let i of skelletonElements">

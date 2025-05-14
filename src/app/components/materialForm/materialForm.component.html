@@ -66,8 +66,9 @@
     
                         <text-chips [fieldName]="'Author/s'" [(chips)]="material.creators"></text-chips>
                     </div>
-                    <div class="flex max-w-full flex-wrap mt-3">
-                        <p-button class="custom-button ml-auto" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Return to Homepage" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
                     </div>
                 </ng-template>
             </p-step-panel>
@@ -195,7 +196,7 @@
                         <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"></text-chips>
 
                         <div class="custom-border p-2" style="color: #64748b;">
-                            <bokModal [(selectedConcepts)]="material.concepts"></bokModal>
+                            <bokModal [(selectedConcepts)]="material.concepts" [label]="'Covered BoK Concepts'"></bokModal>
                         </div>
 
                     </div>

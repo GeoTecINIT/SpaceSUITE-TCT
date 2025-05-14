@@ -1,6 +1,6 @@
-import { Component, inject, Inject } from "@angular/core";
+import { Component } from "@angular/core";
 import { SkeletonModule } from 'primeng/skeleton';
-import { ScrollTopModule } from 'primeng/scrolltop';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule } from "@angular/common";
@@ -12,14 +12,15 @@ import { CardFilterService } from "../../services/cardFilter.service";
 import { FirebaseService } from "../../services/firebase.service";
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from "primeng/api";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ButtonModule } from "primeng/button";
 
 @Component({
   standalone: true,
   selector: 'material-explorer',
   templateUrl: './materialExplorer.component.html',
   styleUrls: ['./materialExplorer.component.css'],
-  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, ScrollTopModule, ToastModule],
+  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, PaginatorModule, ToastModule, ButtonModule],
   providers: [MessageService]
 })
 export class MaterialExplorerComponent {
@@ -32,7 +33,11 @@ export class MaterialExplorerComponent {
   loading: boolean = true;
   skelletonElements: number[] = [];
 
-  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, 
+  first: number = 0;
+  rows: number = 8;
+  paginationTrainingMaterial: TrainingMaterial[] = [];
+
+  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
     this.skelletonElements = Array(16).fill(null);
   }
@@ -104,6 +109,7 @@ export class MaterialExplorerComponent {
     this.filterService.bokConcepts = filterConcepts;
     if (!filterConcepts || filterConcepts.length == 0) {
       this.finalTrainingMaterial = this.filteredTrainingMaterial;
+      this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
       return;
     }
     this.finalTrainingMaterial = [];
@@ -113,6 +119,7 @@ export class MaterialExplorerComponent {
       );
       this.finalTrainingMaterial = this.finalTrainingMaterial.concat(partialTrainingMaterial);
     }
+    this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
   }
 
   filterByUserMaterialChange(newValue: boolean) {
@@ -123,6 +130,16 @@ export class MaterialExplorerComponent {
 
   isLogged(): boolean {
     return this.firebase.userId != '';
+  }
+
+  onPageChange(event: PaginatorState) {
+      this.first = event.first ?? 0;
+      this.rows = event.rows ?? 8;
+      this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
+  }
+
+  createTrainingMaterial() {
+    this.router.navigate(['new'], {replaceUrl: true});
   }
 
 }
