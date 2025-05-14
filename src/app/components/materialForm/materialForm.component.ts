@@ -150,6 +150,12 @@ export class MaterialFormComponent {
     }
   }
 
+  onFileDeleted() {
+    this.uploadedImageB64 = undefined;
+    this.uploadedImage = undefined;
+    this.material.image = '';
+  }
+
   returnToHomepage() {
     this.router.navigate([''], { replaceUrl: true });
   }
