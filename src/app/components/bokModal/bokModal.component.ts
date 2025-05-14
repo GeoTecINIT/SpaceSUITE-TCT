@@ -17,7 +17,8 @@ import { CardFilterService } from '../../services/cardFilter.service';
 })
 export class BokModalComponent {
   visible = false;
-
+  
+  @Input() label: string = 'BoK Concepts';
   @Input() disabled: boolean = false;
 
   currentConcept = '';
