@@ -144,3 +144,8 @@
 ::ng-deep .p-toast-close-button .p-button-label {
     font-size: 0;
 } 
+
+::ng-deep .p-tooltip {
+    --p-tooltip-background: var(--primary-color);
+    --p-tooltip-color: white;
+}

@@ -25,6 +25,7 @@ import { CommonModule } from "@angular/common";
 import { catchError, of, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
+import { TooltipModule } from "primeng/tooltip";
 
 @Component({
   standalone: true,
@@ -32,7 +33,8 @@ import { DividerModule } from 'primeng/divider';
   templateUrl: './materialForm.component.html',
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
-    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule],
+    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
+    TooltipModule],
   providers: [MessageService]
 })
 export class MaterialFormComponent {

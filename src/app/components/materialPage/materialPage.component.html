@@ -73,7 +73,7 @@
                 </p-tabpanel>
                 <p-tabpanel value="3">
                     <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
-                    <div class="mb-2"><strong>Audience:</strong> {{material.audience}}</div>
+                    <div class="mb-2"><strong>Audience:</strong> {{this.material.audience.join(', ') || ""}} </div>
                     <div class="mb-2"><strong>Certification:</strong> {{material.certification}}</div>
                     <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
                     <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
