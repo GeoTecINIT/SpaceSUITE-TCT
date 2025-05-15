@@ -157,6 +157,6 @@ export class MaterialFormComponent {
   }
 
   returnToHomepage() {
-    this.router.navigate([''], { replaceUrl: true });
+    this.router.navigate(['']);
   }
 }

@@ -28,7 +28,7 @@ export class EditPageComponent {
             this.material.educationLevel = this.material.educationLevel.map( value => 'EQF ' + value);
             this.material.language = this.languageService.getLanguage(this.material.language!);
           }
-          else this.router.navigate(['not_found'], { replaceUrl: true });
+          else this.router.navigate(['not_found']);
         }
       )
     });

@@ -105,20 +105,13 @@
                             <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
                         </div>
 
-
-                        <p-floatlabel variant="on" class="custom-floatlabel">
-                            <p-iconfield>
-                                <input pInputText id="audience" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.audience"/>
-                                <p-inputicon class="pi pi-users" />
-                            </p-iconfield>
-                            <label for="audience">Target Audience</label>
-                        </p-floatlabel>
-
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="assesment" pTextarea [(ngModel)]="material.assesment"
                                     rows="4" class="w-full custom-textarea"></textarea>
                             <label for="assesment">Type of Assesment</label>
                         </p-floatlabel>
+
+                        <text-chips [fieldName]="'Target Audience'" [icon]="'pi pi-users'" [(chips)]="material.audience"></text-chips>
 
                         <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites"></text-chips>
 

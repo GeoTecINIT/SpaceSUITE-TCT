@@ -7,7 +7,7 @@ export class TrainingMaterial extends OldTrainingMaterial {
   materialType?: string;
   materialFormat: string[];
   educationLevel: string[];
-  audience: string;
+  audience: string[];
   assesment: string;
   prerequisites: string[];
   learningOutcomes: string[];
@@ -22,12 +22,12 @@ export class TrainingMaterial extends OldTrainingMaterial {
   constructor(data?: Partial<TrainingMaterial>) {
     super(data);
     this.publisher = data?.publisher ?? '';
-    this.created = data?.created ?? undefined;
+    this.created = data?.created ?? new Date();
     this.language = data?.language ?? undefined;
     this.materialType = data?.materialType ?? undefined;
     this.materialFormat = data?.materialFormat ?? [];
     this.educationLevel = data?.educationLevel ?? [];
-    this.audience = data?.audience ?? '';
+    this.audience = data?.audience ?? [];
     this.assesment = data?.assesment ?? '';
     this.prerequisites = data?.prerequisites ?? [];
     this.learningOutcomes = data?.learningOutcomes ?? [];

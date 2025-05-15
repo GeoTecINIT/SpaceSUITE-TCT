@@ -12,6 +12,9 @@ import { Router, RouterOutlet } from '@angular/router';
   imports: [HeaderComponent, FooterComponent, DividerModule, RouterOutlet],
 })
 export class AppComponent {
+
+  constructor( private router: Router ) {}
+
   headerItems: MenuItem[] = [ 
     {
       label: 'Tools',
@@ -52,7 +55,7 @@ export class AppComponent {
           icon: 'pi pi-graduation-cap',
           style: {'--p-tieredmenu-item-color': 'var(--hover-color)'},
           iconStyle: {'color': 'var(--hover-color)'},
-          command: () => this.router.navigate([''], { replaceUrl: true })
+          command: () => this.router.navigate([''])
         },
       ]
     }, 
@@ -84,13 +87,11 @@ export class AppComponent {
     }
   ];
 
-  constructor(private router: Router) {}
-
   redirectToProfile() {
-    this.router.navigate(['profile'], { replaceUrl: true });
+    this.router.navigate(['profile']);
   }
 
   redirectToOrganizations() {
-    this.router.navigate(['organizations'], { replaceUrl: true });
+    this.router.navigate(['organizations']);
   }
 }

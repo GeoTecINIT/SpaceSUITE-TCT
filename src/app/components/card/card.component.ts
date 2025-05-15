@@ -89,7 +89,7 @@ export class CardComponent {
 
   onClickTitle(event: MouseEvent) {
     event.preventDefault(); 
-    this.router.navigate([this.trainingMaterial._id], { replaceUrl: true });
+    this.router.navigate([this.trainingMaterial._id]);
   }
 
   getTooltipClass(tooltipContent: string): string {

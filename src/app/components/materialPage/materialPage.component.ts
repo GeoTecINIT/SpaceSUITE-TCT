@@ -73,7 +73,7 @@ export class MaterialPageComponent {
                 );
               })
             }
-            else this.router.navigate(['not_found'], { replaceUrl: true });
+            else this.router.navigate(['not_found']);
           }
         )
     });
@@ -89,7 +89,7 @@ export class MaterialPageComponent {
             this.messageService.add({ 
               severity: 'info', 
               summary: 'Info', 
-              detail: `Material updated without problems.`,
+              detail: `Material successfully updated!`,
               life: 3000, 
               closable: true 
             }); 
@@ -98,7 +98,7 @@ export class MaterialPageComponent {
             this.messageService.add({ 
               severity: 'info', 
               summary: 'Info', 
-              detail: `Material created without problems.`,
+              detail: `Material successfully created!`,
               life: 3000, 
               closable: true 
             }); 
@@ -109,11 +109,11 @@ export class MaterialPageComponent {
   }
 
   goToMainPage() {
-    this.router.navigate([''], { replaceUrl: true });
+    this.router.navigate(['']);
   }
 
   editMaterial() {
-    this.router.navigate(['edit/' + this.material?._id], { replaceUrl: true });
+    this.router.navigate(['edit/' + this.material?._id]);
   }
 
   deleteModal(event: Event) {
