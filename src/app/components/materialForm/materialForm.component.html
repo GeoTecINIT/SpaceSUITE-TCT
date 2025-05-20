@@ -72,8 +72,20 @@
                             <label for="description">Description</label>
                         </p-floatlabel>
     
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <textarea id="abstract" pTextarea [(ngModel)]="material.abstract"
+                                    rows="2" class="w-full custom-textarea" 
+                                    pTooltip="A concise version of the description focused on the core or essential aspects of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></textarea>
+                            <label for="abstract">Abstract</label>
+                        </p-floatlabel>
+
                         <text-chips [fieldName]="'Author/s'" [(chips)]="material.creators" 
                                     pTooltip="Name of the persons primarily responsible for making the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+                        
+                        <text-chips [fieldName]="'Contributor/s'" [(chips)]="material.contributors" 
+                                    pTooltip="ist of contributors to the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
                     </div>
                     <div class="flex justify-content-between mt-3">

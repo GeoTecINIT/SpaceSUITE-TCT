@@ -31,8 +31,11 @@
             <p-tabpanels>
                 <p-tabpanel value="0">
                     <div class="mb-2">
+                        <ng-content *ngIf="material.abstract && material.abstract != ''">
+                            {{material.abstract}}
+                            <br><br>
+                        </ng-content>
                         {{material.description}}
-                        {{material.abstract}}
                     </div>
                 </p-tabpanel>
                 <p-tabpanel value="1">
@@ -73,6 +76,7 @@
                 </p-tabpanel>
                 <p-tabpanel value="3">
                     <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
+                    <div class="mb-2"><strong>Contributors:</strong> {{this.material.contributors.join(', ') || ""}} </div>
                     <div class="mb-2"><strong>Audience:</strong> {{this.material.audience.join(', ') || ""}} </div>
                     <div class="mb-2"><strong>Certification:</strong> {{material.certification}}</div>
                     <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
