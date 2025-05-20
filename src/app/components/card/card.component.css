@@ -16,9 +16,10 @@
 
 .image-container {
     position: relative;
-    display: inline-block;
+    display: flex;
     overflow: hidden;
     max-height: 10rem;
+    height: 10rem;
 }
 
 .image-container img {
