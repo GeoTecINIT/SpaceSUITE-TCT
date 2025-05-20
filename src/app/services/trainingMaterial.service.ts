@@ -38,7 +38,6 @@ export class TrainingMaterialService {
     setError('type', !material.materialType?.trim(), 'Type is required.');
     setError('userId', !material.userId.trim(), 'User ID is required.');
     setError('organization', !material.orgId?.trim(), 'Organization is required.');
-    setError('division', !material.division?.trim(), 'Division is required.');
     setError('source', !material.url.trim(), 'Source is required.');
     if (!errors.get('source')) setError('source', !urlRegex.test(material.url), 'Invalid source format.');
     setError('license', !material.license?.trim(), 'License is required.');

@@ -17,7 +17,8 @@
                                 <p-iconfield>
                                     <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
-                                        [(ngModel)]="material.title"/>
+                                        [(ngModel)]="material.title" pTooltip="Definition name given to the resource" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                     <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
                                 </p-iconfield>
                                 <label for="title">Title *</label>
@@ -30,7 +31,8 @@
                                 <p-iconfield>
                                     <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('publisher') != undefined" [class.ng-dirty]="errorMap.get('publisher') != undefined" 
-                                        [(ngModel)]="material.publisher"/>
+                                        [(ngModel)]="material.publisher" pTooltip="Entity responsible for making the resource available" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                     <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
                                 <label for="publisher">Publisher *</label>
@@ -43,7 +45,9 @@
                                 <p-datepicker inputId="created" showIcon iconDisplay="input" dateFormat="dd/mm/yy" 
                                     [(ngModel)]="material.created" fluid class="custom-input custom-datepicker"
                                     [class.ng-invalid]="errorMap.get('created') != undefined" [class.ng-dirty]="errorMap.get('created') != undefined"
-                                    [class.custom-datepicker-icon-error]="errorMap.get('created') != undefined"/>
+                                    [class.custom-datepicker-icon-error]="errorMap.get('created') != undefined"
+                                    pTooltip="Creation date of the learning material" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="created">Created *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('created')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('created')}}</p>
@@ -52,7 +56,9 @@
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('language') != undefined">
                                 <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
-                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('language') != undefined"/>
+                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('language') != undefined"
+                                    pTooltip="The language of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="lang">{{languageSelector.label}} *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
@@ -62,11 +68,13 @@
                             <textarea id="description" pTextarea [(ngModel)]="material.description"
                                     rows="4" class="w-full custom-textarea" 
                                     pTooltip="A detailed overview of the resource providing context, purpose and structure" 
-                                    tooltipPosition="right"></textarea>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></textarea>
                             <label for="description">Description</label>
                         </p-floatlabel>
     
-                        <text-chips [fieldName]="'Author/s'" [(chips)]="material.creators"></text-chips>
+                        <text-chips [fieldName]="'Author/s'" [(chips)]="material.creators" 
+                                    pTooltip="Name of the persons primarily responsible for making the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Return to Homepage" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
@@ -81,7 +89,8 @@
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('type') != undefined">
                                 <p-select [options]="typeSelector.tags" [(ngModel)]="material.materialType" inputId="type" 
-                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('type') != undefined"/>
+                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('type') != undefined"
+                                    pTooltip="Type of resource" tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="type">{{typeSelector.label}} *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('type')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('type')}}</p>
@@ -91,7 +100,9 @@
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('format') != undefined">
                                 <p-multiselect [options]="formatSelector.tags" [(ngModel)]="material.materialFormat" inputId="format"
                                     class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
-                                    [class.invalid-multiselect]="errorMap.get('format') != undefined"/>
+                                    [class.invalid-multiselect]="errorMap.get('format') != undefined"
+                                    pTooltip="File format or physical medium of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="format">{{formatSelector.label}} *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('format')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('format')}}</p>
@@ -101,7 +112,9 @@
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('educationLevel') != undefined">
                                 <p-multiselect [options]="eqfSelector.tags" [(ngModel)]="material.educationLevel" inputId="eqf" 
                                     class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"
-                                    [class.invalid-multiselect]="errorMap.get('educationLevel') != undefined"/>
+                                    [class.invalid-multiselect]="errorMap.get('educationLevel') != undefined"
+                                    pTooltip="European Qualifications Framework code" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="eqf">{{eqfSelector.label}} *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
@@ -109,17 +122,27 @@
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="assesment" pTextarea [(ngModel)]="material.assesment"
-                                    rows="4" class="w-full custom-textarea"></textarea>
+                                    rows="4" class="w-full custom-textarea" 
+                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></textarea>
                             <label for="assesment">Type of Assesment</label>
                         </p-floatlabel>
 
-                        <text-chips [fieldName]="'Target Audience'" [icon]="'pi pi-users'" [(chips)]="material.audience"></text-chips>
+                        <text-chips [fieldName]="'Target Audience'" [icon]="'pi pi-users'" [(chips)]="material.audience"
+                                    pTooltip="Description of the target audience for the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
-                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites"></text-chips>
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites"
+                                    pTooltip="Knowledge, skills, or conditions required for learners to benefit from the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
-                        <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="material.learningOutcomes"></text-chips>
+                        <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="material.learningOutcomes"
+                                    pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
-                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="material.tableOfContents"></text-chips>
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="material.tableOfContents"
+                                    pTooltip="The structure of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
@@ -136,7 +159,9 @@
                                 <p-iconfield>
                                     <p-inputnumber id="duration" [min]="0" [useGrouping]="false" suffix=" Hours"
                                         class="custom-input" [(ngModel)]="material.SizeOrDuration" fluid mode="decimal" [minFractionDigits]="2"
-                                        [class.ng-invalid]="errorMap.get('SizeOrDuration') != undefined" [class.ng-dirty]="errorMap.get('SizeOrDuration') != undefined"/>
+                                        [class.ng-invalid]="errorMap.get('SizeOrDuration') != undefined" [class.ng-dirty]="errorMap.get('SizeOrDuration') != undefined"
+                                        pTooltip="The total length of the Learning Resource, expressed in hours" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                     <p-inputicon class="pi pi-clock" [style]="errorMap.get('SizeOrDuration') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
                                 <label for="duration">Duration *</label>
@@ -147,7 +172,9 @@
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
                                 <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
-                                    class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"/>
+                                    class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"
+                                    pTooltip="License agreement (most commonly CC-BY-SA)" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="license">{{licenseSelector.label}} *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
@@ -157,7 +184,9 @@
                             <p-floatlabel variant="on" class="custom-floatlabel">
                                 <p-iconfield>
                                     <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.url"
-                                        [class.ng-invalid]="errorMap.get('source') != undefined" [class.ng-dirty]="errorMap.get('source') != undefined" />
+                                        [class.ng-invalid]="errorMap.get('source') != undefined" [class.ng-dirty]="errorMap.get('source') != undefined" 
+                                        pTooltip="The address for accessing the resource in the form of a URL" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                     <p-inputicon class="pi pi-link" [style]="errorMap.get('source') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
                                 <label for="url">Source *</label>
@@ -167,7 +196,9 @@
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
-                                <input pInputText id="certification" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.certification" />
+                                <input pInputText id="certification" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.certification"
+                                        pTooltip="Information on whether participants will receive a certification, accreditation, or Micro-credential upon completion" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <p-inputicon class="pi pi-trophy" />
                             </p-iconfield>
                             <label for="certification">Certification</label>
@@ -175,7 +206,9 @@
 
                         <div>
                             <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" auto
-                                class="custom-button custom-secondary-button custom-fileupload" (uploadHandler)="onFileSelected($event); fileUpload.clear();">
+                                class="custom-button custom-secondary-button custom-fileupload" (uploadHandler)="onFileSelected($event); fileUpload.clear();"
+                                pTooltip="Image to be displayed in the Training Catalog with this resource" 
+                                tooltipPosition="right" showDelay="200" hideDelay="200">
                                 <ng-template #header let-chooseCallback="chooseCallback">
                                     <div class="flex flex-wrap gap-2">
                                         <p-button size="small" label="Choose Image" icon="pi pi-plus" (onClick)="fileUpload.choose()" />
@@ -192,9 +225,12 @@
                             </p-fileupload>
                         </div>
 
-                        <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"></text-chips>
+                        <text-chips [fieldName]="'Subjects'" [icon]="'pi pi-tags'" [(chips)]="material.subject"
+                                    pTooltip="The specific topic, field, or area of knowledge that the resource focuses on" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
-                        <div class="custom-border p-2" style="color: #64748b;">
+                        <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of BoK concepts addressed in the resource" 
+                            tooltipPosition="right" showDelay="200" hideDelay="200">
                             <bokModal [(selectedConcepts)]="material.concepts" [label]="'Covered BoK Concepts'"></bokModal>
                         </div>
 
@@ -211,7 +247,9 @@
                     <div class="flex flex-column gap-3">
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
-                                <input pInputText id="user" autocomplete="off" class="w-full custom-input" [ngModel]="getUserName()" disabled/>
+                                <input pInputText id="user" autocomplete="off" class="w-full custom-input" [ngModel]="getUserName()" disabled
+                                    pTooltip="User registering the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <p-inputicon class="pi pi-user" />
                             </p-iconfield>
                             <label for="user">User *</label>
@@ -221,20 +259,22 @@
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('organization') != undefined">
                                 <p-select inputId="org" [options]="organizationSelector.tags" [ngModel]="material.orgId == undefined ? undefined : {value: material.orgId, label: material.orgName}" (ngModelChange)="loadDivisions($event)"
                                     class="w-full custom-select" optionLabel="label" [checkmark]="true" 
-                                    [class.invalid-select]="errorMap.get('organization') != undefined"/>
+                                    [class.invalid-select]="errorMap.get('organization') != undefined"
+                                    pTooltip="The organization under which the resource is to be registered" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="org">{{organizationSelector.label}} *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('organization')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('organization')}}</p>
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('division') != undefined">
+                            <p-floatlabel variant="on" class="custom-floatlabel">
                                 <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
                                     [disabled]="divisionSelector.tags.length == 0" [checkmark]="true" inputId="division"
-                                    [class.invalid-select]="errorMap.get('division') != undefined"/>
-                                <label for="division">{{divisionSelector.label}} *</label>
+                                    pTooltip="The organization division under which the resource is to be registered" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                <label for="division">{{divisionSelector.label}}</label>
                             </p-floatlabel>
-                            <p *ngIf="errorMap.get('division')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('division')}}</p>
                         </div>
                         
                     </div>
