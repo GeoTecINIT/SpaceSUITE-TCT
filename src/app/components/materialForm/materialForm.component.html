@@ -182,6 +182,18 @@
                         </div>
 
                         <div>
+                            <p-floatlabel variant="on" class="w-full custom-floatlabel">
+                                <p-iconfield>
+                                    <p-inputnumber id="workload" [min]="0" [useGrouping]="false" suffix=" ECTS"
+                                        class="custom-input" [(ngModel)]="material.workload" fluid tooltipPosition="right" showDelay="200" hideDelay="200"
+                                        pTooltip="Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS"/>
+                                    <p-inputicon class="pi pi-clock"/>
+                                </p-iconfield>
+                                <label for="workload">Workload</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
                                 <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
                                     class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"

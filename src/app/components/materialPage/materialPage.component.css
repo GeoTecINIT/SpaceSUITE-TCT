@@ -107,3 +107,7 @@
     --p-toast-error-color: var(--danger-color);
     --p-toast-error-detail-color: var(--primary-color);
 }
+
+.popover-element:hover {
+    color: var(--hover-color);
+}

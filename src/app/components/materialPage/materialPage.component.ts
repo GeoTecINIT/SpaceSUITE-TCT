@@ -1,4 +1,4 @@
-import { Component} from "@angular/core";
+import { Component, ViewChild} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { TrainingMaterial } from "../../model/trainingMaterial";
@@ -12,17 +12,19 @@ import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
-import { catchError, finalize, of, take, tap } from "rxjs";
+import { catchError, finalize, of, take } from "rxjs";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { Popover, PopoverModule } from 'primeng/popover';
+import { RdfConverterService } from "../../services/rdfConverter.service";
 
 @Component({
   standalone: true,
   selector: 'material-page',
   templateUrl: './materialPage.component.html',
   styleUrls: ['./materialPage.component.css'],
-  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, TagModule, PanelModule, TabsModule, DividerModule, ConfirmDialogModule, ToastModule],
+  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, TagModule, PanelModule, TabsModule, DividerModule, ConfirmDialogModule, ToastModule, PopoverModule],
   providers: [ConfirmationService, MessageService]
 })
 export class MaterialPageComponent {
@@ -37,9 +39,11 @@ export class MaterialPageComponent {
 
   imagePlaceholder: string;
 
+  @ViewChild('op') op!: Popover;
+
   constructor(private route: ActivatedRoute, private router: Router, private trainingMaterialService: TrainingMaterialService, 
               private utilsService: UtilsService, private bokInfo: BokInformationService, private firebaseService: FirebaseService,
-              private confirmationService: ConfirmationService,private messageService: MessageService) {
+              private confirmationService: ConfirmationService,private messageService: MessageService, private rdfConverter: RdfConverterService) {
                 this.imagePlaceholder = this.utilsService.imagePlaceholder;
               }
 
@@ -167,5 +171,19 @@ export class MaterialPageComponent {
 
   onClickConcept(code: string) {
     window.open('https://bok.eo4geo.eu/' + code)
+  }
+
+  toggle(event: any) {
+    this.op.toggle(event);
+  }
+
+  downloadMaterialXML() {
+    window.open(this.rdfConverter.getRdfXmlUrl(this.material!))
+    this.op.hide();
+  }
+
+  downloadMaterialTTL() {
+    window.open(this.rdfConverter.getRdfTtlUrl(this.material!))
+    this.op.hide();
   }
 }

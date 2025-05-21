@@ -75,13 +75,33 @@
                     
                 </p-tabpanel>
                 <p-tabpanel value="3">
-                    <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
-                    <div class="mb-2"><strong>Contributors:</strong> {{this.material.contributors.join(', ') || ""}} </div>
-                    <div class="mb-2"><strong>Audience:</strong> {{this.material.audience.join(', ') || ""}} </div>
-                    <div class="mb-2"><strong>Certification:</strong> {{material.certification}}</div>
-                    <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
-                    <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
-                    <div class="mb-2"><strong>Division:</strong> {{material.division ?? 'Not specified'}}</div>
+                    <div class="flex flex-wrap justify-content-between">
+                        <div>
+                            <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
+                            <div class="mb-2"><strong>Contributors:</strong> {{this.material.contributors.join(', ') || ""}} </div>
+                            <div class="mb-2"><strong>Audience:</strong> {{this.material.audience.join(', ') || ""}} </div>
+                            <div class="mb-2"><strong>Certification:</strong> {{material.certification}}</div>
+                            <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
+                            <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
+                            <div class="mb-2"><strong>Division:</strong> {{material.division ?? 'Not specified'}}</div>
+                        </div>
+                        <div>
+                            <p-button label="Download Metadata" size="small" severity="secondary" icon="pi pi-download" class="custom-secondary-button" (onClick)="toggle($event)"></p-button>
+                            <p-popover #op>
+                                <div style="color: var(--primary-color)">
+                                    <span class="font-medium block mb-2"><strong>Metadata Format</strong></span>
+                                    <ul class="p-0 m-0 flex flex-column">
+                                        <li class="flex items-center gap-2 px-2 py-3 cursor-pointer popover-element" (click)="downloadMaterialXML()">
+                                            <span class="font-medium">RDF/XML</span>
+                                        </li>
+                                        <li class="flex items-center gap-2 px-2 py-3 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
+                                            <span class="font-medium">Turtle</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </p-popover>
+                        </div>
+                    </div>
                   </p-tabpanel>
             </p-tabpanels>
         </p-tabs>

@@ -18,6 +18,7 @@ export class TrainingMaterial extends OldTrainingMaterial {
   subject: string[];
   image: string;
   division?: string;
+  workload: number;
 
   constructor(data?: Partial<TrainingMaterial>) {
     super(data);
@@ -38,6 +39,7 @@ export class TrainingMaterial extends OldTrainingMaterial {
     this.subject = data?.subject ?? [];
     this.image = data?.image ?? '';
     this.division = data?.division ?? undefined;
+    this.workload = data?.workload ?? 0;
   }
 
   override toPlain(): Record<string, any> {
@@ -60,6 +62,7 @@ export class TrainingMaterial extends OldTrainingMaterial {
       subject: this.subject,
       image: this.image,
       division: this.division,
+      workload: this.workload
     };
   }
 }
