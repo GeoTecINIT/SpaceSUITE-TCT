@@ -178,12 +178,21 @@ export class MaterialPageComponent {
   }
 
   downloadMaterialXML() {
-    window.open(this.rdfConverter.getRdfXmlUrl(this.material!))
+    const url = this.rdfConverter.getRdfXmlUrl(this.material!);
+    this.downloadURI(url, this.material?._id + '_metadata.xml');
     this.op.hide();
   }
 
   downloadMaterialTTL() {
-    window.open(this.rdfConverter.getRdfTtlUrl(this.material!))
+    const url = this.rdfConverter.getRdfTtlUrl(this.material!);
+    this.downloadURI(url, this.material?._id + '_metadata.ttl');
     this.op.hide();
   }
+
+  private downloadURI(uri: string, name: string) {
+    let link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    link.click();
+}
 }
