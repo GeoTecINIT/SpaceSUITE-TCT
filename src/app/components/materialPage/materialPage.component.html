@@ -92,10 +92,13 @@
                                 <div style="color: var(--primary-color)">
                                     <span class="font-medium block mb-2"><strong>Metadata Format</strong></span>
                                     <ul class="p-0 m-0 flex flex-column">
-                                        <li class="flex items-center gap-2 px-2 py-3 cursor-pointer popover-element" (click)="downloadMaterialXML()">
+                                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialRDFa()">
+                                            <span class="font-medium">RDFa</span>
+                                        </li>
+                                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialXML()">
                                             <span class="font-medium">RDF/XML</span>
                                         </li>
-                                        <li class="flex items-center gap-2 px-2 py-3 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
+                                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
                                             <span class="font-medium">Turtle</span>
                                         </li>
                                     </ul>

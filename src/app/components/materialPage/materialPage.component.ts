@@ -189,6 +189,12 @@ export class MaterialPageComponent {
     this.op.hide();
   }
 
+  downloadMaterialRDFa() {
+    const url = this.rdfConverter.getRdfaUrl(this.material!);
+    this.downloadURI(url, this.material?._id + '_metadata.html');
+    this.op.hide();
+  }
+
   private downloadURI(uri: string, name: string) {
     let link = document.createElement("a");
     link.download = name;
