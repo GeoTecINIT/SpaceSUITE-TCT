@@ -10,13 +10,14 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FilterOption } from "../../model/filterOption";
 import { BokModalComponent } from "../bokModal/bokModal.component";
 import { CardFilterService } from "../../services/cardFilter.service";
+import { TooltipModule } from "primeng/tooltip";
 
 @Component({
   standalone: true,
   selector: 'filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css'],
-  imports: [CommonModule, FormsModule, DividerModule, InputIcon, IconField, InputTextModule, MultiSelectModule, BokModalComponent, SelectButtonModule],
+  imports: [CommonModule, FormsModule, DividerModule, InputIcon, IconField, InputTextModule, MultiSelectModule, BokModalComponent, SelectButtonModule, TooltipModule],
 })
 export class FiltersComponent {
   @Input() multiSelectOptions: FilterOption[] = [];

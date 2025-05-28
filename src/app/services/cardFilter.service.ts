@@ -22,7 +22,8 @@ export class CardFilterService {
         'EQF 7',
         'EQF 8'
       ],
-      selection: []
+      selection: [],
+      tootltip: 'The European Qualifications Framework, a common reference which assists in comparing qualifications systems.'
     },
     {
       label: 'Course Type',

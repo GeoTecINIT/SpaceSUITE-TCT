@@ -22,7 +22,10 @@
         </div>
         <ng-container *ngFor="let option of multiSelectOptions">
             <div class="flex flex-column my-4">
-                {{option.label}}
+                <div class="flex align-items-center">
+                    {{option.label}}
+                    <i *ngIf="option.tootltip" [pTooltip]="option.tootltip" tooltipPosition="right" class="ml-2 pi pi-info-circle"></i>
+                </div>
                 <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateOptions()" 
                     placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" panelStyleClass="max-w-21rem" [disabled]="loading" [showClear]="true"
                     (onClear)="clearOptions(option.label)" [maxSelectedLabels]="1"/>
