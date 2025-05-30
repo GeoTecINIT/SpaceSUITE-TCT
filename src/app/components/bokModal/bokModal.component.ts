@@ -6,7 +6,6 @@ import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
 import { TooltipModule } from 'primeng/tooltip';
 import { UtilsService } from '../../services/utils.service';
-import { CardFilterService } from '../../services/cardFilter.service';
 
 @Component({
   standalone: true,
@@ -34,9 +33,7 @@ export class BokModalComponent {
   private componentRef: ComponentRef<BokComponent> | null = null;
 
   constructor(private readonly bokInfo: BokInformationService, private readonly utilsService: UtilsService, 
-              private filterService: CardFilterService, private cdr: ChangeDetectorRef){
-    filterService.bokConcepts.forEach(concept => this.addConceptWithName(concept));
-  }
+              private cdr: ChangeDetectorRef){}
 
   ngOnInit() {
     this.selectedConcepts.forEach( concept => {

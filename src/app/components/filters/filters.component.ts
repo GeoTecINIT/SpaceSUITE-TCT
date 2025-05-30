@@ -28,6 +28,7 @@ export class FiltersComponent {
   searchValue: string;
   @Output() searchValueChange: EventEmitter<string> = new EventEmitter();
 
+  bokConcepts: string[] = []
   @Output() bokConceptsChange: EventEmitter<string[]> = new EventEmitter();
 
   filterUserMaterialOptions: any[] = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }];
@@ -39,6 +40,7 @@ export class FiltersComponent {
   constructor(private filterService: CardFilterService) {
     this.searchValue = filterService.searchOption;
     this.filterUserMaterial = filterService.userMaterialFilter;
+    this.bokConcepts = filterService.bokConcepts;
   }
 
   ngOnChanges(changes: SimpleChanges) {
