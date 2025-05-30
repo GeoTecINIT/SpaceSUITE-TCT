@@ -139,7 +139,7 @@ export class MaterialExplorerComponent {
   }
 
   createTrainingMaterial() {
-    this.router.navigate(['new'], {replaceUrl: true});
+    this.router.navigate(['new']);
   }
 
 }

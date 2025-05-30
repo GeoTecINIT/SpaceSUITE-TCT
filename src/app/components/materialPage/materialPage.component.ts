@@ -160,7 +160,7 @@ export class MaterialPageComponent {
         return of(null)
       }),
       finalize(() => {
-        if (!deleteError) this.router.navigate([''], { replaceUrl: true, queryParams: { submited: true, mode: 'delete' }});
+        if (!deleteError) this.router.navigate([''], {queryParams: { submited: true, mode: 'delete' }});
       })
     ).subscribe();
   }

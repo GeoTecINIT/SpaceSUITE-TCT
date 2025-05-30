@@ -118,7 +118,6 @@ export class MaterialFormComponent {
           this.router.navigate(
             [materialId], 
             { 
-              replaceUrl: true, 
               queryParams: { 
                 submited: true, 
                 mode: this.inputMaterial != undefined ? 'update' : 'create' 
