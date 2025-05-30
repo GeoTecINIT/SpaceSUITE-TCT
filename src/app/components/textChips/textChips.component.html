@@ -1,7 +1,8 @@
 <div #component class="p-2 custom-border">
     <p-floatlabel variant="on" class="custom-floatlabel">
         <p-iconfield>
-            <input pInputText id="label" autocomplete="off" class="w-full custom-input" [(ngModel)]="currentText" (focusout)="focusOut($event)" (keyup.enter)="clickButton()"/>
+            <input pInputText id="label" autocomplete="off" class="w-full custom-input" [(ngModel)]="currentText" 
+                (focusout)="focusOut($event)" (keyup.enter)="clickButton()" maxlength="100"/>
             <p-inputicon [class]="icon"></p-inputicon>
         </p-iconfield>
         <label for="label">{{fieldName}}</label>

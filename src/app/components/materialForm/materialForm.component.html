@@ -18,7 +18,7 @@
                                     <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
                                         [(ngModel)]="material.title" pTooltip="Definition name given to the resource" 
-                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="200"/>
                                     <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
                                 </p-iconfield>
                                 <label for="title">Title *</label>
@@ -32,7 +32,7 @@
                                     <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('publisher') != undefined" [class.ng-dirty]="errorMap.get('publisher') != undefined" 
                                         [(ngModel)]="material.publisher" pTooltip="Entity responsible for making the resource available" 
-                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="100"/>
                                     <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
                                 <label for="publisher">Publisher *</label>
@@ -68,7 +68,7 @@
                             <textarea id="description" pTextarea [(ngModel)]="material.description"
                                     rows="4" class="w-full custom-textarea" 
                                     pTooltip="A detailed overview of the resource providing context, purpose and structure" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></textarea>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
                             <label for="description">Description</label>
                         </p-floatlabel>
     
@@ -76,7 +76,7 @@
                             <textarea id="abstract" pTextarea [(ngModel)]="material.abstract"
                                     rows="2" class="w-full custom-textarea" 
                                     pTooltip="A concise version of the description focused on the core or essential aspects of the resource" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></textarea>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="300"></textarea>
                             <label for="abstract">Abstract</label>
                         </p-floatlabel>
 
@@ -136,7 +136,7 @@
                             <textarea id="assesment" pTextarea [(ngModel)]="material.assesment"
                                     rows="4" class="w-full custom-textarea" 
                                     pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></textarea>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
                             <label for="assesment">Type of Assesment</label>
                         </p-floatlabel>
 
@@ -209,8 +209,8 @@
                                 <p-iconfield>
                                     <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.url"
                                         [class.ng-invalid]="errorMap.get('source') != undefined" [class.ng-dirty]="errorMap.get('source') != undefined" 
-                                        pTooltip="The address for accessing the resource in the form of a URL" 
-                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                        pTooltip="The address for accessing the resource in the form of a URL" type="url"
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000"/>
                                     <p-inputicon class="pi pi-link" [style]="errorMap.get('source') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
                                 <label for="url">Source *</label>
@@ -222,7 +222,7 @@
                             <p-iconfield>
                                 <input pInputText id="certification" autocomplete="off" class="w-full custom-input" [(ngModel)]="material.certification"
                                         pTooltip="Information on whether participants will receive a certification, accreditation, or Micro-credential upon completion" 
-                                        tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="200"/>
                                 <p-inputicon class="pi pi-trophy" />
                             </p-iconfield>
                             <label for="certification">Certification</label>
