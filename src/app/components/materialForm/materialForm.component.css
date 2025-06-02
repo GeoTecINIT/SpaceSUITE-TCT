@@ -14,6 +14,15 @@
     border-color: var(--hover-color) !important;
 }
 
+.textarea-length {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.75rem;
+    font-size: 0.75rem;
+    color: #64748b;
+    pointer-events: none;
+}
+
 .custom-button {
     --p-button-primary-color: white;
     --p-button-primary-background: var(--secondary-color);

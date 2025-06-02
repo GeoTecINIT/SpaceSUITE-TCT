@@ -63,12 +63,16 @@
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
                         </div>
-    
+
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="description" pTextarea [(ngModel)]="material.description"
-                                    rows="4" class="w-full custom-textarea" 
-                                    pTooltip="A detailed overview of the resource providing context, purpose and structure" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
+                                rows="4" class="w-full custom-textarea" 
+                                pTooltip="A detailed overview of the resource providing context, purpose and structure" 
+                                tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
+                            <div class="textarea-length">
+                                <span>{{material.description.length + ' '}}</span>
+                                <span>/ 2000</span>
+                            </div>
                             <label for="description">Description</label>
                         </p-floatlabel>
     
@@ -77,6 +81,10 @@
                                     rows="2" class="w-full custom-textarea" 
                                     pTooltip="A concise version of the description focused on the core or essential aspects of the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="300"></textarea>
+                            <div class="textarea-length">
+                                <span>{{material.abstract.length + ' '}}</span>
+                                <span>/ 300</span>
+                            </div>
                             <label for="abstract">Abstract</label>
                         </p-floatlabel>
 
@@ -137,6 +145,10 @@
                                     rows="4" class="w-full custom-textarea" 
                                     pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
+                            <div class="textarea-length">
+                                <span>{{material.assesment.length + ' '}}</span>
+                                <span>/ 2000</span>
+                            </div>
                             <label for="assesment">Type of Assesment</label>
                         </p-floatlabel>
 
