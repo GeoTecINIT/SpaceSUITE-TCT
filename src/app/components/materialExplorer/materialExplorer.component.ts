@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CardComponent } from "../card/card.component";
@@ -37,6 +37,11 @@ export class MaterialExplorerComponent {
   rows: number = 8;
   paginationTrainingMaterial: TrainingMaterial[] = [];
 
+  @ViewChild('container') containerRef!: ElementRef;
+  showButton = true;
+  buttonBottom = 32;
+  private observer!: IntersectionObserver;
+
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
     this.skelletonElements = Array(16).fill(null);
@@ -73,6 +78,24 @@ export class MaterialExplorerComponent {
         }
       }
     });
+
+    window.addEventListener('scroll', this.updateButtonPosition);
+  }
+
+  updateButtonPosition = () => {
+    const element = this.containerRef.nativeElement;
+    const rect = element.getBoundingClientRect();
+    const bottomOverlap = window.innerHeight - rect.bottom;
+
+    if (bottomOverlap >= 32) {
+      this.buttonBottom = bottomOverlap
+    } else {
+      this.buttonBottom = 32;
+    }
+  };
+
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.updateButtonPosition);
   }
 
   searchTrainingMaterial(searchvalue: string) {

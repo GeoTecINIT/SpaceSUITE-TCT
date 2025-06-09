@@ -98,10 +98,10 @@ export class MaterialFormComponent {
     const userData = this.firebaseService.getUserData();
     if (userData) {
       if (userData.displayName) return userData.displayName;
-      else return userData.uid
+      else return userData.email
     }
     else {
-      return this.material._id;
+      return '';
     }
   }
 

@@ -1,5 +1,5 @@
 <p-toast class="custom-toast" position="bottom-right"/>
-<div class="flex flex-column xl:flex-row gap-5 m-2">
+<div #container class="flex flex-column xl:flex-row gap-5 m-2">
     <filters [(multiSelectOptions)]="filterOptions" [loading]="loading" (multiSelectOptionsChange)="filterTrainingMaterial()" 
         (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)" 
         (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()"></filters>
@@ -15,7 +15,7 @@
     </div>
     <p *ngIf="finalTrainingMaterial.length == 0 && !loading" class="font-italic flex mx-auto justify-content-center">No material found</p>
 </div>
-<p-button *ngIf="isLogged()" (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add Material" class="custom-button floating-button"/>
+<p-button *ngIf="isLogged() && showButton" (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add Material" class="custom-button floating-button" [ngStyle]="{ bottom: buttonBottom + 'px' }"/>
 
 <ng-template #cardSkeleton>
     <ng-content *ngFor="let i of skelletonElements">
