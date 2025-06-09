@@ -102,9 +102,12 @@ export class FirebaseService {
     const docRef = doc(this.materialCollection, material._id);
     return from(deleteDoc(docRef)).pipe(
       concatMap(() => {
-        const path = `Training_Material_Images/${material._id}`;
-        const storageRef = ref(this.storage, path);
-        return from(deleteObject(storageRef));
+        if (material.image) {
+          const path = `Training_Material_Images/${material._id}`;
+          const storageRef = ref(this.storage, path);
+          return from(deleteObject(storageRef));
+        }
+        return of();
       })
     );
   }
