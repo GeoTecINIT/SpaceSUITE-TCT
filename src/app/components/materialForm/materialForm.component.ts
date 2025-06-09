@@ -72,7 +72,7 @@ export class MaterialFormComponent {
     this.eqfSelector = this.cardFilterService.getOptionByLabel('EQF Level');
     this.licenseSelector = this.cardFilterService.getOptionByLabel('License');
 
-    this.material.userId = this.firebaseService.userId;
+    this.material.userId = this.firebaseService.getUserData()?.uid!;
     this.organizationSelector.tags = [];
     this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>
       this.organizationSelector.tags.push({label: organization.name, value: organization._id})
@@ -82,6 +82,7 @@ export class MaterialFormComponent {
   ngOnInit() {
     if (this.inputMaterial) {
       this.material = this.inputMaterial;
+      if (this.material.division == '') this.material.division = undefined;
       this.firebaseService.getOrganizationDivisions(this.material.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
     }
   }
@@ -94,16 +95,25 @@ export class MaterialFormComponent {
   }
 
   getUserName() {
-    return this.firebaseService.getUserData()?.displayName ?? this.material.userId;
+    const userData = this.firebaseService.getUserData();
+    if (userData) {
+      if (userData.displayName) return userData.displayName;
+      else return userData.uid
+    }
+    else {
+      return this.material._id;
+    }
   }
 
   submitMaterial() {
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
+      if (this.material.division == undefined) this.material.division = '';
       this.trainingMaterialService.submitMaterial(this.material, this.uploadedImage, this.inputMaterial != undefined).pipe(
         take(1),
-        catchError( () => {
+        catchError( (error) => {
+          console.log(error)
           this.messageService.add({ 
             severity: 'error', 
             summary: 'Error', 

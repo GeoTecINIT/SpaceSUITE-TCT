@@ -91,8 +91,8 @@ export class MaterialExplorerComponent {
     }
     else{
       let newFilteredMaterial = [...this.searchedTrainingMaterial];
-      const userId: string = this.firebase.userId
-      if (this.filterByUserMaterial && userId != '') {
+      const userId = this.firebase.getUserData()?.uid
+      if (this.filterByUserMaterial && userId) {
         newFilteredMaterial = newFilteredMaterial.filter(material => material.userId == userId)
       }
       newFilteredMaterial = newFilteredMaterial.filter(material => 
@@ -129,7 +129,7 @@ export class MaterialExplorerComponent {
   }
 
   isLogged(): boolean {
-    return this.firebase.userId != '';
+    return this.firebase.getUserData() != null;
   }
 
   onPageChange(event: PaginatorState) {
