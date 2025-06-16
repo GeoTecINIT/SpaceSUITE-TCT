@@ -19,7 +19,7 @@ export class TrainingMaterialService {
   constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) {}
 
   public validate(material: TrainingMaterial): Map<string, string | undefined> {
-    const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/\S*)?$/;
+    const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/\S*)?\/?$/;
     const errors: Map<string, string | undefined> = new Map();
   
     const setError = (field: string, condition: boolean, message: string) => {
@@ -75,26 +75,41 @@ export class TrainingMaterialService {
     );
   }
 
-  public getTrainingMaterials(): Observable<TrainingMaterial[] | undefined> {
+  public getTrainingMaterialsArray(): Observable<TrainingMaterial[] | undefined> {
+    return this.checkTrainingMaterials().pipe(concatMap(() => {
+      return this.trainingMaterialMap.asObservable().pipe(
+        map(map => map ? Array.from(map.values()) : undefined)
+      );
+    }))
+  }
+
+  public getTrainingMaterialsMap(): Observable<Map<string, TrainingMaterial> | undefined> {
+    return this.checkTrainingMaterials().pipe(concatMap(() => {
+      return this.trainingMaterialMap.asObservable();
+    }))
+  }
+
+  private checkTrainingMaterials(): Observable<void> {
     let currentTrainingMaterials: Map<string, TrainingMaterial> | undefined = this.trainingMaterialMap.value;
     let currentTrainingMaterialsArray = currentTrainingMaterials ? Array.from(currentTrainingMaterials.values()) : [];
     if (currentTrainingMaterialsArray.length == 0) {
-      this.firebaseService.getTrainingMaterial().subscribe( newTrainingMaterials => {
+      return this.firebaseService.getTrainingMaterial().pipe(map( newTrainingMaterials => {
         const cleanedMaterials = this.formatTrainingMaterials(newTrainingMaterials);
         const newTrainignMaterialMap: Map<string, TrainingMaterial> = new Map();
         cleanedMaterials.forEach( material => newTrainignMaterialMap.set(material._id, material));
         this.trainingMaterialMap.next(newTrainignMaterialMap)
-      });
+      }));
     }
-    return this.getTrainingMaterialArray();
+    else return of(undefined)
   }
 
   public getTrainingMaterial(materialId: string): Observable<TrainingMaterial | undefined> {
     return this.trainingMaterialMap.asObservable().pipe(
-      tap( value => {
+      concatMap( value => {
         if (value == undefined) {
-          this.getTrainingMaterials();
+          return this.getTrainingMaterialsMap().pipe(take(1));
         }
+        return of(value);
       }),
       filter(value => value != undefined),
       map(materiaMap => materiaMap.get(materialId))
@@ -115,12 +130,6 @@ export class TrainingMaterialService {
     const regex = /\[(.*?)\]/;
     return concepts.map(concept => concept.match(regex)?.[1])
     .filter(Boolean) as string[];
-  }
-
-  private getTrainingMaterialArray(): Observable<TrainingMaterial[] | undefined> {
-    return this.trainingMaterialMap.asObservable().pipe(
-      map(map => map ? Array.from(map.values()) : undefined)
-    );
   }
 
   public deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {

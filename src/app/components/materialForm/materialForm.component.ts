@@ -112,8 +112,7 @@ export class MaterialFormComponent {
       if (this.material.division == undefined) this.material.division = '';
       this.trainingMaterialService.submitMaterial(this.material, this.uploadedImage, this.inputMaterial != undefined).pipe(
         take(1),
-        catchError( (error) => {
-          console.log(error)
+        catchError( () => {
           this.messageService.add({ 
             severity: 'error', 
             summary: 'Error', 

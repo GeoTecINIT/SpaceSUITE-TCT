@@ -12,7 +12,7 @@ import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
-import { catchError, finalize, of, take } from "rxjs";
+import { catchError, combineLatest, finalize, map, mergeMap, of, retry, switchMap, take, throwError } from "rxjs";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
@@ -48,39 +48,36 @@ export class MaterialPageComponent {
               }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-        const materialName = params.get('dynamicValue') || '';
-        this.trainingMaterialService.getTrainingMaterial(materialName).pipe(take(1)).subscribe(
-          (newMaterial: TrainingMaterial | undefined) => {
-            if (newMaterial) {
-              this.material = newMaterial;
-              this.currentConcepts = [];
-              this.deprecatedConcepts = [];
-              this.material.concepts.forEach(concept => {
-                this.bokInfo.getConceptColor(concept).subscribe(
-                  color => {
-                    const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
-                    this.selectedConceptsColor.set(concept, softColor)
-                  }
-                );
-                this.bokInfo.getConceptName(concept).subscribe(
-                  tooltip => {
-                    if (tooltip){
-                      this.selectedConceptsTooltip.set(concept, tooltip);
-                      this.currentConcepts.push(concept);
-                    }
-                    else {
-                      this.selectedConceptsTooltip.set(concept, 'Deprecated concept');
-                      this.deprecatedConcepts.push(concept);
-                    }
-                  }
-                );
-              })
+    combineLatest([
+      this.route.paramMap,
+      this.route.queryParams
+    ]).pipe(
+      map(([paramMap, queryParams]) => {
+        const materialName = paramMap.get('dynamicValue') || '';
+        const submited = queryParams['submited'] === 'true' || queryParams['submited'] === true;
+        return { materialName, submited };
+      }),
+      switchMap(({ materialName, submited }) =>
+        this.trainingMaterialService.getTrainingMaterial(materialName).pipe(
+          mergeMap((newMaterial: TrainingMaterial | undefined) => {
+            if (submited && newMaterial === undefined) {
+              return throwError(() => new Error('Material not found'));
             }
-            else this.router.navigate(['not_found']);
-          }
+            return of(newMaterial)
+          }),
+          retry({count: 1, delay: 500}),
+          take(1),
+          catchError(() => {
+            return of(undefined);
+          })
         )
-    });
+      )
+    ).subscribe(
+      (newMaterial: TrainingMaterial | undefined) => {
+        if (newMaterial) this.loadMaterial(newMaterial);
+        else this.router.navigate(['not_found']);
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -109,6 +106,32 @@ export class MaterialPageComponent {
             break
         }
       }
+    });
+  }
+
+  private loadMaterial(newMaterial: TrainingMaterial) {
+    this.material = newMaterial;
+    this.currentConcepts = [];
+    this.deprecatedConcepts = [];
+    this.material.concepts.forEach(concept => {
+      this.bokInfo.getConceptColor(concept).subscribe(
+        color => {
+          const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
+          this.selectedConceptsColor.set(concept, softColor)
+        }
+      );
+      this.bokInfo.getConceptName(concept).subscribe(
+        tooltip => {
+          if (tooltip){
+            this.selectedConceptsTooltip.set(concept, tooltip);
+            this.currentConcepts.push(concept);
+          }
+          else {
+            this.selectedConceptsTooltip.set(concept, 'Deprecated concept');
+            this.deprecatedConcepts.push(concept);
+          }
+        }
+      );
     });
   }
 

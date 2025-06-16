@@ -43,7 +43,7 @@ export class RdfConverterService {
         ttl += `  dc:contributor "${contributor}" ;\n`;
       });
     }
-    if (model.type) ttl += `  dc:type "${model.type}" ;\n`;
+    if (model.materialType) ttl += `  dc:type "${model.materialType}" ;\n`;
     if (model.materialFormat) {
       model.materialFormat.forEach((format: string) => {
         ttl += `  dc:format "${format}" ;\n`;

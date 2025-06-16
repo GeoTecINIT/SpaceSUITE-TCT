@@ -49,7 +49,7 @@ export class MaterialExplorerComponent {
 
   ngOnInit() {
     this.filterOptions = this.filterService.getFilterOptions();
-    this.trainingMaterialService.getTrainingMaterials().pipe(
+    this.trainingMaterialService.getTrainingMaterialsArray().pipe(
       filter(value => value !== undefined)
     ).subscribe(
     (newValue: TrainingMaterial[]) => {
