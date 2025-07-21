@@ -9,6 +9,11 @@
     --p-floatlabel-focus-color: var(--hover-color);
 }
 
+.custom-textarea {
+    --p-textarea-invalid-placeholder-color: var(--danger-color);
+    --p-textarea-invalid-border-color: var(--danger-color);
+}
+
 .custom-textarea:hover,
 .custom-textarea:focus {
     border-color: var(--hover-color) !important;

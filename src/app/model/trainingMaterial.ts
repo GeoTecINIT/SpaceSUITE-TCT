@@ -4,17 +4,16 @@ export class TrainingMaterial extends OldTrainingMaterial {
   publisher: string;
   created: any;
   language?: string;
-  materialType?: string;
-  materialFormat: string[];
+  materialType: string[];
+  interactivityType: string | undefined;
   educationLevel: string[];
   audience: string[];
-  assesment: string;
+  assessment: string[];
   prerequisites: string[];
   learningOutcomes: string[];
   tableOfContents: string[];
-  SizeOrDuration: number;
   license?: string;
-  certification: string;
+  source: string | undefined;
   subject: string[];
   image: string;
   division?: string;
@@ -25,17 +24,16 @@ export class TrainingMaterial extends OldTrainingMaterial {
     this.publisher = data?.publisher ?? '';
     this.created = data?.created ?? new Date();
     this.language = data?.language ?? undefined;
-    this.materialType = data?.materialType ?? undefined;
-    this.materialFormat = data?.materialFormat ?? [];
+    this.materialType = data?.materialType ?? [];
+    this.interactivityType = data?.interactivityType ?? undefined;
     this.educationLevel = data?.educationLevel ?? [];
     this.audience = data?.audience ?? [];
-    this.assesment = data?.assesment ?? '';
+    this.assessment = data?.assessment ?? [];
     this.prerequisites = data?.prerequisites ?? [];
     this.learningOutcomes = data?.learningOutcomes ?? [];
     this.tableOfContents = data?.tableOfContents ?? [];
-    this.SizeOrDuration = data?.SizeOrDuration ?? 0;
     this.license = data?.license ?? undefined;
-    this.certification = data?.certification ?? '';
+    this.source = data?.source ?? undefined;
     this.subject = data?.subject ?? [];
     this.image = data?.image ?? '';
     this.division = data?.division ?? undefined;
@@ -49,16 +47,15 @@ export class TrainingMaterial extends OldTrainingMaterial {
       created: this.created,
       language: this.language,
       materialType: this.materialType,
-      materialFormat: this.materialFormat,
+      interactivityType: this.interactivityType,
       educationLevel: this.educationLevel,
       audience: this.audience,
-      assesment: this.assesment,
+      assessment: this.assessment,
       prerequisites: this.prerequisites,
       learningOutcomes: this.learningOutcomes,
       tableOfContents: this.tableOfContents,
-      SizeOrDuration: this.SizeOrDuration,
       license: this.license,
-      certification: this.certification,
+      source: this.source,
       subject: this.subject,
       image: this.image,
       division: this.division,

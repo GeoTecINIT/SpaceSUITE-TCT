@@ -8,7 +8,7 @@
             |
             <div class="text-sm"><strong>EQF Level:</strong> {{material.educationLevel}}</div>
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Material Type:</strong> {{material.materialType?.toUpperCase() ?? 'Undefined'}}</div>
+            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Interactivity Type:</strong> {{material.interactivityType?.toUpperCase() ?? 'Undefined'}}</div>
             |
             <div class="text-sm"><strong>Publisher:</strong> {{material.publisher}}</div>
             |
@@ -46,13 +46,12 @@
                     </ul>
                 </p-tabpanel>
                 <p-tabpanel value="2">
-                    <div class="mb-2"><strong>Size or Duration:</strong> {{material.SizeOrDuration}} Hours</div>
                     <div class="mb-2"><strong>Language:</strong> {{material.language}}</div>
                     <div class="mb-2">
-                        <strong>Material Format:</strong>
+                        <strong>Material Type:</strong>
                         <ul>
-                            <li *ngFor="let format of material.materialFormat">
-                                {{format}}
+                            <li *ngFor="let type of material.materialType">
+                                {{type}}
                             </li>
                         </ul>
                     </div>
@@ -80,7 +79,6 @@
                             <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
                             <div class="mb-2"><strong>Contributors:</strong> {{this.material.contributors.join(', ') || ""}} </div>
                             <div class="mb-2"><strong>Audience:</strong> {{this.material.audience.join(', ') || ""}} </div>
-                            <div class="mb-2"><strong>Certification:</strong> {{material.certification}}</div>
                             <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
                             <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
                             <div class="mb-2"><strong>Division:</strong> {{material.division ?? 'Not specified'}}</div>

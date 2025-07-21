@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { FilterOption } from "../model/filterOption";
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { LanguageService } from "./language.service";
-import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "./firebase.service";
 
 @Injectable({
@@ -28,19 +27,88 @@ export class CardFilterService {
     {
       label: 'Course Type',
       tags: [
-        'Self-learning material',
-        'Teaching material'
+        'Text-based Materials',
+        'Visual Materials',
+        'Interactive Training Materials',
+        'Video and Audio-based Materials',
+        'Online Training (E-Learning)',
+        'Instructor-Led Materials',
+        'Hands-on Materials',
+        'Assessments & Feedback Materials',
+        'Reference Materials',
+        'Mobile Learning (M-Learning)',
+        'Other'
       ],
       selection: []
     },
     {
-      label: 'Course Format',
+      label: 'Interactivity Type',
       tags: [
-        'Video File',
-        'Audio File',
-        'PDF File',
-        'HTML Document',
-        'PPTX Slides'
+        'Face To Face',
+        'Online synchronous',
+        'Online asynchronous',
+        'Self-Paced',
+        'Blended',
+        'WorkBased',
+        'Other'
+      ],
+      selection: []
+    },
+    {
+      label: 'Target Audience',
+      tags: [
+        'Teachers / trainers / facilitators',
+        'Lower secondary students (ages 12-14)',
+        'Upper secondary students (ages 15-18)',
+        'Undergraduate / tertiary students (Bachelor’s level)',
+        'Graduate / postgraduate students (Master’s and Doctoral level)',
+        'Vocational trainees / apprentices',
+        'Adult & lifelong learners',
+        'Industry professionals',
+        'Jobseeker / Reskilling participant',
+        'General public',
+        'Learners with special‐education needs',
+        'Other'
+      ],
+      selection: []
+    },
+    {
+      label: 'Type of Assessment',
+      tags: [
+        'No assessment required',
+        'Quiz',
+        'Exam',
+        'Simulation',
+        'Peer review',
+        'Self-assessment',
+        'Instructor-assessed',
+        'Practical assignment',
+        'Project presentation',
+        'Other'
+      ],
+      selection: []
+    },
+    {
+      label: 'Subject',
+      tags: [
+        '[AM] Analytical Methods',
+        '[CF] Conceptual Foundations',
+        '[CV] Cartography and Visualization',
+        '[DA] Design and Setup of Geographic Information Systems',
+        '[DM] Data Modeling, Storage and Exploitation',
+        '[GC] Geocomputation',
+        '[GD] Geospatial Data',
+        '[GN] GNSS',
+        '[GS] GI and Society',
+        '[IP] Image processing and analysis',
+        '[OI] Organizational and Institutional Aspects',
+        '[PP] Physical principles',
+        '[PS] Platforms, sensors and digital imagery',
+        '[SA] Satellite Systems',
+        '[SC] Satellite Communication',
+        '[TA] Thematic and application domains',
+        '[WB] Web-based GI',
+        'Other'
       ],
       selection: []
     },
@@ -79,18 +147,18 @@ export class CardFilterService {
     {
       label: 'License',
       tags: [
-        'CC BY',
-        'CC BY-SA',
-        'CC BY-NC',
-        'CC BY-ND',
-        'CC BY-NC-SA',
-        'CC BY-NC-ND',
-        'GNU FDL',
-        'MIT License',
-        'Apache 2.0',
         'All Rights Reserved',
-        'Public Domain',
-        'OER-Compatible',
+        'Open access,copyright retained by author/creator',
+        'Creative Commons Attribution (CC BY)',
+        'Creative Commons Attribution-ShareAlike (CC BY-SA)',
+        'Creative Commons Attribution-NonCommercial (CC BY-NC)',
+        'Creative Commons Attribution-NoDerivatives (CC BY-ND)',
+        'Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)',
+        'Creative Commons Zero (CC0)',
+        'Institutional license, internal use only',
+        'License pending / not defined',
+        'Contact author or institution for reuse',
+        'Other',
       ],
       selection: []
     },
@@ -118,9 +186,9 @@ export class CardFilterService {
       case 'EQF Level':
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
       case 'Course Type':
-        return filter.selection.some(selection => material.materialType?.toLowerCase() == selection.toLowerCase());
-      case 'Course Format':
-        return filter.selection.some(selection => material.materialFormat?.includes(selection));
+        return filter.selection.some(selection => material.materialType.includes(selection));
+      case 'Interactivity Type':
+        return filter.selection.some(selection => material.interactivityType?.toLowerCase() == selection.toLowerCase());
       case 'License':
         return filter.selection.some(selection => material.license! == selection);
       case 'Language':

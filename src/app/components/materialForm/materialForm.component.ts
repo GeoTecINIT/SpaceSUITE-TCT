@@ -45,9 +45,12 @@ export class MaterialFormComponent {
 
   languageSelector: FilterOption;
   typeSelector: FilterOption;
-  formatSelector: FilterOption;
+  interactivityTypeSelector: FilterOption;
   eqfSelector: FilterOption;
   licenseSelector: FilterOption;
+  audienceSelector: FilterOption;
+  assessmentSelector: FilterOption;
+  subjectSelector: FilterOption;
   organizationSelector = {
     label: 'Organization',
     tags: [] as any[],
@@ -68,9 +71,12 @@ export class MaterialFormComponent {
               private trainingMaterialService: TrainingMaterialService, private router: Router) {
     this.languageSelector = this.cardFilterService.getOptionByLabel('Language');
     this.typeSelector = this.cardFilterService.getOptionByLabel('Course Type');
-    this.formatSelector = this.cardFilterService.getOptionByLabel('Course Format');
+    this.interactivityTypeSelector = this.cardFilterService.getOptionByLabel('Interactivity Type');
     this.eqfSelector = this.cardFilterService.getOptionByLabel('EQF Level');
     this.licenseSelector = this.cardFilterService.getOptionByLabel('License');
+    this.audienceSelector = this.cardFilterService.getOptionByLabel('Target Audience')
+    this.assessmentSelector = this.cardFilterService.getOptionByLabel('Type of Assessment')
+    this.subjectSelector = this.cardFilterService.getOptionByLabel('Subject');
 
     this.material.userId = this.firebaseService.getUserData()?.uid!;
     this.organizationSelector.tags = [];

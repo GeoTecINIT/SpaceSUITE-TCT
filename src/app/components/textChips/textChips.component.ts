@@ -24,6 +24,8 @@ export class TextChipsComponent {
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';
 
+  @Input() error: boolean = false;
+
   @ViewChild('component', { static: true }) containerRef!: ElementRef;
 
   clickButton() {

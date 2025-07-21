@@ -43,12 +43,12 @@ export class RdfConverterService {
         ttl += `  dc:contributor "${contributor}" ;\n`;
       });
     }
-    if (model.materialType) ttl += `  dc:type "${model.materialType}" ;\n`;
-    if (model.materialFormat) {
-      model.materialFormat.forEach((format: string) => {
-        ttl += `  dc:format "${format}" ;\n`;
+    if (model.materialType) {
+      model.materialType.forEach((type: string) => {
+        ttl += `  dc:type "${type}" ;\n`;
       });
-    }
+    } 
+    if (model.interactivityType) ttl += `  dc:format "${model.interactivityType}" ;\n`;
     if (model.language) ttl += `  dc:language "${model.language}" ;\n`;
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
@@ -69,7 +69,6 @@ export class RdfConverterService {
       });
     }
     if (model.tableOfContents) ttl += `  dcterms:tableOfContents "${model.tableOfContents.join(', ')}" ;\n`;
-    if (model.SizeOrDuration) ttl += `  dcterms:extent "${this.durationToISO8601(model.SizeOrDuration)}" ;\n`;
 
     /* TODO
 
@@ -122,12 +121,12 @@ export class RdfConverterService {
         rdf += `    <dc:contributor>${this.escapeXml(contributor)}</dc:contributor>\n`;
       });
     }
-    if (model.materialType) rdf += `    <dc:type>${this.escapeXml(model.materialType)}</dc:type>\n`;
-    if (model.materialFormat) {
-      model.materialFormat.forEach((format: string) => {
-        rdf += `    <dc:format>${this.escapeXml(format)}</dc:format>\n`;
+    if (model.materialType) {
+      model.materialType.forEach((type: string) => {
+        rdf += `    <dc:type>${this.escapeXml(type)}</dc:type>\n`;
       });
     }
+    if (model.interactivityType) rdf += `    <dc:format>${this.escapeXml(model.interactivityType)}</dc:format>\n`;
     if (model.language) rdf += `    <dc:language>${this.escapeXml(model.language)}</dc:language>\n`;
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
@@ -149,9 +148,6 @@ export class RdfConverterService {
     }
     if (model.tableOfContents) {
       rdf += `    <dcterms:tableOfContents>${this.escapeXml(model.tableOfContents.join(', '))}</dcterms:tableOfContents>\n`;
-    }
-    if (model.SizeOrDuration) {
-      rdf += `    <dcterms:extent>${this.durationToISO8601(model.SizeOrDuration)}</dcterms:extent>\n`;
     }
 
     /* TODO
@@ -202,12 +198,12 @@ export class RdfConverterService {
         rdfa += `  <span property="dc:contributor">${this.escapeHtml(contributor)}</span><br/>\n`;
       });
     }
-    if (model.materialType) rdfa += `  <span property="dc:type">${this.escapeHtml(model.materialType)}</span><br/>\n`;
-    if (model.materialFormat) {
-      model.materialFormat.forEach((format: string) => {
-        rdfa += `  <span property="dc:format">${this.escapeHtml(format)}</span><br/>\n`;
+    if (model.materialType) {
+      model.materialType.forEach((type: string) => {
+        rdfa += `  <span property="dc:type">${this.escapeHtml(type)}</span><br/>\n`;
       });
     }
+    if (model.interactivityType) rdfa += `  <span property="dc:format">${this.escapeHtml(model.interactivityType)}</span><br/>\n`;
     if (model.language) rdfa += `  <span property="dc:language">${this.escapeHtml(model.language)}</span><br/>\n`;
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
@@ -230,9 +226,6 @@ export class RdfConverterService {
     if (model.tableOfContents) {
       rdfa += `  <span property="dcterms:tableOfContents">${this.escapeHtml(model.tableOfContents.join(', '))}</span><br/>\n`;
     }
-    if (model.SizeOrDuration) {
-      rdfa += `  <time property="dcterms:extent">${this.durationToISO8601(model.SizeOrDuration)}</time><br/>\n`;
-    }
 
     /* TODO
 
@@ -252,23 +245,6 @@ export class RdfConverterService {
     rdfa += `</div>\n`;
 
     return rdfa;
-  }
-
-  private durationToISO8601(duration: number): string {
-    let totalSeconds = duration * 3600; // duración en segundos
-
-    const seconds = +(totalSeconds % 60).toFixed(3); // redondeo a milisegundos
-    const totalMinutes = Math.floor(totalSeconds / 60);
-    const minutes = totalMinutes % 60;
-    const totalHours = Math.floor(totalMinutes / 60);
-    const hours = totalHours % 24;
-    const totalDays = Math.floor(totalHours / 24);
-    const days = totalDays % 30;
-    const totalMonths = Math.floor(totalDays / 30);
-    const months = totalMonths % 12;
-    const years = Math.floor(totalMonths / 12);
-
-    return `P${years}Y${months}M${days}DT${hours}H${minutes}M${seconds}S`;
   }
 
   private escapeXml(str: string): string {

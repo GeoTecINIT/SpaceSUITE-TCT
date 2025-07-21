@@ -34,24 +34,26 @@ export class TrainingMaterialService {
       errors.set('created', 'Creation date format is invalid.');
     }
   
+    setError('workload', material.workload == 0, 'Workload must be greater than zero');
     setError('language', !material.language?.trim(), 'Language is required.');
-    setError('type', !material.materialType?.trim(), 'Type is required.');
+    setError('description', !material.description.trim(), 'Description is required.');
+    setError('abstract', !material.abstract.trim(), 'Abstract is required.');
     setError('userId', !material.userId.trim(), 'User ID is required.');
     setError('organization', !material.orgId?.trim(), 'Organization is required.');
-    setError('source', !material.url.trim(), 'Source is required.');
-    if (!errors.get('source')) setError('source', !urlRegex.test(material.url), 'Invalid source format.');
+    setError('interactivityType', !material.interactivityType?.trim(), 'Interactivity type is required.');
+    setError('url', !material.url.trim(), 'URL is required.');
+    if (!errors.get('url')) setError('url', !urlRegex.test(material.url), 'Invalid URL format.');
     setError('license', !material.license?.trim(), 'License is required.');
   
     // Array fields
-    setError('format', material.materialFormat.length === 0, 'At least one format is required.');
+    setError('creators', material.creators.length === 0, 'At least one creator is required.');
+    setError('concepts', material.concepts.length === 0, 'At least one BoK concept is required.');
+    setError('learningOutcomes', material.learningOutcomes.length === 0, 'At least one learning outcome is required.');
+    setError('audience', material.audience.length === 0, 'At least one audience is required.');
+    setError('type', material.materialType.length === 0, 'At least one type is required.');
     setError('educationLevel', material.educationLevel.length === 0, 'Education level is required.');
-  
-    // Numeric field
-    if (typeof material.SizeOrDuration !== 'number' || material.SizeOrDuration <= 0) {
-      errors.set('SizeOrDuration', 'A valid duration greater than 0 is required.');
-    } else {
-      errors.set('SizeOrDuration', undefined);
-    }
+    setError('assessment', material.assessment.length === 0, 'At least one assessment is required.');
+    setError('subject', material.subject.length === 0, 'At least one subject is required.');
   
     return errors;
   }
