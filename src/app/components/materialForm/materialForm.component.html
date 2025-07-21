@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">
-                        <p-button class="custom-secondary-button" label="Return to Homepage" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
+                        <p-button class="custom-secondary-button" label="Return" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
                         <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
                     </div>
                 </ng-template>
@@ -235,7 +235,7 @@
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of BoK concepts addressed in the resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
                                 [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
-                                <bokModal [(selectedConcepts)]="material.concepts" [label]="'Covered BoK Concepts *'"
+                                <bokModal [(selectedConcepts)]="material.concepts" [label]="'BoK Annotation *'"
                                     [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' "></bokModal>
                             </div>
                             <p *ngIf="errorMap.get('concepts')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('concepts')}}</p>

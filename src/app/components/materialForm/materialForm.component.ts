@@ -173,6 +173,7 @@ export class MaterialFormComponent {
   }
 
   returnToHomepage() {
-    this.router.navigate(['']);
+    if (this.inputMaterial != undefined) this.router.navigate([this.inputMaterial._id]);
+    else this.router.navigate(['']);
   }
 }

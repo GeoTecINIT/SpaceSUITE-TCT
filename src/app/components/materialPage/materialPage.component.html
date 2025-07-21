@@ -3,22 +3,42 @@
 <div *ngIf="material; else spinner" class="flex flex-column md:flex-row justify-content-between md:gap-4">
     <div class="flex flex-column overflow-auto flex-auto">
         <h1 class="mb-2">{{material.title}}</h1>
-        <div class="flex align-items-end gap-2 flex-wrap white-space-nowrap mb-2">
+        <div class="flex align-items-center gap-2 flex-wrap white-space-nowrap mb-2">
             <div class="text-sm"><strong>Language:</strong> {{material.language ?? 'Undefined'}}</div>
             |
             <div class="text-sm"><strong>EQF Level:</strong> {{material.educationLevel}}</div>
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Interactivity Type:</strong> {{material.interactivityType?.toUpperCase() ?? 'Undefined'}}</div>
+            <div class="text-sm"><strong>Workload:</strong> {{material.workload}} ECTS</div>
             |
-            <div class="text-sm"><strong>Publisher:</strong> {{material.publisher}}</div>
+            <div class="text-sm"><strong>Provided by:</strong> {{material.publisher}}</div>
             |
             <div class="text-sm"><strong>Created:</strong> {{material.created?.toLocaleDateString()}}</div>
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis">
-                <a href="{{material.url}}" target="_blank" class="icon-link">
-                    <i class="pi pi-external-link"></i>
-                </a>
-            </div>
+            <a class="icon-link text-sm align-items-center mx-1" href="{{material.url}}" target="_blank">
+                <i class="pi pi-external-link text-sm mx-1"></i>
+                Go to Material
+            </a>
+            |
+            <a class="icon-link text-sm align-items-center mx-1 cursor-pointer" style="cursor: not-allowed; opacity: 0.5; pointer-events: none;" (click)="toggle($event)">
+                <i class="pi pi-download text-sm mx-1"></i>
+                Download Metadata
+            </a>
+            <p-popover #op>
+                <div style="color: var(--primary-color)">
+                    <span class="font-medium block mb-2"><strong>Metadata Format</strong></span>
+                    <ul class="p-0 m-0 flex flex-column">
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialRDFa()">
+                            <span class="font-medium">RDFa</span>
+                        </li>
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialXML()">
+                            <span class="font-medium">RDF/XML</span>
+                        </li>
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
+                            <span class="font-medium">Turtle</span>
+                        </li>
+                    </ul>
+                </div>
+            </p-popover>
         </div>
         <div style="color: var(--primary-color);" class="my-2 font-italic">{{this.material.creators.join(', ') || ""}}</div>
         <p-tabs value="0" scrollable class="custom-tabs mb-2">
@@ -46,26 +66,30 @@
                     </ul>
                 </p-tabpanel>
                 <p-tabpanel value="2">
-                    <div class="mb-2"><strong>Language:</strong> {{material.language}}</div>
                     <div class="mb-2">
                         <strong>Material Type:</strong>
-                        <ul>
+                        <ul *ngIf="material.materialType.length > 0">
                             <li *ngFor="let type of material.materialType">
                                 {{type}}
                             </li>
                         </ul>
                     </div>
+                    <div class="mb-2"><strong>Interactivity Type:</strong> {{material.interactivityType}}</div>
                     <div class="mb-2">
                         <strong>Prerequisites:</strong>
-                        <ul>
+                        <ul *ngIf="material.prerequisites.length > 0">
                             <li *ngFor="let requisite of material.prerequisites">
                                 {{requisite}}
                             </li>
                         </ul>
                     </div>
                     <div class="mb-2">
+                        <strong>Type of Assessment:</strong>
+                       <div class="my-2">{{this.material.assessment.join(', ') || ""}}</div>
+                    </div>
+                    <div class="mb-2">
                         <strong>Learning Outcomes:</strong>
-                        <ul>
+                        <ul *ngIf="material.learningOutcomes.length > 0">
                             <li *ngFor="let outcome of material.learningOutcomes">
                                 {{outcome}}
                             </li>
@@ -74,36 +98,21 @@
                     
                 </p-tabpanel>
                 <p-tabpanel value="3">
-                    <div class="flex flex-wrap justify-content-between">
-                        <div>
-                            <div class="mb-2"><strong>Publisher:</strong> {{material.publisher}}</div>
-                            <div class="mb-2"><strong>Contributors:</strong> {{this.material.contributors.join(', ') || ""}} </div>
-                            <div class="mb-2"><strong>Audience:</strong> {{this.material.audience.join(', ') || ""}} </div>
-                            <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
-                            <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
-                            <div class="mb-2"><strong>Division:</strong> {{material.division ?? 'Not specified'}}</div>
-                        </div>
-                        <div>
-                            <p-button label="Download Metadata" size="small" severity="secondary" icon="pi pi-download" class="custom-secondary-button" (onClick)="toggle($event)"></p-button>
-                            <p style="color: var(--danger-color)" class="md:max-w-12rem text-xs">* This functionality is under development, the metadata is not complete and can contain errors.</p>
-                            <p-popover #op>
-                                <div style="color: var(--primary-color)">
-                                    <span class="font-medium block mb-2"><strong>Metadata Format</strong></span>
-                                    <ul class="p-0 m-0 flex flex-column">
-                                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialRDFa()">
-                                            <span class="font-medium">RDFa</span>
-                                        </li>
-                                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialXML()">
-                                            <span class="font-medium">RDF/XML</span>
-                                        </li>
-                                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
-                                            <span class="font-medium">Turtle</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </p-popover>
-                        </div>
+                    <div class="mb-2 text-justify">
+                        <strong>Source/s:</strong>
+                        <div class="my-2">{{material.source}}</div>
                     </div>
+                    <div class="mb-2">
+                        <strong>Contributors:</strong>
+                        {{this.material.contributors.join(', ') || ""}}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Audience:</strong>
+                        {{this.material.audience.join(', ') || ""}}
+                    </div>
+                    <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
+                    <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
+                    <div class="mb-2"><strong>Division:</strong> {{material.division ?? 'Not specified'}}</div>
                   </p-tabpanel>
             </p-tabpanels>
         </p-tabs>
@@ -119,7 +128,18 @@
 
         <img src="{{material.image != '' ? material.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
 
-        <p-panel #conceptsPanel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" [collapsed]="currentConcepts.length > 12" class="my-2 custom-panel">
+        <p-panel #subjectsPanel [header]="'Subjects (' + material.subject.length + ')'" class="my-2 custom-panel">
+            <ng-template #headericons>
+                <p-button *ngIf="!subjectsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
+                <p-button *ngIf="subjectsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
+            </ng-template>  
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let subject of material.subject">
+                    <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-panel #conceptsPanel [header]="'BoK Concepts (' + currentConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
             <ng-template #headericons>
                 <p-button *ngIf="!conceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
                 <p-button *ngIf="conceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
@@ -141,17 +161,6 @@
                 <ng-content *ngFor="let concept of deprecatedConcepts">
                     <p-tag [value]="concept" [rounded]="true" class="xs:white-space-nowrap bok-tag" [style.background]="selectedConceptsColor.get(concept)"
                         (click)="onClickConcept(concept)" />
-                </ng-content>
-            </div>
-        </p-panel>
-        <p-panel #subjectsPanel [header]="'Subjects (' + material.subject.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
-            <ng-template #headericons>
-                <p-button *ngIf="!subjectsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
-                <p-button *ngIf="subjectsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
-            </ng-template>  
-            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
-                <ng-content *ngFor="let subject of material.subject">
-                    <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
                 </ng-content>
             </div>
         </p-panel>

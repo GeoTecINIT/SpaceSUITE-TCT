@@ -48,7 +48,7 @@ export class MaterialExplorerComponent {
   }
 
   ngOnInit() {
-    this.filterOptions = this.filterService.getFilterOptions();
+    this.filterOptions = this.filterService.getGeneralFilterOptions();
     this.trainingMaterialService.getTrainingMaterialsArray().pipe(
       filter(value => value !== undefined)
     ).subscribe(

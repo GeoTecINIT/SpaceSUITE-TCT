@@ -91,23 +91,23 @@ export class CardFilterService {
     {
       label: 'Subject',
       tags: [
-        '[AM] Analytical Methods',
-        '[CF] Conceptual Foundations',
-        '[CV] Cartography and Visualization',
-        '[DA] Design and Setup of Geographic Information Systems',
-        '[DM] Data Modeling, Storage and Exploitation',
-        '[GC] Geocomputation',
-        '[GD] Geospatial Data',
-        '[GN] GNSS',
-        '[GS] GI and Society',
-        '[IP] Image processing and analysis',
-        '[OI] Organizational and Institutional Aspects',
-        '[PP] Physical principles',
-        '[PS] Platforms, sensors and digital imagery',
-        '[SA] Satellite Systems',
-        '[SC] Satellite Communication',
-        '[TA] Thematic and application domains',
-        '[WB] Web-based GI',
+        'Analytical Methods',
+        'Conceptual Foundations',
+        'Cartography and Visualization',
+        'Design and Setup of Geographic Information Systems',
+        'Data Modeling, Storage and Exploitation',
+        'Geocomputation',
+        'Geospatial Data',
+        'GNSS',
+        'GI and Society',
+        'Image processing and analysis',
+        'Organizational and Institutional Aspects',
+        'Physical principles',
+        'Platforms, sensors and digital imagery',
+        'Satellite Systems',
+        'Satellite Communication',
+        'Thematic and application domains',
+        'Web-based GI',
         'Other'
       ],
       selection: []
@@ -177,8 +177,9 @@ export class CardFilterService {
     this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].tags = organizations.map(value => value.name));
   }
 
-  public getFilterOptions(): FilterOption[] {
-    return this.filterOptions;
+  public getGeneralFilterOptions(): FilterOption[] {
+    const generalFilters = ['EQF Level', 'Language', 'Interactivity Type', 'Course Type', 'Target Audience', 'Organizations']
+    return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
   public checkMaterial(material: TrainingMaterial, filter: FilterOption): boolean {
