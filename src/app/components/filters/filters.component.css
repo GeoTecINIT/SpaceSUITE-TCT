@@ -5,6 +5,12 @@
     color: var(--p-multiselect-clear-icon-color);
 }
 
+::ng-deep .p-multiselect-option span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .custom-multiselect {
     --p-multiselect-focus-border-color: var(--hover-color);
     --p-multiselect-hover-border-color: var(--hover-color);
