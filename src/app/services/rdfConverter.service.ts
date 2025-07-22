@@ -37,7 +37,7 @@ export class RdfConverterService {
         ttl += `  dcterms:creator _:CREATOR${index} ;\n`;
         additionalObjects += `_:CREATOR${index}\n`;
         additionalObjects += `  rdf:type dcterms:Agent ;\n`;
-        additionalObjects += `  dcterms:title "${creator}" .\n\n"`
+        additionalObjects += `  dcterms:title "${creator}" .\n\n`
       });
     }
     if (model.subject && Array.isArray(model.subject)) {
@@ -52,7 +52,7 @@ export class RdfConverterService {
         ttl += `  elm:learningOutcome _:LO${index} ;\n`;
         additionalObjects += `_:LO${index}\n`;
         additionalObjects += `  rdf:type elm:LearningOutcome ;\n`;
-        additionalObjects += `  dcterms:description "${outcome}" .\n\n"`
+        additionalObjects += `  dcterms:description "${outcome}" .\n\n`
       });
     }
     if (model.audience) {
@@ -60,7 +60,7 @@ export class RdfConverterService {
         ttl += `  dcterms:audience _:AUDIENCE${index} ;\n`;
         additionalObjects += `_:AUDIENCE${index}\n`;
         additionalObjects += `  rdf:type dcterms:AgentClass ;\n`;
-        additionalObjects += `  dcterms:title "${audience}" .\n\n"`
+        additionalObjects += `  dcterms:title "${audience}" .\n\n`
       });
     }
     if (model.created) ttl += `  dcterms:created "${model.created instanceof Date ? model.created.toISOString() : model.created}" ;\n`;
@@ -69,7 +69,7 @@ export class RdfConverterService {
         ttl += `  dcterms:type _:TYPE${index} ;\n`;
         additionalObjects += `_:TYPE${index}\n`;
         additionalObjects += `  rdf:type rdfs:Class ;\n`;
-        additionalObjects += `  dcterms:title "${type}" .\n\n"`
+        additionalObjects += `  dcterms:title "${type}" .\n\n`
       });
     } 
     if (model.interactivityType) ttl += `  lrmi:interactivityType "${model.interactivityType}" ;\n`;
@@ -77,17 +77,17 @@ export class RdfConverterService {
       ttl += `  elm:providedBy _:PROVIDER ;\n`;
       additionalObjects += `_:PROVIDER\n`;
       additionalObjects += `  rdf:type dcterms:Agent ;\n`;
-      additionalObjects += `  dcterms:title "${model.publisher}" .\n\n"`;
+      additionalObjects += `  dcterms:title "${model.publisher}" .\n\n`;
     }
     if (model.contributors) {
       model.contributors.forEach((contributor: string, index: number) => {
         ttl += `  dcterms:contributor _:CONTRIBUTOR${index} ;\n`;
         additionalObjects += `_:CONTRIBUTOR${index}\n`;
         additionalObjects += `  rdf:type dcterms:Agent ;\n`;
-        additionalObjects += `  dcterms:title "${contributor}" .\n\n"`;
+        additionalObjects += `  dcterms:title "${contributor}" .\n\n`;
       });
     }
-    if (model.url) ttl += `  dcterms:identifier <${model.url}> ; `;
+    if (model.url) ttl += `  dcterms:identifier <${model.url}> ;\n`;
     if (model.language) ttl += `  dcterms:language <https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}> ;\n`;
     if (model.source) ttl += `  dcterms:source "${model.source}" ;\n`;
     if (model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
@@ -102,14 +102,14 @@ export class RdfConverterService {
       ttl += `  elm:creditReceived "${model.workload}" ;\n`;
       additionalObjects += `_:ECTS\n`;
       additionalObjects += `  rdf:type elm:CreditPoint ;\n`;
-      additionalObjects += `  dcterms:title "ECTS" .\n\n"`;
+      additionalObjects += `  dcterms:title "ECTS" .\n\n`;
     }
     if (model.prerequisites) {
       model.prerequisites.forEach((prerequisite: string, index: number) => {
         ttl += `  elm:entryRequirement _:PREREQUISITE${index} ;\n`;
         additionalObjects += `_:PREREQUISITE${index}\n`;
         additionalObjects += `  rdf:type elm:Note ;\n`;
-        additionalObjects += `  dcterms:description "${prerequisite}" .\n\n"`;
+        additionalObjects += `  dcterms:description "${prerequisite}" .\n\n`;
       });
     }
     if (model.assessment) {
@@ -117,7 +117,7 @@ export class RdfConverterService {
         ttl += `  elm:entryRequirement _:ASSESSMENT${index} ;\n`;
         additionalObjects += `_:ASSESSMENT${index}\n`;
         additionalObjects += `  rdf:type elm:LearningAssessment ;\n`;
-        additionalObjects += `  dcterms:description "${assessment}" .\n\n"`;
+        additionalObjects += `  dcterms:description "${assessment}" .\n\n`;
       });
     }
     if (model.concepts) {
@@ -125,7 +125,7 @@ export class RdfConverterService {
         ttl += `  dcterms:relation bok:${concept} ;\n`;
       });
     }
-    
+
     ttl = ttl.trim().replace(/;$/, '.') + '\n\n';
     ttl += additionalObjects;
 
