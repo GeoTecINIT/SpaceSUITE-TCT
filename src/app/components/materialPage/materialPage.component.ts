@@ -33,6 +33,8 @@ export class MaterialPageComponent {
 
   deprecatedConcepts: string[] = [];
   currentConcepts: string[] = [];
+  knowledgeAreas: string[] = [];
+  customSubjects: string[] = [];
   
   selectedConceptsColor: Map<string, string> = new Map();
   selectedConceptsTooltip: Map<string, string> = new Map();  
@@ -113,6 +115,8 @@ export class MaterialPageComponent {
     this.material = newMaterial;
     this.currentConcepts = [];
     this.deprecatedConcepts = [];
+    this.knowledgeAreas = [];
+    this.customSubjects = [];
     this.material.concepts.forEach(concept => {
       this.bokInfo.getConceptColor(concept).subscribe(
         color => {
@@ -132,6 +136,23 @@ export class MaterialPageComponent {
           }
         }
       );
+    });
+    this.material.subject.forEach(subject => {
+      if (this.utilsService.knowledgeArea.has(subject)) {
+        this.bokInfo.getConceptColor(subject).subscribe(
+          color => {
+            const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
+            this.selectedConceptsColor.set(subject, softColor)
+          }
+        );
+        this.bokInfo.getConceptName(subject).subscribe(
+          tooltip => {
+            this.selectedConceptsTooltip.set(subject, tooltip);
+            this.knowledgeAreas.push(subject);
+          }
+        );
+      }
+      else this.customSubjects.push(subject);
     });
   }
 

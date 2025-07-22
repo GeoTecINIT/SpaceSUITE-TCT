@@ -58,7 +58,8 @@ export class TrainingMaterialService {
     return errors;
   }
 
-  public submitMaterial(newMaterial: TrainingMaterial, image: File | undefined, update: boolean = false): Observable<string> {
+  public submitMaterial(material: TrainingMaterial, image: File | undefined, update: boolean = false): Observable<string> {
+    const newMaterial = new TrainingMaterial(material);
     newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
     newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>

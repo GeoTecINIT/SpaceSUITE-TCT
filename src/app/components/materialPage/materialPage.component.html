@@ -129,12 +129,12 @@
         <img src="{{material.image != '' ? material.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
 
         <p-panel #subjectsPanel [header]="'Subjects (' + material.subject.length + ')'" class="my-2 custom-panel">
-            <ng-template #headericons>
-                <p-button *ngIf="!subjectsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
-                <p-button *ngIf="subjectsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
-            </ng-template>  
             <div class="flex align-items-start align-items-center gap-2 flex-wrap">
-                <ng-content *ngFor="let subject of material.subject">
+                <ng-content *ngFor="let concept of knowledgeAreas">
+                    <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
+                        [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
+                </ng-content>
+                <ng-content *ngFor="let subject of customSubjects">
                     <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
                 </ng-content>
             </div>

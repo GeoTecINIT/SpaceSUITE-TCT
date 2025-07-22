@@ -40,7 +40,6 @@ export class MaterialExplorerComponent {
   @ViewChild('container') containerRef!: ElementRef;
   showButton = true;
   buttonBottom = 32;
-  private observer!: IntersectionObserver;
 
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
