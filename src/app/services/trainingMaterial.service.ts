@@ -4,6 +4,7 @@ import { BehaviorSubject, concatMap, filter, forkJoin, map, Observable, of, take
 import { FirebaseService } from "./firebase.service";
 import { LanguageService } from "./language.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
+import { UtilsService } from "./utils.service";
 
 export type ValidationError = {
   field: string;
@@ -16,7 +17,9 @@ export type ValidationError = {
 export class TrainingMaterialService {
   private trainingMaterialMap: BehaviorSubject<Map<string, TrainingMaterial> | undefined> = new BehaviorSubject<Map<string, TrainingMaterial> | undefined>(undefined);
 
-  constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService) {}
+  constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService, private utilsService: UtilsService) {
+    this.checkTrainingMaterials().subscribe()
+  }
 
   public validate(material: TrainingMaterial): Map<string, string | undefined> {
     const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/\S*)?\/?$/;
@@ -60,6 +63,7 @@ export class TrainingMaterialService {
 
   public submitMaterial(material: TrainingMaterial, image: File | undefined, update: boolean = false): Observable<string> {
     const newMaterial = new TrainingMaterial(material);
+    newMaterial.subject = newMaterial.subject.map( subject => this.utilsService.knowledgeAreaToCode.get(subject) || subject)
     newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
     newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>
@@ -79,31 +83,22 @@ export class TrainingMaterialService {
   }
 
   public getTrainingMaterialsArray(): Observable<TrainingMaterial[] | undefined> {
-    return this.checkTrainingMaterials().pipe(concatMap(() => {
-      return this.trainingMaterialMap.asObservable().pipe(
-        map(map => map ? Array.from(map.values()) : undefined)
-      );
-    }))
+    return this.trainingMaterialMap.asObservable().pipe(
+      map(map => map ? Array.from(map.values()) : undefined)
+    );
   }
 
   public getTrainingMaterialsMap(): Observable<Map<string, TrainingMaterial> | undefined> {
-    return this.checkTrainingMaterials().pipe(concatMap(() => {
-      return this.trainingMaterialMap.asObservable();
-    }))
+    return this.trainingMaterialMap.asObservable();
   }
 
   private checkTrainingMaterials(): Observable<void> {
-    let currentTrainingMaterials: Map<string, TrainingMaterial> | undefined = this.trainingMaterialMap.value;
-    let currentTrainingMaterialsArray = currentTrainingMaterials ? Array.from(currentTrainingMaterials.values()) : [];
-    if (currentTrainingMaterialsArray.length == 0) {
-      return this.firebaseService.getTrainingMaterial().pipe(map( newTrainingMaterials => {
-        const cleanedMaterials = this.formatTrainingMaterials(newTrainingMaterials);
-        const newTrainignMaterialMap: Map<string, TrainingMaterial> = new Map();
-        cleanedMaterials.forEach( material => newTrainignMaterialMap.set(material._id, material));
-        this.trainingMaterialMap.next(newTrainignMaterialMap)
-      }));
-    }
-    else return of(undefined)
+    return this.firebaseService.getTrainingMaterial().pipe(map( newTrainingMaterials => {
+      const cleanedMaterials = this.formatTrainingMaterials(newTrainingMaterials);
+      const newTrainignMaterialMap: Map<string, TrainingMaterial> = new Map();
+      cleanedMaterials.forEach( material => newTrainignMaterialMap.set(material._id, material));
+      this.trainingMaterialMap.next(newTrainignMaterialMap)
+    }));
   }
 
   public getTrainingMaterial(materialId: string): Observable<TrainingMaterial | undefined> {

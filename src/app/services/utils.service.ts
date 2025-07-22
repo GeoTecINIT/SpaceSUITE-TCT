@@ -7,7 +7,7 @@ export class UtilsService {
     
     imagePlaceholder: string = "https://www.esri.com/content/dam/esrisites/en-us/home/homepage-what-is-gis-static-dynamic.jpg";
 
-    knowledgeArea: Map<string, string> = new Map([
+    codeToKnowledgeArea: Map<string, string> = new Map([
         ["AM", "Analytical Methods"],
         ["CF", "Conceptual Foundations"],
         ["CV", "Cartography and Visualization"],
@@ -26,6 +26,27 @@ export class UtilsService {
         ["TA", "Thematic and application domains"],
         ["WB", "Web-based GI"]
     ]);
+
+    knowledgeAreaToCode: Map<string, string> = new Map([
+        ["Analytical Methods", "AM"],
+        ["Conceptual Foundations", "CF"],
+        ["Cartography and Visualization", "CV"],
+        ["Design and Setup of Geographic Information Systems", "DA"],
+        ["Data Modeling, Storage and Exploitation", "DM"],
+        ["Geocomputation", "GC"],
+        ["Geospatial Data", "GD"],
+        ["GNSS", "GN"],
+        ["GI and Society", "GS"],
+        ["Image processing and analysis", "IP"],
+        ["Organizational and Institutional Aspects", "OI"],
+        ["Physical principles", "PP"],
+        ["Platforms, sensors and digital imagery", "PS"],
+        ["Satellite Systems", "SA"],
+        ["Satellite Communication", "SC"],
+        ["Thematic and application domains", "TA"],
+        ["Web-based GI", "WB"]
+        ]);
+
 
     convertHexToRgba(hex: string, alpha: number): string {
         hex = hex.replace('#', '');

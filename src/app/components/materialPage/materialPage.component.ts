@@ -138,7 +138,7 @@ export class MaterialPageComponent {
       );
     });
     this.material.subject.forEach(subject => {
-      if (this.utilsService.knowledgeArea.has(subject)) {
+      if (this.utilsService.codeToKnowledgeArea.has(subject)) {
         this.bokInfo.getConceptColor(subject).subscribe(
           color => {
             const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
