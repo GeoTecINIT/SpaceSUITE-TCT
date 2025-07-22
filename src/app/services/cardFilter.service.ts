@@ -188,6 +188,12 @@ export class CardFilterService {
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
       case 'Course Type':
         return filter.selection.some(selection => material.materialType.includes(selection));
+      case 'Subject':
+        return filter.selection.some(selection => material.subject.includes(selection));
+      case 'Type of Assessment':
+        return filter.selection.some(selection => material.assessment.includes(selection));
+      case 'Target Audience':
+        return filter.selection.some(selection => material.audience.includes(selection));
       case 'Interactivity Type':
         return filter.selection.some(selection => material.interactivityType?.toLowerCase() == selection.toLowerCase());
       case 'License':
