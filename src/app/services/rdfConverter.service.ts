@@ -22,71 +22,112 @@ export class RdfConverterService {
   }
 
   private convertModelToTurtle(model: TrainingMaterial): string {
-    let ttl = `@prefix dc: <http://purl.org/dc/elements/1.1/> .\n@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix bok: <https://bok.eo4geo.eu/> .\n\n`;
+    let additionalObjects = '';
+    let ttl = `@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix lrmi: <http://purl.org/dcx/lrmi-terms/> . \n` + 
+              `@prefix bok: <https://bok.eo4geo.eu/> . \n@prefix elm: <http://data.europa.eu/snb/model/elm> . \n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n` + 
+              `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . \n\n`;
 
-    ttl += `<${model.url}> ;\n`;
-    if (model.title) ttl += `  dc:title "${model.title}" ;\n`;
+    ttl += `_:TrainingMaterial rdf:type rdfs:Class . \n\n`;
+
+    ttl += `<${model.url}> \n`;
+    ttl += `  rdf:type _:TrainingMaterial ;\n`;
+    if (model.title) ttl += `  dcterms:title "${model.title}" ;\n`;
     if (model.creators) {
-      model.creators.forEach((creator: string) => {
-        ttl += `  dc:creator "${creator}" ;\n`;
+      model.creators.forEach((creator: string, index: number) => {
+        ttl += `  dcterms:creator _:CREATOR${index} ;\n`;
+        additionalObjects += `_:CREATOR${index}\n`;
+        additionalObjects += `  rdf:type dcterms:Agent ;\n`;
+        additionalObjects += `  dcterms:title "${creator}" .\n\n"`
       });
     }
     if (model.subject && Array.isArray(model.subject)) {
       model.subject.forEach((subj: string) => {
-        ttl += `  dc:subject "${subj}" ;\n`;
+        ttl += `  dcterms:subject "${subj}" ;\n`;
       });
     }
-    if (model.description) ttl += `  dc:description "${model.description}" ;\n`;
-    if (model.publisher) ttl += `  dc:publisher "${model.publisher}" ;\n`;
-    if (model.contributors) {
-      model.contributors.forEach((contributor: string) => {
-        ttl += `  dc:contributor "${contributor}" ;\n`;
-      });
-    }
-    if (model.materialType) {
-      model.materialType.forEach((type: string) => {
-        ttl += `  dc:type "${type}" ;\n`;
-      });
-    } 
-    if (model.interactivityType) ttl += `  dc:format "${model.interactivityType}" ;\n`;
-    if (model.language) ttl += `  dc:language "${model.language}" ;\n`;
-    if (model.concepts) {
-      model.concepts.forEach((concept: string) => {
-        ttl += `  dc:relation bok:${concept} ;\n`;
-      });
-    }
-    if (model.license) ttl += `  dc:rights "${model.license}" ;\n`;
+    if (model.description) ttl += `  dcterms:description "${model.description}" ;\n`;
     if (model.abstract) ttl += `  dcterms:abstract "${model.abstract}" ;\n`;
+    if (model.learningOutcomes) {
+      model.learningOutcomes.forEach((outcome: string, index: number) => {
+        ttl += `  elm:learningOutcome _:LO${index} ;\n`;
+        additionalObjects += `_:LO${index}\n`;
+        additionalObjects += `  rdf:type elm:LearningOutcome ;\n`;
+        additionalObjects += `  dcterms:description "${outcome}" .\n\n"`
+      });
+    }
     if (model.audience) {
-      model.audience.forEach((aud: string) => {
-        ttl += `  dcterms:audience "${aud}" ;\n`;
+      model.audience.forEach((audience: string, index: number) => {
+        ttl += `  dcterms:audience _:AUDIENCE${index} ;\n`;
+        additionalObjects += `_:AUDIENCE${index}\n`;
+        additionalObjects += `  rdf:type dcterms:AgentClass ;\n`;
+        additionalObjects += `  dcterms:title "${audience}" .\n\n"`
       });
     }
     if (model.created) ttl += `  dcterms:created "${model.created instanceof Date ? model.created.toISOString() : model.created}" ;\n`;
+    if (model.materialType) {
+      model.materialType.forEach((type: string, index: number) => {
+        ttl += `  dcterms:type _:TYPE${index} ;\n`;
+        additionalObjects += `_:TYPE${index}\n`;
+        additionalObjects += `  rdf:type rdfs:Class ;\n`;
+        additionalObjects += `  dcterms:title "${type}" .\n\n"`
+      });
+    } 
+    if (model.interactivityType) ttl += `  lrmi:interactivityType "${model.interactivityType}" ;\n`;
+    if (model.publisher) {
+      ttl += `  elm:providedBy _:PROVIDER ;\n`;
+      additionalObjects += `_:PROVIDER\n`;
+      additionalObjects += `  rdf:type dcterms:Agent ;\n`;
+      additionalObjects += `  dcterms:title "${model.publisher}" .\n\n"`;
+    }
+    if (model.contributors) {
+      model.contributors.forEach((contributor: string, index: number) => {
+        ttl += `  dcterms:contributor _:CONTRIBUTOR${index} ;\n`;
+        additionalObjects += `_:CONTRIBUTOR${index}\n`;
+        additionalObjects += `  rdf:type dcterms:Agent ;\n`;
+        additionalObjects += `  dcterms:title "${contributor}" .\n\n"`;
+      });
+    }
+    if (model.url) ttl += `  dcterms:identifier <${model.url}> ; `;
+    if (model.language) ttl += `  dcterms:language <https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}> ;\n`;
+    if (model.source) ttl += `  dcterms:source "${model.source}" ;\n`;
+    if (model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
     if (model.educationLevel) {
-      model.educationLevel.forEach((level: string) => {
-        ttl += `  dcterms:educationLevel "EQF ${level}" ;\n`;
+      model.educationLevel.forEach((eqfLevel: string) => {
+        ttl += `  elm:EQFLevel "${eqfLevel}" ;\n`;
       });
     }
     if (model.tableOfContents) ttl += `  dcterms:tableOfContents "${model.tableOfContents.join(', ')}" ;\n`;
-
-    /* TODO
-
-      - Source
-      - Training Program
-      - Location (URL)
-      - Prerequisites
-      - Workload
-      - BoK Links (???)
-      - Learning outcomes
-      - Certification
-      - Type of assessment
-      - Title of the micro-credential (???)
-      - Micro-credential awarding body (???)
-    */
-
-    // Replace final semicolon with a period
+    if (model.workload) {
+      ttl += `  elm:creditPoint _:ECTS ;\n`;
+      ttl += `  elm:creditReceived "${model.workload}" ;\n`;
+      additionalObjects += `_:ECTS\n`;
+      additionalObjects += `  rdf:type elm:CreditPoint ;\n`;
+      additionalObjects += `  dcterms:title "ECTS" .\n\n"`;
+    }
+    if (model.prerequisites) {
+      model.prerequisites.forEach((prerequisite: string, index: number) => {
+        ttl += `  elm:entryRequirement _:PREREQUISITE${index} ;\n`;
+        additionalObjects += `_:PREREQUISITE${index}\n`;
+        additionalObjects += `  rdf:type elm:Note ;\n`;
+        additionalObjects += `  dcterms:description "${prerequisite}" .\n\n"`;
+      });
+    }
+    if (model.assessment) {
+      model.assessment.forEach((assessment: string, index: number) => {
+        ttl += `  elm:entryRequirement _:ASSESSMENT${index} ;\n`;
+        additionalObjects += `_:ASSESSMENT${index}\n`;
+        additionalObjects += `  rdf:type elm:LearningAssessment ;\n`;
+        additionalObjects += `  dcterms:description "${assessment}" .\n\n"`;
+      });
+    }
+    if (model.concepts) {
+      model.concepts.forEach((concept: string) => {
+        ttl += `  dcterms:relation bok:${concept} ;\n`;
+      });
+    }
+    
     ttl = ttl.trim().replace(/;$/, '.') + '\n\n';
+    ttl += additionalObjects;
 
     return ttl;
   }
