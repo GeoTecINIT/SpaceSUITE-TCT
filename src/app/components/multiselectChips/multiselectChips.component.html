@@ -1,0 +1,32 @@
+<div class="p-2 custom-border" [class.custom-border-error]="error">
+    <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="error">
+        <p-multiselect #pmulti [options]="multiselectOptions" [ngModel]="chips" inputId="multi"
+            class="w-full custom-multiselect" [maxSelectedLabels]="0" (ngModelChange)="multiselectChange($event)"
+            [class.invalid-multiselect]="error" showToggleAll="false" resetFilterOnHide="true" (onFilter)="currentText = pmulti.filterValue || ''"
+            filterPlaceHolder="Choose a {{fieldName}} or specify a custom value" [showClear]="true" (onClear)="this.chipsChange.emit([])"
+            [optionValue]="'value'" [optionLabel]="'id'" (onPanelShow)="onDropdownOpen()">
+            <ng-template #footer>
+                <div class="flex" *ngIf="pmulti.filterValue != '' && pmulti.filterValue != undefined && !pmulti.isEmpty()">
+                    <p-button icon="pi pi-plus" label="Add Custom {{fieldName}}" size="small" class="custom-button p-3"
+                        (onClick)="clickButton()"></p-button>
+                </div>
+            </ng-template>
+            <ng-template #emptyfilter>
+                    <p-button icon="pi pi-plus" label="Add Custom {{fieldName}}" size="small" class="custom-button"
+                        (onClick)="clickButton()" *ngIf="pmulti.filterValue != '' && pmulti.filterValue != undefined"></p-button>
+            </ng-template>
+            <ng-template #filtericon>
+                <i class="pi pi-bookmark"></i>
+            </ng-template>
+            <ng-template #selecteditems>
+                {{chips.length}} items selected
+            </ng-template>
+        </p-multiselect>
+        <label for="multi">{{fieldName}}/s *</label>
+    </p-floatlabel>
+    <div class="mt-3 flex-wrap gap-2 align-items-center" [style.display]="chips.length == 0 ? 'none' : 'flex'">
+        <ng-content *ngFor="let chip of chips">
+            <p-chip [label]="chip" [removable]="true" (onRemove)="deleteElement(chip)" class="custom-chip"/>
+        </ng-content>
+    </div>
+</div>

@@ -68,18 +68,6 @@
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('subject') != undefined">
-                                <p-multiselect [options]="subjectSelector.tags" [(ngModel)]="material.subject" inputId="subject"
-                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
-                                    [class.invalid-multiselect]="errorMap.get('subject') != undefined"
-                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the resource" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="subject">{{subjectSelector.label}} *</label>
-                            </p-floatlabel>
-                            <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
-                        </div>
-
-                        <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('language') != undefined">
                                 <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
                                     class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('language') != undefined"
@@ -120,6 +108,14 @@
                                 <label for="abstract">Abstract *</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('abstract')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('abstract')}}</p>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'Subject'" [(chips)]="material.subject" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'"
+                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
                         </div>
 
                         <div>
@@ -179,7 +175,7 @@
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('educationLevel') != undefined">
                                 <p-multiselect [options]="eqfSelector.tags" [(ngModel)]="material.educationLevel" inputId="eqf" 
-                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1"
+                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="8"
                                     [class.invalid-multiselect]="errorMap.get('educationLevel') != undefined"
                                     pTooltip="European Qualifications Framework code" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>

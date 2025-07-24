@@ -26,6 +26,7 @@ import { catchError, of, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
+import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
 
 @Component({
   standalone: true,
@@ -34,7 +35,7 @@ import { TooltipModule } from "primeng/tooltip";
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule],
+    TooltipModule, MultiselectChipsComponent],
   providers: [MessageService]
 })
 export class MaterialFormComponent {
