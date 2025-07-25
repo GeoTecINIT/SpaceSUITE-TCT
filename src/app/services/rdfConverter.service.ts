@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { TrainingMaterial } from '../model/trainingMaterial';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RdfConverterService {
+
+  constructor(private utilsService: UtilsService) {}
   
   getRdfXmlUrl(material: TrainingMaterial): string {
     const blob = new Blob([this.convertModelToRdfXml(material)], { type: 'text/xml' });
@@ -42,7 +45,12 @@ export class RdfConverterService {
     }
     if (model.subject && Array.isArray(model.subject)) {
       model.subject.forEach((subj: string) => {
-        ttl += `  dcterms:subject "${subj}" ;\n`;
+        if (this.utilsService.codeToKnowledgeArea.has(subj)) {
+          ttl += `  dcterms:subject bok:${subj} ;\n`;
+        }
+        else {
+          ttl += `  dcterms:subject "${subj}" ;\n`;
+        }
       });
     }
     if (model.description) ttl += `  dcterms:description "${model.description}" ;\n`;

@@ -5,6 +5,7 @@ import { MaterialFormComponent } from "../materialForm/materialForm.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { LanguageService } from "../../services/language.service";
+import { UtilsService } from "../../services/utils.service";
 
 
 @Component({
@@ -16,7 +17,8 @@ import { LanguageService } from "../../services/language.service";
 export class EditPageComponent {
   material!: TrainingMaterial;
 
-  constructor(private trainingMaterialService: TrainingMaterialService, private route: ActivatedRoute, private router: Router, private languageService: LanguageService) {}
+  constructor(private trainingMaterialService: TrainingMaterialService, private route: ActivatedRoute, private router: Router, private languageService: LanguageService,
+              private utilsService: UtilsService) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -27,6 +29,7 @@ export class EditPageComponent {
             this.material = new TrainingMaterial(newMaterial);
             this.material.educationLevel = this.material.educationLevel.map( value => 'EQF ' + value);
             this.material.language = this.languageService.getLanguage(this.material.language!);
+            this.material.subject = this.material.subject.map(subject => this.utilsService.codeToKnowledgeArea.get(subject) || subject);
           }
           else this.router.navigate(['not_found']);
         }

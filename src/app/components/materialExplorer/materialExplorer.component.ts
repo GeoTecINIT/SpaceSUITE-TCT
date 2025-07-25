@@ -134,13 +134,11 @@ export class MaterialExplorerComponent {
       this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
       return;
     }
-    this.finalTrainingMaterial = [];
-    for (let filterConcept of filterConcepts){
-      let partialTrainingMaterial = this.filteredTrainingMaterial.filter(material =>
-          material.concepts.some(concept => concept.replace(/^eo4geo:/, "") === filterConcept)
-      );
-      this.finalTrainingMaterial = this.finalTrainingMaterial.concat(partialTrainingMaterial);
-    }
+    this.finalTrainingMaterial = this.filteredTrainingMaterial.filter(material =>
+      filterConcepts.some(filterConcept =>
+        material.concepts.includes(filterConcept) || material.subject.includes(filterConcept)
+      )
+    );
     this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
   }
 

@@ -48,6 +48,21 @@ export class CardComponent {
         tooltip => this.selectedConceptsTooltip.set(concept, tooltip ? tooltip : 'Deprecated concept')
       );
     })
+    this.trainingMaterial.subject.forEach(concept => {
+      if (this.utilsService.codeToKnowledgeArea.has(concept)){
+        this.concepts.push(concept)
+        this.bokInfo.getConceptColor(concept).subscribe(
+          color => {
+            const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
+            this.selectedConceptsColor.set(concept, softColor)
+          }
+        );
+        this.bokInfo.getConceptName(concept).subscribe(
+          tooltip => this.selectedConceptsTooltip.set(concept, tooltip ? tooltip : 'Deprecated concept')
+        );
+      }
+    })
+    this.concepts.sort()
     this.visibleConcepts = [...this.concepts];
   }
 
