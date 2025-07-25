@@ -23,7 +23,6 @@ export class MultiselectChipsComponent {
   currentText: string = '';
   multiSelection: string[] = []
   multiselectOptions: any[] = [];
-  customInput: boolean = false;
 
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';

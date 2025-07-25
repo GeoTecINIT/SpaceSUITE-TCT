@@ -27,6 +27,7 @@ import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
 import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
+import { CustomSelectComponent } from "../customSelect/customSelect.component";
 
 @Component({
   standalone: true,
@@ -35,7 +36,7 @@ import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent],
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent],
   providers: [MessageService]
 })
 export class MaterialFormComponent {
@@ -44,9 +45,6 @@ export class MaterialFormComponent {
   @Input() inputMaterial?: TrainingMaterial;
   material: TrainingMaterial = new TrainingMaterial();
 
-  languageSelector: FilterOption;
-  interactivityTypeSelector: FilterOption;
-  licenseSelector: FilterOption;
   organizationSelector = {
     label: 'Organization',
     tags: [] as any[],
@@ -65,12 +63,6 @@ export class MaterialFormComponent {
 
   constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router) {
-    this.languageSelector = this.cardFilterService.getOptionByLabel('Language');
-    this.interactivityTypeSelector = this.cardFilterService.getOptionByLabel('Interactivity Type');
-    this.interactivityTypeSelector.tags = this.interactivityTypeSelector.tags.filter(value => value != 'Other');
-    this.licenseSelector = this.cardFilterService.getOptionByLabel('License');
-    this.licenseSelector.tags = this.licenseSelector.tags.filter(value => value != 'Other')
-
     this.material.userId = this.firebaseService.getUserData()?.uid!;
     this.organizationSelector.tags = [];
     this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>

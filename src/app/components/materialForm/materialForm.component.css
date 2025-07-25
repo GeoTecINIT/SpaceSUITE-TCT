@@ -74,23 +74,6 @@
     }
 }
 
-
-.custom-multiselect {
-    --p-multiselect-focus-border-color: var(--hover-color);
-    --p-multiselect-hover-border-color: var(--hover-color);
-
-    --p-checkbox-checked-background: var(--secondary-color);
-    --p-checkbox-checked-border-color: var(--secondary-color);
-    --p-checkbox-checked-hover-background: var(--hover-color);
-    --p-checkbox-checked-hover-border-color: var(--hover-color);
-    --p-checkbox-checked-focus-border-color: var(--secondary-color);  
-    --p-checkbox-focus-ring-color: var(--secondary-color);
-
-    --p-inputtext-focus-border-color: var(--hover-color);
-    --p-inputtext-hover-border-color: var(--hover-color);
-
-}
-
 .custom-datepicker {
     --p-datepicker-select-month-color: var(--primary-color);
     --p-datepicker-select-year-color: var(--primary-color);
@@ -133,11 +116,6 @@
     --p-floatlabel-active-color: var(--danger-color);
 }
 
-.invalid-multiselect {
-    --p-multiselect-border-color: var(--danger-color);
-    --p-multiselect-dropdown-color: var(--danger-color);
-}
-
 .custom-toast {
     --p-toast-info-background: color-mix(in srgb, var(--secondary-color) 10%, rgba(255, 255, 255, 0.9) 90%);
     --p-toast-info-border-color: var(--secondary-color);
@@ -162,19 +140,4 @@
 ::ng-deep .p-tooltip {
     --p-tooltip-background: var(--primary-color);
     --p-tooltip-color: white;
-}
-
-::ng-deep .p-select input {
-    font-family: inherit;
-    font-feature-settings: inherit;
-    font-size: 1rem;
-    color: var(--p-inputtext-color);
-    background: var(--p-inputtext-background);
-    padding-block: var(--p-inputtext-padding-y);
-    padding-inline: var(--p-inputtext-padding-x);
-    transition: background var(--p-inputtext-transition-duration),color var(--p-inputtext-transition-duration),border-color var(--p-inputtext-transition-duration),outline-color var(--p-inputtext-transition-duration),box-shadow var(--p-inputtext-transition-duration);
-    appearance: none;
-    border-radius: var(--p-inputtext-border-radius);
-    outline-color: transparent;
-    box-shadow: var(--p-inputtext-shadow);
 }

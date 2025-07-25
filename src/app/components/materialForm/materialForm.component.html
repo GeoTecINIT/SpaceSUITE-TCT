@@ -68,13 +68,10 @@
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('language') != undefined">
-                                <p-select [options]="languageSelector.tags" [(ngModel)]="material.language"  inputId="lang" 
-                                    class="w-full custom-select" [checkmark]="true" [class.invalid-select]="errorMap.get('language') != undefined"
-                                    pTooltip="The language of the resource" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="lang">{{languageSelector.label}} *</label>
-                            </p-floatlabel>
+                            <custom-select [fieldName]="'Language'" [(selection)]="material.language" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('language') != undefined" [optionsName]="'Language'"
+                                    pTooltip="The language of the resource" [filter]="false"
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
                             <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
                         </div>
 
@@ -151,25 +148,18 @@
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
-                                <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license" editable
-                                    class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"
+                            <custom-select [fieldName]="'License'" [(selection)]="material.license" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('license') != undefined" [optionsName]="'License'"
                                     pTooltip="License agreement (most commonly CC-BY-SA)" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="license">{{licenseSelector.label}} *</label>
-                            </p-floatlabel>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
                             <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
                         </div>
-                        
-                        <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('interactivityType') != undefined">
-                                <p-select [options]="interactivityTypeSelector.tags" [(ngModel)]="material.interactivityType" inputId="interactivityType"
-                                    class="w-full custom-select" [checkmark]="true" editable
-                                    [class.invalid-select]="errorMap.get('interactivityType') != undefined"
+
+                         <div>
+                            <custom-select [fieldName]="'Interactivity Type'" [(selection)]="material.interactivityType" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('interactivityType') != undefined" [optionsName]="'Interactivity Type'"
                                     pTooltip="Select the main mode of learning through which the resource is intended to be used. This refers to how learners engage with the material" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="interactivityType">{{interactivityTypeSelector.label}} *</label>
-                            </p-floatlabel>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
                             <p *ngIf="errorMap.get('interactivityType')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('interactivityType')}}</p>
                         </div>
 

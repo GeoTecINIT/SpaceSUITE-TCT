@@ -5,7 +5,7 @@ export class TrainingMaterial extends OldTrainingMaterial {
   created: any;
   language?: string;
   materialType: string[];
-  interactivityType: string | undefined;
+  interactivityType?: string;
   educationLevel: string[];
   audience: string[];
   assessment: string[];
