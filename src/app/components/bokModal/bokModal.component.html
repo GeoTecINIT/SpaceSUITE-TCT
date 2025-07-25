@@ -14,7 +14,8 @@
 <p-dialog header="Explore Body of Knowledge" [modal]="true" [(visible)]="visible" [style]="{width: '45rem', height: '52rem', color: 'var(--primary-color)'}" (onShow)="loadComponent()">
     <ng-template #dynamicContainer></ng-template>
     <div class="flex justify-content-between align-items-center">
-        <div class="mx-4">{{currentConcept}} : {{currentConceptName}}</div>
-        <p-button (click)="addConcept()" label="Add" class="custom-button"/>
+        <div *ngIf="!invalidConcept" class="mx-4">{{currentConcept}} : {{currentConceptName}}</div>
+        <div *ngIf="invalidConcept" [style.color]="'var(--danger-color)'" class="mx-4">Select this concept using the Subject field</div>
+        <p-button (click)="addConcept()" [disabled]="invalidConcept" label="Add" class="custom-button"/>
     </div>
 </p-dialog>

@@ -207,7 +207,7 @@
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
                                 [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
-                                <bokModal [(selectedConcepts)]="material.concepts" [label]="'Knowledge Annotations *'"
+                                <bokModal [(selectedConcepts)]="material.concepts" [label]="'Knowledge Annotations *'" [allowKnowledgeAreas]="false"
                                     [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' "></bokModal>
                             </div>
                             <p *ngIf="errorMap.get('concepts')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('concepts')}}</p>

@@ -32,6 +32,9 @@ export class BokModalComponent {
 
   private componentRef: ComponentRef<BokComponent> | null = null;
 
+  @Input() allowKnowledgeAreas: boolean = true;
+  invalidConcept: boolean = false;
+
   constructor(private readonly bokInfo: BokInformationService, private readonly utilsService: UtilsService, 
               private cdr: ChangeDetectorRef){}
 
@@ -63,6 +66,12 @@ export class BokModalComponent {
     this.componentRef.setInput('showSearchEngine', true);
     this.componentRef.instance.codSelectedChange.subscribe((newCode: string) => {
       this.currentConcept = newCode;
+      if (!this.allowKnowledgeAreas && (this.utilsService.codeToKnowledgeArea.has(this.currentConcept))) {
+        this.invalidConcept = true;
+        this.cdr.detectChanges();
+        return
+      }
+      this.invalidConcept = false;
       this.bokInfo.getConceptName(newCode).subscribe(name => this.currentConceptName = name);
       this.cdr.detectChanges();
     })
