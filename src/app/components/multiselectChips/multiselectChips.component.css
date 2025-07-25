@@ -1,34 +1,15 @@
-.custom-input {
-    --p-inputtext-focus-border-color: var(--hover-color);
-    --p-inputtext-hover-border-color: var(--hover-color);
-    --p-inputtext-invalid-placeholder-color: var(--danger-color);
-    --p-inputtext-invalid-border-color: var(--danger-color);
-}
-
 .custom-floatlabel {
     --p-floatlabel-focus-color: var(--hover-color);
 }
 
-.textarea-iconfield {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
+.invalid-floatlabel {
+    --p-floatlabel-color: var(--danger-color);
+    --p-floatlabel-active-color: var(--danger-color);
 }
 
-.textarea-iconfield .p-inputicon {
-    position: absolute;
-    top: 17px;
-    left: 11px;
-    z-index: 1;
-}
-
-.custom-textarea {
-    padding-left: 2.5rem;
-}
-
-.custom-textarea:hover,
-.custom-textarea:focus {
-    border-color: var(--hover-color) !important;
+.invalid-multiselect {
+    --p-multiselect-border-color: var(--danger-color);
+    --p-multiselect-dropdown-color: var(--danger-color);
 }
 
 .custom-button {
@@ -63,7 +44,7 @@
     --p-chip-remove-icon-focus-ring-color: var(--primary-color);
 }
 
-.custom-multiselect {
+::ng-deep .custom-multiselect {
     --p-multiselect-focus-border-color: var(--hover-color);
     --p-multiselect-hover-border-color: var(--hover-color);
 

@@ -30,6 +30,8 @@ export class MultiselectChipsComponent {
 
   @Input() error: boolean = false;
 
+  @Input() filter: boolean = true;
+
   @ViewChild('pmulti', { read: MultiSelect }) multiSelectEl!: MultiSelect;
 
   constructor(private filterService: CardFilterService) {}

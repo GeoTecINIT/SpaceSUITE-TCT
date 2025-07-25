@@ -83,7 +83,7 @@
                                 <textarea id="description" pTextarea [(ngModel)]="material.description"
                                     [class.ng-invalid]="errorMap.get('description') != undefined" [class.ng-dirty]="errorMap.get('description') != undefined"
                                     rows="4" class="w-full custom-textarea m-0"
-                                    pTooltip="A detailed overview of the resource providing context, purpose and structure" 
+                                    pTooltip="Provide a concise summary or overview of the resource content. Include key topics, purpose, scope, and any important features or intended audience" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
                                 <div class="textarea-length" [style]="errorMap.get('description') != undefined ? 'color: var(--danger-color)' : ''">
                                     <span>{{material.description.length + ' '}}</span>
@@ -99,7 +99,7 @@
                                 <textarea id="abstract" pTextarea [(ngModel)]="material.abstract"
                                     [class.ng-invalid]="errorMap.get('abstract') != undefined" [class.ng-dirty]="errorMap.get('abstract') != undefined"
                                     rows="2" class="w-full custom-textarea m-0" 
-                                    pTooltip="A concise version of the description focused on the core or essential aspects of the resource" 
+                                    pTooltip="Provide a brief summary of the resource as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="500"></textarea>
                                 <div class="textarea-length" [style]="errorMap.get('abstract') != undefined ? 'color: var(--danger-color)' : ''">
                                     <span>{{material.abstract.length + ' '}}</span>
@@ -149,21 +149,22 @@
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('workload')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('workload')}}</p>
                         </div>
-                        
+
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('type') != undefined">
-                                <p-multiselect [options]="typeSelector.tags" [(ngModel)]="material.materialType" inputId="type" 
-                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" [class.invalid-multiselect]="errorMap.get('type') != undefined"
-                                    pTooltip="Select one or more types that best describe the resource" tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="type">{{typeSelector.label}} *</label>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
+                                <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license" editable
+                                    class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"
+                                    pTooltip="License agreement (most commonly CC-BY-SA)" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                <label for="license">{{licenseSelector.label}} *</label>
                             </p-floatlabel>
-                            <p *ngIf="errorMap.get('type')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('type')}}</p>
+                            <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
                         </div>
                         
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('interactivityType') != undefined">
                                 <p-select [options]="interactivityTypeSelector.tags" [(ngModel)]="material.interactivityType" inputId="interactivityType"
-                                    class="w-full custom-select" [checkmark]="true"
+                                    class="w-full custom-select" [checkmark]="true" editable
                                     [class.invalid-select]="errorMap.get('interactivityType') != undefined"
                                     pTooltip="Select the main mode of learning through which the resource is intended to be used. This refers to how learners engage with the material" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>
@@ -173,49 +174,34 @@
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('educationLevel') != undefined">
-                                <p-multiselect [options]="eqfSelector.tags" [(ngModel)]="material.educationLevel" inputId="eqf" 
-                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="8"
-                                    [class.invalid-multiselect]="errorMap.get('educationLevel') != undefined"
-                                    pTooltip="European Qualifications Framework code" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="eqf">{{eqfSelector.label}} *</label>
-                            </p-floatlabel>
+                            <multiselect-chips [fieldName]="'Course Type'" [(chips)]="material.materialType" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('type') != undefined" [optionsName]="'Course Type'"
+                                    pTooltip="Select one or more types that best describe the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('type')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('type')}}</p>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'EQF Level'" [(chips)]="material.educationLevel" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('educationLevel') != undefined" [optionsName]="'EQF Level'"
+                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [filter]="false"></multiselect-chips>
                             <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('license') != undefined">
-                                <p-select [options]="licenseSelector.tags" [(ngModel)]="material.license"
-                                    class="w-full custom-select" [checkmark]="true" inputId="license" [class.invalid-select]="errorMap.get('license') != undefined"
-                                    pTooltip="License agreement (most commonly CC-BY-SA)" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="license">{{licenseSelector.label}} *</label>
-                            </p-floatlabel>
-                            <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
-                        </div>
-
-                        <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('audience') != undefined">
-                                <p-multiselect [options]="audienceSelector.tags" [(ngModel)]="material.audience" inputId="audience"
-                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
-                                    [class.invalid-multiselect]="errorMap.get('audience') != undefined"
+                            <multiselect-chips [fieldName]="'Target Audience'" [(chips)]="material.audience" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('audience') != undefined" [optionsName]="'Target Audience'"
                                     pTooltip="The intended participants for the resource" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="audience">{{audienceSelector.label}} *</label>
-                            </p-floatlabel>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('audience')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('audience')}}</p>
                         </div>
 
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('assessment') != undefined">
-                                <p-multiselect [options]="assessmentSelector.tags" [(ngModel)]="material.assessment" inputId="assessment"
-                                    class="w-full custom-multiselect" [showClear]="true" [maxSelectedLabels]="1" 
-                                    [class.invalid-multiselect]="errorMap.get('assessment') != undefined"
+                            <multiselect-chips [fieldName]="'Type of Assessment'" [(chips)]="material.assessment" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('assessment') != undefined" [optionsName]="'Type of Assessment'"
                                     pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
-                                <label for="assessment">{{assessmentSelector.label}} *</label>
-                            </p-floatlabel>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('assessment')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('assessment')}}</p>
                         </div>
 
