@@ -28,16 +28,32 @@ export class TextChipsComponent {
 
   @ViewChild('component', { static: true }) containerRef!: ElementRef;
 
+  chipAnimations: Record<string, boolean> = {}
+
+  ngOnInit() {
+    this.chips.forEach(chip => {
+      this.chipAnimations[chip] = false;
+    })
+  }
+
   clickButton() {
     const inputValue: string = this.currentText.trim();
-    if (inputValue != ''){
+    if (inputValue != '' && !this.chips.includes(inputValue)){
       this.chipsChange.emit(this.chips.concat(inputValue));
+      this.chipAnimations[inputValue] = false;
+    }
+    else if (inputValue != '') {
+      this.chipAnimations[inputValue] = true;
+      setTimeout(() => {
+        this.chipAnimations[inputValue] = false;
+      }, 800);
     }
     this.currentText = '';
   }
 
   deleteElement(element: string) {
     this.chipsChange.emit(this.chips.filter(value => value != element));
+    delete this.chipAnimations[element]
   }
   
   focusOut(event: FocusEvent) {

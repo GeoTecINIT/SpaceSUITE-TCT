@@ -32,12 +32,18 @@ export class MultiselectChipsComponent {
   @Input() filter: boolean = true;
 
   @ViewChild('pmulti', { read: MultiSelect }) multiSelectEl!: MultiSelect;
+  
+  chipAnimations: Record<string, boolean> = {}
+
 
   constructor(private filterService: CardFilterService) {}
 
   ngOnInit() {
     const filterOption = this.filterService.getOptionByLabel(this.optionsName);
     this.multiselectOptions = filterOption.tags.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
+    this.chips.forEach(chip => {
+      this.chipAnimations[chip] = false;
+    })
   }
 
   onDropdownOpen() {
@@ -57,8 +63,14 @@ export class MultiselectChipsComponent {
 
   clickButton() {
     const inputValue: string = this.currentText.trim();
-    if (inputValue != ''){
+    if (inputValue != '' && !this.chips.includes(inputValue)){
       this.chipsChange.emit(this.chips.concat(inputValue));
+    }
+    else if (inputValue != '') {
+      this.chipAnimations[inputValue] = true;
+      setTimeout(() => {
+        this.chipAnimations[inputValue] = false;
+      }, 800);
     }
     this.currentText = '';
     this.multiSelectEl.hide()

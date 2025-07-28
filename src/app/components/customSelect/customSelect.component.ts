@@ -59,8 +59,10 @@ export class CustomSelectComponent {
 
   clickButton() {
     const inputValue: string = this.currentText.trim();
-    if (inputValue != '' && !this.selectOptions.includes(!this.selectOptions.map(value => value.value).includes(inputValue))){
-      this.selectOptions = this.selectOptions.concat({ id: inputValue, value: inputValue})
+    if (inputValue != ''){
+      if (!this.selectOptions.map(value => value.value).includes(inputValue)) {
+        this.selectOptions = this.selectOptions.concat({ id: inputValue, value: inputValue})
+      }
       this.selectionChange.emit(inputValue);
     }
     this.currentText = '';
