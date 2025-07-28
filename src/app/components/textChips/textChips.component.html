@@ -1,9 +1,8 @@
-<div #component class="p-2 custom-border" [class.custom-border-error]="error">
+<div #component class="p-2 custom-border" [class.custom-border-error]="error" (clickOutside)="focusOut($event)">
     <p-floatlabel variant="on" class="custom-floatlabel">
         <p-iconfield>
             <input pInputText id="{{fieldName}}" autocomplete="off" class="w-full custom-input" [(ngModel)]="currentText" 
-                [class.ng-invalid]="error" [class.ng-dirty]="error"
-                (focusout)="focusOut($event)" (keyup.enter)="clickButton()" maxlength="100"/>
+                [class.ng-invalid]="error" [class.ng-dirty]="error" (keyup.enter)="clickButton()" maxlength="100"/>
             <p-inputicon [class]="icon" [style]="error ? 'color: var(--danger-color)' : ''"></p-inputicon>
         </p-iconfield>
         <label for="{{fieldName}}">{{fieldName}}</label>

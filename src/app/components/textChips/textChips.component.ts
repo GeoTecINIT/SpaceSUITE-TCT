@@ -7,13 +7,14 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { CommonModule } from "@angular/common";
+import { ClickOutsideDirective } from "../../directives/clickOutside.directive";
 
 @Component({
   standalone: true,
   selector: 'text-chips',
   templateUrl: './textChips.component.html',
   styleUrls: ['./textChips.component.css'],
-  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, ButtonModule, ChipModule, CommonModule],
+  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, ButtonModule, ChipModule, CommonModule, ClickOutsideDirective],
 })
 export class TextChipsComponent {
 
