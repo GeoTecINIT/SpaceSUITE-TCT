@@ -27,10 +27,10 @@
                 <div style="color: var(--primary-color)">
                     <span class="font-medium block mb-2"><strong>Metadata Format</strong></span>
                     <ul class="p-0 m-0 flex flex-column">
-                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" style="cursor: not-allowed; opacity: 0.5; pointer-events: none;" (click)="downloadMaterialRDFa()">
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialRDFa()">
                             <span class="font-medium">RDFa</span>
                         </li>
-                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" style="cursor: not-allowed; opacity: 0.5; pointer-events: none;" (click)="downloadMaterialXML()">
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialXML()">
                             <span class="font-medium">RDF/XML</span>
                         </li>
                         <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
@@ -108,7 +108,11 @@
                     </div>
                     <div class="mb-2">
                         <strong>Audience:</strong>
-                        {{this.material.audience.join(', ') || ""}}
+                        <ul *ngIf="material.audience.length > 0">
+                            <li *ngFor="let audience of material.audience">
+                                {{audience}}
+                            </li>
+                        </ul>
                     </div>
                     <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
                     <div class="mb-2"><strong>Organization:</strong> {{material.orgName ?? 'Not specified'}}</div>
