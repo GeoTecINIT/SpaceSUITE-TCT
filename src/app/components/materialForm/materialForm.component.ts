@@ -78,6 +78,12 @@ export class MaterialFormComponent {
     }
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+  }
+
   loadDivisions(newValue: {label: string, value: string}) {
     this.material.orgId = newValue.value;
     this.material.orgName = newValue.label;
@@ -161,5 +167,12 @@ export class MaterialFormComponent {
   returnToHomepage() {
     if (this.inputMaterial != undefined) this.router.navigate([this.inputMaterial._id]);
     else this.router.navigate(['']);
+  }
+
+  goToNextStep(callback: (nextStepValue: number) => void, index: number) {
+    callback(index);
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
   }
 }

@@ -51,7 +51,7 @@ export class AppComponent {
           url: 'https://eo4geo-bmt.web.app',
         },
         {
-          label: 'Training Catalog Tool',
+          label: 'Training Catalogue Tool',
           icon: 'pi pi-graduation-cap',
           style: {'--p-tieredmenu-item-color': 'var(--hover-color)'},
           iconStyle: {'color': 'var(--hover-color)'},

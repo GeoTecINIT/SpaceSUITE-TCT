@@ -6,13 +6,17 @@ import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
 import { TooltipModule } from 'primeng/tooltip';
 import { UtilsService } from '../../services/utils.service';
+import { ProgressSpinner } from "primeng/progressspinner";
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   standalone: true,
   selector: 'bokModal',
   templateUrl: './bokModal.component.html',
   styleUrls: ['./bokModal.component.css'],
-  imports: [DialogModule, ButtonModule, ChipModule, CommonModule, TooltipModule],
+  imports: [DialogModule, ButtonModule, ChipModule, CommonModule, TooltipModule, ProgressSpinner, ToastModule],
+    providers: [MessageService]
 })
 export class BokModalComponent {
   visible = false;
@@ -36,7 +40,7 @@ export class BokModalComponent {
   invalidConcept: boolean = false;
 
   constructor(private readonly bokInfo: BokInformationService, private readonly utilsService: UtilsService, 
-              private cdr: ChangeDetectorRef){}
+              private cdr: ChangeDetectorRef, private messageService: MessageService){}
 
   ngOnInit() {
     this.selectedConcepts.forEach( concept => {
@@ -66,7 +70,7 @@ export class BokModalComponent {
     this.componentRef.setInput('showSearchEngine', true);
     this.componentRef.instance.codSelectedChange.subscribe((newCode: string) => {
       this.currentConcept = newCode;
-      if (!this.allowKnowledgeAreas && (this.utilsService.codeToKnowledgeArea.has(this.currentConcept))) {
+      if (!this.allowKnowledgeAreas && (this.utilsService.codeToKnowledgeArea.has(this.currentConcept) || this.currentConcept == 'GIST')) {
         this.invalidConcept = true;
         this.cdr.detectChanges();
         return
@@ -94,6 +98,22 @@ export class BokModalComponent {
         tooltip => this.selectedConceptsTooltip.set(concept, tooltip)
       );
       this.selectedConceptsChange.emit(this.selectedConcepts);
+      this.messageService.add({ 
+        severity: 'info', 
+        summary: 'Info', 
+        detail: 'Concept "' + concept +'" annotated!', 
+        life: 3000, 
+        closable: true 
+      });
+    }
+    else {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'Concept "' + concept +'" is already annotated!', 
+        life: 3000, 
+        closable: true 
+      });
     }
   }
 

@@ -50,6 +50,7 @@
     --p-fileupload-header-color: var(--primary-color);
     --p-button-text-danger-color: var(--danger-color);
     --p-fileupload-border-color: #cbd5e1;
+    --p-fileupload-content-padding: 0;
 }
 
 .custom-fileupload:hover {

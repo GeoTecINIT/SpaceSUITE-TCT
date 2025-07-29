@@ -25,7 +25,7 @@ export class CardFilterService {
       tootltip: 'The European Qualifications Framework, a common reference which assists in comparing qualifications systems.'
     },
     {
-      label: 'Course Type',
+      label: 'Training Material Type',
       tags: [
         'Text-based Materials',
         'Visual Materials',
@@ -39,7 +39,8 @@ export class CardFilterService {
         'Mobile Learning (M-Learning)',
         'Other'
       ],
-      selection: []
+      selection: [],
+      tootltip: 'The nature or genre of the resource.'
     },
     {
       label: 'Interactivity Type',
@@ -52,7 +53,8 @@ export class CardFilterService {
         'WorkBased',
         'Other'
       ],
-      selection: []
+      selection: [],
+      tootltip: 'The predominant mode of learning supported by the learning resource.'
     },
     {
       label: 'Target Audience',
@@ -70,7 +72,8 @@ export class CardFilterService {
         'Learners with special‐education needs',
         'Other'
       ],
-      selection: []
+      selection: [],
+      tootltip: 'The intended participants for the resource.'
     },
     {
       label: 'Type of Assessment',
@@ -86,7 +89,8 @@ export class CardFilterService {
         'Project presentation',
         'Other'
       ],
-      selection: []
+      selection: [],
+      tootltip: "The methods or tools used to evaluate and verify the learner's achievement of the Learning Outcomes."
     },
     {
       label: 'Subject',
@@ -110,7 +114,8 @@ export class CardFilterService {
         'Web-based GI',
         'Other'
       ],
-      selection: []
+      selection: [],
+      tootltip: 'Topic of the resource.'
     },
     {
       label: 'Language',
@@ -142,7 +147,8 @@ export class CardFilterService {
         "Latvian",
         "Estonian"      
       ],
-      selection: []
+      selection: [],
+      tootltip: 'A language of the resource.'
     },
     {
       label: 'License',
@@ -160,7 +166,8 @@ export class CardFilterService {
         'Contact author or institution for reuse',
         'Other',
       ],
-      selection: []
+      selection: [],
+      tootltip: 'Information about the license under which the resource is made available, specifying usage rights and conditions.'
     },
     {
       label: 'Organizations',
@@ -178,7 +185,7 @@ export class CardFilterService {
   }
 
   public getGeneralFilterOptions(): FilterOption[] {
-    const generalFilters = ['EQF Level', 'Language', 'Interactivity Type', 'Course Type', 'Target Audience', 'License']
+    const generalFilters = ['EQF Level', 'Language', 'Interactivity Type', 'Training Material Type', 'Target Audience', 'License']
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
@@ -186,7 +193,7 @@ export class CardFilterService {
     switch(filter.label) {
       case 'EQF Level':
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
-      case 'Course Type':
+      case 'Training Material Type':
         return filter.selection.some(selection => material.materialType.includes(selection));
       case 'Subject':
         return filter.selection.some(selection => material.subject.includes(selection));

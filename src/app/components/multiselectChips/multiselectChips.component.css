@@ -39,7 +39,7 @@
 }
 
 .custom-chip {
-    --p-chip-color:var(--primary-color);
+    --p-chip-color: var(--primary-color);
     --p-chip-remove-icon-color:var(--primary-color);
     --p-chip-remove-icon-focus-ring-color: var(--primary-color);
 }

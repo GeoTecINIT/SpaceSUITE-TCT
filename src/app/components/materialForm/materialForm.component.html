@@ -1,12 +1,12 @@
 <p-toast class="custom-toast" position="bottom-right"/>
 <div class="flex flex-column align-items-center justify-content-center p-4">
     <h2>{{pageName}}</h2>
-    <p-stepper [value]="1" [linear]="true" class="custom-stepper">
+    <p-stepper [value]="1" class="custom-stepper">
         <p-step-list>
             <p-step [value]="1">General Information</p-step>
             <p-step [value]="2">Material Content</p-step>
             <p-step [value]="3">Additional Information</p-step>
-            <p-step [value]="4">User Information</p-step>
+            <p-step [value]="4">User Account Information</p-step>
         </p-step-list>
         <p-step-panels>
             <p-step-panel [value]="1">
@@ -17,7 +17,7 @@
                                 <p-iconfield>
                                     <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
-                                        [(ngModel)]="material.title" pTooltip="A name given to the resource" 
+                                        [(ngModel)]="material.title" pTooltip="A name given to the resource"
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="200"/>
                                     <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
                                 </p-iconfield>
@@ -118,14 +118,14 @@
                         <div>
                             <text-chips [fieldName]="'Creator/s *'" [(chips)]="material.creators"
                                     [error]="errorMap.get('creators') != undefined" 
-                                    pTooltip="Please fill in with the author or authors" 
+                                    pTooltip="Specify the authors of the material. First name first, then second name" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
                             <p *ngIf="errorMap.get('creators')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('creators')}}</p>
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Return" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
-                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 2)" />
                     </div>
                 </ng-template>
             </p-step-panel>
@@ -164,8 +164,8 @@
                         </div>
 
                         <div>
-                            <multiselect-chips [fieldName]="'Course Type'" [(chips)]="material.materialType" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('type') != undefined" [optionsName]="'Course Type'"
+                            <multiselect-chips [fieldName]="'Training Material Type'" [(chips)]="material.materialType" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('type') != undefined" [optionsName]="'Training Material Type'"
                                     pTooltip="Select one or more types that best describe the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('type')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('type')}}</p>
@@ -214,8 +214,8 @@
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">
-                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
-                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(3)" />
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 1)" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 3)" />
                     </div>
                 </ng-template>
             </p-step-panel>
@@ -226,7 +226,7 @@
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="source" pTextarea [(ngModel)]="material.source"
                                     rows="2" class="w-full custom-textarea m-0" 
-                                    pTooltip="Provide a brief reference to the origin or basis of the resource" 
+                                    pTooltip="Resources from which the described training material is derived" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="500"></textarea>
                             <div class="textarea-length">
                                 <span>{{(material.source?.length || 0) + ' '}}</span>
@@ -250,27 +250,29 @@
                         <div>
                             <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" auto
                                 class="custom-button custom-secondary-button custom-fileupload" (uploadHandler)="onFileSelected($event); fileUpload.clear();"
-                                pTooltip="Image to be displayed in the Training Catalog with this resource" 
+                                pTooltip="Image to be displayed in the Training Catalogue with this resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200">
                                 <ng-template #header let-chooseCallback="chooseCallback">
                                     <div class="flex flex-wrap gap-2">
-                                        <p-button size="small" label="Choose Image" icon="pi pi-plus" (onClick)="fileUpload.choose()" />
-                                        <p-button severity="secondary" size="small" label="Delete Image" icon="pi pi-times" (onClick)="onFileDeleted()" />
+                                        <p-button size="small" label="Choose Illustrative Image" icon="pi pi-plus" (onClick)="fileUpload.choose()" />
+                                        <p-button severity="secondary" size="small" label="Delete Illustrative Image" icon="pi pi-times" *ngIf="uploadedImage" (onClick)="onFileDeleted()" />
                                     </div>
                                 </ng-template>
-                                <ng-template *ngIf="material.image != '' || uploadedImage" #content>
-                                    <p-divider class="my-2"></p-divider>
-                                    <div class="flex flex-column gap-2 align-items-center">
-                                        <div>Current Image</div>
-                                        <img [src]="uploadedImageB64 ?? material.image" class="w-full max-w-30rem">
+                                <ng-template #content>
+                                    <div class="px-2 pb-2" *ngIf="material.image != '' || uploadedImage">
+                                        <p-divider class="my-2"></p-divider>
+                                        <div class="flex flex-column gap-2 align-items-center">
+                                            <div>Current Image</div>
+                                            <img [src]="uploadedImageB64 ?? material.image" class="w-full max-w-30rem">
+                                        </div>
                                     </div>
                                 </ng-template>
                             </p-fileupload>
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">
-                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(2)" />
-                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(4)" />
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 2)" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 4)" />
                     </div>
                 </ng-template>
             </p-step-panel>
@@ -278,6 +280,8 @@
             <p-step-panel [value]="4">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
+                        <p class="m-0 font-italic align-self-center text-center" [style.color]="'var(--primary-color)'">Please revise your account information, under which the training material will be published (not part of metadata).</p>
+
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
                                 <input pInputText id="user" autocomplete="off" class="w-full custom-input" [ngModel]="getUserName()" disabled
@@ -309,10 +313,9 @@
                                 <label for="division">{{divisionSelector.label}}</label>
                             </p-floatlabel>
                         </div>
-                        
                     </div>
                     <div class="flex justify-content-between mt-3">
-                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(3)" />
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 3)" />
                         <p-button class="custom-button" label="Submit" (onClick)="submitMaterial()"/>
                     </div>
                 </ng-template>

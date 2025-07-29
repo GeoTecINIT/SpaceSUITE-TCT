@@ -7,6 +7,8 @@ import { ChipModule } from 'primeng/chip';
 import { CommonModule } from "@angular/common";
 import { MultiSelect, MultiSelectModule } from "primeng/multiselect";
 import { CardFilterService } from "../../services/cardFilter.service";
+import { UtilsService } from "../../services/utils.service";
+import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 
 @Component({
   standalone: true,
@@ -35,15 +37,29 @@ export class MultiselectChipsComponent {
   
   chipAnimations: Record<string, boolean> = {}
 
+  selectedConceptsColor: Map<string, string> = new Map();
 
-  constructor(private filterService: CardFilterService) {}
+  constructor(private filterService: CardFilterService, private utilsService: UtilsService, private bokInfo: BokInformationService) {}
 
   ngOnInit() {
     const filterOption = this.filterService.getOptionByLabel(this.optionsName);
     this.multiselectOptions = filterOption.tags.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
     this.chips.forEach(chip => {
       this.chipAnimations[chip] = false;
+      this.getBackgroundColor(chip);
     })
+  }
+
+  getBackgroundColor(chip: string) {
+    const chipCode = this.utilsService.knowledgeAreaToCode.get(chip);
+    if (chipCode != undefined) {
+      this.bokInfo.getConceptColor(chipCode).subscribe(
+        color => {
+          const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
+          this.selectedConceptsColor.set(chip, softColor)
+        }
+      )
+    }
   }
 
   onDropdownOpen() {
@@ -84,6 +100,7 @@ export class MultiselectChipsComponent {
   multiselectChange(values: string[]) {
     this.multiSelection = values || [];
     const include = this.multiSelection.filter(value => !this.chips.includes(value));
+    include.forEach( chip => this.getBackgroundColor(chip));
     const exclude = this.chips.filter(value => !this.multiSelection.includes(value) && this.multiselectOptions.map(x => x.value).includes(value));
     this.chipsChange.emit(this.chips.concat(include).filter(value => !exclude.includes(value)));
   }
