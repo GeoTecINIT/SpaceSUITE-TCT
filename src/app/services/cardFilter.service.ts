@@ -194,17 +194,53 @@ export class CardFilterService {
       case 'EQF Level':
         return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
       case 'Training Material Type':
-        return filter.selection.some(selection => material.materialType.includes(selection));
+        return filter.selection.some(selection => {
+          if (selection === 'Other') {
+            const validTags = this.getOptionByLabel('Training Material Type').tags.filter(value => value != 'Other');
+            return material.materialType.some(value => !validTags.includes(value));
+          }
+          return material.materialType.includes(selection);
+        });
       case 'Subject':
-        return filter.selection.some(selection => material.subject.includes(selection));
+        return filter.selection.some(selection => {
+          if (selection === 'Other') {
+            const validTags = this.getOptionByLabel('Subject').tags.filter(value => value != 'Other');
+            return material.subject.some(value => !validTags.includes(value));
+          }
+          return material.subject.includes(selection)
+        });
       case 'Type of Assessment':
-        return filter.selection.some(selection => material.assessment.includes(selection));
+        return filter.selection.some(selection => {
+          if (selection === 'Other') {
+            const validTags = this.getOptionByLabel('Type of Assessment').tags.filter(value => value != 'Other');
+            return material.assessment.some(value => !validTags.includes(value));
+          }
+          return material.assessment.includes(selection)
+        });
       case 'Target Audience':
-        return filter.selection.some(selection => material.audience.includes(selection));
+        return filter.selection.some(selection => {
+          if (selection === 'Other') {
+            const validTags = this.getOptionByLabel('Target Audience').tags.filter(value => value != 'Other');
+            return material.audience.some(value => !validTags.includes(value));
+          }
+          return material.audience.includes(selection)
+        });
       case 'Interactivity Type':
-        return filter.selection.some(selection => material.interactivityType?.toLowerCase() == selection.toLowerCase());
+        return filter.selection.some(selection => {
+          if (selection === 'Other') {
+            const validTags = this.getOptionByLabel('Interactivity Type').tags.filter(value => value != 'Other');
+            return !validTags.includes(material.interactivityType || '')
+          }
+          return material.interactivityType == selection
+        });
       case 'License':
-        return filter.selection.some(selection => material.license! == selection);
+        return filter.selection.some(selection => {
+          if (selection === 'Other') {
+            const validTags = this.getOptionByLabel('License').tags.filter(value => value != 'Other');
+            return !validTags.includes(material.license || '')
+          }
+          return material.license == selection
+        });
       case 'Language':
         return filter.selection.some(selection => material.language?.toLowerCase() == this.languageService.getIsoCode(selection));
       case 'Organizations':

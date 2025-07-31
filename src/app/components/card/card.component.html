@@ -12,7 +12,11 @@
             </a>
         </div>
     </ng-template>
-    <ng-template #subtitle>{{trainingMaterial.created?.toLocaleDateString()}}</ng-template>
+    <ng-template #subtitle>
+        <div class="text-sm">
+            <strong>Created:</strong> {{trainingMaterial.created?.toLocaleDateString()}}
+        </div>
+    </ng-template>
     <div #container class="mt-2 h-4rem overflow-hidden">
         <div #subjects class="flex align-items-start align-items-center gap-2 flex-wrap">
             <ng-content *ngFor="let concept of visibleConcepts">

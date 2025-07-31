@@ -108,7 +108,7 @@
                         </div>
 
                         <div>
-                            <multiselect-chips [fieldName]="'Subject'" [(chips)]="material.subject" [icon]="'pi pi-bookmark'"
+                            <multiselect-chips [fieldName]="'Subjects'" [(chips)]="material.subject" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'"
                                     pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
@@ -116,7 +116,7 @@
                         </div>
 
                         <div>
-                            <text-chips [fieldName]="'Creator/s *'" [(chips)]="material.creators"
+                            <text-chips [fieldName]="'Creators *'" [(chips)]="material.creators"
                                     [error]="errorMap.get('creators') != undefined" 
                                     pTooltip="Specify the authors of the material. First name first, then second name" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
@@ -226,16 +226,16 @@
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="source" pTextarea [(ngModel)]="material.source"
                                     rows="2" class="w-full custom-textarea m-0" 
-                                    pTooltip="Resources from which the described training material is derived" 
+                                    pTooltip="References and resources from which the described training material is derived" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="500"></textarea>
                             <div class="textarea-length">
                                 <span>{{(material.source?.length || 0) + ' '}}</span>
                                 <span>/ 500</span>
                             </div>
-                            <label for="source">Source/s</label>
+                            <label for="source">References & Resources</label>
                         </p-floatlabel>
 
-                        <text-chips [fieldName]="'Contributor/s'" [(chips)]="material.contributors" 
+                        <text-chips [fieldName]="'Contributors'" [(chips)]="material.contributors" 
                                     pTooltip="List any individuals or organizations that contributed to the creation or development of the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
                         
