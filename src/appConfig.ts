@@ -15,14 +15,15 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { MaterialFormComponent } from './app/components/materialForm/materialForm.component';
 import { EditPageComponent } from './app/components/editPage/editPage.component';
+import { exitWithoutSavingGuard } from './app/guards/exitWithoutSaving.guard';
 
 const routes: Routes = [
     { path: '', component: MaterialExplorerComponent },
-    { path: 'new', component: MaterialFormComponent, canActivate: [AuthGuard]},
+    { path: 'new', component: MaterialFormComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: 'not_found', component: NotFoundPageComponent},
     { path: 'profile', component: UserPageComponent, canActivate: [AuthGuard]},
     { path: 'organizations', component: OrganizationPageComponent, canActivate: [AuthGuard]},
-    { path: 'edit/:dynamicValue', component: EditPageComponent, canActivate: [AuthGuard]},
+    { path: 'edit/:dynamicValue', component: EditPageComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: ':dynamicValue', component: MaterialPageComponent },
     { path: '**', component: NotFoundPageComponent}
 ];

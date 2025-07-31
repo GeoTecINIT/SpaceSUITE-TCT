@@ -20,7 +20,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from "primeng/api";
+import { ConfirmationService, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
 import { catchError, of, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
@@ -28,6 +28,8 @@ import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
 import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
 import { CustomSelectComponent } from "../customSelect/customSelect.component";
+import { ExitWithoutSavingService } from "../../services/exitWithoutSaving.service";
+import { ConfirmDialog } from "primeng/confirmdialog";
 
 @Component({
   standalone: true,
@@ -36,8 +38,8 @@ import { CustomSelectComponent } from "../customSelect/customSelect.component";
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent, CustomSelectComponent],
-  providers: [MessageService]
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog],
+  providers: [MessageService, ConfirmationService]
 })
 export class MaterialFormComponent {
 
@@ -61,8 +63,8 @@ export class MaterialFormComponent {
   uploadedImage: File | undefined;
   uploadedImageB64: string | undefined;
 
-  constructor(private cardFilterService: CardFilterService, private firebaseService: FirebaseService, private messageService: MessageService,
-              private trainingMaterialService: TrainingMaterialService, private router: Router) {
+  constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
+              private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService) {
     this.material.userId = this.firebaseService.getUserData()?.uid!;
     this.organizationSelector.tags = [];
     this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>
@@ -76,6 +78,9 @@ export class MaterialFormComponent {
       if (this.material.division == '') this.material.division = undefined;
       this.firebaseService.getOrganizationDivisions(this.material.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
     }
+    this.exitWithoutSavingService.showModalSubject.subscribe(value => {
+      if (value) this.confirmExitWithoutSaving()
+    })
   }
 
   ngAfterViewInit() {
@@ -174,5 +179,23 @@ export class MaterialFormComponent {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 0);
+  }
+
+  confirmExitWithoutSaving() {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to exit without saving?',
+      header: 'Exit Without Saving',
+      icon: 'pi pi-info-circle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+      },
+      acceptButtonProps: {
+        label: 'Exit',
+        severity: 'primary',
+      },
+      accept: () => this.exitWithoutSavingService.exitSubject.next(true),
+      reject: () => this.exitWithoutSavingService.exitSubject.next(false),
+    });
   }
 }
