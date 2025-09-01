@@ -41,6 +41,13 @@ export class AppComponent {
           url: 'https://eo4geo-cdt.web.app',
         },
         {
+          label: 'Training Catalogue Tool',
+          icon: 'pi pi-graduation-cap',
+          style: {'--p-tieredmenu-item-color': 'var(--hover-color)'},
+          iconStyle: {'color': 'var(--hover-color)'},
+          command: () => this.router.navigate([''])
+        },
+        {
           label: 'BoK Annotation Tool',
           icon: 'pi pi-pencil',
           url: 'https://eo4geo-bat.web.app',
@@ -49,14 +56,7 @@ export class AppComponent {
           label: 'BoK Matching Tool',
           icon: 'pi pi-equals',
           url: 'https://eo4geo-bmt.web.app',
-        },
-        {
-          label: 'Training Catalogue Tool',
-          icon: 'pi pi-graduation-cap',
-          style: {'--p-tieredmenu-item-color': 'var(--hover-color)'},
-          iconStyle: {'color': 'var(--hover-color)'},
-          command: () => this.router.navigate([''])
-        },
+        }
       ]
     }, 
     {
