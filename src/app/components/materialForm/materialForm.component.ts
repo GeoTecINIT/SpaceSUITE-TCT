@@ -28,7 +28,7 @@ import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
 import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
 import { CustomSelectComponent } from "../customSelect/customSelect.component";
-import { ExitWithoutSavingService } from "../../services/exitWithoutSaving.service";
+import { ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 import { ConfirmDialog } from "primeng/confirmdialog";
 
 @Component({
