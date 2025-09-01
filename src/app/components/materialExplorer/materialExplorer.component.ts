@@ -52,7 +52,7 @@ export class MaterialExplorerComponent {
       filter(value => value !== undefined)
     ).subscribe(
     (newValue: TrainingMaterial[]) => {
-      this.trainingMaterialArray = newValue;
+      this.trainingMaterialArray = newValue.sort((a, b) => a.title.localeCompare(b.title));
       this.filterByUserMaterial = this.filterService.userMaterialFilter;
       this.searchTrainingMaterial(this.filterService.searchOption);
       this.loading = false;
