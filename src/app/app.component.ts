@@ -24,38 +24,43 @@ export class AppComponent {
           label: 'BoK Visualization & Search',
           icon: 'pi pi-search',
           url: 'https://bok.eo4geo.eu',
+          target: '_blank'
         },
         {
           label: 'Occupational Profile Tool',
           icon: 'pi pi-users',
           url: 'https://eo4geo-opt.web.app',
+          target: '_blank'
         },
         {
           label: 'Job Offer Tool',
           icon: 'pi pi-book',
           url: 'https://eo4geo-jot.web.app',
+          target: '_blank'
         },
         {
           label: 'Curriculum Design Tool',
           icon: 'pi pi-sitemap',
           url: 'https://eo4geo-cdt.web.app',
+          target: '_blank'
         },
         {
           label: 'Training Catalogue Tool',
           icon: 'pi pi-graduation-cap',
           style: {'--p-tieredmenu-item-color': 'var(--hover-color)'},
-          iconStyle: {'color': 'var(--hover-color)'},
-          command: () => this.router.navigate([''])
+          iconStyle: {'color': 'var(--hover-color)'}
         },
         {
           label: 'BoK Annotation Tool',
           icon: 'pi pi-pencil',
           url: 'https://eo4geo-bat.web.app',
+          target: '_blank'
         },
         {
           label: 'BoK Matching Tool',
           icon: 'pi pi-equals',
           url: 'https://eo4geo-bmt.web.app',
+          target: '_blank'
         }
       ]
     }, 
@@ -67,21 +72,25 @@ export class AppComponent {
           label: 'X',
           icon: 'pi pi-twitter',
           url: 'https://twitter.com/SpaceSUITE_eu',
+          target: '_blank'
         },
         {
           label: 'Facebook',
           icon: 'pi pi-facebook',
           url: 'https://www.facebook.com/spacesuiteproject/',
+          target: '_blank'
         },
         {
           label: 'Youtube',
           icon: 'pi pi-youtube',
           url: 'https://www.youtube.com/@SpaceSUITE_eu',
+          target: '_blank'
         },
         {
           label: 'LinkedIn',
           icon: 'pi pi-linkedin',
           url: 'https://www.linkedin.com/showcase/spacesuite_eu/',
+          target: '_blank'
         }
       ]
     }
