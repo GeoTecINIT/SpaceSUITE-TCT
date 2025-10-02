@@ -6,7 +6,7 @@ import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
 import { MaterialExplorerComponent } from './app/components/materialExplorer/materialExplorer.component';
 import { MaterialPageComponent } from './app/components/materialPage/materialPage.component';
-import { provideRouter, Routes } from '@angular/router';
+import { provideRouter, Routes, withRouterConfig } from '@angular/router';
 import { AuthGuard, exitWithoutSavingGuard, NotFoundPageComponent, OrganizationPageComponent, UserPageComponent } from '@eo4geo/ngx-bok-utils';
 import { environment } from './environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -18,18 +18,20 @@ import { EditPageComponent } from './app/components/editPage/editPage.component'
 
 const routes: Routes = [
     { path: '', component: MaterialExplorerComponent },
-    { path: 'new', component: MaterialFormComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'new', component: MaterialFormComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard], runGuardsAndResolvers: 'always'},
     { path: 'not_found', component: NotFoundPageComponent},
-    { path: 'profile', component: UserPageComponent, canActivate: [AuthGuard]},
-    { path: 'organizations', component: OrganizationPageComponent, canActivate: [AuthGuard]},
-    { path: 'edit/:dynamicValue', component: EditPageComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'profile', component: UserPageComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
+    { path: 'organizations', component: OrganizationPageComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
+    { path: 'edit/:dynamicValue', component: EditPageComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard], runGuardsAndResolvers: 'always'},
     { path: ':dynamicValue', component: MaterialPageComponent },
     { path: '**', component: NotFoundPageComponent}
 ];
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideRouter(routes),
+        provideRouter(routes, withRouterConfig({
+            onSameUrlNavigation: 'reload'
+        })),
         provideHttpClient(),
         provideFirebaseApp(() => initializeApp(environment.FIREBASE)),
         provideAuth(() => getAuth()),
