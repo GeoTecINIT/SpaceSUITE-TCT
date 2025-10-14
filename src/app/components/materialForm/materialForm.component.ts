@@ -22,13 +22,13 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, of, take } from "rxjs";
+import { catchError, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
 import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
 import { CustomSelectComponent } from "../customSelect/customSelect.component";
-import { ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
+import { AuthService, ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 import { ConfirmDialog } from "primeng/confirmdialog";
 
 @Component({
@@ -63,21 +63,32 @@ export class MaterialFormComponent {
   uploadedImage: File | undefined;
   uploadedImageB64: string | undefined;
 
+  private authSubscription!: Subscription
+  private userOrgsSubscription!: Subscription
+
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
-              private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService) {
-    this.material.userId = this.firebaseService.getUserData()?.uid!;
-    this.organizationSelector.tags = [];
-    this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>
-      this.organizationSelector.tags.push({label: organization.name, value: organization._id})
-    ));
-  }
+              private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, private authService: AuthService) {}
 
   ngOnInit() {
+    this.authSubscription = this.authService.getUserState().subscribe(state => {
+      if (state?.logged) this.material.userId = state.uid;
+      else {
+        this.exitWithoutSavingService.bypassGuard.next(true);
+        this.router.navigate(['']);
+      }
+    })
+    
+    this.organizationSelector.tags = [];
+    this.userOrgsSubscription = this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>
+      this.organizationSelector.tags.push({label: organization.name, value: organization._id})
+    ));
+
     if (this.inputMaterial) {
       this.material = this.inputMaterial;
       if (this.material.division == '') this.material.division = undefined;
       this.firebaseService.getOrganizationDivisions(this.material.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
     }
+
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()
     })

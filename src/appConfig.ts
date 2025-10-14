@@ -18,20 +18,18 @@ import { EditPageComponent } from './app/components/editPage/editPage.component'
 
 const routes: Routes = [
     { path: '', component: MaterialExplorerComponent },
-    { path: 'new', component: MaterialFormComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard], runGuardsAndResolvers: 'always'},
+    { path: 'new', component: MaterialFormComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: 'not_found', component: NotFoundPageComponent},
-    { path: 'profile', component: UserPageComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
-    { path: 'organizations', component: OrganizationPageComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
-    { path: 'edit/:dynamicValue', component: EditPageComponent, canActivate: [AuthGuard], canDeactivate: [exitWithoutSavingGuard], runGuardsAndResolvers: 'always'},
+    { path: 'profile', component: UserPageComponent, canMatch: [AuthGuard]},
+    { path: 'organizations', component: OrganizationPageComponent, canMatch: [AuthGuard]},
+    { path: 'edit/:dynamicValue', component: EditPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: ':dynamicValue', component: MaterialPageComponent },
     { path: '**', component: NotFoundPageComponent}
 ];
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideRouter(routes, withRouterConfig({
-            onSameUrlNavigation: 'reload'
-        })),
+        provideRouter(routes),
         provideHttpClient(),
         provideFirebaseApp(() => initializeApp(environment.FIREBASE)),
         provideAuth(() => getAuth()),
