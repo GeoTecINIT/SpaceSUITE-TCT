@@ -16,8 +16,9 @@
         <div class="my-4">
             Search by {{selectedOption}}
             <p-inputgroup class="w-21rem">
-                <input type="text" pInputText [(ngModel)]="searchValue" (ngModelChange)="updateSearchValue()" placeholder="Search" class="custom-input" [disabled]="loading"/>
-                <p-inputgroup-addon>
+                <input type="text" pInputText [(ngModel)]="searchValue" (ngModelChange)="updateSearchValue()" 
+                    placeholder="Search" class="custom-input" [disabled]="loading"/>
+                <p-inputgroup-addon [class]="loading ? 'disabled-addon' : ''">
                     <p-button class="input-button" icon="pi pi-chevron-down" severity="secondary" variant="text" (click)="menu.toggle($event)" [disabled]="loading"/>
                 </p-inputgroup-addon>
             </p-inputgroup>
