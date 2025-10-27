@@ -14,11 +14,21 @@
             </p-selectbutton>
         </div>
         <div class="my-4">
-            Search by Title
-            <p-iconfield class="mt-1">
-                <p-inputicon styleClass="pi pi-search" />
-                <input type="text" pInputText [(ngModel)]="searchValue" (ngModelChange)="updateSearchValue()" placeholder="Search" class="w-21rem custom-input" [disabled]="loading"/>
-            </p-iconfield>
+            Search by {{selectedOption}}
+            <p-inputgroup class="w-21rem">
+                <input type="text" pInputText [(ngModel)]="searchValue" (ngModelChange)="updateSearchValue()" placeholder="Search" class="custom-input" [disabled]="loading"/>
+                <p-inputgroup-addon>
+                    <p-button class="input-button" icon="pi pi-chevron-down" severity="secondary" variant="text" (click)="menu.toggle($event)" [disabled]="loading"/>
+                </p-inputgroup-addon>
+            </p-inputgroup>
+            <p-menu #menu [model]="searchOptions" popup styleClass="!min-w-fit" class="custom-menu">
+                <ng-template #item let-item>
+                    <a pRipple class="flex items-center p-menu-item-link" (click)="setSearchOption(item.label)">
+                        <i class="w-1rem" [ngClass]="item.label == selectedOption ? 'pi pi-check' : ''"></i>
+                        <span class="ml-2">{{ item.label }}</span>
+                    </a>
+                </ng-template>
+            </p-menu>
         </div>
         <ng-container *ngFor="let option of multiSelectOptions">
             <div class="flex flex-column my-4">

@@ -2,7 +2,7 @@
 <div #container class="flex flex-column xl:flex-row gap-5 m-2">
     <filters [(multiSelectOptions)]="filterOptions" [loading]="loading" (multiSelectOptionsChange)="filterTrainingMaterial()" 
         (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)" 
-        (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()"></filters>
+        (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()" [selectedOption]="searchOption" (selectedOptionChange)="setSearchOption($event)"></filters>
     <div *ngIf="finalTrainingMaterial.length != 0 || loading" class="flex flex-column w-full justify-content-between">
         <div class="flex gap-5 flex-wrap align-content-start justify-content-center xl:justify-content-start mb-4">
             <ng-container *ngIf="!loading else cardSkeleton">

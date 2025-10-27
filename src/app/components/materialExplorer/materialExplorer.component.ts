@@ -33,6 +33,8 @@ export class MaterialExplorerComponent {
   loading: boolean = true;
   skelletonElements: number[] = [];
 
+  searchOption: string = "Title";
+
   first: number = 0;
   rows: number = 8;
   paginationTrainingMaterial: TrainingMaterial[] = [];
@@ -97,12 +99,33 @@ export class MaterialExplorerComponent {
     window.removeEventListener('scroll', this.updateButtonPosition);
   }
 
+  setSearchOption(option: string) {
+    this.searchOption = option;
+    this.searchTrainingMaterial(this.filterService.searchOption);
+  }
+
   searchTrainingMaterial(searchvalue: string) {
     this.filterService.searchOption = searchvalue;
     let newSearch: TrainingMaterial[] = [];
-    this.trainingMaterialArray.forEach( material => {
-      if (material.title.toLowerCase().includes(searchvalue.toLowerCase())) newSearch.push(material);
-    });
+    switch (this.searchOption) {
+      case "Title":
+        this.trainingMaterialArray.forEach( material => {
+          if (material.title.toLowerCase().includes(searchvalue.toLowerCase())) newSearch.push(material);
+        });
+        break;
+      case "Description":
+        this.trainingMaterialArray.forEach( material => {
+          if (material.description.toLowerCase().includes(searchvalue.toLowerCase())) newSearch.push(material);
+        });
+        break;
+      case "Learning Outcome":
+        this.trainingMaterialArray.forEach( material => {
+          if (material.learningOutcomes.join(';').toLowerCase().includes(searchvalue.toLowerCase())) newSearch.push(material);
+        });
+        break;
+      default:
+        console.log("Invalid Search Option");
+    }
     this.searchedTrainingMaterial = newSearch;
     this.filterTrainingMaterial();
   }

@@ -38,3 +38,7 @@
     --p-togglebutton-hover-color: var(--primary-color);
     --p-togglebutton-icon-hover-color: var(--primary-color);
 }
+
+.input-button {
+   --p-button-text-secondary-color: var(--p-multiselect-dropdown-color);
+}

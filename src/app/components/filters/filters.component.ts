@@ -2,8 +2,6 @@ import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Input, Output, SimpleChanges } from "@angular/core";
 import { FormsModule } from '@angular/forms';
 import { DividerModule } from "primeng/divider";
-import { InputIcon } from 'primeng/inputicon';
-import { IconField } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext'
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -11,13 +9,19 @@ import { FilterOption } from "../../model/filterOption";
 import { BokModalComponent } from "../bokModal/bokModal.component";
 import { CardFilterService } from "../../services/cardFilter.service";
 import { TooltipModule } from "primeng/tooltip";
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { ButtonModule } from "primeng/button";
 
 @Component({
   standalone: true,
   selector: 'filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css'],
-  imports: [CommonModule, FormsModule, DividerModule, InputIcon, IconField, InputTextModule, MultiSelectModule, BokModalComponent, SelectButtonModule, TooltipModule],
+  imports: [CommonModule, FormsModule, DividerModule, InputTextModule, MultiSelectModule, BokModalComponent, SelectButtonModule, TooltipModule,
+            InputGroupModule, InputGroupAddonModule, MenuModule, ButtonModule],
 })
 export class FiltersComponent {
   @Input() multiSelectOptions: FilterOption[] = [];
@@ -27,6 +31,10 @@ export class FiltersComponent {
 
   searchValue: string;
   @Output() searchValueChange: EventEmitter<string> = new EventEmitter();
+
+  searchOptions: MenuItem[] | undefined;
+  @Input() selectedOption: string = "Title"
+  @Output() selectedOptionChange: EventEmitter<string> = new EventEmitter();
 
   bokConcepts: string[] = []
   @Output() bokConceptsChange: EventEmitter<string[]> = new EventEmitter();
@@ -41,6 +49,7 @@ export class FiltersComponent {
     this.searchValue = filterService.searchOption;
     this.filterUserMaterial = filterService.userMaterialFilter;
     this.bokConcepts = filterService.bokConcepts;
+    this.searchOptions = [{ label: 'Title' }, { label: 'Description' }, { label: 'Learning Outcome' }];
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -65,6 +74,10 @@ export class FiltersComponent {
     let currentOption = this.multiSelectOptions.find(option => option.label === label);
     if (currentOption) currentOption.selection = [];
     this.updateOptions();
+  }
+
+  setSearchOption(option: string) {
+    this.selectedOptionChange.emit(option);
   }
 
 }
