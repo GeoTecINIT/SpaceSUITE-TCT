@@ -27,7 +27,7 @@ export class RdfConverterService {
   private convertModelToTurtle(model: TrainingMaterial): string {
     let additionalObjects = '';
     let ttl = `@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix lrmi: <http://purl.org/dcx/lrmi-terms/> . \n` + 
-              `@prefix bok: <https://bok.eo4geo.eu/> . \n@prefix elm: <http://data.europa.eu/snb/model/elm> . \n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n` + 
+              `@prefix geospacebok: <https://geospacebok.eu/> . \n@prefix elm: <http://data.europa.eu/snb/model/elm> . \n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n` + 
               `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . \n\n`;
 
     ttl += `_:TrainingMaterial rdf:type rdfs:Class . \n\n`;
@@ -46,7 +46,7 @@ export class RdfConverterService {
     if (model.subject && Array.isArray(model.subject)) {
       model.subject.forEach((subj: string) => {
         if (this.utilsService.codeToKnowledgeArea.has(subj)) {
-          ttl += `  dcterms:subject bok:${subj} ;\n`;
+          ttl += `  dcterms:subject geospacebok:${subj} ;\n`;
         }
         else {
           ttl += `  dcterms:subject "${subj}" ;\n`;
@@ -130,7 +130,7 @@ export class RdfConverterService {
     }
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
-        ttl += `  dcterms:relation bok:${concept} ;\n`;
+        ttl += `  dcterms:relation geospacebok:${concept} ;\n`;
       });
     }
 
@@ -144,12 +144,12 @@ export class RdfConverterService {
     const rdfNS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
     const dcterms = 'http://purl.org/dc/terms/';
     const lrmi = 'http://purl.org/dcx/lrmi-terms/';
-    const bok = 'https://bok.eo4geo.eu/';
+    const bok = 'https://geospacebok.eu/';
     const elm = 'http://data.europa.eu/snb/model/elm';
     const rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<rdf:RDF xmlns:rdf="${rdfNS}" xmlns:dcterms="${dcterms}" xmlns:lrmi="${lrmi}" xmlns:bok="${bok}" xmlns:elm="${elm}" xmlns:rdfs="${rdfs}">\n\n`;
+    xml += `<rdf:RDF xmlns:rdf="${rdfNS}" xmlns:dcterms="${dcterms}" xmlns:lrmi="${lrmi}" xmlns:geospacebok="${bok}" xmlns:elm="${elm}" xmlns:rdfs="${rdfs}">\n\n`;
 
     const resourceUri = model.url;
 
@@ -320,7 +320,7 @@ export class RdfConverterService {
     if (model.subject) {
       model.subject.forEach((subj: string) => {
         if (this.utilsService.codeToKnowledgeArea.has(subj)) {
-          html += `  <a property="subject" href="https://bok.eo4geo.eu/${subj}">${subj}</a><br/>\n`;
+          html += `  <a property="subject" href="https://geospacebok.eu/${subj}">${subj}</a><br/>\n`;
         } else {
           html += `  <span property="subject">${subj}</span><br/>\n`;
         }
@@ -449,7 +449,7 @@ export class RdfConverterService {
 
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
-        html += `  <a property="relation" href="https://bok.eo4geo.eu/${concept}">${concept}</a><br/>\n`;
+        html += `  <a property="relation" href="https://geospacebok.eu/${concept}">${concept}</a><br/>\n`;
       });
     }
 
