@@ -100,6 +100,11 @@ export class MaterialFormComponent {
     }, 0);
   }
 
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+    this.userOrgsSubscription.unsubscribe();
+  }
+
   loadDivisions(newValue: {label: string, value: string}) {
     this.material.orgId = newValue.value;
     this.material.orgName = newValue.label;

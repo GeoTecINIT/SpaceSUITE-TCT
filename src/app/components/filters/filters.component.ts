@@ -46,7 +46,7 @@ export class FiltersComponent {
   @Input() logged: boolean = false;
 
   constructor(private filterService: CardFilterService) {
-    this.searchValue = filterService.searchOption;
+    this.searchValue = filterService.searchValue;
     this.filterUserMaterial = filterService.userMaterialFilter;
     this.bokConcepts = filterService.bokConcepts;
     this.searchOptions = [{ label: 'Title' }, { label: 'Description' }, { label: 'Learning Outcome' }];

@@ -56,7 +56,8 @@ export class MaterialExplorerComponent {
     (newValue: TrainingMaterial[]) => {
       this.trainingMaterialArray = newValue.sort((a, b) => a.title.localeCompare(b.title));
       this.filterByUserMaterial = this.filterService.userMaterialFilter;
-      this.searchTrainingMaterial(this.filterService.searchOption);
+      this.setSearchOption(this.filterService.searchOption);
+      this.searchTrainingMaterial(this.filterService.searchValue);
       this.loading = false;
     });
   }
@@ -101,11 +102,12 @@ export class MaterialExplorerComponent {
 
   setSearchOption(option: string) {
     this.searchOption = option;
-    this.searchTrainingMaterial(this.filterService.searchOption);
+    this.filterService.searchOption = option;
+    this.searchTrainingMaterial(this.filterService.searchValue);
   }
 
   searchTrainingMaterial(searchvalue: string) {
-    this.filterService.searchOption = searchvalue;
+    this.filterService.searchValue = searchvalue;
     let newSearch: TrainingMaterial[] = [];
     switch (this.searchOption) {
       case "Title":
@@ -158,9 +160,7 @@ export class MaterialExplorerComponent {
       return;
     }
     this.finalTrainingMaterial = this.filteredTrainingMaterial.filter(material =>
-      filterConcepts.some(filterConcept =>
-        material.concepts.includes(filterConcept) || material.subject.includes(filterConcept)
-      )
+      filterConcepts.some(filterConcept => material.concepts.includes(filterConcept))
     );
     this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
   }
@@ -168,7 +168,7 @@ export class MaterialExplorerComponent {
   filterByUserMaterialChange(newValue: boolean) {
     this.filterByUserMaterial = newValue;
     this.filterService.userMaterialFilter = newValue;
-    this.filterTrainingMaterial();
+    this.searchTrainingMaterial(this.filterService.searchValue);
   }
 
   isLogged(): boolean {

@@ -176,7 +176,8 @@ export class CardFilterService {
     }
   ];
 
-  public searchOption: string = '';
+  public searchValue: string = '';
+  public searchOption: string = 'Title';
   public bokConcepts: string[] = [];
   public userMaterialFilter: boolean = false;
 
@@ -185,7 +186,7 @@ export class CardFilterService {
   }
 
   public getGeneralFilterOptions(): FilterOption[] {
-    const generalFilters = ['EQF Level', 'Language', 'Interactivity Type', 'Training Material Type', 'Target Audience', 'License']
+    const generalFilters = ['Subject', 'EQF Level', 'Language', 'Interactivity Type', 'Training Material Type', 'Target Audience', 'License']
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
@@ -202,6 +203,7 @@ export class CardFilterService {
           return material.materialType.includes(selection);
         });
       case 'Subject':
+        // TODO: Fix filtering
         return filter.selection.some(selection => {
           if (selection === 'Other') {
             const validTags = this.getOptionByLabel('Subject').tags.filter(value => value != 'Other');
