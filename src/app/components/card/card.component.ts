@@ -21,13 +21,14 @@ export class CardComponent {
   @Input() trainingMaterial!: TrainingMaterial;
   @ViewChild('container') containerElement!: ElementRef;
   @ViewChild('subjects') subjectsElement!: ElementRef;
-
+  @ViewChild('titleRef') titleRef!: ElementRef;
 
   concepts: string[] = [];
   visibleConcepts: string[] = [];
   selectedConceptsColor: Map<string, string> = new Map();
   selectedConceptsTooltip: Map<string, string> = new Map();
   overflow: boolean = false;
+  showTooltip: boolean = false;
 
   imagePlaceholder: string;
 
@@ -72,6 +73,8 @@ export class CardComponent {
       this.hideOverflowElements();
       this.cdr.detectChanges();
     }
+    const el = this.titleRef.nativeElement;
+    this.showTooltip = el.scrollHeight > el.clientHeight;
   }
 
   checkOverflow() {

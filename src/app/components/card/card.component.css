@@ -90,3 +90,7 @@
 ::ng-deep .p-tooltip {
     --p-tooltip-background: var(--primary-color);
 }
+
+::ng-deep .large-tooltip {
+    --p-tooltip-max-width: 18rem;
+}
