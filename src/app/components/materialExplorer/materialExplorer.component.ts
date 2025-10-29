@@ -58,6 +58,9 @@ export class MaterialExplorerComponent {
       this.filterByUserMaterial = this.filterService.userMaterialFilter;
       this.setSearchOption(this.filterService.searchOption);
       this.searchTrainingMaterial(this.filterService.searchValue);
+      if(this.filterService.paginatorState.rows && this.filterService.paginatorState.rows) {
+        this.onPageChange(this.filterService.paginatorState);
+      }
       this.loading = false;
     });
   }
@@ -178,6 +181,7 @@ export class MaterialExplorerComponent {
   onPageChange(event: PaginatorState) {
       this.first = event.first ?? 0;
       this.rows = event.rows ?? 8;
+      this.filterService.paginatorState = event;
       this.paginationTrainingMaterial = this.finalTrainingMaterial.slice(this.first, this.first + this.rows)
   }
 

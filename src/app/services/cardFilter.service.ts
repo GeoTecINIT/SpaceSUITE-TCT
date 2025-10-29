@@ -4,6 +4,7 @@ import { TrainingMaterial } from "../model/trainingMaterial";
 import { LanguageService } from "./language.service";
 import { FirebaseService } from "./firebase.service";
 import { UtilsService } from "./utils.service";
+import { PaginatorState } from "primeng/paginator";
 
 @Injectable({
     providedIn: 'root',
@@ -181,6 +182,7 @@ export class CardFilterService {
   public searchOption: string = 'Title';
   public bokConcepts: string[] = [];
   public userMaterialFilter: boolean = false;
+  public paginatorState: PaginatorState = {}
 
   constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService, private readonly utilsService: UtilsService){
     this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].tags = organizations.map(value => value.name));
