@@ -3,6 +3,7 @@ import { FilterOption } from "../model/filterOption";
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { LanguageService } from "./language.service";
 import { FirebaseService } from "./firebase.service";
+import { UtilsService } from "./utils.service";
 
 @Injectable({
     providedIn: 'root',
@@ -181,7 +182,7 @@ export class CardFilterService {
   public bokConcepts: string[] = [];
   public userMaterialFilter: boolean = false;
 
-  constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService){
+  constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService, private readonly utilsService: UtilsService){
     this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].tags = organizations.map(value => value.name));
   }
 
@@ -197,24 +198,25 @@ export class CardFilterService {
       case 'Training Material Type':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = this.getOptionByLabel('Training Material Type').tags.filter(value => value != 'Other');
+            const validTags = filter.tags.filter(value => value != 'Other');
             return material.materialType.some(value => !validTags.includes(value));
           }
           return material.materialType.includes(selection);
         });
       case 'Subject':
-        // TODO: Fix filtering
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = this.getOptionByLabel('Subject').tags.filter(value => value != 'Other');
+            const validOptions = filter.tags.filter(value => value != 'Other');
+            const validTags = validOptions.map(value => this.utilsService.knowledgeAreaToCode.get(value) || value);
             return material.subject.some(value => !validTags.includes(value));
           }
-          return material.subject.includes(selection)
+          const formatedSelection = this.utilsService.knowledgeAreaToCode.get(selection) || selection;
+          return material.subject.includes(formatedSelection)
         });
       case 'Type of Assessment':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = this.getOptionByLabel('Type of Assessment').tags.filter(value => value != 'Other');
+            const validTags = filter.tags.filter(value => value != 'Other');
             return material.assessment.some(value => !validTags.includes(value));
           }
           return material.assessment.includes(selection)
@@ -222,7 +224,7 @@ export class CardFilterService {
       case 'Target Audience':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = this.getOptionByLabel('Target Audience').tags.filter(value => value != 'Other');
+            const validTags = filter.tags.filter(value => value != 'Other');
             return material.audience.some(value => !validTags.includes(value));
           }
           return material.audience.includes(selection)
@@ -230,7 +232,7 @@ export class CardFilterService {
       case 'Interactivity Type':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = this.getOptionByLabel('Interactivity Type').tags.filter(value => value != 'Other');
+            const validTags = filter.tags.filter(value => value != 'Other');
             return !validTags.includes(material.interactivityType || '')
           }
           return material.interactivityType == selection
@@ -238,7 +240,7 @@ export class CardFilterService {
       case 'License':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = this.getOptionByLabel('License').tags.filter(value => value != 'Other');
+            const validTags = filter.tags.filter(value => value != 'Other');
             return !validTags.includes(material.license || '')
           }
           return material.license == selection
