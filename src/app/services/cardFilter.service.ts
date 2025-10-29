@@ -187,7 +187,7 @@ export class CardFilterService {
   }
 
   public getGeneralFilterOptions(): FilterOption[] {
-    const generalFilters = ['Subject', 'EQF Level', 'Language', 'Interactivity Type', 'Training Material Type', 'Target Audience', 'License']
+    const generalFilters = ['Subject', 'Language', 'Training Material Type', 'Target Audience']
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
