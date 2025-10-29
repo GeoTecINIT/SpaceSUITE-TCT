@@ -23,7 +23,7 @@ export class CardFilterService {
         'EQF 8'
       ],
       selection: [],
-      tootltip: 'The European Qualifications Framework, a common reference which assists in comparing qualifications systems.'
+      tootltip: 'The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized).'
     },
     {
       label: 'Training Material Type',
