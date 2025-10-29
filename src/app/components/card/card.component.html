@@ -8,7 +8,7 @@
     <ng-template #title>
         <div class="overflow-hidden" style="max-height: 3.25rem;">
             <a class="card-title" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)" 
-                [pTooltip]="showTooltip ? trainingMaterial.title : ''" showDelay="300" hideDelay="300" tooltipPosition="top" tooltipStyleClass="large-tooltip">
+                [pTooltip]="showTooltip ? trainingMaterial.title : ''" tooltipPosition="top" tooltipStyleClass="large-tooltip">
                 <strong #titleRef class="text-overflow-multiline">{{trainingMaterial.title}}</strong>
             </a>
         </div>
