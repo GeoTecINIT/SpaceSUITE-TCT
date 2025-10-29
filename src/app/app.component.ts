@@ -45,7 +45,7 @@ export class AppComponent {
           target: '_blank'
         },
         {
-          label: 'Training Catalogue Tool',
+          label: 'Training Catalogue',
           icon: 'pi pi-graduation-cap',
           style: {'--p-tieredmenu-item-color': 'var(--hover-color)'},
           iconStyle: {'color': 'var(--hover-color)'}
