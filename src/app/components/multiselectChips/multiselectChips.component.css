@@ -57,6 +57,11 @@
 
     --p-inputtext-focus-border-color: var(--hover-color);
     --p-inputtext-hover-border-color: var(--hover-color);
+
+    --p-multiselect-option-selected-color: var(--primary-color);
+    --p-multiselect-option-selected-focus-color: var(--primary-color);
+    --p-multiselect-option-selected-background: color-mix(in srgb, var(--secondary-color) 10%, rgba(0, 0, 0, 0) 90%);
+    --p-multiselect-option-selected-focus-background: color-mix(in srgb, var(--secondary-color) 20%, rgba(0, 0, 0, 0) 80%);
 }
 
 
