@@ -193,6 +193,11 @@ export class CardFilterService {
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
+  public getAdvancedFilterOptions(): FilterOption[] {
+    const generalFilters = ['EQF Level', 'Type of Assessment', 'Interactivity Type', 'License', 'Organizations']
+    return generalFilters.map( value => this.getOptionByLabel(value))
+  }
+
   public checkMaterial(material: TrainingMaterial, filter: FilterOption): boolean {
     switch(filter.label) {
       case 'EQF Level':

@@ -1,7 +1,7 @@
 <p-toast class="custom-toast" position="bottom-right"/>
 <div #container class="flex flex-column xl:flex-row gap-5 m-2">
-    <filters [(multiSelectOptions)]="filterOptions" [loading]="loading" (multiSelectOptionsChange)="filterTrainingMaterial()" 
-        (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)" 
+    <filters [(multiSelectOptions)]="filterOptions" [(advancedMultiSelectOptions)]="advancedFilterOptions" [loading]="loading" (multiSelectOptionsChange)="filterTrainingMaterial()" 
+        (searchValueChange)="searchTrainingMaterial($event)" class="flex justify-content-center" (bokConceptsChange)="filterByBoKConcept($event)" (advancedMultiSelectOptionsChange)="filterTrainingMaterial()" 
         (filterUserMaterialChange)="filterByUserMaterialChange($event)" [logged]="isLogged()" [selectedOption]="searchOption" (selectedOptionChange)="setSearchOption($event)"></filters>
     <div *ngIf="finalTrainingMaterial.length != 0 || loading" class="flex flex-column w-full justify-content-between">
         <div class="flex gap-5 flex-wrap align-content-start justify-content-center xl:justify-content-start mb-4">

@@ -27,6 +27,9 @@ export class FiltersComponent {
   @Input() multiSelectOptions: FilterOption[] = [];
   @Output() multiSelectOptionsChange: EventEmitter<FilterOption[]> = new EventEmitter();
 
+  @Input() advancedMultiSelectOptions: FilterOption[] = [];
+  @Output() advancedMultiSelectOptionsChange: EventEmitter<FilterOption[]> = new EventEmitter();
+
   @Input() loading: boolean = false;
 
   searchValue: string;
@@ -62,6 +65,10 @@ export class FiltersComponent {
     this.multiSelectOptionsChange.emit(this.multiSelectOptions);
   }
 
+  updateAdvancedOptions() {
+    this.advancedMultiSelectOptionsChange.emit(this.advancedMultiSelectOptions);
+  }
+
   updateSearchValue() {
     this.searchValueChange.emit(this.searchValue);
   }
@@ -74,6 +81,12 @@ export class FiltersComponent {
     let currentOption = this.multiSelectOptions.find(option => option.label === label);
     if (currentOption) currentOption.selection = [];
     this.updateOptions();
+  }
+
+  clearAdvancedOptions(label: string) {
+    let currentOption = this.advancedMultiSelectOptions.find(option => option.label === label);
+    if (currentOption) currentOption.selection = [];
+    this.updateAdvancedOptions();
   }
 
   setSearchOption(option: string) {
