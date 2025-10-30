@@ -71,10 +71,10 @@ export class CardComponent {
     this.checkOverflow();
     if (this.overflow) {
       this.hideOverflowElements();
-      this.cdr.detectChanges();
     }
     const el = this.titleRef.nativeElement;
     this.showTooltip = el.scrollHeight > el.clientHeight;
+    this.cdr.detectChanges();
   }
 
   checkOverflow() {
