@@ -11,7 +11,7 @@
                 </ng-container >
             </ng-container>
         </div>
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="finalTrainingMaterial.length" [rowsPerPageOptions]="[8, 16, 24]" class="custom-paginator"/>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="finalTrainingMaterial.length" class="custom-paginator"/>
     </div>
     <p *ngIf="finalTrainingMaterial.length == 0 && !loading" class="font-italic flex mx-auto justify-content-center">No material found</p>
 </div>

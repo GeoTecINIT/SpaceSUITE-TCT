@@ -37,7 +37,7 @@ export class MaterialExplorerComponent {
   searchOption: string = "Title";
 
   first: number = 0;
-  rows: number = 8;
+  rows: number = 16;
   paginationTrainingMaterial: TrainingMaterial[] = [];
 
   @ViewChild('container') containerRef!: ElementRef;
