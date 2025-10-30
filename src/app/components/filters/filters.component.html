@@ -1,6 +1,6 @@
 <div class="flex flex-column xl:flex-row h-full xl:w-23rem">
     <div class="mx-2">
-        <h2>Filters</h2>
+        <h2 class="my-2">Filters</h2>
         <p-divider class="flex-grow-1"/>
         <div class="my-4">
             <p-selectbutton [(ngModel)]="filterUserMaterial" [options]="filterUserMaterialOptions" class="custom-togglebutton" 
@@ -42,20 +42,23 @@
                     (onClear)="clearOptions(option.label)" [maxSelectedLabels]="1"/>
             </div>
         </ng-container>
-        <ng-container *ngFor="let option of advancedMultiSelectOptions">
-            <div class="flex flex-column my-4">
-                <div class="flex align-items-center">
-                    {{option.label}}
-                    <i *ngIf="option.tootltip" [pTooltip]="option.tootltip" tooltipPosition="right" class="ml-2 pi pi-info-circle"></i>
+        <ng-container *ngIf="showAdvancedFilters">
+            <ng-container *ngFor="let option of advancedMultiSelectOptions">
+                <div class="flex flex-column my-4">
+                    <div class="flex align-items-center">
+                        {{option.label}}
+                        <i *ngIf="option.tootltip" [pTooltip]="option.tootltip" tooltipPosition="right" class="ml-2 pi pi-info-circle"></i>
+                    </div>
+                    <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateAdvancedOptions()" 
+                        placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" panelStyleClass="max-w-21rem" [disabled]="loading" [showClear]="true"
+                        (onClear)="clearAdvancedOptions(option.label)" [maxSelectedLabels]="1"/>
                 </div>
-                <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateAdvancedOptions()" 
-                    placeholder="Select {{option.label}}" class="mt-1 w-21rem custom-multiselect" panelStyleClass="max-w-21rem" [disabled]="loading" [showClear]="true"
-                    (onClear)="clearAdvancedOptions(option.label)" [maxSelectedLabels]="1"/>
-            </div>
+            </ng-container>
         </ng-container>
         <div class="my-4 max-w-21rem">
             <bokModal [selectedConcepts]="bokConcepts" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading" [label]="'Filter by Annotated Knowledge'" [allowKnowledgeAreas]="false"></bokModal>
         </div>
+        <a (click)="changeAdvancedFiltersState()">{{ showAdvancedFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters'}}</a>
     </div>
     <p-divider layout="vertical" class="flex-grow-1 hidden xl:flex"/>
     <p-divider class="flex xl:hidden"/>

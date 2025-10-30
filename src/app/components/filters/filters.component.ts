@@ -29,6 +29,7 @@ export class FiltersComponent {
 
   @Input() advancedMultiSelectOptions: FilterOption[] = [];
   @Output() advancedMultiSelectOptionsChange: EventEmitter<FilterOption[]> = new EventEmitter();
+  showAdvancedFilters: boolean = false;
 
   @Input() loading: boolean = false;
 
@@ -52,6 +53,7 @@ export class FiltersComponent {
     this.searchValue = filterService.searchValue;
     this.filterUserMaterial = filterService.userMaterialFilter;
     this.bokConcepts = filterService.bokConcepts;
+    this.showAdvancedFilters = filterService.showAdvancedFilters;
     this.searchOptions = [{ label: 'Title' }, { label: 'Description' }, { label: 'Learning Outcome' }];
   }
 
@@ -91,6 +93,14 @@ export class FiltersComponent {
 
   setSearchOption(option: string) {
     this.selectedOptionChange.emit(option);
+  }
+
+  changeAdvancedFiltersState() {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+    this.filterService.showAdvancedFilters = this.showAdvancedFilters;
+    if (!this.showAdvancedFilters) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
 }

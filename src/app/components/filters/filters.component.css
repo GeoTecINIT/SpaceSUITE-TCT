@@ -53,3 +53,13 @@
     background: var(--p-inputtext-disabled-background);
     color: var(--p-inputtext-disabled-color);
 }
+
+a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+a:hover {
+    color: var(--hover-color);
+}
