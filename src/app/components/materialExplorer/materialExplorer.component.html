@@ -15,7 +15,21 @@
     </div>
     <p *ngIf="finalTrainingMaterial.length == 0 && !loading" class="font-italic flex mx-auto justify-content-center">No material found</p>
 </div>
-<p-button *ngIf="isLogged() && showButton" (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add Material" class="custom-button floating-button" [ngStyle]="{ bottom: buttonBottom + 'px' }"/>
+<div class="floating-container flex flex-column gap-2 align-items-end" [ngStyle]="{ bottom: buttonBottom + 'px' }">
+    <p-button *ngIf="isLogged() && showButton" (click)="createTrainingMaterial()" icon="pi pi-plus" label="Add Material" class="custom-button floating-button"/>
+    <p-buttongroup class="floating-button">
+        <p-button (click)="switchSortOrientation()" [icon]="sortAsc ? 'pi pi-sort-amount-up' : 'pi pi-sort-amount-down'" [label]="'Order By ' + selectedSortOption" class="custom-button"/>
+        <p-button (click)="menu.toggle($event)" icon="pi pi-chevron-down" class="flex custom-button"/>
+    </p-buttongroup>
+</div>
+<p-menu #menu [model]="sortOptions" popup styleClass="!min-w-fit" class="custom-menu">
+    <ng-template #item let-item>
+        <a pRipple class="flex items-center p-menu-item-link" (click)="setSortOption(item.label)">
+            <i class="w-1rem" [ngClass]="item.label == selectedSortOption ? 'pi pi-check' : ''"></i>
+            <span class="ml-2">{{ item.label }}</span>
+        </a>
+    </ng-template>
+</p-menu>
 
 <ng-template #cardSkeleton>
     <ng-content *ngFor="let i of skelletonElements">

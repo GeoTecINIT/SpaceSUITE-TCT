@@ -14,13 +14,16 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from "primeng/api";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ButtonModule } from "primeng/button";
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { ButtonGroupModule } from 'primeng/buttongroup';
 
 @Component({
   standalone: true,
   selector: 'material-explorer',
   templateUrl: './materialExplorer.component.html',
   styleUrls: ['./materialExplorer.component.css'],
-  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, PaginatorModule, ToastModule, ButtonModule],
+  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, PaginatorModule, ToastModule, ButtonModule, MenuModule, ButtonGroupModule],
   providers: [MessageService]
 })
 export class MaterialExplorerComponent {
@@ -44,9 +47,14 @@ export class MaterialExplorerComponent {
   showButton = true;
   buttonBottom = 32;
 
+  sortOptions: MenuItem[] | undefined;
+  selectedSortOption: string = "Title"
+  sortAsc: boolean = false;
+
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
     this.skelletonElements = Array(16).fill(null);
+    this.sortOptions = [{ label: 'Title' }, { label: 'Created' }];
   }
 
   ngOnInit() {
@@ -56,10 +64,10 @@ export class MaterialExplorerComponent {
       filter(value => value !== undefined)
     ).subscribe(
     (newValue: TrainingMaterial[]) => {
-      this.trainingMaterialArray = newValue.sort((a, b) => a.title.localeCompare(b.title));
+      this.trainingMaterialArray = newValue;
       this.filterByUserMaterial = this.filterService.userMaterialFilter;
-      this.setSearchOption(this.filterService.searchOption);
-      this.searchTrainingMaterial(this.filterService.searchValue);
+      this.sortAsc = this.filterService.sortAsc;
+      this.setSortOption(this.filterService.sortOption);
       if(this.filterService.paginatorState.rows && this.filterService.paginatorState.rows) {
         this.onPageChange(this.filterService.paginatorState);
       }
@@ -109,6 +117,36 @@ export class MaterialExplorerComponent {
     this.searchOption = option;
     this.filterService.searchOption = option;
     this.searchTrainingMaterial(this.filterService.searchValue);
+  }
+
+  setSortOption(option: string) {
+    this.selectedSortOption = option;
+    this.filterService.sortOption = option;
+    switch(this.selectedSortOption) {
+      case 'Title':
+        if (this.sortAsc) {
+          this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => b.title.localeCompare(a.title));
+        }
+        else {
+          this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => a.title.localeCompare(b.title));
+        }
+        break;
+      case 'Created':
+        if (this.sortAsc) {
+          this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
+        }
+        else {
+          this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+        }
+        break;
+    }
+    this.setSearchOption(this.filterService.searchOption);
+  }
+
+  switchSortOrientation() {
+    this.sortAsc = !this.sortAsc;
+    this.filterService.sortAsc = this.sortAsc;
+    this.setSortOption(this.filterService.sortOption);
   }
 
   searchTrainingMaterial(searchvalue: string) {

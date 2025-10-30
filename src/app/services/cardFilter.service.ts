@@ -184,6 +184,8 @@ export class CardFilterService {
   public userMaterialFilter: boolean = false;
   public paginatorState: PaginatorState = {}
   public showAdvancedFilters: boolean = false;
+  public sortOption: string = 'Title';
+  public sortAsc: boolean = false;
 
   constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService, private readonly utilsService: UtilsService){
     this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].tags = organizations.map(value => value.name));
