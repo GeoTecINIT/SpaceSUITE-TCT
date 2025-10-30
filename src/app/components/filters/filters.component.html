@@ -58,7 +58,7 @@
         <div class="my-4 max-w-21rem">
             <bokModal [selectedConcepts]="bokConcepts" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading" [label]="'Filter by Annotated Knowledge'" [allowKnowledgeAreas]="false"></bokModal>
         </div>
-        <a (click)="changeAdvancedFiltersState()">{{ showAdvancedFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters'}}</a>
+        <a class="custom-link" (click)="changeAdvancedFiltersState()">{{ showAdvancedFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters'}}</a>
     </div>
     <p-divider layout="vertical" class="flex-grow-1 hidden xl:flex"/>
     <p-divider class="flex xl:hidden"/>

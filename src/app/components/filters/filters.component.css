@@ -54,12 +54,12 @@
     color: var(--p-inputtext-disabled-color);
 }
 
-a {
+.custom-link {
     text-decoration: none;
     color: var(--secondary-color);
     cursor: pointer;
 }
 
-a:hover {
+.custom-link:hover {
     color: var(--hover-color);
 }
