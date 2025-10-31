@@ -3,7 +3,7 @@
         <h2 class="my-2">Filters</h2>
         <p-divider class="flex-grow-1"/>
         <div class="my-4">
-            <p-selectbutton [(ngModel)]="filterUserMaterial" [options]="filterUserMaterialOptions" class="custom-togglebutton" 
+            <p-selectbutton [(ngModel)]="filterUserMaterial" [options]="filterUserMaterialOptions" class="custom-togglebutton" [allowEmpty]="false"
                             optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserMaterial()" *ngIf="logged">
                 <ng-template #item let-item>
                     <div class="row">
@@ -56,7 +56,7 @@
             </ng-container>
         </ng-container>
         <div class="my-4 max-w-21rem">
-            <bokModal [selectedConcepts]="bokConcepts" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading" [label]="'Filter by Annotated Knowledge'" [allowKnowledgeAreas]="false"></bokModal>
+            <bokModal [selectedConcepts]="bokConcepts" (selectedConceptsChange)="bokConceptsChange.emit($event)" [disabled]="loading" [label]="'Filter by Knowledge / BoK Concept'" [allowKnowledgeAreas]="false"></bokModal>
         </div>
         <a class="custom-link" (click)="changeAdvancedFiltersState()">{{ showAdvancedFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters'}}</a>
     </div>
