@@ -54,7 +54,7 @@ export class MaterialExplorerComponent {
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
     this.skelletonElements = Array(16).fill(null);
-    this.sortOptions = [{ label: 'Title' }, { label: 'Created' }];
+    this.sortOptions = [{ label: 'Title' }, { label: 'Date' }, {label: 'EQF'}];
   }
 
   ngOnInit() {
@@ -131,12 +131,40 @@ export class MaterialExplorerComponent {
           this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => a.title.localeCompare(b.title));
         }
         break;
-      case 'Created':
+      case 'Date':
         if (this.sortAsc) {
           this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
         }
         else {
           this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+        }
+        break;
+      case 'EQF':
+        if (this.sortAsc) {
+          this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => {
+            const lastAIndex: number = a.educationLevel.length - 1;
+            const lastBIndex: number = b.educationLevel.length - 1;
+            const minLen: number = Math.min(lastAIndex, lastBIndex);
+            for (let i = 0; i <= minLen; i++) {
+              const valA = parseInt(a.educationLevel[lastAIndex - i] ?? '0');
+              const valB = parseInt(b.educationLevel[lastBIndex - i] ?? '0');
+              if (valA !== valB) return valA - valB;
+            }
+            return a.educationLevel.length - b.educationLevel.length;
+          });
+        }
+        else {
+          this.trainingMaterialArray = this.trainingMaterialArray.sort((a, b) => {
+            const lastAIndex: number = a.educationLevel.length - 1;
+            const lastBIndex: number = b.educationLevel.length - 1;
+            const minLen: number = Math.min(lastAIndex, lastBIndex);
+            for (let i = 0; i <= minLen; i++) {
+              const valA = parseInt(a.educationLevel[lastAIndex - i] ?? '0');
+              const valB = parseInt(b.educationLevel[lastBIndex - i] ?? '0');
+              if (valA !== valB) return valB - valA;
+            }
+            return b.educationLevel.length - a.educationLevel.length;
+          });
         }
         break;
     }
