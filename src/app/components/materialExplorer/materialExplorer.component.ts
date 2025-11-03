@@ -17,13 +17,14 @@ import { ButtonModule } from "primeng/button";
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonGroupModule } from 'primeng/buttongroup';
+import { TabsModule } from 'primeng/tabs';
 
 @Component({
   standalone: true,
   selector: 'material-explorer',
   templateUrl: './materialExplorer.component.html',
   styleUrls: ['./materialExplorer.component.css'],
-  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, PaginatorModule, ToastModule, ButtonModule, MenuModule, ButtonGroupModule],
+  imports: [CardComponent, FiltersComponent, SkeletonModule, CommonModule, PaginatorModule, ToastModule, ButtonModule, MenuModule, ButtonGroupModule, TabsModule],
   providers: [MessageService]
 })
 export class MaterialExplorerComponent {
@@ -50,6 +51,11 @@ export class MaterialExplorerComponent {
   sortOptions: MenuItem[] | undefined;
   selectedSortOption: string = "Title"
   sortAsc: boolean = false;
+
+  tabs = [
+        { id: 0, label: 'Training Materials', icon: 'pi pi-home', disabled: false },
+        { id: 1, label: 'Training Actions', icon: 'pi pi-chart-line', disabled: true },
+    ];
 
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute) {
