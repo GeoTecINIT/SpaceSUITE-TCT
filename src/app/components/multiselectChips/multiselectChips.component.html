@@ -4,7 +4,7 @@
             class="w-full custom-multiselect" [maxSelectedLabels]="0" (ngModelChange)="multiselectChange($event)"
             [class.invalid-multiselect]="error" showToggleAll="false" [filter]="filter" resetFilterOnHide="true" (onFilter)="currentText = pmulti.filterValue || ''"
             filterPlaceHolder="Choose a {{fieldName}} or specify a custom value" [showClear]="true" (onClear)="this.chipsChange.emit([])"
-            [optionValue]="'value'" [optionLabel]="'id'" (onPanelShow)="onDropdownOpen()" (onClear)="pmulti.hide()" appendTo="body" panelStyleClass="custom-multiselect">
+            optionValue="value" optionLabel="id" (onPanelShow)="onDropdownOpen()" (onClear)="pmulti.hide()" appendTo="body" panelStyleClass="custom-multiselect">
             <ng-template #footer>
                 <div class="flex" *ngIf="pmulti.filterValue != '' && pmulti.filterValue != undefined && !pmulti.isEmpty()">
                     <p-button icon="pi pi-plus" label="Add Custom {{fieldName}}" size="small" class="custom-button p-3"

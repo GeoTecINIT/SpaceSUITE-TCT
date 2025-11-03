@@ -43,7 +43,10 @@ export class MultiselectChipsComponent {
 
   ngOnInit() {
     const filterOption = this.filterService.getOptionByLabel(this.optionsName);
-    this.multiselectOptions = filterOption.tags.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
+    if (filterOption.values) {
+      this.multiselectOptions = filterOption.values.filter(value => value != 'Other').map((x, i) => ({ id: filterOption.tags[i], value: x }));
+    }
+    else this.multiselectOptions = filterOption.tags.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
     this.chips.forEach(chip => {
       this.chipAnimations[chip] = false;
       this.getBackgroundColor(chip);

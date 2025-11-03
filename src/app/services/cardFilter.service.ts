@@ -14,6 +14,16 @@ export class CardFilterService {
     {
       label: 'EQF Level',
       tags: [
+        'EQF 1 - Basic general knowledge',
+        'EQF 2 - Basic factual knowledge',
+        'EQF 3 - Operational knowledge',
+        'EQF 4 - Intermediate knowledge',
+        'EQF 5 - Advanced knowledge',
+        'EQF 6 - Professional knowledge',
+        'EQF 7 - Expert knowledge',
+        'EQF 8 - Authority knowledge'
+      ],
+      values: [
         'EQF 1',
         'EQF 2',
         'EQF 3',
