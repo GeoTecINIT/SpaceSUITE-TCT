@@ -64,10 +64,7 @@ export class FiltersComponent {
   }
 
   getMultiselectOptions(filterOption: FilterOption): {id: string, value: string}[] {
-    if (filterOption.values) {
-      return filterOption.values.filter(value => value != 'Other').map((x, i) => ({ id: filterOption.tags[i], value: x }));
-    }
-    return filterOption.tags.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
+    return filterOption.values.filter(value => value != 'Other').map((x, i) => ({ id: filterOption.tags ? filterOption.tags[i] : x, value: x}));
   }
 
   updateOptions() {

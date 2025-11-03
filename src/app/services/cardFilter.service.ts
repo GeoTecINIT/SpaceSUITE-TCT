@@ -38,7 +38,7 @@ export class CardFilterService {
     },
     {
       label: 'Training Material Type',
-      tags: [
+      values: [
         'Text-based Materials',
         'Visual Materials',
         'Interactive Training Materials',
@@ -56,7 +56,7 @@ export class CardFilterService {
     },
     {
       label: 'Interactivity Type',
-      tags: [
+      values: [
         'Face To Face',
         'Online synchronous',
         'Online asynchronous',
@@ -71,6 +71,20 @@ export class CardFilterService {
     {
       label: 'Target Audience',
       tags: [
+        'Teachers / trainers',
+        'Lower secondary students',
+        'Upper secondary students',
+        'Undergraduate (Bachelor)',
+        'Graduates / postgraduates',
+        'Vocational trainees',
+        'Adult & lifelong learners',
+        'Industry professionals',
+        'Jobseeker / Reskilling',
+        'General public',
+        'Learners with special needs',
+        'Other'
+      ],
+      values: [
         'Teachers / trainers / facilitators',
         'Lower secondary students (ages 12-14)',
         'Upper secondary students (ages 15-18)',
@@ -89,7 +103,7 @@ export class CardFilterService {
     },
     {
       label: 'Type of Assessment',
-      tags: [
+      values: [
         'No assessment required',
         'Quiz',
         'Exam',
@@ -106,7 +120,7 @@ export class CardFilterService {
     },
     {
       label: 'Subject',
-      tags: [
+      values: [
         'Analytical Methods',
         'Conceptual Foundations',
         'Cartography and Visualization',
@@ -131,7 +145,7 @@ export class CardFilterService {
     },
     {
       label: 'Language',
-      tags: [
+      values: [
         "English",
         "Spanish",
         "French",
@@ -164,7 +178,7 @@ export class CardFilterService {
     },
     {
       label: 'License',
-      tags: [
+      values: [
         'All Rights Reserved',
         'Open access,copyright retained by author/creator',
         'Creative Commons Attribution (CC BY)',
@@ -183,7 +197,7 @@ export class CardFilterService {
     },
     {
       label: 'Organizations',
-      tags: [],
+      values: [],
       selection: []
     }
   ];
@@ -198,7 +212,7 @@ export class CardFilterService {
   public sortAsc: boolean = false;
 
   constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService, private readonly utilsService: UtilsService){
-    this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].tags = organizations.map(value => value.name));
+    this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations.map(value => value.name));
   }
 
   public getGeneralFilterOptions(): FilterOption[] {
@@ -218,7 +232,7 @@ export class CardFilterService {
       case 'Training Material Type':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = filter.tags.filter(value => value != 'Other');
+            const validTags = filter.values.filter(value => value != 'Other');
             return material.materialType.some(value => !validTags.includes(value));
           }
           return material.materialType.includes(selection);
@@ -226,7 +240,7 @@ export class CardFilterService {
       case 'Subject':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validOptions = filter.tags.filter(value => value != 'Other');
+            const validOptions = filter.values.filter(value => value != 'Other');
             const validTags = validOptions.map(value => this.utilsService.knowledgeAreaToCode.get(value) || value);
             return material.subject.some(value => !validTags.includes(value));
           }
@@ -236,7 +250,7 @@ export class CardFilterService {
       case 'Type of Assessment':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = filter.tags.filter(value => value != 'Other');
+            const validTags = filter.values.filter(value => value != 'Other');
             return material.assessment.some(value => !validTags.includes(value));
           }
           return material.assessment.includes(selection)
@@ -244,7 +258,7 @@ export class CardFilterService {
       case 'Target Audience':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = filter.tags.filter(value => value != 'Other');
+            const validTags = filter.values.filter(value => value != 'Other');
             return material.audience.some(value => !validTags.includes(value));
           }
           return material.audience.includes(selection)
@@ -252,7 +266,7 @@ export class CardFilterService {
       case 'Interactivity Type':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = filter.tags.filter(value => value != 'Other');
+            const validTags = filter.values.filter(value => value != 'Other');
             return !validTags.includes(material.interactivityType || '')
           }
           return material.interactivityType == selection
@@ -260,7 +274,7 @@ export class CardFilterService {
       case 'License':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
-            const validTags = filter.tags.filter(value => value != 'Other');
+            const validTags = filter.values.filter(value => value != 'Other');
             return !validTags.includes(material.license || '')
           }
           return material.license == selection
@@ -279,7 +293,7 @@ export class CardFilterService {
     if (option.length > 0) return option[0];
     return {
       label: '',
-      tags: [],
+      values: [],
       selection: []
     };
   }

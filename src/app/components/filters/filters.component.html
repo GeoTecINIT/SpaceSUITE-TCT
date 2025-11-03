@@ -37,9 +37,9 @@
                     {{option.label}}
                     <i *ngIf="option.tootltip" [pTooltip]="option.tootltip" tooltipPosition="right" class="ml-2 pi pi-info-circle"></i>
                 </div>
-                <p-multiselect [options]="option.tags" [(ngModel)]="option.selection" (ngModelChange)="updateOptions()" 
+                <p-multiselect [options]="getMultiselectOptions(option)" [(ngModel)]="option.selection" (ngModelChange)="updateOptions()" 
                     placeholder="Select {{option.label}}" class="mt-1 w-20rem custom-multiselect" panelStyleClass="max-w-20rem" [disabled]="loading" [showClear]="true"
-                    (onClear)="clearOptions(option.label)" [maxSelectedLabels]="1"/>
+                    (onClear)="clearOptions(option.label)" [maxSelectedLabels]="1" optionValue="value" optionLabel="id"/>
             </div>
         </ng-container>
         <ng-container *ngIf="showAdvancedFilters">

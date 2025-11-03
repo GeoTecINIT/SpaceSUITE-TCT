@@ -49,12 +49,12 @@ export class MaterialFormComponent {
 
   organizationSelector = {
     label: 'Organization',
-    tags: [] as any[],
+    values: [] as any[],
     selection: []
   };
   divisionSelector: FilterOption = {
     label: 'Division',
-    tags: [],
+    values: [],
     selection: []
   };
 
@@ -78,9 +78,9 @@ export class MaterialFormComponent {
       }
     })
     
-    this.organizationSelector.tags = [];
+    this.organizationSelector.values = [];
     this.userOrgsSubscription = this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>
-      this.organizationSelector.tags.push({label: organization.name, value: organization._id})
+      this.organizationSelector.values.push({label: organization.name, value: organization._id})
     ));
 
     if (this.inputMaterial) {

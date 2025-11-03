@@ -295,7 +295,7 @@
 
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('organization') != undefined">
-                                <p-select inputId="org" [options]="organizationSelector.tags" [ngModel]="material.orgId == undefined ? undefined : {value: material.orgId, label: material.orgName}" (ngModelChange)="loadDivisions($event)"
+                                <p-select inputId="org" [options]="organizationSelector.values" [ngModel]="material.orgId == undefined ? undefined : {value: material.orgId, label: material.orgName}" (ngModelChange)="loadDivisions($event)"
                                     class="w-full custom-select" optionLabel="label" [checkmark]="true" 
                                     [class.invalid-select]="errorMap.get('organization') != undefined"
                                     pTooltip="The organization under which the resource is to be registered" 
@@ -308,7 +308,7 @@
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel">
                                 <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
-                                    [disabled]="divisionSelector.tags.length == 0" [checkmark]="true" inputId="division"
+                                    [disabled]="divisionSelector.values.length == 0" [checkmark]="true" inputId="division"
                                     pTooltip="The organization division under which the resource is to be registered" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="division">{{divisionSelector.label}}</label>
