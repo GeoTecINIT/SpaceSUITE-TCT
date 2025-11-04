@@ -133,4 +133,16 @@ export class TrainingMaterialService {
   public deleteTrainingMaterial(material: TrainingMaterial): Observable<void> {
     return this.firebaseService.deleteTrainingMaterial(material);
   }
+
+  public getMaterialsOrganizations(): Observable<string[]> {
+    return this.trainingMaterialMap.asObservable().pipe(
+      map(materialMap => {
+        if (materialMap == undefined || materialMap.size == 0) return [];
+        const orgs = Array.from(materialMap.values())
+          .filter((m: TrainingMaterial) => !!m.orgName)
+          .map(m => m.orgName!);
+        return [...new Set(orgs)];
+      })
+    )
+  }
 }

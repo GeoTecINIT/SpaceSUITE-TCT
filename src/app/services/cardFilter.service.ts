@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { FilterOption } from "../model/filterOption";
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { LanguageService } from "./language.service";
-import { FirebaseService } from "./firebase.service";
 import { UtilsService } from "./utils.service";
 import { PaginatorState } from "primeng/paginator";
+import { TrainingMaterialService } from "./trainingMaterial.service";
 
 @Injectable({
     providedIn: 'root',
@@ -238,8 +238,8 @@ export class CardFilterService {
   public sortOption: string = 'Title';
   public sortAsc: boolean = false;
 
-  constructor(private readonly languageService: LanguageService, private readonly firebase: FirebaseService, private readonly utilsService: UtilsService){
-    this.firebase.getOrganizationList().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations.map(value => value.name));
+  constructor(private readonly languageService: LanguageService, private readonly materialService: TrainingMaterialService, private readonly utilsService: UtilsService){
+    this.materialService.getMaterialsOrganizations().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations);
   }
 
   public getGeneralFilterOptions(): FilterOption[] {
