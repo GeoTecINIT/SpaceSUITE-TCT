@@ -53,8 +53,8 @@ export class MaterialExplorerComponent {
   sortAsc: boolean = false;
 
   tabs = [
-        { id: 0, label: 'Training Materials', icon: 'pi pi-home', disabled: false },
-        { id: 1, label: 'Training Actions', icon: 'pi pi-chart-line', disabled: true },
+        { id: 0, label: 'Training Materials', icon: 'pi pi-book', disabled: false },
+        { id: 1, label: 'Training Actions', icon: 'pi pi-folder-open', disabled: true },
     ];
 
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
