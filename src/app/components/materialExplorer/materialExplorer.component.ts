@@ -210,23 +210,32 @@ export class MaterialExplorerComponent {
   }
 
   filterTrainingMaterial() {
-    const allFilters = this.filterOptions.concat(this.advancedFilterOptions);
-    if (allFilters.every(filter => !filter.selection || filter.selection.length === 0) && !this.filterByUserMaterial) {
-      this.filteredTrainingMaterial = this.searchedTrainingMaterial;
-    }
-    else{
-      let newFilteredMaterial = [...this.searchedTrainingMaterial];
-      const userId = this.firebase.getUserData()?.uid
-      if (this.filterByUserMaterial && userId) {
-        newFilteredMaterial = newFilteredMaterial.filter(material => material.userId == userId)
-      }
-      newFilteredMaterial = newFilteredMaterial.filter(material => 
-        allFilters.every(filter => 
-          !filter.selection || filter.selection.length === 0|| this.filterService.checkMaterial(material, filter)
-        ) 
+    const allFilters = [...this.filterOptions, ...this.advancedFilterOptions];
+    const userId = this.firebase.getUserData()?.uid;
+    const noFilters = allFilters.every(f => !f.selection || f.selection.length === 0);
+
+    let materials = [...this.searchedTrainingMaterial];
+
+    if (!this.filterByUserMaterial && noFilters) {
+      materials = materials.filter(m =>
+        userId ? (m.isPublic || m.userId === userId) : m.isPublic
       );
-      this.filteredTrainingMaterial = newFilteredMaterial;
+    } else {
+      if (this.filterByUserMaterial && userId) {
+        materials = materials.filter(m => m.userId === userId);
+      } else if (userId) {
+        materials = materials.filter(m => m.isPublic || m.userId === userId);
+      } else {
+        materials = materials.filter(m => m.isPublic);
+      }
+
+      materials = materials.filter(m =>
+        allFilters.every(f =>
+          !f.selection || f.selection.length === 0 || this.filterService.checkMaterial(m, f)
+        )
+      );
     }
+    this.filteredTrainingMaterial = materials;
     this.filterByBoKConcept(this.filterService.bokConcepts);
   }
 

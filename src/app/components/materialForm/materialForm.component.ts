@@ -30,6 +30,7 @@ import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.
 import { CustomSelectComponent } from "../customSelect/customSelect.component";
 import { AuthService, ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 import { ConfirmDialog } from "primeng/confirmdialog";
+import { SelectButton } from 'primeng/selectbutton';
 
 @Component({
   standalone: true,
@@ -38,7 +39,7 @@ import { ConfirmDialog } from "primeng/confirmdialog";
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog],
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton],
   providers: [MessageService, ConfirmationService]
 })
 export class MaterialFormComponent {
@@ -65,6 +66,8 @@ export class MaterialFormComponent {
 
   private authSubscription!: Subscription
   private userOrgsSubscription!: Subscription
+
+  visibilityFieldOptions: any[] = [{ label: 'Public', value: true },{ label: 'Private', value: false }];
 
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, private authService: AuthService) {}

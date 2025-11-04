@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, NgZone } from "@angular/core";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { MaterialFormComponent } from "../materialForm/materialForm.component";
@@ -6,7 +6,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { LanguageService } from "../../services/language.service";
 import { UtilsService } from "../../services/utils.service";
-
+import { FirebaseService } from "../../services/firebase.service";
+import { concatMap } from "rxjs";
+import { ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 
 @Component({
   standalone: true,
@@ -15,25 +17,34 @@ import { UtilsService } from "../../services/utils.service";
   imports: [MaterialFormComponent, CommonModule],
 })
 export class EditPageComponent {
-  material!: TrainingMaterial;
+  material: TrainingMaterial | undefined;
 
   constructor(private trainingMaterialService: TrainingMaterialService, private route: ActivatedRoute, private router: Router, private languageService: LanguageService,
-              private utilsService: UtilsService) {}
+              private utilsService: UtilsService, private firebase: FirebaseService, private exitWithoutSavingService: ExitWithoutSavingService) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const materialName = params.get('dynamicValue') || '';
-      this.trainingMaterialService.getTrainingMaterial(materialName).subscribe(
-        (newMaterial: TrainingMaterial | undefined) => {
-          if (newMaterial) {
-            this.material = new TrainingMaterial(newMaterial);
-            this.material.educationLevel = this.material.educationLevel.map( value => 'EQF ' + value);
-            this.material.language = this.languageService.getLanguage(this.material.language!);
-            this.material.subject = this.material.subject.map(subject => this.utilsService.codeToKnowledgeArea.get(subject) || subject);
-          }
-          else this.router.navigate(['not_found']);
+    this.route.paramMap.pipe(
+      concatMap(params => {
+        const materialName = params.get('dynamicValue') || '';
+        return this.trainingMaterialService.getTrainingMaterial(materialName)
+      })
+    ).subscribe(
+      (newMaterial: TrainingMaterial | undefined) => {
+        if (newMaterial && newMaterial.userId == this.firebase.getUserData()?.uid) {
+          this.loadMaterial(newMaterial);
         }
-      )
-    });
+        else {
+          this.exitWithoutSavingService.bypassGuard.next(true)
+          this.router.navigate(['/not_found']);
+        }
+      }
+    );
+  }
+
+  private loadMaterial(newMaterial: TrainingMaterial) {
+    this.material = new TrainingMaterial(newMaterial);
+    this.material.educationLevel = this.material.educationLevel.map( value => 'EQF ' + value);
+    this.material.language = this.languageService.getLanguage(this.material.language!);
+    this.material.subject = this.material.subject.map(subject => this.utilsService.codeToKnowledgeArea.get(subject) || subject);
   }
 }

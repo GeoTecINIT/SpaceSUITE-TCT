@@ -159,3 +159,15 @@
     --p-button-primary-active-background: color-mix(in srgb, var(--danger-color) 70%, black 30%);
     --p-button-primary-active-border-color: color-mix(in srgb, var(--danger-color) 80%, black 20%);
 }
+
+::ng-deep .p-selectbutton {
+    flex: auto;
+}
+
+::ng-deep p-togglebutton {
+    flex: auto;
+}
+
+::ng-deep .p-togglebutton {
+    flex: auto;
+}

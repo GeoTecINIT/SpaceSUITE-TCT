@@ -314,6 +314,12 @@
                                 <label for="division">{{divisionSelector.label}}</label>
                             </p-floatlabel>
                         </div>
+
+                        <div class="flex w-full">
+                            <p-selectbutton [options]="visibilityFieldOptions" [(ngModel)]="material.isPublic" optionLabel="label" optionValue="value"
+                                pTooltip="Specifies whether this material is public or restricted to your account." 
+                                tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                        </div>
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 3)" />

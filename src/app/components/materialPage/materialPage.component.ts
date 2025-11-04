@@ -12,7 +12,7 @@ import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
-import { catchError, combineLatest, finalize, map, mergeMap, of, retry, switchMap, take, throwError } from "rxjs";
+import { catchError, combineLatest, concatMap, finalize, map, of, retry, take, tap } from "rxjs";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
@@ -28,7 +28,6 @@ import { RdfConverterService } from "../../services/rdfConverter.service";
   providers: [ConfirmationService, MessageService]
 })
 export class MaterialPageComponent {
-
   material: TrainingMaterial | undefined;
 
   deprecatedConcepts: string[] = [];
@@ -59,21 +58,16 @@ export class MaterialPageComponent {
         const submited = queryParams['submited'] === 'true' || queryParams['submited'] === true;
         return { materialName, submited };
       }),
-      switchMap(({ materialName, submited }) =>
+      concatMap(({ materialName, submited }) =>
         this.trainingMaterialService.getTrainingMaterial(materialName).pipe(
-          mergeMap((newMaterial: TrainingMaterial | undefined) => {
-            if (submited && newMaterial === undefined) {
-              return throwError(() => new Error('Material not found'));
-            }
-            return of(newMaterial)
+          tap((material) => {
+            if (submited && !material) throw new Error('Material not found');
           }),
           retry({count: 1, delay: 500}),
-          take(1),
-          catchError(() => {
-            return of(undefined);
-          })
+          catchError(() => of(undefined))
         )
-      )
+      ),
+      take(1),
     ).subscribe(
       (newMaterial: TrainingMaterial | undefined) => {
         if (newMaterial) this.loadMaterial(newMaterial);

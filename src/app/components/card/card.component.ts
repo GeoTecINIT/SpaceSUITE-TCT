@@ -22,13 +22,15 @@ export class CardComponent {
   @ViewChild('container') containerElement!: ElementRef;
   @ViewChild('subjects') subjectsElement!: ElementRef;
   @ViewChild('titleRef') titleRef!: ElementRef;
+  @ViewChild('orgRef') orgRef!: ElementRef;
 
   concepts: string[] = [];
   visibleConcepts: string[] = [];
   selectedConceptsColor: Map<string, string> = new Map();
   selectedConceptsTooltip: Map<string, string> = new Map();
   overflow: boolean = false;
-  showTooltip: boolean = false;
+  showTitleTooltip: boolean = false;
+  showOrgTooltip: boolean = false;
 
   imagePlaceholder: string;
 
@@ -72,8 +74,10 @@ export class CardComponent {
     if (this.overflow) {
       this.hideOverflowElements();
     }
-    const el = this.titleRef.nativeElement;
-    this.showTooltip = el.scrollHeight > el.clientHeight;
+    const titleEl = this.titleRef.nativeElement;
+    const orgEl = this.orgRef.nativeElement;
+    this.showTitleTooltip = titleEl.scrollHeight > titleEl.clientHeight;
+    this.showOrgTooltip = orgEl.scrollWidth > orgEl.clientWidth;
     this.cdr.detectChanges();
   }
 

@@ -9,7 +9,7 @@ export class OldTrainingMaterial {
     description: string;
     eqf: string;
     hasMetadata: string;
-    isPublic: true;
+    isPublic: boolean;
     name: string;
     orgId?: string;
     orgName?: string;

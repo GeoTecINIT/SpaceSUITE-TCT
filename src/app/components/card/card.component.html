@@ -8,7 +8,7 @@
     <ng-template #title>
         <div class="overflow-hidden" style="max-height: 3.25rem;">
             <a class="card-title" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)" 
-                [pTooltip]="showTooltip ? trainingMaterial.title : ''" tooltipPosition="bottom" tooltipStyleClass="large-tooltip" showDelay="100" hideDelay="50">
+                [pTooltip]="showTitleTooltip ? trainingMaterial.title : ''" tooltipPosition="bottom" tooltipStyleClass="large-tooltip" showDelay="100" hideDelay="50">
                 <strong #titleRef class="text-overflow-multiline">{{trainingMaterial.title}}</strong>
             </a>
         </div>
@@ -34,8 +34,13 @@
             <div class="text-sm"><strong>{{trainingMaterial.language ?? 'Undefined'}}</strong></div>
             |
             <div class="text-sm"><strong>EQF: {{trainingMaterial.educationLevel}}</strong></div>
+            <ng-content *ngIf="!trainingMaterial.isPublic">
             |
-            <div class="text-sm overflow-hidden text-overflow-ellipsis"><strong>Training Material</strong></div>
+            <div class="text-sm"><strong>Private</strong></div>
+            </ng-content> 
+            |
+            <div #orgRef class="text-sm overflow-hidden text-overflow-ellipsis" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
+                [pTooltip]="showOrgTooltip ? trainingMaterial.orgName : ''"><strong>{{trainingMaterial.orgName}}</strong></div>
         </div>
     </ng-template>
 </p-card>
