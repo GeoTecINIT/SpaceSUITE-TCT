@@ -38,6 +38,19 @@ export class CardFilterService {
     },
     {
       label: 'Training Material Type',
+      tags: [
+        'Text-based Materials',
+        'Visual Materials',
+        'Interactive Materials',
+        'Video and Audio Materials',
+        'Online Training',
+        'Instructor-Led Materials',
+        'Hands-on Materials',
+        'Assessments',
+        'Reference Materials',
+        'Mobile Learning',
+        'Other'
+      ],
       values: [
         'Text-based Materials',
         'Visual Materials',
@@ -178,6 +191,20 @@ export class CardFilterService {
     },
     {
       label: 'License',
+      tags: [
+        'All Rights Reserved',
+        'Open access',
+        'CC BY',
+        'CC BY-SA',
+        'CC BY-NC',
+        'CC BY-ND',
+        'CC BY-NC-SA',
+        'CC0',
+        'Institutional license',
+        'License pending / not defined',
+        'Contact author for reuse',
+        'Other',
+      ],
       values: [
         'All Rights Reserved',
         'Open access,copyright retained by author/creator',
