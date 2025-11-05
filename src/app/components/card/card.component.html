@@ -1,21 +1,21 @@
 <p-card [style]="{ width: '19rem', height: '27.5rem', overflow: 'auto'}" class="custom-color">
     <ng-template #header>
-        <a class="image-container" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)">
-            <img src="{{trainingMaterial.image == '' ? imagePlaceholder : trainingMaterial.image}}" alt="Image" />
+        <a class="image-container" href="/{{trainingItem._id}}" target="_self" (click)="onClickTitle($event)">
+            <img src="{{trainingItem.image == '' ? imagePlaceholder : trainingItem.image}}" alt="Image" />
             <div class="overlay"><i class="pi pi-link"></i></div>
         </a>
     </ng-template>
     <ng-template #title>
         <div class="overflow-hidden" style="max-height: 3.25rem;">
-            <a class="card-title" href="/{{trainingMaterial._id}}" target="_self" (click)="onClickTitle($event)" 
-                [pTooltip]="showTitleTooltip ? trainingMaterial.title : ''" tooltipPosition="bottom" tooltipStyleClass="large-tooltip" showDelay="100" hideDelay="50">
-                <strong #titleRef class="text-overflow-multiline">{{trainingMaterial.title}}</strong>
+            <a class="card-title" href="/{{trainingItem._id}}" target="_self" (click)="onClickTitle($event)" 
+                [pTooltip]="showTitleTooltip ? trainingItem.title : ''" tooltipPosition="bottom" tooltipStyleClass="large-tooltip" showDelay="100" hideDelay="50">
+                <strong #titleRef class="text-overflow-multiline">{{trainingItem.title}}</strong>
             </a>
         </div>
     </ng-template>
     <ng-template #subtitle>
         <div class="text-sm">
-            <strong>Created:</strong> {{trainingMaterial.created?.toLocaleDateString()}}
+            <strong>Created:</strong> {{trainingItem.created?.toLocaleDateString()}}
         </div>
     </ng-template>
     <div #container class="mt-2 h-4rem overflow-hidden">
@@ -31,16 +31,16 @@
     <ng-template #footer>
         <p-divider class="mt-2"/>
         <div class="flex align-items-end gap-2 flex-nowrap white-space-nowrap">
-            <div class="text-sm"><strong>{{trainingMaterial.language ?? 'Undefined'}}</strong></div>
+            <div class="text-sm"><strong>{{trainingItem.language ?? 'Undefined'}}</strong></div>
             |
-            <div class="text-sm"><strong>EQF: {{trainingMaterial.educationLevel}}</strong></div>
-            <ng-content *ngIf="!trainingMaterial.isPublic">
+            <div class="text-sm"><strong>EQF: {{trainingItem.educationLevel}}</strong></div>
+            <ng-content *ngIf="!trainingItem.isPublic">
             |
             <div class="text-sm"><strong>Private</strong></div>
             </ng-content> 
             |
             <div #orgRef class="text-sm overflow-hidden text-overflow-ellipsis" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
-                [pTooltip]="showOrgTooltip ? trainingMaterial.orgName : ''"><strong>{{trainingMaterial.orgName}}</strong></div>
+                [pTooltip]="showOrgTooltip ? trainingItem.orgName : ''"><strong>{{trainingItem.orgName}}</strong></div>
         </div>
     </ng-template>
 </p-card>

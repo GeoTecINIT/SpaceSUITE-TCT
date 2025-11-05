@@ -3,12 +3,12 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { PopoverModule } from 'primeng/popover';
-import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule } from "@angular/common";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { TooltipModule } from 'primeng/tooltip';
 import { UtilsService } from "../../services/utils.service";
 import { Router } from "@angular/router";
+import { TrainingItem } from "../../model/trainingItem";
 
 @Component({
   standalone: true,
@@ -18,7 +18,7 @@ import { Router } from "@angular/router";
   imports: [CommonModule, CardModule, TagModule, DividerModule, PopoverModule, TooltipModule],
 })
 export class CardComponent {
-  @Input() trainingMaterial!: TrainingMaterial;
+  @Input() trainingItem!: TrainingItem;
   @ViewChild('container') containerElement!: ElementRef;
   @ViewChild('subjects') subjectsElement!: ElementRef;
   @ViewChild('titleRef') titleRef!: ElementRef;
@@ -39,7 +39,7 @@ export class CardComponent {
   }
 
   ngOnInit() {
-    this.trainingMaterial.concepts.forEach(concept => {
+    this.trainingItem.concepts.forEach(concept => {
       this.concepts.push(concept)
       this.bokInfo.getConceptColor(concept).subscribe(
         color => {
@@ -51,7 +51,7 @@ export class CardComponent {
         tooltip => this.selectedConceptsTooltip.set(concept, tooltip ? tooltip : 'Deprecated concept')
       );
     })
-    this.trainingMaterial.subject.forEach(concept => {
+    this.trainingItem.subject.forEach(concept => {
       if (this.utilsService.codeToKnowledgeArea.has(concept)){
         this.concepts.push(concept)
         this.bokInfo.getConceptColor(concept).subscribe(
@@ -111,7 +111,7 @@ export class CardComponent {
 
   onClickTitle(event: MouseEvent) {
     event.preventDefault(); 
-    this.router.navigate([this.trainingMaterial._id]);
+    this.router.navigate([this.trainingItem._id]);
   }
 
   getTooltipClass(tooltipContent: string): string {

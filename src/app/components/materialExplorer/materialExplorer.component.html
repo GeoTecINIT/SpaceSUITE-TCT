@@ -22,7 +22,7 @@
                     <div class="flex gap-5 flex-wrap align-content-start justify-content-center xl:justify-content-start mb-4">
                         <ng-container *ngIf="!loading else cardSkeleton">
                             <ng-container *ngFor="let material of paginationTrainingMaterial">
-                                <card [trainingMaterial]="material"></card>
+                                <card [trainingItem]="material"></card>
                             </ng-container >
                         </ng-container>
                     </div>
