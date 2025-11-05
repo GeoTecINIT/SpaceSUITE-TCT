@@ -81,10 +81,12 @@ export class MaterialFormComponent {
       }
     })
     
-    this.organizationSelector.values = [];
-    this.userOrgsSubscription = this.firebaseService.getUserOrganizationList().subscribe(organizations => organizations.forEach(organization =>
-      this.organizationSelector.values.push({label: organization.name, value: organization._id})
-    ));
+    this.userOrgsSubscription = this.firebaseService.getUserOrganizationList().subscribe(organizations => {
+      this.organizationSelector.values = [];
+      organizations.forEach(organization =>
+        this.organizationSelector.values.push({label: organization.name, value: organization._id})
+      )
+    });
 
     if (this.inputMaterial) {
       this.material = this.inputMaterial;
