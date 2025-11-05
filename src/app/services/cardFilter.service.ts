@@ -34,7 +34,7 @@ export class CardFilterService {
         'EQF 8'
       ],
       selection: [],
-      tootltip: 'The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized).'
+      tooltip: 'The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized).'
     },
     {
       label: 'Training Material Type',
@@ -65,7 +65,7 @@ export class CardFilterService {
         'Other'
       ],
       selection: [],
-      tootltip: 'The nature or genre of the resource.'
+      tooltip: 'The nature or genre of the resource.'
     },
     {
       label: 'Interactivity Type',
@@ -79,7 +79,7 @@ export class CardFilterService {
         'Other'
       ],
       selection: [],
-      tootltip: 'The predominant mode of learning supported by the learning resource.'
+      tooltip: 'The predominant mode of learning supported by the learning resource.'
     },
     {
       label: 'Target Audience',
@@ -112,7 +112,7 @@ export class CardFilterService {
         'Other'
       ],
       selection: [],
-      tootltip: 'The intended participants for the resource.'
+      tooltip: 'The intended participants for the resource.'
     },
     {
       label: 'Type of Assessment',
@@ -129,7 +129,7 @@ export class CardFilterService {
         'Other'
       ],
       selection: [],
-      tootltip: "The methods or tools used to evaluate and verify the learner's achievement of the Learning Outcomes."
+      tooltip: "The methods or tools used to evaluate and verify the learner's achievement of the Learning Outcomes."
     },
     {
       label: 'Subject',
@@ -154,7 +154,7 @@ export class CardFilterService {
         'Other'
       ],
       selection: [],
-      tootltip: 'Topic of the resource.'
+      tooltip: 'Topic of the resource.'
     },
     {
       label: 'Language',
@@ -187,7 +187,7 @@ export class CardFilterService {
         "Estonian"      
       ],
       selection: [],
-      tootltip: 'A language of the resource.'
+      tooltip: 'A language of the resource.'
     },
     {
       label: 'License',
@@ -220,7 +220,7 @@ export class CardFilterService {
         'Other',
       ],
       selection: [],
-      tootltip: 'Information about the license under which the resource is made available, specifying usage rights and conditions.'
+      tooltip: 'Information about the license under which the resource is made available, specifying usage rights and conditions.'
     },
     {
       label: 'Organizations',

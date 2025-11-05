@@ -3,5 +3,5 @@ export interface FilterOption {
     tags?: string[],
     values: string[],
     selection: string[],
-    tootltip?: string,
+    tooltip?: string,
 }
