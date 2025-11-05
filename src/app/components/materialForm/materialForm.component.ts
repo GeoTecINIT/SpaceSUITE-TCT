@@ -114,7 +114,8 @@ export class MaterialFormComponent {
     this.material.orgId = newValue.value;
     this.material.orgName = newValue.label;
     this.material.division = undefined;
-    this.firebaseService.getOrganizationDivisions(this.material.orgId!).subscribe(divisions => this.divisionSelector.tags = divisions);
+    this.firebaseService.getOrganizationDivisions(this.material.orgId!).subscribe(divisions => this.divisionSelector.values = divisions);
+    console.log(this.divisionSelector)
   }
 
   getUserName() {

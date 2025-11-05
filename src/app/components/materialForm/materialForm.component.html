@@ -307,7 +307,7 @@
 
                         <div>
                             <p-floatlabel variant="on" class="custom-floatlabel">
-                                <p-select [options]="divisionSelector.tags" [(ngModel)]="material.division" class="w-full custom-select" 
+                                <p-select [options]="divisionSelector.values" [(ngModel)]="material.division" class="w-full custom-select" 
                                     [disabled]="divisionSelector.values.length == 0" [checkmark]="true" inputId="division"
                                     pTooltip="The organization division under which the resource is to be registered" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>
