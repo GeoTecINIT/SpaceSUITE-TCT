@@ -26,7 +26,7 @@ export class EditPageComponent {
     this.route.paramMap.pipe(
       concatMap(params => {
         const materialName = params.get('dynamicValue') || '';
-        return this.trainingMaterialService.getTrainingMaterial(materialName)
+        return this.trainingMaterialService.getTrainingMaterial(materialName);
       })
     ).subscribe(
       (newMaterial: TrainingMaterial | undefined) => {
@@ -34,7 +34,7 @@ export class EditPageComponent {
           this.loadMaterial(newMaterial);
         }
         else {
-          this.exitWithoutSavingService.bypassGuard.next(true)
+          this.exitWithoutSavingService.bypassGuard.next(true);
           this.router.navigate(['/not_found']);
         }
       }
