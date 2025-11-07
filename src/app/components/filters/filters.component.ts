@@ -7,7 +7,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FilterOption } from "../../model/filterOption";
 import { BokModalComponent } from "../bokModal/bokModal.component";
-import { CardFilterService } from "../../services/cardFilter.service";
 import { TooltipModule } from "primeng/tooltip";
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -29,37 +28,33 @@ export class FiltersComponent {
 
   @Input() advancedMultiSelectOptions: FilterOption[] = [];
   @Output() advancedMultiSelectOptionsChange: EventEmitter<FilterOption[]> = new EventEmitter();
-  showAdvancedFilters: boolean = false;
 
   @Input() loading: boolean = false;
 
-  searchValue: string;
+  @Input() searchValue: string = '';
   @Output() searchValueChange: EventEmitter<string> = new EventEmitter();
 
-  searchOptions: MenuItem[] | undefined;
+  searchOptions: MenuItem[] = [{ label: 'Title' }, { label: 'Description' }, { label: 'Learning Outcome' }];
   @Input() selectedOption: string = "Title"
   @Output() selectedOptionChange: EventEmitter<string> = new EventEmitter();
 
-  bokConcepts: string[] = []
+  @Input() bokConcepts: string[] = []
   @Output() bokConceptsChange: EventEmitter<string[]> = new EventEmitter();
 
-  filterUserMaterialOptions: any[] = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }];
-  filterUserMaterial: boolean = false;
-  @Output() filterUserMaterialChange: EventEmitter<boolean> = new EventEmitter();
+  @Input() filterUserItemOptions: any[] = [];
+  @Input() filterUserItem: boolean = false;
+  @Output() filterUserItemChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() logged: boolean = false;
 
-  constructor(private filterService: CardFilterService) {
-    this.searchValue = filterService.searchValue;
-    this.filterUserMaterial = filterService.userMaterialFilter;
-    this.bokConcepts = filterService.bokConcepts;
-    this.showAdvancedFilters = filterService.showAdvancedFilters;
-    this.searchOptions = [{ label: 'Title' }, { label: 'Description' }, { label: 'Learning Outcome' }];
-  }
+  @Input() showAdvancedFilters: boolean = false;
+  @Output() showAdvancedFiltersChange: EventEmitter<boolean> = new EventEmitter();
+
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["logged"] && !changes["logged"].isFirstChange() && changes['logged'].currentValue == false) { 
-      this.filterUserMaterial = false;
+      this.filterUserItemChange.emit(false);
     }
   }
 
@@ -79,8 +74,8 @@ export class FiltersComponent {
     this.searchValueChange.emit(this.searchValue);
   }
 
-  updateFilterUserMaterial() {
-    this.filterUserMaterialChange.emit(this.filterUserMaterial);
+  updateFilterUserItem() {
+    this.filterUserItemChange.emit(this.filterUserItem);
   }
 
   clearOptions(label: string) {
@@ -101,7 +96,7 @@ export class FiltersComponent {
 
   changeAdvancedFiltersState() {
     this.showAdvancedFilters = !this.showAdvancedFilters;
-    this.filterService.showAdvancedFilters = this.showAdvancedFilters;
+    this.showAdvancedFiltersChange.emit(this.showAdvancedFilters);
     if (!this.showAdvancedFilters) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

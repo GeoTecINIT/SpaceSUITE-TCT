@@ -4,7 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
-import { MaterialExplorerComponent } from './app/components/materialExplorer/materialExplorer.component';
+import { ItemExplorerComponent } from './app/components/itemExplorer/itemExplorer.component';
 import { MaterialPageComponent } from './app/components/materialPage/materialPage.component';
 import { provideRouter, Routes, withRouterConfig } from '@angular/router';
 import { AuthGuard, exitWithoutSavingGuard, NotFoundPageComponent, OrganizationPageComponent, UserPageComponent } from '@eo4geo/ngx-bok-utils';
@@ -14,15 +14,15 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { MaterialFormComponent } from './app/components/materialForm/materialForm.component';
-import { EditPageComponent } from './app/components/editPage/editPage.component';
+import { EditMaterialPageComponent } from './app/components/editMaterialPage/editMaterialPage.component';
 
 const routes: Routes = [
-    { path: '', component: MaterialExplorerComponent },
+    { path: '', component: ItemExplorerComponent },
     { path: 'new', component: MaterialFormComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: 'not_found', component: NotFoundPageComponent},
     { path: 'profile', component: UserPageComponent, canMatch: [AuthGuard]},
     { path: 'organizations', component: OrganizationPageComponent, canMatch: [AuthGuard]},
-    { path: 'edit/:dynamicValue', component: EditPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'edit/:dynamicValue', component: EditMaterialPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: ':dynamicValue', component: MaterialPageComponent },
     { path: '**', component: NotFoundPageComponent}
 ];

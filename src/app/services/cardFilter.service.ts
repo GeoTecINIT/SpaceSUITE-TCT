@@ -5,6 +5,7 @@ import { LanguageService } from "./language.service";
 import { UtilsService } from "./utils.service";
 import { PaginatorState } from "primeng/paginator";
 import { TrainingMaterialService } from "./trainingMaterial.service";
+import { TrainingItem } from "../model/trainingItem";
 
 @Injectable({
     providedIn: 'root',
@@ -64,6 +65,13 @@ export class CardFilterService {
         'Mobile Learning (M-Learning)',
         'Other'
       ],
+      selection: [],
+      tooltip: 'The nature or genre of the resource.'
+    },
+    {
+      label: 'Training Action Type',
+      tags: [],
+      values: [],
       selection: [],
       tooltip: 'The nature or genre of the resource.'
     },
@@ -232,7 +240,7 @@ export class CardFilterService {
   public searchValue: string = '';
   public searchOption: string = 'Title';
   public bokConcepts: string[] = [];
-  public userMaterialFilter: boolean = false;
+  public userItemFilter: boolean = false;
   public paginatorState: PaginatorState = {}
   public showAdvancedFilters: boolean = false;
   public sortOption: string = 'Title';
@@ -242,14 +250,29 @@ export class CardFilterService {
     this.materialService.getMaterialsOrganizations().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations);
   }
 
-  public getGeneralFilterOptions(): FilterOption[] {
+  public getGeneralMaterialFilterOptions(): FilterOption[] {
     const generalFilters = ['Subject', 'Language', 'Training Material Type', 'Target Audience']
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
-  public getAdvancedFilterOptions(): FilterOption[] {
+  public getAdvancedMaterialFilterOptions(): FilterOption[] {
     const generalFilters = ['EQF Level', 'Type of Assessment', 'Interactivity Type', 'License', 'Organizations']
     return generalFilters.map( value => this.getOptionByLabel(value))
+  }
+
+  public getGeneralActionFilterOptions(): FilterOption[] {
+    const generalFilters = ['Subject', 'Language', 'Training Action Type', 'Target Audience']
+    return generalFilters.map( value => this.getOptionByLabel(value))
+  }
+
+  public getAdvancedActionFilterOptions(): FilterOption[] {
+    const generalFilters = ['EQF Level', 'Organizations']
+    return generalFilters.map( value => this.getOptionByLabel(value))
+  }
+
+  public checkItem(item: TrainingItem, filter: FilterOption): boolean {
+    if (item instanceof TrainingMaterial) return this.checkMaterial(item, filter);
+    else return false;
   }
 
   public checkMaterial(material: TrainingMaterial, filter: FilterOption): boolean {
@@ -319,7 +342,7 @@ export class CardFilterService {
     const option = this.filterOptions.filter( option => option.label == label)
     if (option.length > 0) return option[0];
     return {
-      label: '',
+      label: label,
       values: [],
       selection: []
     };

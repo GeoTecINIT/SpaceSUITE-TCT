@@ -2,9 +2,9 @@
     <div class="mx-2">
         <h2 class="mt-3 mb-2">Filters</h2>
         <p-divider class="flex-grow-1 mt-0"/>
-        <div class="my-4">
-            <p-selectbutton [(ngModel)]="filterUserMaterial" [options]="filterUserMaterialOptions" class="custom-togglebutton" [allowEmpty]="false"
-                            optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserMaterial()" *ngIf="logged">
+        <div class="my-4 flex">
+            <p-selectbutton [(ngModel)]="filterUserItem" [options]="filterUserItemOptions" class="custom-togglebutton" [allowEmpty]="false"
+                            optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserItem()" *ngIf="logged">
                 <ng-template #item let-item>
                     <div class="row">
                         <i [class]="item.icon"></i>

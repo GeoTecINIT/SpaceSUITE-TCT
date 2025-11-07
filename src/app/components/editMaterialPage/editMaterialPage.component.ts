@@ -12,11 +12,11 @@ import { ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 
 @Component({
   standalone: true,
-  selector: 'edit-page',
+  selector: 'edit-material-page',
   template: '<material-form *ngIf="material" [inputMaterial]="material" pageName="Edit Material">',
   imports: [MaterialFormComponent, CommonModule],
 })
-export class EditPageComponent {
+export class EditMaterialPageComponent {
   material: TrainingMaterial | undefined;
 
   constructor(private trainingMaterialService: TrainingMaterialService, private route: ActivatedRoute, private router: Router, private languageService: LanguageService,
