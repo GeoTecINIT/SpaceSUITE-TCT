@@ -6,236 +6,14 @@ import { UtilsService } from "./utils.service";
 import { PaginatorState } from "primeng/paginator";
 import { TrainingMaterialService } from "./trainingMaterial.service";
 import { TrainingItem } from "../model/trainingItem";
+import { HttpClient } from "@angular/common/http";
+import { concatMap, take } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
 })
 export class CardFilterService {
-  private filterOptions: FilterOption[] = [
-    {
-      label: 'EQF Level',
-      tags: [
-        'EQF 1 - Basic general knowledge',
-        'EQF 2 - Basic factual knowledge',
-        'EQF 3 - Operational knowledge',
-        'EQF 4 - Intermediate knowledge',
-        'EQF 5 - Advanced knowledge',
-        'EQF 6 - Professional knowledge',
-        'EQF 7 - Expert knowledge',
-        'EQF 8 - Authority knowledge'
-      ],
-      values: [
-        'EQF 1',
-        'EQF 2',
-        'EQF 3',
-        'EQF 4',
-        'EQF 5',
-        'EQF 6',
-        'EQF 7',
-        'EQF 8'
-      ],
-      selection: [],
-      tooltip: 'The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized).'
-    },
-    {
-      label: 'Training Material Type',
-      tags: [
-        'Text-based Materials',
-        'Visual Materials',
-        'Interactive Materials',
-        'Video and Audio Materials',
-        'Online Training',
-        'Instructor-Led Materials',
-        'Hands-on Materials',
-        'Assessments',
-        'Reference Materials',
-        'Mobile Learning',
-        'Other'
-      ],
-      values: [
-        'Text-based Materials',
-        'Visual Materials',
-        'Interactive Training Materials',
-        'Video and Audio-based Materials',
-        'Online Training (E-Learning)',
-        'Instructor-Led Materials',
-        'Hands-on Materials',
-        'Assessments & Feedback Materials',
-        'Reference Materials',
-        'Mobile Learning (M-Learning)',
-        'Other'
-      ],
-      selection: [],
-      tooltip: 'The nature or genre of the resource.'
-    },
-    {
-      label: 'Training Action Type',
-      tags: [],
-      values: [],
-      selection: [],
-      tooltip: 'The nature or genre of the resource.'
-    },
-    {
-      label: 'Interactivity Type',
-      values: [
-        'Face To Face',
-        'Online synchronous',
-        'Online asynchronous',
-        'Self-Paced',
-        'Blended',
-        'WorkBased',
-        'Other'
-      ],
-      selection: [],
-      tooltip: 'The predominant mode of learning supported by the learning resource.'
-    },
-    {
-      label: 'Target Audience',
-      tags: [
-        'Teachers / trainers',
-        'Lower secondary students',
-        'Upper secondary students',
-        'Undergraduate (Bachelor)',
-        'Graduates / postgraduates',
-        'Vocational trainees',
-        'Adult & lifelong learners',
-        'Industry professionals',
-        'Jobseeker / Reskilling',
-        'General public',
-        'Learners with special needs',
-        'Other'
-      ],
-      values: [
-        'Teachers / trainers / facilitators',
-        'Lower secondary students (ages 12-14)',
-        'Upper secondary students (ages 15-18)',
-        'Undergraduate / tertiary students (Bachelor’s level)',
-        'Graduate / postgraduate students (Master’s and Doctoral level)',
-        'Vocational trainees / apprentices',
-        'Adult & lifelong learners',
-        'Industry professionals',
-        'Jobseeker / Reskilling participant',
-        'General public',
-        'Learners with special‐education needs',
-        'Other'
-      ],
-      selection: [],
-      tooltip: 'The intended participants for the resource.'
-    },
-    {
-      label: 'Type of Assessment',
-      values: [
-        'No assessment required',
-        'Quiz',
-        'Exam',
-        'Simulation',
-        'Peer review',
-        'Self-assessment',
-        'Instructor-assessed',
-        'Practical assignment',
-        'Project presentation',
-        'Other'
-      ],
-      selection: [],
-      tooltip: "The methods or tools used to evaluate and verify the learner's achievement of the Learning Outcomes."
-    },
-    {
-      label: 'Subject',
-      values: [
-        'Analytical Methods',
-        'Conceptual Foundations',
-        'Cartography and Visualization',
-        'Design and Setup of Geographic Information Systems',
-        'Data Modeling, Storage and Exploitation',
-        'Geocomputation',
-        'Geospatial Data',
-        'GNSS',
-        'GI and Society',
-        'Image processing and analysis',
-        'Organizational and Institutional Aspects',
-        'Physical principles',
-        'Platforms, sensors and digital imagery',
-        'Satellite Systems',
-        'Satellite Communication',
-        'Thematic and application domains',
-        'Web-based GI',
-        'Other'
-      ],
-      selection: [],
-      tooltip: 'Topic of the resource.'
-    },
-    {
-      label: 'Language',
-      values: [
-        "English",
-        "Spanish",
-        "French",
-        "German",
-        "Italian",
-        "Portuguese",
-        "Dutch",
-        "Russian",
-        "Greek",
-        "Polish",
-        "Swedish",
-        "Norwegian",
-        "Finnish",
-        "Danish",
-        "Czech",
-        "Hungarian",
-        "Ukrainian",
-        "Romanian",
-        "Bulgarian",
-        "Serbian",
-        "Croatian",
-        "Slovak",
-        "Slovenian",
-        "Lithuanian",
-        "Latvian",
-        "Estonian"      
-      ],
-      selection: [],
-      tooltip: 'A language of the resource.'
-    },
-    {
-      label: 'License',
-      tags: [
-        'All Rights Reserved',
-        'Open access',
-        'CC BY',
-        'CC BY-SA',
-        'CC BY-NC',
-        'CC BY-ND',
-        'CC BY-NC-SA',
-        'CC0',
-        'Institutional license',
-        'License pending / not defined',
-        'Contact author for reuse',
-        'Other',
-      ],
-      values: [
-        'All Rights Reserved',
-        'Open access,copyright retained by author/creator',
-        'Creative Commons Attribution (CC BY)',
-        'Creative Commons Attribution-ShareAlike (CC BY-SA)',
-        'Creative Commons Attribution-NonCommercial (CC BY-NC)',
-        'Creative Commons Attribution-NoDerivatives (CC BY-ND)',
-        'Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)',
-        'Creative Commons Zero (CC0)',
-        'Institutional license, internal use only',
-        'License pending / not defined',
-        'Contact author or institution for reuse',
-        'Other',
-      ],
-      selection: [],
-      tooltip: 'Information about the license under which the resource is made available, specifying usage rights and conditions.'
-    },
-    {
-      label: 'Organizations',
-      values: [],
-      selection: []
-    }
-  ];
+  private filterOptions: FilterOption[] = [];
 
   public searchValue: string = '';
   public searchOption: string = 'Title';
@@ -246,8 +24,14 @@ export class CardFilterService {
   public sortOption: string = 'Title';
   public sortAsc: boolean = false;
 
-  constructor(private readonly languageService: LanguageService, private readonly materialService: TrainingMaterialService, private readonly utilsService: UtilsService){
-    this.materialService.getMaterialsOrganizations().subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations);
+  constructor(private readonly languageService: LanguageService, private readonly materialService: TrainingMaterialService, private readonly utilsService: UtilsService, private readonly http: HttpClient){
+    http.get<FilterOption[]>('/assets/filters.json').pipe(
+      take(1),
+      concatMap((filters: FilterOption[]) => {
+        this.filterOptions = filters;
+        return this.materialService.getMaterialsOrganizations();
+      })
+    ).subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations);
   }
 
   public getGeneralMaterialFilterOptions(): FilterOption[] {
