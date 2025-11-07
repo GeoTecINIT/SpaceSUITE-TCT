@@ -218,6 +218,29 @@
     "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions."
   },
   {
+    "label": "Certification",
+    "tags": [
+      "No certification available",
+      "Certificate of Completion-Attendance",
+      "Micro-credential",
+      "Badge (Digital Credential)",
+      "Professional certification",
+      "University Credit",
+      "Other"
+    ],
+    "values": [
+      "No certification available",
+      "Certificate of Completion-Attendance",
+      "Micro-credential",
+      "Badge (Digital Credential)",
+      "Professional certification",
+      "University Credit (ECTS or other credit systems)",
+      "Other"
+    ],
+    "selection": [],
+    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions."
+  },
+  {
     "label": "Organizations",
     "values": [],
     "selection": []

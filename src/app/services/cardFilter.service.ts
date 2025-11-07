@@ -8,6 +8,7 @@ import { TrainingMaterialService } from "./trainingMaterial.service";
 import { TrainingItem } from "../model/trainingItem";
 import { HttpClient } from "@angular/common/http";
 import { concatMap, take } from "rxjs";
+import { TrainingAction } from "../model/trainingAction";
 
 @Injectable({
     providedIn: 'root',
@@ -50,73 +51,85 @@ export class CardFilterService {
   }
 
   public getAdvancedActionFilterOptions(): FilterOption[] {
-    const generalFilters = ['EQF Level', 'Organizations']
+    const generalFilters = ['EQF Level', 'Type of Assessment', 'Certification', 'Organizations']
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
   public checkItem(item: TrainingItem, filter: FilterOption): boolean {
-    if (item instanceof TrainingMaterial) return this.checkMaterial(item, filter);
-    else return false;
-  }
-
-  public checkMaterial(material: TrainingMaterial, filter: FilterOption): boolean {
     switch(filter.label) {
       case 'EQF Level':
-        return filter.selection.some(selection => material.educationLevel.includes(selection.slice(-1)));
+        return filter.selection.some(selection => item.educationLevel.includes(selection.slice(-1)));
       case 'Training Material Type':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
             const validTags = filter.values.filter(value => value != 'Other');
-            return material.materialType.some(value => !validTags.includes(value));
+            return item.materialType.some(value => !validTags.includes(value));
           }
-          return material.materialType.includes(selection);
+          return item.materialType.includes(selection);
         });
       case 'Subject':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
             const validOptions = filter.values.filter(value => value != 'Other');
             const validTags = validOptions.map(value => this.utilsService.knowledgeAreaToCode.get(value) || value);
-            return material.subject.some(value => !validTags.includes(value));
+            return item.subject.some(value => !validTags.includes(value));
           }
           const formatedSelection = this.utilsService.knowledgeAreaToCode.get(selection) || selection;
-          return material.subject.includes(formatedSelection)
+          return item.subject.includes(formatedSelection)
         });
       case 'Type of Assessment':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
             const validTags = filter.values.filter(value => value != 'Other');
-            return material.assessment.some(value => !validTags.includes(value));
+            return item.assessment.some(value => !validTags.includes(value));
           }
-          return material.assessment.includes(selection)
+          return item.assessment.includes(selection)
         });
       case 'Target Audience':
         return filter.selection.some(selection => {
           if (selection === 'Other') {
             const validTags = filter.values.filter(value => value != 'Other');
-            return material.audience.some(value => !validTags.includes(value));
+            return item.audience.some(value => !validTags.includes(value));
           }
-          return material.audience.includes(selection)
+          return item.audience.includes(selection)
         });
       case 'Interactivity Type':
-        return filter.selection.some(selection => {
-          if (selection === 'Other') {
-            const validTags = filter.values.filter(value => value != 'Other');
-            return !validTags.includes(material.interactivityType || '')
-          }
-          return material.interactivityType == selection
-        });
+        if (item instanceof TrainingMaterial) {
+          return filter.selection.some(selection => {
+            if (selection === 'Other') {
+              const validTags = filter.values.filter(value => value != 'Other');
+              return !validTags.includes(item.interactivityType || '')
+            }
+            return item.interactivityType == selection
+          });
+        }
+        return false;
       case 'License':
-        return filter.selection.some(selection => {
-          if (selection === 'Other') {
-            const validTags = filter.values.filter(value => value != 'Other');
-            return !validTags.includes(material.license || '')
-          }
-          return material.license == selection
-        });
+        if (item instanceof TrainingMaterial) {
+          return filter.selection.some(selection => {
+            if (selection === 'Other') {
+              const validTags = filter.values.filter(value => value != 'Other');
+              return !validTags.includes(item.license || '')
+            }
+            return item.license == selection
+          });
+        }
+        return false;
+      case 'Certification':
+        if (item instanceof TrainingAction) {
+          return filter.selection.some(selection => {
+            if (selection === 'Other') {
+              const validTags = filter.values.filter(value => value != 'Other');
+              return !validTags.includes(item.certification || '')
+            }
+            return item.certification == selection
+          });
+        }
+        return false;
       case 'Language':
-        return filter.selection.some(selection => material.language?.toLowerCase() == this.languageService.getIsoCode(selection));
+        return filter.selection.some(selection => item.language?.toLowerCase() == this.languageService.getIsoCode(selection));
       case 'Organizations':
-        return filter.selection.some(selection => material.orgName?.toLowerCase() == selection.toLowerCase());
+        return filter.selection.some(selection => item.orgName?.toLowerCase() == selection.toLowerCase());
       default:
         return true;
     }
