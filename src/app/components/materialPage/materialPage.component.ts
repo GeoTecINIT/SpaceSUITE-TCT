@@ -151,11 +151,11 @@ export class MaterialPageComponent {
   }
 
   goToMainPage() {
-    this.router.navigate(['']);
+    this.router.navigate(['material']);
   }
 
   editMaterial() {
-    this.router.navigate(['edit/' + this.material?._id]);
+    this.router.navigate(['material/edit/' + this.material?._id]);
   }
 
   deleteModal(event: Event) {
@@ -198,7 +198,7 @@ export class MaterialPageComponent {
         return of(null)
       }),
       finalize(() => {
-        if (!deleteError) this.router.navigate([''], {queryParams: { submited: true, mode: 'delete' }});
+        if (!deleteError) this.router.navigate(['material'], {queryParams: { submited: true, mode: 'delete' }});
       })
     ).subscribe();
   }

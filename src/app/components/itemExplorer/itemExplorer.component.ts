@@ -3,7 +3,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
-import { CommonModule } from "@angular/common";
+import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { filter, take } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
@@ -67,16 +67,23 @@ export class ItemExplorerComponent {
   ];
   selectedTab: string | number = 0;
 
-  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router,
+  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router, private location: Location,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute, private ngZone: NgZone) {
     this.skelletonElements = Array(16).fill(null);
     this.sortOptions = [{ label: 'Title' }, { label: 'Date' }, {label: 'EQF'}];
   }
 
   ngOnInit() {
+    // Define selected tab based on lastSuccessfulNavigation
+    if (this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action') this.selectedTab = 1;
+    else this.selectedTab = 0;
+
+    // Load filters values from FilterService
     this.filterOptions = this.filterService.getGeneralMaterialFilterOptions();
     this.advancedMaterialFilterOptions = this.filterService.getAdvancedMaterialFilterOptions();
     this.showAdvancedFilters = this.filterService.showAdvancedFilters;
+
+    // Load Training Items & filters state from FilterService
     this.trainingMaterialService.getTrainingMaterialsArray().pipe(
       filter(value => value !== undefined)
     ).subscribe(
@@ -141,12 +148,14 @@ export class ItemExplorerComponent {
         this.filterUserItemOptions = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }]
         this.filterOptions = this.filterService.getGeneralMaterialFilterOptions();
         this.advancedMaterialFilterOptions = this.filterService.getAdvancedMaterialFilterOptions();
+        this.location.replaceState('material');
         break;
       case 1:
         this.trainingItems = [...this.trainingActions];
         this.filterUserItemOptions = [{ label: 'My Actions', value: true, icon: 'pi pi-user' },{ label: 'All Actions', value: false, icon: 'pi pi-globe' }]
         this.filterOptions = this.filterService.getGeneralActionFilterOptions();
         this.advancedMaterialFilterOptions = this.filterService.getAdvancedActionFilterOptions();
+        this.location.replaceState('action');
         break;
     }
     this.filterPipeline()
@@ -321,13 +330,18 @@ export class ItemExplorerComponent {
 
   onPageChange(event: PaginatorState) {
       this.first = event.first ?? 0;
-      this.rows = event.rows ?? 8;
+      this.rows = event.rows ?? 16;
       this.filterService.paginatorState = event;
       this.paginationTrainingItems = this.filteredTrainingItems.slice(this.first, this.first + this.rows)
   }
 
   createTrainingItem() {
-    this.router.navigate(['new']);
+    if (this.selectedTab === 0) {
+      this.router.navigate(['material/new']);
+    }
+    else {
+      this.router.navigate(['action/new']);
+    }
   }
 
 }

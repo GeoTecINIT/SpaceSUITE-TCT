@@ -9,6 +9,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { UtilsService } from "../../services/utils.service";
 import { Router } from "@angular/router";
 import { TrainingItem } from "../../model/trainingItem";
+import { TrainingMaterial } from "../../model/trainingMaterial";
 
 @Component({
   standalone: true,
@@ -34,11 +35,14 @@ export class CardComponent {
 
   imagePlaceholder: string;
 
+  isMaterial: boolean = true;
+
   constructor(private bokInfo: BokInformationService, private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {
     this.imagePlaceholder = this.utilsService.imagePlaceholder;
   }
 
   ngOnInit() {
+    this.isMaterial = this.trainingItem instanceof TrainingMaterial;
     this.trainingItem.concepts.forEach(concept => {
       this.concepts.push(concept)
       this.bokInfo.getConceptColor(concept).subscribe(
@@ -110,8 +114,13 @@ export class CardComponent {
   }
 
   onClickTitle(event: MouseEvent) {
-    event.preventDefault(); 
-    this.router.navigate([this.trainingItem._id]);
+    event.preventDefault();
+    if (this.isMaterial) {
+      this.router.navigate(['material/' + this.trainingItem._id]);
+    }
+    else {
+      this.router.navigate(['action/' + this.trainingItem._id]);
+    }
   }
 
   getTooltipClass(tooltipContent: string): string {

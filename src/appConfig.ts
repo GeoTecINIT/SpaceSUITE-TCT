@@ -18,12 +18,14 @@ import { EditMaterialPageComponent } from './app/components/editMaterialPage/edi
 
 const routes: Routes = [
     { path: '', component: ItemExplorerComponent },
-    { path: 'new', component: MaterialFormComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
-    { path: 'not_found', component: NotFoundPageComponent},
     { path: 'profile', component: UserPageComponent, canMatch: [AuthGuard]},
     { path: 'organizations', component: OrganizationPageComponent, canMatch: [AuthGuard]},
-    { path: 'edit/:dynamicValue', component: EditMaterialPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
-    { path: ':dynamicValue', component: MaterialPageComponent },
+    { path: 'material', redirectTo: '', pathMatch: 'full'},
+    { path: 'material/new', component: MaterialFormComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'material/edit/:dynamicValue', component: EditMaterialPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'material/:dynamicValue', component: MaterialPageComponent },
+    { path: 'action', redirectTo: '', pathMatch: 'full'},
+    { path: 'not_found', component: NotFoundPageComponent},
     { path: '**', component: NotFoundPageComponent}
 ];
 

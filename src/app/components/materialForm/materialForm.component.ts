@@ -77,7 +77,7 @@ export class MaterialFormComponent {
       if (state?.logged) this.material.userId = state.uid;
       else {
         this.exitWithoutSavingService.bypassGuard.next(true);
-        this.router.navigate(['']);
+        this.router.navigate(['material']);
       }
     })
     
@@ -115,7 +115,6 @@ export class MaterialFormComponent {
     this.material.orgName = newValue.label;
     this.material.division = undefined;
     this.firebaseService.getOrganizationDivisions(this.material.orgId!).subscribe(divisions => this.divisionSelector.values = divisions);
-    console.log(this.divisionSelector)
   }
 
   getUserName() {
@@ -151,7 +150,7 @@ export class MaterialFormComponent {
       ).subscribe(materialId => {
         if (materialId != null) {
           this.router.navigate(
-            [materialId], 
+            ['material/' + materialId], 
             { 
               queryParams: { 
                 submited: true, 
@@ -193,8 +192,8 @@ export class MaterialFormComponent {
   }
 
   returnToHomepage() {
-    if (this.inputMaterial != undefined) this.router.navigate([this.inputMaterial._id]);
-    else this.router.navigate(['']);
+    if (this.inputMaterial != undefined) this.router.navigate(['material/' + this.inputMaterial._id]);
+    else this.router.navigate(['material']);
   }
 
   goToNextStep(callback: (nextStepValue: number) => void, index: number) {
