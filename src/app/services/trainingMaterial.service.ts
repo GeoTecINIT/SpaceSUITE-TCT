@@ -63,6 +63,16 @@ export class TrainingMaterialService extends TrainingItemService {
     }));
   }
 
+  private formatTrainingItems(trainingItems: TrainingMaterial[]): TrainingMaterial[] {
+    return trainingItems.map(item => {
+      const newItem = new TrainingMaterial(item);
+      newItem.concepts = this.formatFirestoreConcepts(newItem.concepts);
+      if (!newItem.created) newItem.created = newItem.updatedAt.toDate();
+      else newItem.created = newItem.created.toDate();
+      return newItem;
+    });
+    }
+
   public getTrainingMaterial(materialId: string): Observable<TrainingMaterial | undefined> {
     return this.trainingMaterialMap.asObservable().pipe(
       concatMap( value => {

@@ -6,16 +6,6 @@ import { TrainingMaterial } from "../model/trainingMaterial";
 export abstract class TrainingItemService {
     public abstract getItemsOrganizations(): Observable<string[]>;
 
-    protected formatTrainingItems(trainingItems: TrainingItem[]): TrainingItem[] {
-        return trainingItems.map(item => {
-            const newItem = item instanceof TrainingMaterial ? new TrainingMaterial(item) : new TrainingAction(item);
-            newItem.concepts = this.formatFirestoreConcepts(newItem.concepts);
-            if (!newItem.created) newItem.created = newItem.updatedAt.toDate();
-            else newItem.created = newItem.created.toDate();
-            return newItem;
-        });
-    }
-
     protected formatFirestoreConcepts(concepts: string[]){
         const regex = /\[(.*?)\]/;
         return concepts.map(concept => concept.match(regex)?.[1])
