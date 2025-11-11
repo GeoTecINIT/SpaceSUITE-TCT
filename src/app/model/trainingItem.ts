@@ -9,7 +9,6 @@ export class TrainingItem {
   learningOutcomes: string[];
   audience: string[];
   created: any;
-  materialType: string[];
   publisher: string;
   url: string;
   language?: string;
@@ -46,7 +45,6 @@ export class TrainingItem {
     this.learningOutcomes = data?.learningOutcomes ?? [];
     this.audience = data?.audience ?? [];
     this.created = data?.created ?? new Date();
-    this.materialType = data?.materialType ?? [];
     this.publisher = data?.publisher ?? '';
     this.url = data?.url ?? '';
     this.language = data?.language;
@@ -81,7 +79,6 @@ export class TrainingItem {
       learningOutcomes: this.learningOutcomes,
       audience: this.audience,
       created: this.created,
-      materialType: this.materialType,
       publisher: this.publisher,
       url: this.url,
       language: this.language,
