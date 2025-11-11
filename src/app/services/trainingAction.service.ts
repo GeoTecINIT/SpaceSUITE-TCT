@@ -63,7 +63,7 @@ export class TrainingActionService extends TrainingItemService {
     }));
   }
 
-  private formatTrainingItems(trainingItems: TrainingAction[]): TrainingAction[] {
+  protected formatTrainingItems(trainingItems: TrainingAction[]): TrainingAction[] {
     return trainingItems.map(item => {
       const newItem = new TrainingAction(item);
       newItem.concepts = this.formatFirestoreConcepts(newItem.concepts);

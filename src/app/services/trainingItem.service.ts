@@ -6,6 +6,8 @@ import { TrainingMaterial } from "../model/trainingMaterial";
 export abstract class TrainingItemService {
     public abstract getItemsOrganizations(): Observable<string[]>;
 
+    protected abstract formatTrainingItems(trainingItems: TrainingMaterial[] | TrainingAction[]): TrainingMaterial[] | TrainingAction[];
+
     protected formatFirestoreConcepts(concepts: string[]){
         const regex = /\[(.*?)\]/;
         return concepts.map(concept => concept.match(regex)?.[1])
