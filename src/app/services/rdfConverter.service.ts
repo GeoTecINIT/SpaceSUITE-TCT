@@ -156,13 +156,13 @@ export class RdfConverterService {
     xml += `  <rdf:Description rdf:about="${resourceUri}">\n`;
     xml += `    <rdf:type rdf:resource="${rdfs}Class"/>\n`;
 
-    if (model.title) xml += `    <dcterms:title>${model.title}</dcterms:title>\n`;
+    if (model.title) xml += `    <dcterms:title>${this.escapeXml(model.title)}</dcterms:title>\n`;
 
     if (model.creators) {
       model.creators.forEach((creator: string) => {
         xml += `    <dcterms:creator>\n`;
         xml += `      <dcterms:Agent>\n`;
-        xml += `        <dcterms:title>${creator}</dcterms:title>\n`;
+        xml += `        <dcterms:title>${this.escapeXml(creator)}</dcterms:title>\n`;
         xml += `      </dcterms:Agent>\n`;
         xml += `    </dcterms:creator>\n`;
       });
@@ -172,21 +172,21 @@ export class RdfConverterService {
       model.subject.forEach((subj: string) => {
         const isBok = this.utilsService.codeToKnowledgeArea.has(subj);
         if (isBok) {
-          xml += `    <dcterms:subject rdf:resource="${bok}${subj}"/>\n`;
+          xml += `    <dcterms:subject rdf:resource="${bok}${this.escapeXml(subj)}"/>\n`;
         } else {
-          xml += `    <dcterms:subject>${subj}</dcterms:subject>\n`;
+          xml += `    <dcterms:subject>${this.escapeXml(subj)}</dcterms:subject>\n`;
         }
       });
     }
 
-    if (model.description) xml += `    <dcterms:description>${model.description}</dcterms:description>\n`;
-    if (model.abstract) xml += `    <dcterms:abstract>${model.abstract}</dcterms:abstract>\n`;
+    if (model.description) xml += `    <dcterms:description>${this.escapeXml(model.description)}</dcterms:description>\n`;
+    if (model.abstract) xml += `    <dcterms:abstract>${this.escapeXml(model.abstract)}</dcterms:abstract>\n`;
 
     if (model.learningOutcomes) {
       model.learningOutcomes.forEach((outcome: string) => {
         xml += `    <elm:learningOutcome>\n`;
         xml += `      <elm:LearningOutcome>\n`;
-        xml += `        <dcterms:description>${outcome}</dcterms:description>\n`;
+        xml += `        <dcterms:description>${this.escapeXml(outcome)}</dcterms:description>\n`;
         xml += `      </elm:LearningOutcome>\n`;
         xml += `    </elm:learningOutcome>\n`;
       });
@@ -196,7 +196,7 @@ export class RdfConverterService {
       model.audience.forEach((audience: string) => {
         xml += `    <dcterms:audience>\n`;
         xml += `      <dcterms:AgentClass>\n`;
-        xml += `        <dcterms:title>${audience}</dcterms:title>\n`;
+        xml += `        <dcterms:title>${this.escapeXml(audience)}</dcterms:title>\n`;
         xml += `      </dcterms:AgentClass>\n`;
         xml += `    </dcterms:audience>\n`;
       });
@@ -204,27 +204,27 @@ export class RdfConverterService {
 
     if (model.created) {
       const created = model.created instanceof Date ? model.created.toISOString() : model.created;
-      xml += `    <dcterms:created>${created}</dcterms:created>\n`;
+      xml += `    <dcterms:created>${this.escapeXml(created)}</dcterms:created>\n`;
     }
 
     if (model.materialType) {
       model.materialType.forEach((type: string) => {
         xml += `    <dcterms:type>\n`;
         xml += `      <rdfs:Class>\n`;
-        xml += `        <dcterms:title>${type}</dcterms:title>\n`;
+        xml += `        <dcterms:title>${this.escapeXml(type)}</dcterms:title>\n`;
         xml += `      </rdfs:Class>\n`;
         xml += `    </dcterms:type>\n`;
       });
     }
 
     if (model.interactivityType) {
-      xml += `    <lrmi:interactivityType>${model.interactivityType}</lrmi:interactivityType>\n`;
+      xml += `    <lrmi:interactivityType>${this.escapeXml(model.interactivityType)}</lrmi:interactivityType>\n`;
     }
 
     if (model.publisher) {
       xml += `    <elm:providedBy>\n`;
       xml += `      <dcterms:Agent>\n`;
-      xml += `        <dcterms:title>${model.publisher}</dcterms:title>\n`;
+      xml += `        <dcterms:title>${this.escapeXml(model.publisher)}</dcterms:title>\n`;
       xml += `      </dcterms:Agent>\n`;
       xml += `    </elm:providedBy>\n`;
     }
@@ -233,7 +233,7 @@ export class RdfConverterService {
       model.contributors.forEach((contributor: string) => {
         xml += `    <dcterms:contributor>\n`;
         xml += `      <dcterms:Agent>\n`;
-        xml += `        <dcterms:title>${contributor}</dcterms:title>\n`;
+        xml += `        <dcterms:title>${this.escapeXml(contributor)}</dcterms:title>\n`;
         xml += `      </dcterms:Agent>\n`;
         xml += `    </dcterms:contributor>\n`;
       });
@@ -242,21 +242,21 @@ export class RdfConverterService {
     xml += `    <dcterms:identifier rdf:resource="${model.url}"/>\n`;
 
     if (model.language) {
-      const langUri = `https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}`;
+      const langUri = `https://id.loc.gov/vocabulary/iso639-1/${this.escapeXml(model.language.toLowerCase())}`;
       xml += `    <dcterms:language rdf:resource="${langUri}"/>\n`;
     }
 
-    if (model.source) xml += `    <dcterms:source>${model.source}</dcterms:source>\n`;
-    if (model.license) xml += `    <dcterms:license>${model.license}</dcterms:license>\n`;
+    if (model.source) xml += `    <dcterms:source>${this.escapeXml(model.source)}</dcterms:source>\n`;
+    if (model.license) xml += `    <dcterms:license>${this.escapeXml(model.license)}</dcterms:license>\n`;
 
     if (model.educationLevel) {
       model.educationLevel.forEach((level: string) => {
-        xml += `    <elm:EQFLevel>${level}</elm:EQFLevel>\n`;
+        xml += `    <elm:EQFLevel>${this.escapeXml(level)}</elm:EQFLevel>\n`;
       });
     }
 
     if (model.tableOfContents) {
-      xml += `    <dcterms:tableOfContents>${model.tableOfContents.join(', ')}</dcterms:tableOfContents>\n`;
+      xml += `    <dcterms:tableOfContents>${this.escapeXml(model.tableOfContents.join(', '))}</dcterms:tableOfContents>\n`;
     }
 
     if (model.workload) {
@@ -272,7 +272,7 @@ export class RdfConverterService {
       model.prerequisites.forEach((prerequisite: string) => {
         xml += `    <elm:entryRequirement>\n`;
         xml += `      <elm:Note>\n`;
-        xml += `        <dcterms:description>${prerequisite}</dcterms:description>\n`;
+        xml += `        <dcterms:description>${this.escapeXml(prerequisite)}</dcterms:description>\n`;
         xml += `      </elm:Note>\n`;
         xml += `    </elm:entryRequirement>\n`;
       });
@@ -282,7 +282,7 @@ export class RdfConverterService {
       model.assessment.forEach((assessment: string) => {
         xml += `    <elm:used>\n`;
         xml += `      <elm:LearningAssessment>\n`;
-        xml += `        <dcterms:description>${assessment}</dcterms:description>\n`;
+        xml += `        <dcterms:description>${this.escapeXml(assessment)}</dcterms:description>\n`;
         xml += `      </elm:LearningAssessment>\n`;
         xml += `    </elm:used>\n`;
       });
@@ -304,14 +304,14 @@ export class RdfConverterService {
     let html = `<div vocab="http://purl.org/dc/terms/" typeof="http://www.w3.org/2000/01/rdf-schema#Class" about="${model.url}">\n`;
 
     if (model.title) {
-      html += `  <span property="title">${model.title}</span><br/>\n`;
+      html += `  <span property="title">${this.escapeHtml(model.title)}</span><br/>\n`;
     }
 
     if (model.creators) {
       model.creators.forEach((creator: string) => {
         html += `  <div rel="creator">\n`;
         html += `    <span typeof="Agent">\n`;
-        html += `      <span property="title">${creator}</span>\n`;
+        html += `      <span property="title">${this.escapeHtml(creator)}</span>\n`;
         html += `    </span>\n`;
         html += `  </div>\n`;
       });
@@ -322,24 +322,24 @@ export class RdfConverterService {
         if (this.utilsService.codeToKnowledgeArea.has(subj)) {
           html += `  <a property="subject" href="https://geospacebok.eu/${subj}">${subj}</a><br/>\n`;
         } else {
-          html += `  <span property="subject">${subj}</span><br/>\n`;
+          html += `  <span property="subject">${this.escapeHtml(subj)}</span><br/>\n`;
         }
       });
     }
 
     if (model.description) {
-      html += `  <p property="description">${model.description}</p>\n`;
+      html += `  <p property="description">${this.escapeHtml(model.description)}</p>\n`;
     }
 
     if (model.abstract) {
-      html += `  <p property="abstract">${model.abstract}</p>\n`;
+      html += `  <p property="abstract">${this.escapeHtml(model.abstract)}</p>\n`;
     }
 
     if (model.learningOutcomes) {
       model.learningOutcomes.forEach((outcome: string) => {
         html += `  <div rel="http://data.europa.eu/snb/model/elm/learningOutcome">\n`;
         html += `    <div typeof="http://data.europa.eu/snb/model/elm/LearningOutcome">\n`;
-        html += `      <span property="description">${outcome}</span>\n`;
+        html += `      <span property="description">${this.escapeHtml(outcome)}</span>\n`;
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
@@ -349,14 +349,14 @@ export class RdfConverterService {
       model.audience.forEach((audience: string) => {
         html += `  <div rel="audience">\n`;
         html += `    <div typeof="AgentClass">\n`;
-        html += `      <span property="title">${audience}</span>\n`;
+        html += `      <span property="title">${this.escapeHtml(audience)}</span>\n`;
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
     }
 
     if (model.created) {
-      const createdDate = model.created instanceof Date ? model.created.toISOString() : model.created;
+      const createdDate = model.created instanceof Date ? this.escapeHtml(model.created.toISOString()) : this.escapeHtml(model.created);
       html += `  <time property="created" datetime="${createdDate}">${createdDate}</time><br/>\n`;
     }
 
@@ -364,20 +364,20 @@ export class RdfConverterService {
       model.materialType.forEach((type: string) => {
         html += `  <div rel="type">\n`;
         html += `    <div typeof="rdfs:Class">\n`;
-        html += `      <span property="title">${type}</span>\n`;
+        html += `      <span property="title">${this.escapeHtml(type)}</span>\n`;
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
     }
 
     if (model.interactivityType) {
-      html += `  <span property="http://purl.org/dcx/lrmi-terms/interactivityType">${model.interactivityType}</span><br/>\n`;
+      html += `  <span property="http://purl.org/dcx/lrmi-terms/interactivityType">${this.escapeHtml(model.interactivityType)}</span><br/>\n`;
     }
 
     if (model.publisher) {
       html += `  <div rel="http://data.europa.eu/snb/model/elm/providedBy">\n`;
       html += `    <div typeof="Agent">\n`;
-      html += `      <span property="title">${model.publisher}</span>\n`;
+      html += `      <span property="title">${this.escapeHtml(model.publisher)}</span>\n`;
       html += `    </div>\n`;
       html += `  </div>\n`;
     }
@@ -386,7 +386,7 @@ export class RdfConverterService {
       model.contributors.forEach((contributor: string) => {
         html += `  <div rel="contributor">\n`;
         html += `    <div typeof="Agent">\n`;
-        html += `      <span property="title">${contributor}</span>\n`;
+        html += `      <span property="title">${this.escapeHtml(contributor)}</span>\n`;
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
@@ -397,25 +397,25 @@ export class RdfConverterService {
     }
 
     if (model.language) {
-      html += `  <a property="language" href="https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}">${model.language}</a><br/>\n`;
+      html += `  <a property="language" href="https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}">${this.escapeHtml(model.language)}</a><br/>\n`;
     }
 
     if (model.source) {
-      html += `  <span property="source">${model.source}</span><br/>\n`;
+      html += `  <span property="source">${this.escapeHtml(model.source)}</span><br/>\n`;
     }
 
     if (model.license) {
-      html += `  <span property="license">${model.license}</span><br/>\n`;
+      html += `  <span property="license">${this.escapeHtml(model.license)}</span><br/>\n`;
     }
 
     if (model.educationLevel) {
       model.educationLevel.forEach((level: string) => {
-        html += `  <span property="http://data.europa.eu/snb/model/elm/EQFLevel">${level}</span><br/>\n`;
+        html += `  <span property="http://data.europa.eu/snb/model/elm/EQFLevel">${this.escapeHtml(level)}</span><br/>\n`;
       });
     }
 
     if (model.tableOfContents) {
-      html += `  <span property="tableOfContents">${model.tableOfContents.join(', ')}</span><br/>\n`;
+      html += `  <span property="tableOfContents">${this.escapeHtml(model.tableOfContents.join(', '))}</span><br/>\n`;
     }
 
     if (model.workload) {
@@ -431,7 +431,7 @@ export class RdfConverterService {
       model.prerequisites.forEach((prerequisite: string) => {
         html += `  <div rel="http://data.europa.eu/snb/model/elm/entryRequirement">\n`;
         html += `    <div typeof="http://data.europa.eu/snb/model/elm/Note">\n`;
-        html += `      <span property="description">${prerequisite}</span>\n`;
+        html += `      <span property="description">${this.escapeHtml(prerequisite)}</span>\n`;
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
@@ -441,7 +441,7 @@ export class RdfConverterService {
       model.assessment.forEach((assessment: string) => {
         html += `  <div rel="http://data.europa.eu/snb/model/elm/used">\n`;
         html += `    <div typeof="http://data.europa.eu/snb/model/elm/LearningAssessment">\n`;
-        html += `      <span property="description">${assessment}</span>\n`;
+        html += `      <span property="description">${this.escapeHtml(assessment)}</span>\n`;
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
