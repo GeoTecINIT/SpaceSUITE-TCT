@@ -4,6 +4,7 @@ import { collection, collectionData, CollectionReference, deleteDoc, doc, docDat
 import { concatMap, from, map, Observable, of } from 'rxjs';
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { deleteObject, getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
+import { TrainingAction } from "../model/trainingAction";
 
 @Injectable({
     providedIn: 'root',
@@ -14,6 +15,7 @@ export class FirebaseService {
   private storage: Storage;
   private orgCollection: CollectionReference;
   private materialCollection: CollectionReference;
+  private actionCollection: CollectionReference;
 
   userId: string = '';
 
@@ -23,6 +25,7 @@ export class FirebaseService {
       this.storage = inject(Storage)
       this.orgCollection = collection(this.db, 'Organizations');
       this.materialCollection = collection(this.db, 'TrainingMaterials');
+      this.actionCollection = collection(this.db, 'TrainingActions');
 
       authState(this.auth).subscribe(user => this.userId = user?.uid ?? '');
   }
@@ -61,7 +64,7 @@ export class FirebaseService {
     return this.auth.currentUser;
   }
 
-  getTrainingMaterial(): Observable<TrainingMaterial[]> {
+  getTrainingMaterials(): Observable<TrainingMaterial[]> {
     return collectionData(this.materialCollection) as Observable<TrainingMaterial[]>;
   }
 
@@ -114,6 +117,65 @@ export class FirebaseService {
 
   private uploadMaterialImage(file: File, materialId: string): Observable<string> {
     const path = `Training_Material_Images/${materialId}`;
+    const storageRef = ref(this.storage, path);
+    return from(uploadBytes(storageRef, file)).pipe(
+      concatMap(() => getDownloadURL(storageRef))
+    );
+  }
+
+  getTrainingActions(): Observable<TrainingAction[]> {
+    return collectionData(this.actionCollection) as Observable<TrainingAction[]>;
+  }
+
+  setTrainingAction(newAction: TrainingAction, image: File | undefined): Observable<string> {
+    const newDocRef = doc(this.actionCollection);
+    const timestamp = serverTimestamp();
+    newAction.updatedAt = timestamp;
+    newAction._id = newDocRef.id;
+    if(image) {
+      return this.uploadActionImage(image, newAction._id).pipe(
+        concatMap( url => {
+          newAction.image = url;
+          return setDoc(newDocRef, newAction.toPlain());
+        }),
+        map(() => newAction._id)
+      )
+    }
+    return of(setDoc(newDocRef, newAction.toPlain())).pipe(map(() => newAction._id));
+  }
+
+  updateTrainingAction(action: TrainingAction, image: File | undefined): Observable<string> {
+    const newDocRef = doc(this.actionCollection, action._id);
+    const timestamp = serverTimestamp();
+    action.updatedAt = timestamp;
+    if (image) {
+      return this.uploadActionImage(image, action._id).pipe(
+        concatMap( url => {
+          action.image = url;
+          return setDoc(newDocRef, action.toPlain());
+        }),
+        map(() => action._id)
+      )
+    }
+    return from(setDoc(newDocRef, action.toPlain())).pipe(map(() => action._id));
+  }
+
+  deleteTrainingAction(action: TrainingAction): Observable<void> {
+    const docRef = doc(this.actionCollection, action._id);
+    return from(deleteDoc(docRef)).pipe(
+      concatMap(() => {
+        if (action.image) {
+          const path = `Training_Action_Images/${action._id}`;
+          const storageRef = ref(this.storage, path);
+          return from(deleteObject(storageRef));
+        }
+        return of();
+      })
+    );
+  }
+
+  private uploadActionImage(file: File, actionId: string): Observable<string> {
+    const path = `Training_Action_Images/${actionId}`;
     const storageRef = ref(this.storage, path);
     return from(uploadBytes(storageRef, file)).pipe(
       concatMap(() => getDownloadURL(storageRef))
