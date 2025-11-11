@@ -20,6 +20,7 @@ import { ButtonGroupModule } from 'primeng/buttongroup';
 import { TabsModule } from 'primeng/tabs';
 import { TrainingItem } from "../../model/trainingItem";
 import { TrainingAction } from "../../model/trainingAction";
+import { CardSortingService } from "../../services/cardSorting.service";
 
 @Component({
   standalone: true,
@@ -58,7 +59,7 @@ export class ItemExplorerComponent {
   buttonBottom = 32;
 
   sortOptions: MenuItem[] | undefined;
-  selectedSortOption: string = "Title"
+  selectedSortOption: string = "Title";
   sortAsc: boolean = false;
 
   tabs = [
@@ -68,7 +69,7 @@ export class ItemExplorerComponent {
   selectedTab: string | number = 0;
 
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router, private location: Location,
-              private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute, private ngZone: NgZone) {
+              private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute, private ngZone: NgZone, private sortingSerice: CardSortingService) {
     this.skelletonElements = Array(16).fill(null);
     this.sortOptions = [{ label: 'Title' }, { label: 'Date' }, {label: 'EQF'}];
   }
@@ -92,8 +93,8 @@ export class ItemExplorerComponent {
       this.searchValue = this.filterService.searchValue;
       this.searchOption = this.filterService.searchOption;
       this.filterByUserItem = this.filterService.userItemFilter;
-      this.sortAsc = this.filterService.sortAsc;
-      this.selectedSortOption = this.filterService.sortOption;
+      this.sortAsc = this.sortingSerice.sortAsc;
+      this.selectedSortOption = this.sortingSerice.sortOption;
       this.setSelectedTab(this.selectedTab);
       if(this.filterService.paginatorState.rows && this.filterService.paginatorState.rows) {
         this.onPageChange(this.filterService.paginatorState);
@@ -166,13 +167,13 @@ export class ItemExplorerComponent {
 
   switchSortOrientation() {
     this.sortAsc = !this.sortAsc;
-    this.filterService.sortAsc = this.sortAsc;
+    this.sortingSerice.sortAsc = this.sortAsc;
     this.filterPipeline();
   }
 
   setSortOption(option: string) {
     this.selectedSortOption = option;
-    this.filterService.sortOption = option;
+    this.sortingSerice.sortOption = option;
     this.filterPipeline()
   }
 
@@ -214,54 +215,7 @@ export class ItemExplorerComponent {
   }
 
   sortItems(inputItems: TrainingItem[]): TrainingItem[] {
-    let sortedItems: TrainingItem[] = [...inputItems];
-    switch(this.selectedSortOption) {
-      case 'Title':
-        if (this.sortAsc) {
-          sortedItems = sortedItems.sort((a, b) => b.title.localeCompare(a.title));
-        }
-        else {
-          sortedItems = sortedItems.sort((a, b) => a.title.localeCompare(b.title));
-        }
-        break;
-      case 'Date':
-        if (this.sortAsc) {
-          sortedItems = sortedItems.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime());
-        }
-        else {
-          sortedItems = sortedItems.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-        }
-        break;
-      case 'EQF':
-        if (this.sortAsc) {
-          sortedItems = sortedItems.sort((a, b) => {
-            const lastAIndex: number = a.educationLevel.length - 1;
-            const lastBIndex: number = b.educationLevel.length - 1;
-            const minLen: number = Math.min(lastAIndex, lastBIndex);
-            for (let i = 0; i <= minLen; i++) {
-              const valA = parseInt(a.educationLevel[lastAIndex - i] ?? '0');
-              const valB = parseInt(b.educationLevel[lastBIndex - i] ?? '0');
-              if (valA !== valB) return valA - valB;
-            }
-            return a.educationLevel.length - b.educationLevel.length;
-          });
-        }
-        else {
-          sortedItems = sortedItems.sort((a, b) => {
-            const lastAIndex: number = a.educationLevel.length - 1;
-            const lastBIndex: number = b.educationLevel.length - 1;
-            const minLen: number = Math.min(lastAIndex, lastBIndex);
-            for (let i = 0; i <= minLen; i++) {
-              const valA = parseInt(a.educationLevel[lastAIndex - i] ?? '0');
-              const valB = parseInt(b.educationLevel[lastBIndex - i] ?? '0');
-              if (valA !== valB) return valB - valA;
-            }
-            return b.educationLevel.length - a.educationLevel.length;
-          });
-        }
-        break;
-    }
-    return sortedItems;
+    return this.sortingSerice.sortItems(inputItems);
   }
 
   searchItems(sortedItems: TrainingItem[]) {

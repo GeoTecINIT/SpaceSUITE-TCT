@@ -20,7 +20,7 @@
                 </p-buttongroup>
             </p-tablist>
         </p-tabs>
-        <div *ngIf="filteredTrainingItems.length != 0 || loading" class="flex flex-column w-full mt-2 justify-content-between">
+        <div *ngIf="filteredTrainingItems.length != 0 || loading" class="flex flex-column mt-2">
             <div class="flex gap-5 flex-wrap align-content-start justify-content-center mb-4">
                 <ng-container *ngIf="!loading else cardSkeleton">
                     <ng-container *ngFor="let item of paginationTrainingItems">
@@ -34,7 +34,7 @@
     </div>
 </div>
 <div class="floating-container flex flex-column gap-2 align-items-end" [ngStyle]="{ bottom: buttonBottom + 'px' }">
-    <p-button *ngIf="isLogged() && showButton" (click)="createTrainingItem()" icon="pi pi-plus" label="Add {{selectedTab === 0 ? 'Material' : 'Action'}}" class="custom-button floating-button"/>
+    <p-button *ngIf="isLogged() && showButton" (click)="createTrainingItem()" icon="pi pi-plus" label="Add {{selectedTab === 0 ? 'Material' : 'Action'}}" class="custom-button floating-button" [disabled]="selectedTab !== 0" />
 </div>
 <p-menu #menu [model]="sortOptions" popup styleClass="!min-w-fit" class="custom-menu">
     <ng-template #item let-item>

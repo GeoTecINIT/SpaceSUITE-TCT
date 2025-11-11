@@ -56,13 +56,6 @@
     "tooltip": "The nature or genre of the resource."
   },
   {
-    "label": "Training Action Type",
-    "tags": [],
-    "values": [],
-    "selection": [],
-    "tooltip": "The nature or genre of the resource."
-  },
-  {
     "label": "Interactivity Type",
     "values": [
       "Face To Face",

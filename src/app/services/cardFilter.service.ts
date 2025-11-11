@@ -22,15 +22,13 @@ export class CardFilterService {
   public userItemFilter: boolean = false;
   public paginatorState: PaginatorState = {}
   public showAdvancedFilters: boolean = false;
-  public sortOption: string = 'Title';
-  public sortAsc: boolean = false;
 
   constructor(private readonly languageService: LanguageService, private readonly materialService: TrainingMaterialService, private readonly utilsService: UtilsService, private readonly http: HttpClient){
     http.get<FilterOption[]>('/assets/filters.json').pipe(
       take(1),
       concatMap((filters: FilterOption[]) => {
         this.filterOptions = filters;
-        return this.materialService.getMaterialsOrganizations();
+        return this.materialService.getItemsOrganizations();
       })
     ).subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations);
   }
@@ -46,7 +44,7 @@ export class CardFilterService {
   }
 
   public getGeneralActionFilterOptions(): FilterOption[] {
-    const generalFilters = ['Subject', 'Language', 'Training Action Type', 'Target Audience']
+    const generalFilters = ['Subject', 'Language', 'Target Audience']
     return generalFilters.map( value => this.getOptionByLabel(value))
   }
 
@@ -61,11 +59,14 @@ export class CardFilterService {
         return filter.selection.some(selection => item.educationLevel.includes(selection.slice(-1)));
       case 'Training Material Type':
         return filter.selection.some(selection => {
-          if (selection === 'Other') {
-            const validTags = filter.values.filter(value => value != 'Other');
-            return item.materialType.some(value => !validTags.includes(value));
+          if (item instanceof TrainingMaterial) {
+            if (selection === 'Other') {
+              const validTags = filter.values.filter(value => value != 'Other');
+              return item.materialType.some(value => !validTags.includes(value));
+            }
+            return item.materialType.includes(selection);
           }
-          return item.materialType.includes(selection);
+          return false;
         });
       case 'Subject':
         return filter.selection.some(selection => {
