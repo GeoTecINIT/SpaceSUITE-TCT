@@ -16,7 +16,7 @@ import { TrainingActionService } from "../../services/trainingAction.service";
   template: '<action-form *ngIf="action" [inputAction]="action" pageName="Edit Action">',
   imports: [ActionFormComponent, CommonModule],
 })
-export class EditMaterialPageComponent {
+export class EditActionPageComponent {
   action: TrainingAction | undefined;
 
   constructor(private trainingActionService: TrainingActionService, private route: ActivatedRoute, private router: Router, private languageService: LanguageService,

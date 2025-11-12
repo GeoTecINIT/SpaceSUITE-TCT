@@ -16,6 +16,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { MaterialFormComponent } from './app/components/materialForm/materialForm.component';
 import { EditMaterialPageComponent } from './app/components/editMaterialPage/editMaterialPage.component';
 import { ActionFormComponent } from './app/components/actionForm/actionForm.component';
+import { EditActionPageComponent } from './app/components/editActionPage/editActionPage.component';
 
 const routes: Routes = [
     { path: '', component: ItemExplorerComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
     { path: 'material/:dynamicValue', component: MaterialPageComponent },
     { path: 'action', redirectTo: '', pathMatch: 'full'},
     { path: 'action/new', component: ActionFormComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'action/edit/:dynamicValue', component: EditActionPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: 'not_found', component: NotFoundPageComponent},
     { path: '**', component: NotFoundPageComponent}
 ];
