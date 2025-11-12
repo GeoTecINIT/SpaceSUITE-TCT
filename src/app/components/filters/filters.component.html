@@ -31,7 +31,7 @@
                 </ng-template>
             </p-menu>
         </div>
-        <ng-container *ngFor="let option of multiSelectOptions">
+        <ng-container *ngFor="let option of multiSelectOptions; trackBy: trackByLabel">
             <div class="flex flex-column my-4">
                 <div class="flex align-items-center">
                     {{option.label}}
@@ -43,7 +43,7 @@
             </div>
         </ng-container>
         <ng-container *ngIf="showAdvancedFilters">
-            <ng-container *ngFor="let option of advancedMultiSelectOptions">
+            <ng-container *ngFor="let option of advancedMultiSelectOptions; trackBy: trackByLabel">
                 <div class="flex flex-column my-4">
                     <div class="flex align-items-center">
                         {{option.label}}

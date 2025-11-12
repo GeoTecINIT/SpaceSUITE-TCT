@@ -102,4 +102,8 @@ export class FiltersComponent {
     }
   }
 
+  trackByLabel(index: number, item: FilterOption): string | number {
+    return item.label ?? index;
+  }
+
 }

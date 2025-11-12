@@ -5,7 +5,7 @@ import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
-import { filter, take } from "rxjs";
+import { concatMap, filter, take, tap } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
@@ -21,6 +21,7 @@ import { TabsModule } from 'primeng/tabs';
 import { TrainingItem } from "../../model/trainingItem";
 import { TrainingAction } from "../../model/trainingAction";
 import { CardSortingService } from "../../services/cardSorting.service";
+import { TrainingActionService } from "../../services/trainingAction.service";
 
 @Component({
   standalone: true,
@@ -68,7 +69,7 @@ export class ItemExplorerComponent {
   ];
   selectedTab: string | number = 0;
 
-  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router, private location: Location,
+  constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router, private location: Location, private trainingActionsService: TrainingActionService,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute, private ngZone: NgZone, private sortingSerice: CardSortingService) {
     this.skelletonElements = Array(16).fill(null);
     this.sortOptions = [{ label: 'Title' }, { label: 'Date' }, {label: 'EQF'}];
@@ -86,10 +87,12 @@ export class ItemExplorerComponent {
 
     // Load Training Items & filters state from FilterService
     this.trainingMaterialService.getTrainingMaterialsArray().pipe(
-      filter(value => value !== undefined)
-    ).subscribe(
-    (newValue: TrainingMaterial[]) => {
-      this.trainingMaterials = newValue;
+      filter(value => value !== undefined),
+      tap((newValue: TrainingMaterial[]) => this.trainingMaterials = newValue),
+      concatMap(() => this.trainingActionsService.getTrainingActionsArray()),
+      filter(value => value !== undefined),
+      tap((newValue: TrainingAction[]) => this.trainingActions = newValue)
+    ).subscribe(() => {
       this.searchValue = this.filterService.searchValue;
       this.searchOption = this.filterService.searchOption;
       this.filterByUserItem = this.filterService.userItemFilter;
@@ -296,6 +299,10 @@ export class ItemExplorerComponent {
     else {
       this.router.navigate(['action/new']);
     }
+  }
+
+  trackById(index: number, item: any): string | number {
+    return item._id ?? item.id ?? index;
   }
 
 }

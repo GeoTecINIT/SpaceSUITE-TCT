@@ -8,12 +8,12 @@
     <div class="w-full">
         <p-tabs [value]="selectedTab" (valueChange)="setSelectedTab($event)" class="w-full custom-tabs mb-4" style="margin-top: 0.20rem;" scrollable>
             <p-tablist>
-                @for(tab of tabs; track tab.id){
+                <ng-container *ngFor="let tab of tabs; trackBy: trackById">
                     <p-tab [value]="tab.id" [disabled]="tab.disabled" class="flex items-center !gap-2 text-inherit">
                         <i [class]="tab.icon"></i>
                         <span>{{ tab.label }}</span>
                     </p-tab>
-                }
+                </ng-container>
                 <p-buttongroup class="ml-auto align-self-center">
                     <p-button severity="secondary" (click)="switchSortOrientation()" [icon]="sortAsc ? 'pi pi-sort-amount-up' : 'pi pi-sort-amount-down'" size="small" [label]="'Order By ' + selectedSortOption" class="custom-secondary-button"/>
                     <p-button severity="secondary" (click)="menu.toggle($event)" icon="pi pi-chevron-down" class="flex custom-secondary-button" size="small"/>
@@ -23,9 +23,9 @@
         <div *ngIf="filteredTrainingItems.length != 0 || loading" class="flex flex-column mt-2">
             <div class="flex gap-5 flex-wrap align-content-start justify-content-center mb-4">
                 <ng-container *ngIf="!loading else cardSkeleton">
-                    <ng-container *ngFor="let item of paginationTrainingItems">
+                    <ng-container *ngFor="let item of paginationTrainingItems; trackBy: trackById">
                         <card [trainingItem]="item"></card>
-                    </ng-container >
+                    </ng-container>
                 </ng-container>
             </div>
             <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="filteredTrainingItems.length" class="custom-paginator"/>
@@ -34,7 +34,7 @@
     </div>
 </div>
 <div class="floating-container flex flex-column gap-2 align-items-end" [ngStyle]="{ bottom: buttonBottom + 'px' }">
-    <p-button *ngIf="isLogged() && showButton" (click)="createTrainingItem()" icon="pi pi-plus" label="Add {{selectedTab === 0 ? 'Material' : 'Action'}}" class="custom-button floating-button" [disabled]="selectedTab !== 0" />
+    <p-button *ngIf="isLogged() && showButton" (click)="createTrainingItem()" icon="pi pi-plus" label="Add {{selectedTab === 0 ? 'Material' : 'Action'}}" class="custom-button floating-button"/>
 </div>
 <p-menu #menu [model]="sortOptions" popup styleClass="!min-w-fit" class="custom-menu">
     <ng-template #item let-item>
