@@ -32,8 +32,7 @@ export abstract class TrainingItemService {
         if (item.created && isNaN(Date.parse(item.created.toISOString()))) {
             errors.set('created', 'Creation date format is invalid.');
         }
-        if (isAction) setError('location', !item.location.trim(), 'Location is required.');
-        if (isAction) setError('certification', !item.certification.trim(), 'Certification is required.');
+        if (isAction) setError('certification', !item.certification?.trim(), 'Certification is required.');
         if (isAction && errors.get('certification')) setError('microcredentialAwardingBody', !item.microcredentialAwardingBody?.trim(), 'Awarding Body is required.');
         setError('workload', item.workload == 0, 'Workload must be greater than zero');
         setError('language', !item.language?.trim(), 'Language is required.');

@@ -82,7 +82,7 @@ export class TrainingItem {
       publisher: this.publisher,
       url: this.url,
       language: this.language,
-      source: this.source,
+      source: this.source || "",
       educationLevel: this.educationLevel,
       tableOfContents: this.tableOfContents,
       workload: this.workload,

@@ -1,0 +1,340 @@
+<p-toast class="custom-toast" position="bottom-right"/>
+<p-confirmdialog />
+<div class="flex flex-column align-items-center justify-content-center p-4">
+    <h2>{{pageName}}</h2>
+    <p-stepper [value]="1" class="custom-stepper">
+        <p-step-list>
+            <p-step [value]="1">General Information</p-step>
+            <p-step [value]="2">Material Content</p-step>
+            <p-step [value]="3">Additional Information</p-step>
+            <p-step [value]="4">User Account Information</p-step>
+        </p-step-list>
+        <p-step-panels>
+            <p-step-panel [value]="1">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-column gap-3">
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
+                                        [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
+                                        [(ngModel)]="action.title" pTooltip="A name given to the resource"
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="200"/>
+                                    <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
+                                </p-iconfield>
+                                <label for="title">Title *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('title')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('title')}}</p>
+                        </div>
+    
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" 
+                                        [class.ng-invalid]="errorMap.get('publisher') != undefined" [class.ng-dirty]="errorMap.get('publisher') != undefined" 
+                                        [(ngModel)]="action.publisher" pTooltip="Enter the name of the organization or company making the resource available or organizing the training activity" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="100"/>
+                                    <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="publisher">Provided By *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('publisher')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('publisher')}}</p>
+                        </div>
+
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="action.url"
+                                        [class.ng-invalid]="errorMap.get('url') != undefined" [class.ng-dirty]="errorMap.get('url') != undefined" 
+                                        pTooltip="The address for accessing the resource in the form of a URL" type="url"
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000"/>
+                                    <p-inputicon class="pi pi-link" [style]="errorMap.get('url') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="url">URL *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('url')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('url')}}</p>
+                        </div>
+    
+                        <div>
+                            <p-floatlabel variant="on" class="w-full custom-floatlabel">
+                                <p-datepicker inputId="created" showIcon iconDisplay="input" dateFormat="dd/mm/yy" 
+                                    [(ngModel)]="action.created" fluid class="custom-input custom-datepicker"
+                                    [class.ng-invalid]="errorMap.get('created') != undefined" [class.ng-dirty]="errorMap.get('created') != undefined"
+                                    [class.custom-datepicker-icon-error]="errorMap.get('created') != undefined"
+                                    pTooltip="Enter the date when the resource was originally created/finished (not when it was published, modified, or uploaded)" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                <label for="created">Date Created *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('created')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('created')}}</p>
+                        </div>
+
+                        <div>
+                            <custom-select [fieldName]="'Language'" [(selection)]="action.language" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('language') != undefined" [optionsName]="'Language'"
+                                    pTooltip="The language of the resource" [filter]="false"
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
+                            <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
+                        </div>
+
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <textarea id="description" pTextarea [(ngModel)]="action.description"
+                                    [class.ng-invalid]="errorMap.get('description') != undefined" [class.ng-dirty]="errorMap.get('description') != undefined"
+                                    rows="4" class="w-full custom-textarea m-0"
+                                    pTooltip="Provide a concise summary or overview of the resource content. Include key topics, purpose, scope, and any important features or intended audience" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
+                                <div class="textarea-length" [style]="errorMap.get('description') != undefined ? 'color: var(--danger-color)' : ''">
+                                    <span>{{action.description.length + ' '}}</span>
+                                    <span>/ 2000</span>
+                                </div>
+                                <label for="description">Description *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('description')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('description')}}</p>
+                        </div>
+    
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <textarea id="abstract" pTextarea [(ngModel)]="action.abstract"
+                                    [class.ng-invalid]="errorMap.get('abstract') != undefined" [class.ng-dirty]="errorMap.get('abstract') != undefined"
+                                    rows="2" class="w-full custom-textarea m-0" 
+                                    pTooltip="Provide a brief summary of the resource as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="500"></textarea>
+                                <div class="textarea-length" [style]="errorMap.get('abstract') != undefined ? 'color: var(--danger-color)' : ''">
+                                    <span>{{action.abstract.length + ' '}}</span>
+                                    <span>/ 500</span>
+                                </div>
+                                <label for="abstract">Abstract *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('abstract')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('abstract')}}</p>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'Subjects'" [(chips)]="action.subject" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'"
+                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
+                        </div>
+
+                        <div>
+                            <text-chips [fieldName]="'Creators *'" [(chips)]="action.creators"
+                                    [error]="errorMap.get('creators') != undefined" 
+                                    pTooltip="Specify the authors of the action. First name first, then second name" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+                            <p *ngIf="errorMap.get('creators')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('creators')}}</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Return" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 2)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+    
+            <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-column gap-3">
+
+                        <div>
+                            <p-floatlabel variant="on" class="w-full custom-floatlabel">
+                                <p-iconfield>
+                                    <p-inputnumber id="workload" [min]="0" [useGrouping]="false" suffix=" ECTS"
+                                        [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined" 
+                                        class="custom-input" [(ngModel)]="action.workload" fluid tooltipPosition="right" showDelay="200" hideDelay="200"
+                                        pTooltip="Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS"/>
+                                    <p-inputicon class="pi pi-clock"/>
+                                </p-iconfield>
+                                <label for="workload">Workload *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('workload')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('workload')}}</p>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'EQF Level'" [(chips)]="action.educationLevel" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('educationLevel') != undefined" [optionsName]="'EQF Level'"
+                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [filter]="false"></multiselect-chips>
+                            <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
+                        </div>
+
+                        <div>
+                            <custom-select [fieldName]="'Certification'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('certification') != undefined" [optionsName]="'Certification'"
+                                    pTooltip="Information on whether participants will receive upon completion" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
+                            <p *ngIf="errorMap.get('certification')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('certification')}}</p>
+                        </div>
+
+                        <div *ngIf="action.certification && action.certification === 'Micro-credential'">
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="microcredentialAwardingBody" autocomplete="off" class="w-full custom-input" [(ngModel)]="action.microcredentialAwardingBody"
+                                        [class.ng-invalid]="errorMap.get('microcredentialAwardingBody') != undefined" [class.ng-dirty]="errorMap.get('microcredentialAwardingBody') != undefined" 
+                                        pTooltip="The institution, organization, or entity responsible for issuing or validating the micro-credential"
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000"/>
+                                    <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('microcredentialAwardingBody') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="microcredentialAwardingBody">Microcredential Awarding Body *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('microcredentialAwardingBody')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('microcredentialAwardingBody')}}</p>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'Target Audience'" [(chips)]="action.audience" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('audience') != undefined" [optionsName]="'Target Audience'"
+                                    pTooltip="The intended participants for the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('audience')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('audience')}}</p>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'Type of Assessment'" [(chips)]="action.assessment" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('assessment') != undefined" [optionsName]="'Type of Assessment'"
+                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('assessment')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('assessment')}}</p>
+                        </div>
+
+                        <div>
+                            <text-chips [fieldName]="'Learning Outcomes *'" [icon]="'pi pi-graduation-cap'" [(chips)]="action.learningOutcomes"
+                                    [error]="errorMap.get('learningOutcomes') != undefined" 
+                                    pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+                            <p *ngIf="errorMap.get('learningOutcomes')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('learningOutcomes')}}</p>
+                        </div>
+
+                        <div>
+                            <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
+                                tooltipPosition="right" showDelay="200" hideDelay="200" 
+                                [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
+                                <bokModal [(selectedConcepts)]="action.concepts" [label]="'Knowledge Annotations *'" [allowKnowledgeAreas]="false"
+                                    [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' "></bokModal>
+                            </div>
+                            <p *ngIf="errorMap.get('concepts')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('concepts')}}</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 1)" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 3)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+    
+            <p-step-panel [value]="3">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-column gap-3">
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <p-autocomplete inputId="location" fluid class="custom-input" [ngModel]="action.location.name" (ngModelChange)="onLocationChange($event)"
+                                        [suggestions]="locationSuggestions" (completeMethod)="searchLocation($event)" optionLabel="name"
+                                        pTooltip="A physical or geographical place where the resource is located" 
+                                        tooltipPosition="right" showDelay="200" hideDelay="200"></p-autocomplete>
+                                    <p-inputicon class="pi pi-map-marker" />
+                                </p-iconfield>
+                                <label for="location">Location</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <textarea id="source" pTextarea [(ngModel)]="action.source"
+                                    rows="2" class="w-full custom-textarea m-0" 
+                                    pTooltip="References and resources from which the described training action is derived" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="500"></textarea>
+                            <div class="textarea-length">
+                                <span>{{(action.source?.length || 0) + ' '}}</span>
+                                <span>/ 500</span>
+                            </div>
+                            <label for="source">References & Resources</label>
+                        </p-floatlabel>
+
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="action.prerequisites"
+                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents"
+                                    pTooltip=" Provide the main structural elements of the resource. This may include chapter titles, lesson breakdowns, or thematic sections" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+
+                        <div>
+                            <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" auto
+                                class="custom-button custom-secondary-button custom-fileupload" (uploadHandler)="onFileSelected($event); fileUpload.clear();"
+                                pTooltip="Image to be displayed in the Training Catalogue with this resource" 
+                                tooltipPosition="right" showDelay="200" hideDelay="200">
+                                <ng-template #header let-chooseCallback="chooseCallback">
+                                    <div class="flex flex-wrap gap-2">
+                                        <p-button size="small" label="Choose Illustrative Image" icon="pi pi-plus" (onClick)="fileUpload.choose()" />
+                                        <p-button severity="secondary" size="small" label="Delete Illustrative Image" icon="pi pi-times" *ngIf="uploadedImage" (onClick)="onFileDeleted()" />
+                                    </div>
+                                </ng-template>
+                                <ng-template #content>
+                                    <div class="px-2 pb-2" *ngIf="action.image != '' || uploadedImage">
+                                        <p-divider class="my-2"></p-divider>
+                                        <div class="flex flex-column gap-2 align-items-center">
+                                            <div>Current Image</div>
+                                            <img [src]="uploadedImageB64 ?? action.image" class="w-full max-w-30rem">
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </p-fileupload>
+                        </div>
+                    </div>
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 2)" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 4)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <p-step-panel [value]="4">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-column gap-3">
+                        <p class="m-0 font-italic align-self-center text-center" [style.color]="'var(--primary-color)'">Please revise your account information, under which the training action will be published (not part of metadata).</p>
+
+                        <p-floatlabel variant="on" class="custom-floatlabel">
+                            <p-iconfield>
+                                <input pInputText id="user" autocomplete="off" class="w-full custom-input" [ngModel]="getUserName()" disabled
+                                    pTooltip="User registering the resource" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                <p-inputicon class="pi pi-user" />
+                            </p-iconfield>
+                            <label for="user">User *</label>
+                        </p-floatlabel>
+
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('organization') != undefined">
+                                <p-select inputId="org" [options]="organizationSelector.values" [ngModel]="action.orgId == undefined ? undefined : {value: action.orgId, label: action.orgName}" (ngModelChange)="loadDivisions($event)"
+                                    class="w-full custom-select" optionLabel="label" [checkmark]="true" 
+                                    [class.invalid-select]="errorMap.get('organization') != undefined"
+                                    pTooltip="The organization under which the resource is to be registered" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                <label for="org">{{organizationSelector.label}} *</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('organization')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('organization')}}</p>
+                        </div>
+
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-select [options]="divisionSelector.values" [(ngModel)]="action.division" class="w-full custom-select" 
+                                    [disabled]="divisionSelector.values.length == 0" [checkmark]="true" inputId="division"
+                                    pTooltip="The organization division under which the resource is to be registered" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                <label for="division">{{divisionSelector.label}}</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div class="flex w-full">
+                            <p-selectbutton [options]="visibilityFieldOptions" [(ngModel)]="action.isPublic" optionLabel="label" optionValue="value"
+                                pTooltip="Specifies whether this action is public or restricted to your account." 
+                                tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                        </div>
+                    </div>
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 3)" />
+                        <p-button class="custom-button" label="Submit" (onClick)="submitMaterial()"/>
+                    </div>
+                </ng-template>
+            </p-step-panel>
+        </p-step-panels>
+    </p-stepper>
+</div>

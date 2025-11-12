@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TrainingAction } from "../model/trainingAction";
-import { BehaviorSubject, concatMap, filter, forkJoin, map, Observable, of, take, tap } from "rxjs";
+import { BehaviorSubject, concatMap, filter, forkJoin, map, Observable, of, take } from "rxjs";
 import { FirebaseService } from "./firebase.service";
 import { LanguageService } from "./language.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
@@ -20,7 +20,7 @@ export class TrainingActionService extends TrainingItemService {
 
   constructor(private firebaseService: FirebaseService, private languageService: LanguageService, private bokInfoService: BokInformationService, private utilsService: UtilsService) {
     super();
-    this.checkTrainingActions().subscribe()
+    this.checkTrainingActions().subscribe();
   }
 
   public submitAction(action: TrainingAction, image: File | undefined, update: boolean = false): Observable<string> {
