@@ -205,6 +205,9 @@ export class ItemExplorerComponent {
   setShowAdvancedFilters(showAdvancedFilters: boolean) {
     this.showAdvancedFilters = showAdvancedFilters;
     this.filterService.showAdvancedFilters = showAdvancedFilters;
+    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+      this.updateButtonPosition();
+    });
   }
 
   filterPipeline() {
