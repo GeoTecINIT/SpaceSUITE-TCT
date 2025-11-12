@@ -95,7 +95,7 @@ export class ActionFormComponent {
     if (this.inputAction) {
       this.action = this.inputAction;
       if (this.action.division == '') this.action.division = undefined;
-      this.firebaseService.getOrganizationDivisions(this.action.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
+      this.firebaseService.getOrganizationDivisions(this.action.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
     }
 
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
@@ -141,7 +141,6 @@ export class ActionFormComponent {
       this.trainingActionService.submitAction(this.action, this.uploadedImage, this.inputAction != undefined).pipe(
         take(1),
         catchError( error => {
-          console.log('xd')
           console.log(error)
           this.messageService.add({ 
             severity: 'error', 
