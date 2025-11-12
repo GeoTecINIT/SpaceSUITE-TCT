@@ -208,7 +208,7 @@ export class MaterialPageComponent {
   }
 
   onClickConcept(code: string) {
-    window.open('https://bok.eo4geo.eu/' + code)
+    window.open('https://geospacebok.eu/' + code)
   }
 
   toggle(event: any) {
