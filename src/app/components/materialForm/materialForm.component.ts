@@ -129,10 +129,10 @@ export class MaterialFormComponent {
   }
 
   submitMaterial() {
-    this.exitWithoutSavingService.bypassGuard.next(true);
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
+      this.exitWithoutSavingService.bypassGuard.next(true);
       if (this.material.division == undefined) this.material.division = '';
       this.trainingMaterialService.submitMaterial(this.material, this.uploadedImage, this.inputMaterial != undefined).pipe(
         take(1),
