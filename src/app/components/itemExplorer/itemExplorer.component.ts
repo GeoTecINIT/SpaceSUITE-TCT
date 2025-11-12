@@ -132,11 +132,9 @@ export class ItemExplorerComponent {
     const element = this.containerRef.nativeElement;
     const rect = element.getBoundingClientRect();
     const bottomOverlap = window.innerHeight - rect.bottom;
-
-    if (bottomOverlap >= 32) {
-      this.buttonBottom = bottomOverlap
-    } else {
-      this.buttonBottom = 32;
+    const newButtonBottom = Math.max(bottomOverlap, 32);
+    if (this.buttonBottom !== newButtonBottom) {
+      this.buttonBottom = newButtonBottom;
     }
   };
 
