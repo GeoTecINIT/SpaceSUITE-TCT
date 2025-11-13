@@ -124,8 +124,8 @@ export class ItemExplorerComponent {
         }
       }
     });
-
     window.addEventListener('scroll', this.updateButtonPosition);
+    window.addEventListener('resize', this.updateButtonPosition);
   }
 
   updateButtonPosition = () => {
@@ -140,6 +140,7 @@ export class ItemExplorerComponent {
 
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.updateButtonPosition);
+    window.removeEventListener('resize', this.updateButtonPosition);
   }
 
   setSelectedTab(newValue: string | number) {
