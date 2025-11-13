@@ -14,6 +14,8 @@
             |
             <div class="text-sm"><strong>Created:</strong> {{material.created?.toLocaleDateString()}}</div>
             |
+            <div class="text-sm"><strong>Visibility:</strong> {{material.isPublic ? 'Public' : 'Private'}}</div>
+            |
             <a class="icon-link text-sm align-items-center mx-1" href="{{material.url}}" target="_blank">
                 <i class="pi pi-external-link text-sm mx-1"></i>
                 Go to Material
@@ -74,7 +76,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="mb-2"><strong>Interactivity Type:</strong> {{material.interactivityType}}</div>
                     <div class="mb-2">
                         <strong>Prerequisites:</strong>
                         <ul *ngIf="material.prerequisites.length > 0">
@@ -84,10 +85,6 @@
                         </ul>
                     </div>
                     <div class="mb-2">
-                        <strong>Type of Assessment:</strong>
-                       <div class="my-2">{{this.material.assessment.join(', ') || ""}}</div>
-                    </div>
-                    <div class="mb-2">
                         <strong>Learning Outcomes:</strong>
                         <ul *ngIf="material.learningOutcomes.length > 0">
                             <li *ngFor="let outcome of material.learningOutcomes">
@@ -95,7 +92,15 @@
                             </li>
                         </ul>
                     </div>
-                    
+                    <div class="mb-2">
+                        <strong>Type of Assessment:</strong>
+                        <ul *ngIf="material.assessment.length > 0">
+                            <li *ngFor="let assessmentType of material.assessment">
+                                {{assessmentType}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2"><strong>Interactivity Type:</strong> {{material.interactivityType}}</div>
                 </p-tabpanel>
                 <p-tabpanel value="3">
                     <div class="mb-2 text-justify">

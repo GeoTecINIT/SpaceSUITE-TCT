@@ -36,7 +36,7 @@
             <div class="text-sm"><strong>EQF: {{trainingItem.educationLevel}}</strong></div>
             <ng-content *ngIf="!trainingItem.isPublic">
             |
-            <div class="text-sm"><strong>Private</strong></div>
+            <div class="text-sm flex align-items-center gap-1"><i class="pi pi-eye-slash"></i><strong>Private</strong></div>
             </ng-content> 
             |
             <div #orgRef class="text-sm overflow-hidden text-overflow-ellipsis" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
