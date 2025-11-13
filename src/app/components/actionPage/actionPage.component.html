@@ -114,7 +114,19 @@
                     </div>
                     <div class="mb-2">
                         <strong>Location: </strong>
-                        <a *ngIf="action.location.name != ''" href="{{action.location.getMapURI()}}" target="_blank">{{action.location.name}}</a>
+                        {{action.location.name}}
+                        <div class="text-sm inline">
+                            (abrir en
+                            <a class="icon-link" *ngIf="action.location.name != ''" href="{{action.location.getOpenStreetMapURI()}}" target="_blank">
+                                OpenStreetMap
+                                <i class="pi pi-external-link text-xs"></i>
+                            </a>
+                            ,
+                            <a class="icon-link" *ngIf="action.location.name != ''" href="{{action.location.getGoogleMapURI()}}" target="_blank">
+                                Google Maps
+                                <i class="pi pi-external-link text-xs"></i>
+                            </a>)
+                        </div>
                     </div>
                     <div class="mb-2"><strong>Organization:</strong> {{action.orgName ?? 'Not specified'}}</div>
                     <div class="mb-2"><strong>Division:</strong> {{action.division ?? 'Not specified'}}</div>

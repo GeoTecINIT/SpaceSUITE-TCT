@@ -9,7 +9,7 @@ import { AutocompleteResponse } from "../model/geocodeAutocompleteDTO";
   providedIn: 'root'
 })
 export class OpenrouteService {
-  private geocodeAutocompleteURI: string = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${environment.OPENROUTE}&size=10&text=`
+  private geocodeAutocompleteURI: string = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${environment.OPENROUTE}&size=10&sources=openstreetmap&text=`
 
   constructor(private readonly http: HttpClient) {}
 
