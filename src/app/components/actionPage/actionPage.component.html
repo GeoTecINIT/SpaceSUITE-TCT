@@ -1,0 +1,182 @@
+<p-toast class="custom-toast" position="bottom-right"/>
+<p-confirmdialog />
+<div *ngIf="action; else spinner" class="flex flex-column md:flex-row justify-content-between md:gap-4">
+    <div class="flex flex-column overflow-auto flex-auto">
+        <h1 class="mb-2">{{action.title}}</h1>
+        <div class="flex align-items-center gap-2 flex-wrap white-space-nowrap mb-2">
+            <div class="text-sm"><strong>Language:</strong> {{action.language ?? 'Undefined'}}</div>
+            |
+            <div class="text-sm"><strong>EQF Level:</strong> {{action.educationLevel}}</div>
+            |
+            <div class="text-sm"><strong>Workload:</strong> {{action.workload}} ECTS</div>
+            |
+            <div class="text-sm"><strong>Provided by:</strong> {{action.publisher}}</div>
+            |
+            <div class="text-sm"><strong>Created:</strong> {{action.created?.toLocaleDateString()}}</div>
+            |
+            <div class="text-sm"><strong>Visibility:</strong> {{action.isPublic ? 'Public' : 'Private'}}</div>
+            |
+            <a class="icon-link text-sm align-items-center mx-1" href="{{action.url}}" target="_blank">
+                <i class="pi pi-external-link text-sm mx-1"></i>
+                Go to Material
+            </a>
+            |
+            <a class="icon-link text-sm align-items-center mx-1 cursor-pointer" (click)="toggle($event)">
+                <i class="pi pi-download text-sm mx-1"></i>
+                Download Metadata
+            </a>
+            <p-popover #op>
+                <div style="color: var(--primary-color)">
+                    <span class="font-medium block mb-2"><strong>Metadata Format</strong></span>
+                    <ul class="p-0 m-0 flex flex-column">
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialRDFa()">
+                            <span class="font-medium">RDFa</span>
+                        </li>
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialXML()">
+                            <span class="font-medium">RDF/XML</span>
+                        </li>
+                        <li class="flex items-center gap-2 px-2 py-2 cursor-pointer popover-element" (click)="downloadMaterialTTL()">
+                            <span class="font-medium">Turtle</span>
+                        </li>
+                    </ul>
+                </div>
+            </p-popover>
+        </div>
+        <div style="color: var(--primary-color);" class="my-2 font-italic">{{this.action.creators.join(', ') || ""}}</div>
+        <p-tabs value="0" scrollable class="custom-tabs mb-2">
+            <p-tablist>
+                <p-tab value="0">Description</p-tab>
+                <p-tab value="1">Table of Contents</p-tab>
+                <p-tab value="2">Material Detail</p-tab>
+                <p-tab value="3">Additional Information</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+                <p-tabpanel value="0">
+                    <div class="mb-2 text-justify">
+                        <ng-content *ngIf="action.abstract && action.abstract != ''">
+                            {{action.abstract}}
+                            <br><br>
+                        </ng-content>
+                        {{action.description}}
+                    </div>
+                </p-tabpanel>
+                <p-tabpanel value="1">
+                    <ul class="m-0 mb-2">
+                        <li *ngFor="let content of action.tableOfContents">
+                            {{content}}
+                        </li>
+                    </ul>
+                </p-tabpanel>
+                <p-tabpanel value="2">
+                    <div class="mb-2">
+                        <strong>Prerequisites:</strong>
+                        <ul *ngIf="action.prerequisites.length > 0">
+                            <li *ngFor="let requisite of action.prerequisites">
+                                {{requisite}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Learning Outcomes:</strong>
+                        <ul *ngIf="action.learningOutcomes.length > 0">
+                            <li *ngFor="let outcome of action.learningOutcomes">
+                                {{outcome}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Type of Assessment:</strong>
+                        <ul *ngIf="action.assessment.length > 0">
+                            <li *ngFor="let assessmentType of action.assessment">
+                                {{assessmentType}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Certification:</strong> {{action.certification}}
+                    </div>
+                    <div class="mb-2" *ngIf="action.certification && action.certification === 'Micro-credential'">
+                        <strong>Micro-credential Awarding Body</strong> {{action.microcredentialAwardingBody}}
+                    </div>
+                </p-tabpanel>
+                <p-tabpanel value="3">
+                    <div class="mb-2 text-justify">
+                        <strong>Source/s:</strong>
+                        <div class="my-2">{{action.source}}</div>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Audience:</strong>
+                        <ul *ngIf="action.audience.length > 0">
+                            <li *ngFor="let audience of action.audience">
+                                {{audience}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Location: </strong>
+                        <a *ngIf="action.location.name != ''" href="{{action.location.getMapURI()}}" target="_blank">{{action.location.name}}</a>
+                    </div>
+                    <div class="mb-2"><strong>Organization:</strong> {{action.orgName ?? 'Not specified'}}</div>
+                    <div class="mb-2"><strong>Division:</strong> {{action.division ?? 'Not specified'}}</div>
+                  </p-tabpanel>
+            </p-tabpanels>
+        </p-tabs>
+        <div class="hidden md:flex justify-content-between mb-2 mt-auto">
+            <p-button label="Return to Homepage" severity="secondary" icon="pi pi-arrow-left" class="custom-secondary-button" (onClick)="goToMainPage()"></p-button>
+            <div class="flex flex-wrap gap-2">
+                <p-button label="Edit Action" icon="pi pi-pencil" class="custom-button" (onClick)="editAction()" *ngIf="checkUser()"></p-button>
+                <p-button label="Delete Action" icon="pi pi-trash" class="delete-button" (onClick)="deleteModal($event)" *ngIf="checkUser()"></p-button>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-column image-column">
+
+        <img src="{{action.image != '' ? action.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
+
+        <p-panel #subjectsPanel [header]="'Subjects (' + action.subject.length + ')'" class="my-2 custom-panel">
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let concept of knowledgeAreas">
+                    <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
+                        [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
+                </ng-content>
+                <ng-content *ngFor="let subject of customSubjects">
+                    <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-panel #conceptsPanel [header]="'Knowledge (' + currentConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
+            <ng-template #headericons>
+                <p-button *ngIf="!conceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
+                <p-button *ngIf="conceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
+            </ng-template>      
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let concept of currentConcepts">
+                    <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
+                        [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-panel #deprecatedConceptsPanel *ngIf="deprecatedConcepts.length > 0" [header]="'Annotated Deprecated Knowledge (' + deprecatedConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
+            <ng-template #headericons>
+                <p-button *ngIf="!deprecatedConceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
+                <p-button *ngIf="deprecatedConceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
+            </ng-template>  
+            <div class="text-xs mb-3" style="color: var(--danger-color);">*These are obsolete concepts, so they are not present in the current version of the Bok.</div>
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let concept of deprecatedConcepts">
+                    <p-tag [value]="concept" [rounded]="true" class="xs:white-space-nowrap bok-tag" [style.background]="selectedConceptsColor.get(concept)"
+                        (click)="onClickConcept(concept)" />
+                </ng-content>
+            </div>
+        </p-panel>
+        <p-button label="Edit Action" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editAction()" *ngIf="checkUser()"></p-button>
+        <p-button label="Delete Action" icon="pi pi-trash" class="flex md:hidden justify-content-center delete-button my-2" (onClick)="deleteModal($event)" *ngIf="checkUser()"></p-button>
+        <p-button label="Return to Homepage" severity="secondary" icon="pi pi-arrow-left" class="flex md:hidden justify-content-center custom-secondary-button my-2" (onClick)="goToMainPage()"></p-button>
+    </div>
+</div>
+
+<ng-template #spinner>
+    <div class="flex justify-content-center align-content-center h-screen">
+        <p-progress-spinner strokeWidth="3" ariaLabel="loading" class="flex align-items-center justify-content-center" />
+    </div>
+</ng-template>

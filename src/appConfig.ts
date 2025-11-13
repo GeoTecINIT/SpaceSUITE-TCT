@@ -6,7 +6,7 @@ import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
 import { ItemExplorerComponent } from './app/components/itemExplorer/itemExplorer.component';
 import { MaterialPageComponent } from './app/components/materialPage/materialPage.component';
-import { provideRouter, Routes, withRouterConfig } from '@angular/router';
+import { provideRouter, Routes } from '@angular/router';
 import { AuthGuard, exitWithoutSavingGuard, NotFoundPageComponent, OrganizationPageComponent, UserPageComponent } from '@eo4geo/ngx-bok-utils';
 import { environment } from './environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -17,6 +17,7 @@ import { MaterialFormComponent } from './app/components/materialForm/materialFor
 import { EditMaterialPageComponent } from './app/components/editMaterialPage/editMaterialPage.component';
 import { ActionFormComponent } from './app/components/actionForm/actionForm.component';
 import { EditActionPageComponent } from './app/components/editActionPage/editActionPage.component';
+import { ActionPageComponent } from './app/components/actionPage/actionPage.component';
 
 const routes: Routes = [
     { path: '', component: ItemExplorerComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
     { path: 'action', redirectTo: '', pathMatch: 'full'},
     { path: 'action/new', component: ActionFormComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
     { path: 'action/edit/:dynamicValue', component: EditActionPageComponent, canMatch: [AuthGuard], canDeactivate: [exitWithoutSavingGuard]},
+    { path: 'action/:dynamicValue', component: ActionPageComponent },
     { path: 'not_found', component: NotFoundPageComponent},
     { path: '**', component: NotFoundPageComponent}
 ];
