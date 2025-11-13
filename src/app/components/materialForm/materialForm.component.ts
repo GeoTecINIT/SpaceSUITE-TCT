@@ -22,7 +22,7 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, of, Subscription, take } from "rxjs";
+import { catchError, finalize, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
@@ -146,19 +146,22 @@ export class MaterialFormComponent {
             closable: true 
           });
           return of(null)
+        }),
+        finalize(() => {
+          if (this.material._id !== ''){
+            this.router.navigate(
+              ['material/' + this.material._id], 
+              { 
+                queryParams: { 
+                  submited: true, 
+                  mode: this.inputMaterial != undefined ? 'update' : 'create' 
+                } 
+              }
+            );
+          }
         })
-      ).subscribe(materialId => {
-        if (materialId != null) {
-          this.router.navigate(
-            ['material/' + materialId], 
-            { 
-              queryParams: { 
-                submited: true, 
-                mode: this.inputMaterial != undefined ? 'update' : 'create' 
-              } 
-            }
-          );
-        }
+      ).subscribe(actionId => {
+        this.material._id = actionId || '';
       });
     }
     else {

@@ -20,7 +20,7 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, map, of, Subscription, take } from "rxjs";
+import { catchError, finalize, map, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
@@ -132,7 +132,7 @@ export class ActionFormComponent {
     }
   }
 
-  submitMaterial() {
+  submitAction() {
     this.errorMap = this.trainingActionService.validate(this.action)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
@@ -150,19 +150,22 @@ export class ActionFormComponent {
             closable: true 
           });
           return of(null)
+        }),
+        finalize(() => {
+          if (this.action._id !== ''){
+            this.router.navigate(
+              ['action/' + this.action._id], 
+              { 
+                queryParams: { 
+                  submited: true, 
+                  mode: this.inputAction != undefined ? 'update' : 'create' 
+                } 
+              }
+            );
+          }
         })
-      ).subscribe(materialId => {
-        if (materialId != null) {
-          this.router.navigate(
-            ['material/' + materialId], 
-            { 
-              queryParams: { 
-                submited: true, 
-                mode: this.inputAction != undefined ? 'update' : 'create' 
-              } 
-            }
-          );
-        }
+      ).subscribe(actionId => {
+        this.action._id = actionId || '';
       });
     }
     else {
