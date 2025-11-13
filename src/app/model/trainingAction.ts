@@ -8,7 +8,7 @@ export class TrainingAction extends TrainingItem {
 
   constructor(data?: Partial<TrainingAction>) {
     super(data);
-    this.location = data?.location ?? new ActionLocation();
+    this.location = new ActionLocation(data?.location) ?? new ActionLocation();
     this.certification = data?.certification;
     this.microcredentialAwardingBody = data?.microcredentialAwardingBody;
   }

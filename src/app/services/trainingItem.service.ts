@@ -18,7 +18,7 @@ export abstract class TrainingItemService {
         const isMaterial = item instanceof TrainingMaterial;
         const isAction = item instanceof TrainingAction;
 
-        const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/\S*)?\/?$/;
+        const urlRegex = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const errors: Map<string, string | undefined> = new Map();
     
         const setError = (field: string, condition: boolean, message: string) => {
@@ -41,7 +41,7 @@ export abstract class TrainingItemService {
         setError('userId', !item.userId.trim(), 'User ID is required.');
         setError('organization', !item.orgId?.trim(), 'Organization is required.');
         if (isMaterial) setError('interactivityType', !item.interactivityType?.trim(), 'Interactivity type is required.');
-            setError('url', !item.url.trim(), 'URL is required.');
+        setError('url', !item.url.trim(), 'URL is required.');
         if (!errors.get('url')) setError('url', !urlRegex.test(item.url), 'Invalid URL format.');
         if (isMaterial) setError('license', !item.license?.trim(), 'License is required.');
     

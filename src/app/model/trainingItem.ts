@@ -66,6 +66,7 @@ export class TrainingItem {
     this.collectionDisplay = data?.collectionDisplay ?? 'TrainingMaterials';
     this.type = data?.type ?? 4;
     this.hasMetadata = data?.hasMetadata ?? 'True';
+    this.formatUrl()
   }
 
   public toPlain(): Record<string, any> {
@@ -101,5 +102,11 @@ export class TrainingItem {
       type: this.type,
       hasMetadata: this.hasMetadata
     };
+  }
+
+  // This method maintains compatibility with old items that represent malformed URLs
+  private formatUrl() {
+    const startsWithHttp = (url: string): boolean => /^https?:\/\//.test(url);
+    if (!startsWithHttp(this.url)) this.url = 'http://' + this.url
   }
 }
