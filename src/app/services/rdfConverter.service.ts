@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { TrainingMaterial } from '../model/trainingMaterial';
 import { UtilsService } from './utils.service';
+import { TrainingItem } from '../model/trainingItem';
+import { TrainingAction } from '../model/trainingAction';
 
 @Injectable({
   providedIn: 'root'
@@ -9,22 +11,22 @@ export class RdfConverterService {
 
   constructor(private utilsService: UtilsService) {}
   
-  getRdfXmlUrl(material: TrainingMaterial): string {
-    const blob = new Blob([this.convertModelToRdfXml(material)], { type: 'text/xml' });
+  getRdfXmlUrl(item: TrainingItem): string {
+    const blob = new Blob([this.convertModelToRdfXml(item)], { type: 'text/xml' });
     return window.URL.createObjectURL(blob);
   }
 
-  getRdfTtlUrl(material: TrainingMaterial): string {
-    const blob = new Blob([this.convertModelToTurtle(material)], { type: 'text/ttl' });
+  getRdfTtlUrl(item: TrainingItem): string {
+    const blob = new Blob([this.convertModelToTurtle(item)], { type: 'text/ttl' });
     return window.URL.createObjectURL(blob);
   }
 
-  getRdfaUrl(material: TrainingMaterial): string {
-    const blob = new Blob([this.convertModelToRDFa(material)], { type: 'text/html' });
+  getRdfaUrl(item: TrainingItem): string {
+    const blob = new Blob([this.convertModelToRDFa(item)], { type: 'text/html' });
     return window.URL.createObjectURL(blob);
   }
 
-  private convertModelToTurtle(model: TrainingMaterial): string {
+  private convertModelToTurtle(model: TrainingItem): string {
     let additionalObjects = '';
     let ttl = `@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix lrmi: <http://purl.org/dcx/lrmi-terms/> . \n` + 
               `@prefix geospacebok: <https://geospacebok.eu/> . \n@prefix elm: <http://data.europa.eu/snb/model/elm> . \n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n` + 
@@ -72,7 +74,7 @@ export class RdfConverterService {
       });
     }
     if (model.created) ttl += `  dcterms:created "${model.created instanceof Date ? model.created.toISOString() : model.created}" ;\n`;
-    if (model.materialType) {
+    if (model instanceof TrainingMaterial && model.materialType) {
       model.materialType.forEach((type: string, index: number) => {
         ttl += `  dcterms:type _:TYPE${index} ;\n`;
         additionalObjects += `_:TYPE${index}\n`;
@@ -80,14 +82,14 @@ export class RdfConverterService {
         additionalObjects += `  dcterms:title "${type}" .\n\n`
       });
     } 
-    if (model.interactivityType) ttl += `  lrmi:interactivityType "${model.interactivityType}" ;\n`;
+    if (model instanceof TrainingMaterial && model.interactivityType) ttl += `  lrmi:interactivityType "${model.interactivityType}" ;\n`;
     if (model.publisher) {
       ttl += `  elm:providedBy _:PROVIDER ;\n`;
       additionalObjects += `_:PROVIDER\n`;
       additionalObjects += `  rdf:type dcterms:Agent ;\n`;
       additionalObjects += `  dcterms:title "${model.publisher}" .\n\n`;
     }
-    if (model.contributors) {
+    if (model instanceof TrainingMaterial && model.contributors) {
       model.contributors.forEach((contributor: string, index: number) => {
         ttl += `  dcterms:contributor _:CONTRIBUTOR${index} ;\n`;
         additionalObjects += `_:CONTRIBUTOR${index}\n`;
@@ -97,8 +99,9 @@ export class RdfConverterService {
     }
     if (model.url) ttl += `  dcterms:identifier <${model.url}> ;\n`;
     if (model.language) ttl += `  dcterms:language <https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}> ;\n`;
+    if (model instanceof TrainingAction && model.location) ttl += `  elm:location "${model.location.name}" ;\n`; // TODO - check GeoSPARQL
     if (model.source) ttl += `  dcterms:source "${model.source}" ;\n`;
-    if (model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
+    if (model instanceof TrainingMaterial && model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
     if (model.educationLevel) {
       model.educationLevel.forEach((eqfLevel: string) => {
         ttl += `  elm:EQFLevel "${eqfLevel}" ;\n`;
@@ -128,6 +131,13 @@ export class RdfConverterService {
         additionalObjects += `  dcterms:description "${assessment}" .\n\n`;
       });
     }
+    if (model instanceof TrainingAction && model.certification) ttl += `  elm:accreditation "${model.certification}" ;\n`;
+    if (model instanceof TrainingAction && model.certification && model.certification === 'Micro-credential' && model.microcredentialAwardingBody) {
+      ttl += `  elm:accreditingAgent _:ACCREDITINGAGENT ;\n`;
+      additionalObjects += `_:ACCREDITINGAGENT\n`;
+      additionalObjects += `  rdf:type dcterms:Agent ;\n`;
+      additionalObjects += `  dcterms:title "${model.microcredentialAwardingBody}" .\n\n`;
+    }
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
         ttl += `  dcterms:relation geospacebok:${concept} ;\n`;
@@ -140,7 +150,7 @@ export class RdfConverterService {
     return ttl;
   }
 
-  private convertModelToRdfXml(model: TrainingMaterial): string {
+  private convertModelToRdfXml(model: TrainingItem): string {
     const rdfNS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
     const dcterms = 'http://purl.org/dc/terms/';
     const lrmi = 'http://purl.org/dcx/lrmi-terms/';
@@ -207,7 +217,7 @@ export class RdfConverterService {
       xml += `    <dcterms:created>${this.escapeXml(created)}</dcterms:created>\n`;
     }
 
-    if (model.materialType) {
+    if (model instanceof TrainingMaterial && model.materialType) {
       model.materialType.forEach((type: string) => {
         xml += `    <dcterms:type>\n`;
         xml += `      <rdfs:Class>\n`;
@@ -217,7 +227,7 @@ export class RdfConverterService {
       });
     }
 
-    if (model.interactivityType) {
+    if (model instanceof TrainingMaterial && model.interactivityType) {
       xml += `    <lrmi:interactivityType>${this.escapeXml(model.interactivityType)}</lrmi:interactivityType>\n`;
     }
 
@@ -229,7 +239,7 @@ export class RdfConverterService {
       xml += `    </elm:providedBy>\n`;
     }
 
-    if (model.contributors) {
+    if (model instanceof TrainingMaterial && model.contributors) {
       model.contributors.forEach((contributor: string) => {
         xml += `    <dcterms:contributor>\n`;
         xml += `      <dcterms:Agent>\n`;
@@ -246,8 +256,11 @@ export class RdfConverterService {
       xml += `    <dcterms:language rdf:resource="${langUri}"/>\n`;
     }
 
+    if (model instanceof TrainingAction && model.location) xml += `    <elm:location>${this.escapeXml(model.location.name)}</elm:location>\n`; // TODO - check GeoSPARQL
+
     if (model.source) xml += `    <dcterms:source>${this.escapeXml(model.source)}</dcterms:source>\n`;
-    if (model.license) xml += `    <dcterms:license>${this.escapeXml(model.license)}</dcterms:license>\n`;
+
+    if (model instanceof TrainingMaterial && model.license) xml += `    <dcterms:license>${this.escapeXml(model.license)}</dcterms:license>\n`;
 
     if (model.educationLevel) {
       model.educationLevel.forEach((level: string) => {
@@ -288,6 +301,15 @@ export class RdfConverterService {
       });
     }
 
+    if (model instanceof TrainingAction && model.certification) xml += `    <elm:accreditation>${model.certification}</elm:accreditation>" ;\n`;
+    if (model instanceof TrainingAction && model.certification && model.certification === 'Micro-credential' && model.microcredentialAwardingBody) {
+      xml += `    <elm:accreditingAgent>\n`;
+      xml += `      <dcterms:Agent>\n`;
+      xml += `        <dcterms:title>${this.escapeXml(model.microcredentialAwardingBody)}</dcterms:title>\n`;
+      xml += `      </dcterms:Agent>\n`;
+      xml += `    </elm:accreditingAgent>\n`;
+    }
+
     if (model.concepts) {
       model.concepts.forEach((concept: string) => {
         xml += `    <dcterms:relation rdf:resource="${bok}${concept}"/>\n`;
@@ -300,7 +322,7 @@ export class RdfConverterService {
     return xml;
   }
 
-  private convertModelToRDFa(model: TrainingMaterial): string {
+  private convertModelToRDFa(model: TrainingItem): string {
     let html = `<div vocab="http://purl.org/dc/terms/" typeof="http://www.w3.org/2000/01/rdf-schema#Class" about="${model.url}">\n`;
 
     if (model.title) {
@@ -360,7 +382,7 @@ export class RdfConverterService {
       html += `  <time property="created" datetime="${createdDate}">${createdDate}</time><br/>\n`;
     }
 
-    if (model.materialType) {
+    if (model instanceof TrainingMaterial && model.materialType) {
       model.materialType.forEach((type: string) => {
         html += `  <div rel="type">\n`;
         html += `    <div typeof="rdfs:Class">\n`;
@@ -370,7 +392,7 @@ export class RdfConverterService {
       });
     }
 
-    if (model.interactivityType) {
+    if (model instanceof TrainingMaterial && model.interactivityType) {
       html += `  <span property="http://purl.org/dcx/lrmi-terms/interactivityType">${this.escapeHtml(model.interactivityType)}</span><br/>\n`;
     }
 
@@ -382,7 +404,7 @@ export class RdfConverterService {
       html += `  </div>\n`;
     }
 
-    if (model.contributors) {
+    if (model instanceof TrainingMaterial && model.contributors) {
       model.contributors.forEach((contributor: string) => {
         html += `  <div rel="contributor">\n`;
         html += `    <div typeof="Agent">\n`;
@@ -400,11 +422,15 @@ export class RdfConverterService {
       html += `  <a property="language" href="https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}">${this.escapeHtml(model.language)}</a><br/>\n`;
     }
 
+    if (model instanceof TrainingAction && model.location) {
+      html += `  <span property="http://data.europa.eu/snb/model/elm/location">${this.escapeHtml(model.location.name)}</span><br/>\n`; // TODO - check GeoSPARQL
+    }
+
     if (model.source) {
       html += `  <span property="source">${this.escapeHtml(model.source)}</span><br/>\n`;
     }
 
-    if (model.license) {
+    if (model instanceof TrainingMaterial && model.license) {
       html += `  <span property="license">${this.escapeHtml(model.license)}</span><br/>\n`;
     }
 
@@ -445,6 +471,17 @@ export class RdfConverterService {
         html += `    </div>\n`;
         html += `  </div>\n`;
       });
+    }
+
+    if (model instanceof TrainingAction && model.certification) {
+      html += `  <span property="http://data.europa.eu/snb/model/elm/accreditation">${this.escapeHtml(model.certification)}</span><br/>\n`
+    }
+    if (model instanceof TrainingAction && model.certification && model.certification === 'Micro-credential' && model.microcredentialAwardingBody) {
+      html += `  <div rel="http://data.europa.eu/snb/model/elm/accreditingAgent">\n`;
+      html += `    <div typeof="Agent">\n`;
+      html += `      <span property="title">${this.escapeHtml(model.microcredentialAwardingBody)}</span>\n`;
+      html += `    </div>\n`;
+      html += `  </div>\n`;
     }
 
     if (model.concepts) {
