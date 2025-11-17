@@ -106,13 +106,18 @@ export class MultiselectChipsComponent {
   }
 
   getSingularFieldName(): string {
-    let singularFieldName = this.fieldName.toLocaleLowerCase();
-    if (singularFieldName.endsWith('ies')) {
-      return singularFieldName.slice(0, -3) + 'y';
-    } else if (singularFieldName.endsWith('s')) {
-      return singularFieldName.slice(0, -1);
-    } else {
-      return singularFieldName;
-    } 
+    const value = this.fieldName.toLowerCase();
+    const rules: Array<[RegExp, string]> = [
+      [/ies$/, 'y'],
+      [/ses$/, 's'],
+      [/xes$/, 'x'],
+      [/s$/, ''],
+    ];
+    for (const [pattern, replacement] of rules) {
+      if (pattern.test(value)) {
+        return value.replace(pattern, replacement);
+      }
+    }
+    return value;
   }
 }
