@@ -27,10 +27,8 @@ export class CardFilterService {
     http.get<FilterOption[]>('/assets/filters.json').pipe(
       take(1),
       concatMap((filters: FilterOption[]) => {
-        this.filterOptions.next(filters);
         return this.materialService.getItemsOrganizations().pipe(
-          map( organizations => ({filters, organizations})),
-          take(1)
+          map( organizations => ({filters, organizations}))      
         );
       })
     ).subscribe(({ filters, organizations }) => {
