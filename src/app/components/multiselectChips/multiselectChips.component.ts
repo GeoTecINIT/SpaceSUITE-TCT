@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import { Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { FormsModule } from "@angular/forms";
 import { IconFieldModule } from 'primeng/iconfield';
@@ -103,5 +103,16 @@ export class MultiselectChipsComponent {
     include.forEach( chip => this.getBackgroundColor(chip));
     const exclude = this.chips.filter(value => !this.multiSelection.includes(value) && this.multiselectOptions.map(x => x.value).includes(value));
     this.chipsChange.emit(this.chips.concat(include).filter(value => !exclude.includes(value)));
+  }
+
+  getSingularFieldName(): string {
+    let singularFieldName = this.fieldName.toLocaleLowerCase();
+    if (singularFieldName.endsWith('ies')) {
+      return singularFieldName.slice(0, -3) + 'y';
+    } else if (singularFieldName.endsWith('s')) {
+      return singularFieldName.slice(0, -1);
+    } else {
+      return singularFieldName;
+    } 
   }
 }

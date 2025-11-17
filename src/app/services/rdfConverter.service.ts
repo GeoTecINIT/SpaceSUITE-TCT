@@ -99,7 +99,7 @@ export class RdfConverterService {
     }
     if (model.url) ttl += `  dcterms:identifier <${model.url}> ;\n`;
     if (model.language) ttl += `  dcterms:language <https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}> ;\n`;
-    if (model instanceof TrainingAction && model.location) ttl += `  elm:location "${model.location.name}" ;\n`; // TODO - check GeoSPARQL
+    if (model instanceof TrainingAction && model.location) ttl += `  elm:location "${model.location.name}" ;\n`;
     if (model.source) ttl += `  dcterms:source "${model.source}" ;\n`;
     if (model instanceof TrainingMaterial && model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
     if (model.educationLevel) {

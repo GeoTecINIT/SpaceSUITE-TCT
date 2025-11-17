@@ -107,6 +107,6 @@ export class TrainingItem {
   // This method maintains compatibility with old items that represent malformed URLs
   private formatUrl() {
     const startsWithHttp = (url: string): boolean => /^https?:\/\//.test(url);
-    if (!startsWithHttp(this.url)) this.url = 'http://' + this.url
+    if (this.url && !startsWithHttp(this.url)) this.url = 'http://' + this.url
   }
 }
