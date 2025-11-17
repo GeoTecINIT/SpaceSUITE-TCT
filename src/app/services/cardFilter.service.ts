@@ -7,14 +7,14 @@ import { PaginatorState } from "primeng/paginator";
 import { TrainingMaterialService } from "./trainingMaterial.service";
 import { TrainingItem } from "../model/trainingItem";
 import { HttpClient } from "@angular/common/http";
-import { concatMap, take } from "rxjs";
+import { AsyncSubject, BehaviorSubject, combineLatest, concatMap, forkJoin, map, Observable, ReplaySubject, take } from "rxjs";
 import { TrainingAction } from "../model/trainingAction";
 
 @Injectable({
     providedIn: 'root',
 })
 export class CardFilterService {
-  private filterOptions: FilterOption[] = [];
+  private filterOptions: ReplaySubject<FilterOption[]> = new ReplaySubject<FilterOption[]>(1);
 
   public searchValue: string = '';
   public searchOption: string = 'Title';
@@ -27,30 +27,41 @@ export class CardFilterService {
     http.get<FilterOption[]>('/assets/filters.json').pipe(
       take(1),
       concatMap((filters: FilterOption[]) => {
-        this.filterOptions = filters;
-        return this.materialService.getItemsOrganizations();
+        this.filterOptions.next(filters);
+        return this.materialService.getItemsOrganizations().pipe(
+          map( organizations => ({filters, organizations})),
+          take(1)
+        );
       })
-    ).subscribe( organizations => this.filterOptions[this.filterOptions.length - 1].values = organizations);
+    ).subscribe(({ filters, organizations }) => {
+      const updatedFilters = [...filters];
+      updatedFilters[updatedFilters.length - 1].values = organizations
+      this.filterOptions.next(updatedFilters);
+    });
   }
 
-  public getGeneralMaterialFilterOptions(): FilterOption[] {
-    const generalFilters = ['Subject', 'Language', 'Training Material Type', 'Target Audience']
-    return generalFilters.map( value => this.getOptionByLabel(value))
+  public getGeneralMaterialFilterOptions(): Observable<FilterOption[]> {
+    const filters = ['Subject', 'Language', 'Training Material Type', 'Target Audience'];
+    const observables = filters.map( value => this.getOptionByLabel(value));
+    return combineLatest(observables);
   }
 
-  public getAdvancedMaterialFilterOptions(): FilterOption[] {
-    const generalFilters = ['EQF Level', 'Type of Assessment', 'Interactivity Type', 'License', 'Organizations']
-    return generalFilters.map( value => this.getOptionByLabel(value))
+  public getAdvancedMaterialFilterOptions(): Observable<FilterOption[]> {
+    const filters = ['EQF Level', 'Type of Assessment', 'Interactivity Type', 'License', 'Organizations'];
+    const observables = filters.map( value => this.getOptionByLabel(value));
+    return combineLatest(observables);
   }
 
-  public getGeneralActionFilterOptions(): FilterOption[] {
-    const generalFilters = ['Subject', 'Language', 'Target Audience']
-    return generalFilters.map( value => this.getOptionByLabel(value))
+  public getGeneralActionFilterOptions(): Observable<FilterOption[]> {
+    const filters = ['Subject', 'Language', 'Target Audience'];
+    const observables = filters.map( value => this.getOptionByLabel(value));
+    return combineLatest(observables);
   }
 
-  public getAdvancedActionFilterOptions(): FilterOption[] {
-    const generalFilters = ['EQF Level', 'Type of Assessment', 'Certification', 'Organizations']
-    return generalFilters.map( value => this.getOptionByLabel(value))
+  public getAdvancedActionFilterOptions(): Observable<FilterOption[]> {
+    const filters = ['EQF Level', 'Type of Assessment', 'Certification', 'Organizations'];
+    const observables = filters.map( value => this.getOptionByLabel(value));
+    return combineLatest(observables);
   }
 
   public checkItem(item: TrainingItem, filter: FilterOption): boolean {
@@ -136,13 +147,17 @@ export class CardFilterService {
     }
   }
 
-  public getOptionByLabel(label: string): FilterOption {
-    const option = this.filterOptions.filter( option => option.label == label)
-    if (option.length > 0) return option[0];
-    return {
-      label: label,
-      values: [],
-      selection: []
-    };
+  public getOptionByLabel(label: string): Observable<FilterOption> {
+    return this.filterOptions.pipe(
+      map(value => {
+        const option = value.filter( option => option.label == label)
+        if (option.length > 0) return option[0];
+        return {
+          label: label,
+          values: [],
+          selection: []
+        };
+      })
+    );
   }
 }

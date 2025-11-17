@@ -5,7 +5,7 @@ import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
-import { concatMap, filter, take, tap } from "rxjs";
+import { concatMap, filter, Subscription, take, tap } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
@@ -39,7 +39,7 @@ export class ItemExplorerComponent {
   filteredTrainingItems: TrainingItem[] = [];
 
   filterOptions: FilterOption[] = [];
-  advancedMaterialFilterOptions: FilterOption[] = [];
+  advancedFilterOptions: FilterOption[] = [];
   showAdvancedFilters: boolean = false;
   searchValue: string = '';
   searchOption: string = "Title";
@@ -80,9 +80,9 @@ export class ItemExplorerComponent {
     if (this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action') this.selectedTab = 1;
     else this.selectedTab = 0;
 
-    // Load filters values from FilterService
-    this.filterOptions = this.filterService.getGeneralMaterialFilterOptions();
-    this.advancedMaterialFilterOptions = this.filterService.getAdvancedMaterialFilterOptions();
+    // Load filters value from FilterService
+    this.filterService.getGeneralMaterialFilterOptions().pipe(take(1)).subscribe(value => this.filterOptions = value);
+    this.filterService.getAdvancedMaterialFilterOptions().pipe(take(1)).subscribe(value => this.advancedFilterOptions = value);
     this.showAdvancedFilters = this.filterService.showAdvancedFilters;
 
     // Load Training Items & filters state from FilterService
@@ -149,15 +149,15 @@ export class ItemExplorerComponent {
       case 0:
         this.trainingItems = [...this.trainingMaterials];
         this.filterUserItemOptions = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }]
-        this.filterOptions = this.filterService.getGeneralMaterialFilterOptions();
-        this.advancedMaterialFilterOptions = this.filterService.getAdvancedMaterialFilterOptions();
+        this.filterService.getGeneralMaterialFilterOptions().pipe(take(1)).subscribe(value => this.filterOptions = value);
+        this.filterService.getAdvancedMaterialFilterOptions().pipe(take(1)).subscribe(value => this.advancedFilterOptions = value);
         this.location.replaceState('material');
         break;
       case 1:
         this.trainingItems = [...this.trainingActions];
         this.filterUserItemOptions = [{ label: 'My Actions', value: true, icon: 'pi pi-user' },{ label: 'All Actions', value: false, icon: 'pi pi-globe' }]
-        this.filterOptions = this.filterService.getGeneralActionFilterOptions();
-        this.advancedMaterialFilterOptions = this.filterService.getAdvancedActionFilterOptions();
+        this.filterService.getGeneralActionFilterOptions().pipe(take(1)).subscribe(value => this.filterOptions = value);
+        this.filterService.getAdvancedActionFilterOptions().pipe(take(1)).subscribe(value => this.advancedFilterOptions = value);
         this.location.replaceState('action');
         break;
     }
@@ -248,7 +248,7 @@ export class ItemExplorerComponent {
   }
 
   filterItems(searchedItems: TrainingItem[]) {
-    const allFilters = [...this.filterOptions, ...this.advancedMaterialFilterOptions];
+    const allFilters = [...this.filterOptions, ...this.advancedFilterOptions];
     const userId = this.firebase.getUserData()?.uid;
     const noFilters = allFilters.every(f => !f.selection || f.selection.length === 0);
 
