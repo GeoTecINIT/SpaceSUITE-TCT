@@ -248,6 +248,13 @@
                             <label for="source">References & Resources</label>
                         </p-floatlabel>
 
+                        <div>
+                            <text-chips [fieldName]="'Related Materials'" [icon]="'pi pi-link'" [(chips)]="action.relatedMaterials"
+                                    pTooltip="Provide links to resources related to this training action. These materials may exist inside or outside the catalogue, but each link must be a valid URL." 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [error]="errorMap.get('relatedMaterials') != undefined"></text-chips>
+                            <p *ngIf="errorMap.get('relatedMaterials')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('relatedMaterials')}}</p>
+                        </div>
+
                         <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="action.prerequisites"
                                     pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>

@@ -54,6 +54,7 @@ export abstract class TrainingItemService {
         setError('educationLevel', item.educationLevel.length === 0, 'Education level is required.');
         setError('assessment', item.assessment.length === 0, 'At least one assessment is required.');
         setError('subject', item.subject.length === 0, 'At least one subject is required.');
+        if (isAction) setError('relatedMaterials', item.relatedMaterials.some(value => !urlRegex.test(value)), 'A related material must be a properly formatted URL.');   
     
         return errors;
     }
