@@ -22,21 +22,19 @@ export class MultiselectChipsComponent {
   @Input() chips: string[] = [];
   @Input() optionsName: string = "";
   @Output() chipsChange: EventEmitter<string[]> = new EventEmitter();
+
   currentText: string = '';
   multiSelection: string[] = []
   multiselectOptions: any[] = [];
 
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';
-
   @Input() error: boolean = false;
-
   @Input() filter: boolean = true;
 
   @ViewChild('pmulti', { read: MultiSelect }) multiSelectEl!: MultiSelect;
   
   chipAnimations: Record<string, boolean> = {}
-
   selectedConceptsColor: Map<string, string> = new Map();
 
   constructor(private filterService: CardFilterService, private utilsService: UtilsService, private bokInfo: BokInformationService) {}

@@ -20,14 +20,13 @@ export class CustomSelectComponent {
   @Input() selection?: string;
   @Input() optionsName: string = "";
   @Output() selectionChange: EventEmitter<string> = new EventEmitter();
+
   currentText: string = '';
   selectOptions: any[] = [];
 
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';
-
   @Input() error: boolean = false;
-
   @Input() filter: boolean = true;
 
   @ViewChild('pselect', { read: Select }) multiSelectEl!: Select;
