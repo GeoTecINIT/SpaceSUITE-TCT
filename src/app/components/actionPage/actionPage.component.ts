@@ -239,4 +239,15 @@ export class ActionPageComponent {
     link.href = uri;
     link.click();
   }
+
+  copyURIToClipboard() {
+    navigator.clipboard.writeText(window.location.href);
+    this.messageService.add({ 
+      severity: 'info', 
+      summary: 'Info', 
+      detail: `You copied the action url to clipboard!`,
+      life: 3000, 
+      closable: true 
+    });
+  }
 }

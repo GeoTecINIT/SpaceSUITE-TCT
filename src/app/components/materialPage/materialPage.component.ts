@@ -238,5 +238,16 @@ export class MaterialPageComponent {
     link.download = name;
     link.href = uri;
     link.click();
-}
+  }
+
+  copyURIToClipboard() {
+    navigator.clipboard.writeText(window.location.href);
+    this.messageService.add({ 
+      severity: 'info', 
+      summary: 'Info', 
+      detail: `You copied the material url to clipboard!`,
+      life: 3000, 
+      closable: true 
+    });
+  }
 }

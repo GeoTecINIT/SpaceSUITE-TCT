@@ -2,7 +2,13 @@
 <p-confirmdialog />
 <div *ngIf="material; else spinner" class="flex flex-column md:flex-row justify-content-between md:gap-4">
     <div class="flex flex-column overflow-auto flex-auto">
-        <h1 class="mb-2">{{material.title}}</h1>
+        <h1 class="mb-2">
+            {{material.title}} 
+            <a class="icon-link text-sm align-items-center mx-1 cursor-pointer font-normal" (click)="copyURIToClipboard()">
+                Permalink
+                <i class="pi pi-clone text-sm mx-1"></i>
+            </a>
+        </h1>
         <div class="flex align-items-center gap-2 flex-wrap white-space-nowrap mb-2">
             <div class="text-sm"><strong>Language:</strong> {{material.language ?? 'Undefined'}}</div>
             |
@@ -17,13 +23,13 @@
             <div class="text-sm"><strong>Visibility:</strong> {{material.isPublic ? 'Public' : 'Private'}}</div>
             |
             <a class="icon-link text-sm align-items-center mx-1" href="{{material.url}}" target="_blank">
-                <i class="pi pi-external-link text-sm mx-1"></i>
                 Go to Material
+                <i class="pi pi-external-link text-sm mx-1"></i>
             </a>
             |
             <a class="icon-link text-sm align-items-center mx-1 cursor-pointer" (click)="toggle($event)">
-                <i class="pi pi-download text-sm mx-1"></i>
                 Download Metadata
+                <i class="pi pi-download text-sm mx-1"></i>
             </a>
             <p-popover #op>
                 <div style="color: var(--primary-color)">
