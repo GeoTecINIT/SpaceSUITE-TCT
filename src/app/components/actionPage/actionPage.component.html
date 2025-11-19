@@ -86,7 +86,10 @@
                         <strong>Related Materials:</strong>
                         <ul *ngIf="action.relatedMaterials.length > 0">
                             <li *ngFor="let material of action.relatedMaterials">
-                                <a class="icon-link" target="_blank" href="{{material}}">{{material}}</a>
+                                <div class="white-space-nowrap overflow-hidden text-overflow-ellipsis" [style.color]="'var(--secondary-color)'">
+                                    <a class="icon-link" 
+                                    target="_blank" href="{{material}}">{{material}}</a>
+                                </div>
                             </li>
                         </ul>
                     </div>
