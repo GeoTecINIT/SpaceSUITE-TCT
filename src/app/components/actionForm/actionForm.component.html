@@ -332,7 +332,7 @@
 
                         <div class="flex w-full">
                             <p-selectbutton [options]="visibilityFieldOptions" [(ngModel)]="action.isPublic" optionLabel="label" optionValue="value"
-                                pTooltip="Specifies whether this action is public or restricted to your account." 
+                                pTooltip="Specifies whether this action is public or restricted to your account." allowEmpty="false"
                                 tooltipPosition="right" showDelay="200" hideDelay="200"/>
                         </div>
                     </div>
