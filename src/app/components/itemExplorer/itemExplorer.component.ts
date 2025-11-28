@@ -113,7 +113,10 @@ export class ItemExplorerComponent {
       take(1),
       map(orgs => orgs.map(o => o._id))
     ).subscribe(ids => {
-      this.userOrgIds = ids;
+      if (this.userOrgIds !== ids) {
+        this.userOrgIds = ids;
+        this.filterPipeline();
+      }
     });
   }
 
@@ -265,7 +268,6 @@ export class ItemExplorerComponent {
     const noFilters = allFilters.every(f => !f.selection || f.selection.length === 0);
 
     let materials = [...searchedItems];
-
     if (!this.filterByUserItem && noFilters) {
       materials = materials.filter(m =>
         userId ? 
