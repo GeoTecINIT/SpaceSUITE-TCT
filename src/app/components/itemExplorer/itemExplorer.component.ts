@@ -5,7 +5,7 @@ import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
-import { concatMap, filter, Subscription, take, tap } from "rxjs";
+import { concatMap, filter, map, Subscription, take, tap } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
@@ -63,6 +63,9 @@ export class ItemExplorerComponent {
   selectedSortOption: string = "Title";
   sortAsc: boolean = false;
 
+  private trainingItemsSubscription!: Subscription;
+  private userOrgIds: string[] = [];
+
   tabs = [
     { id: 0, label: 'Training Materials', icon: 'pi pi-book', disabled: false },
     { id: 1, label: 'Training Actions', icon: 'pi pi-folder-open', disabled: false },
@@ -86,7 +89,7 @@ export class ItemExplorerComponent {
     this.showAdvancedFilters = this.filterService.showAdvancedFilters;
 
     // Load Training Items & filters state from FilterService
-    this.trainingMaterialService.getTrainingMaterialsArray().pipe(
+    this.trainingItemsSubscription = this.trainingMaterialService.getTrainingMaterialsArray().pipe(
       filter(value => value !== undefined),
       tap((newValue: TrainingMaterial[]) => this.trainingMaterials = newValue),
       concatMap(() => this.trainingActionsService.getTrainingActionsArray()),
@@ -103,6 +106,14 @@ export class ItemExplorerComponent {
         this.onPageChange(this.filterService.paginatorState);
       }
       this.loading = false;
+    });
+
+    // Load user organization IDs
+    this.firebase.getUserOrganizationList().pipe(
+      take(1),
+      map(orgs => orgs.map(o => o._id))
+    ).subscribe(ids => {
+      this.userOrgIds = ids;
     });
   }
 
@@ -141,6 +152,7 @@ export class ItemExplorerComponent {
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.updateButtonPosition);
     window.removeEventListener('resize', this.updateButtonPosition);
+    this.trainingItemsSubscription.unsubscribe();
   }
 
   setSelectedTab(newValue: string | number) {
@@ -247,7 +259,7 @@ export class ItemExplorerComponent {
     return newSearch;
   }
 
-  filterItems(searchedItems: TrainingItem[]) {
+  filterItems(searchedItems: TrainingItem[]): TrainingItem[]  {
     const allFilters = [...this.filterOptions, ...this.advancedFilterOptions];
     const userId = this.firebase.getUserData()?.uid;
     const noFilters = allFilters.every(f => !f.selection || f.selection.length === 0);
@@ -256,13 +268,14 @@ export class ItemExplorerComponent {
 
     if (!this.filterByUserItem && noFilters) {
       materials = materials.filter(m =>
-        userId ? (m.isPublic || m.userId === userId) : m.isPublic
+        userId ? 
+        (m.isPublic || m.userId === userId || (m.orgId && this.userOrgIds.includes(m.orgId))) : m.isPublic
       );
     } else {
       if (this.filterByUserItem && userId) {
         materials = materials.filter(m => m.userId === userId);
       } else if (userId) {
-        materials = materials.filter(m => m.isPublic || m.userId === userId);
+        materials = materials.filter(m => m.isPublic || m.userId === userId || (m.orgId && this.userOrgIds.includes(m.orgId)));
       } else {
         materials = materials.filter(m => m.isPublic);
       }
@@ -273,7 +286,7 @@ export class ItemExplorerComponent {
         )
       );
     }
-    return materials;
+    return materials; 
   }
 
   filterByBoKConcept(filteredItems: TrainingItem[]): TrainingItem[] {
