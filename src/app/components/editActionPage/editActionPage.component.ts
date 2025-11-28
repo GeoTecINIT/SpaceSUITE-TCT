@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { LanguageService } from "../../services/language.service";
 import { UtilsService } from "../../services/utils.service";
 import { FirebaseService } from "../../services/firebase.service";
-import { concatMap } from "rxjs";
+import { concat, concatMap } from "rxjs";
 import { ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 import { ActionFormComponent } from "../actionForm/actionForm.component";
 import { TrainingAction } from "../../model/trainingAction";
@@ -27,13 +27,16 @@ export class EditActionPageComponent {
       concatMap(params => {
         const actionName = params.get('dynamicValue') || '';
         return this.trainingActionService.getTrainingAction(actionName);
+      }),
+      concatMap( (action: TrainingAction | undefined) => {
+        if (action) this.loadMaterial(action);
+        return this.firebase.getUserOrganizationList();
       })
     ).subscribe(
-      (newAction: TrainingAction | undefined) => {
-        if (newAction && newAction.userId == this.firebase.getUserData()?.uid) {
-          this.loadMaterial(newAction);
-        }
-        else {
+      (orgsList: {_id: string, name: string}[]) => {
+        const userData = this.firebase.getUserData();
+        const userOrgIds = orgsList.map(org => org._id);
+        if (!this.action || !((this.action.orgId && userOrgIds.includes(this.action.orgId)) || (userData && this.action.userId === userData.uid))) {
           this.exitWithoutSavingService.bypassGuard.next(true);
           this.router.navigate(['/not_found']);
         }

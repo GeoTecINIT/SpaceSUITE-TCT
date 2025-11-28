@@ -40,6 +40,8 @@ export class ActionPageComponent {
 
   imagePlaceholder: string;
 
+  private userOrgIds: string[] = [];
+
   @ViewChild('op') op!: Popover;
 
   constructor(private route: ActivatedRoute, private router: Router, private trainingActionService: TrainingActionService, 
@@ -55,7 +57,7 @@ export class ActionPageComponent {
     ]).pipe(
       map(([paramMap, queryParams]) => {
         const actionName = paramMap.get('dynamicValue') || '';
-        const submited = queryParams['submited'] === 'true' || queryParams['submited'] === true;
+        const submited: boolean = queryParams['submited'];
         return { actionName, submited };
       }),
       concatMap(({ actionName, submited }) =>
@@ -74,6 +76,13 @@ export class ActionPageComponent {
         else this.router.navigate(['not_found']);
       }
     );
+
+    this.firebaseService.getUserOrganizationList().pipe(
+      take(1),
+      map(orgs => orgs.map(o => o._id))
+    ).subscribe(ids => {
+      this.userOrgIds = ids;
+    });
   }
 
   ngAfterViewInit() {
@@ -205,6 +214,10 @@ export class ActionPageComponent {
 
   checkUser() {
     return (this.firebaseService.userId == this.action?.userId);
+  }
+
+  checkOrganizations() {
+    return (this.action?.orgId && this.userOrgIds.includes(this.action?.orgId));
   }
 
   onClickConcept(code: string) {

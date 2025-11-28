@@ -74,7 +74,9 @@ export class MaterialFormComponent {
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
-      if (state?.logged) this.material.userId = state.uid;
+      if (state?.logged) {
+        if (this.inputMaterial === undefined) this.material.userId = state.uid;
+      }
       else {
         this.exitWithoutSavingService.bypassGuard.next(true);
         this.router.navigate(['material']);
@@ -103,11 +105,25 @@ export class MaterialFormComponent {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 0);
+    if (!this.verifyOwnership()) {
+      this.exitWithoutSavingService.bypassGuard.next(true);
+      this.router.navigate(['material']);
+    }
   }
 
   ngOnDestroy() {
     this.authSubscription.unsubscribe();
     this.userOrgsSubscription.unsubscribe();
+  }
+  
+  private verifyOwnership(): boolean {
+    if (this.inputMaterial === undefined) return true;
+    const userData = this.firebaseService.getUserData();
+    const userOrgIds = this.organizationSelector.values.map(org => org.value);
+    if ((this.material.orgId && userOrgIds.includes(this.material.orgId)) || (userData && this.material.userId === userData.uid)) {
+      return true;
+    }
+    return false;
   }
 
   loadDivisions(newValue: {label: string, value: string}) {

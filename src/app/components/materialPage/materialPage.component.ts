@@ -40,6 +40,8 @@ export class MaterialPageComponent {
 
   imagePlaceholder: string;
 
+  private userOrgIds: string[] = [];
+
   @ViewChild('op') op!: Popover;
 
   constructor(private route: ActivatedRoute, private router: Router, private trainingMaterialService: TrainingMaterialService, 
@@ -74,6 +76,13 @@ export class MaterialPageComponent {
         else this.router.navigate(['not_found']);
       }
     );
+
+    this.firebaseService.getUserOrganizationList().pipe(
+      take(1),
+      map(orgs => orgs.map(o => o._id))
+    ).subscribe(ids => {
+      this.userOrgIds = ids;
+    });
   }
 
   ngAfterViewInit() {
@@ -205,6 +214,10 @@ export class MaterialPageComponent {
 
   checkUser() {
     return (this.firebaseService.userId == this.material?.userId);
+  }
+
+  checkOrganizations() {
+    return (this.material?.orgId && this.userOrgIds.includes(this.material?.orgId));
   }
 
   onClickConcept(code: string) {

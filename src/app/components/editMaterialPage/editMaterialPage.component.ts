@@ -27,13 +27,16 @@ export class EditMaterialPageComponent {
       concatMap(params => {
         const materialName = params.get('dynamicValue') || '';
         return this.trainingMaterialService.getTrainingMaterial(materialName);
+      }),
+      concatMap( (material: TrainingMaterial | undefined) => {
+        if (material) this.loadMaterial(material);
+        return this.firebase.getUserOrganizationList();
       })
     ).subscribe(
-      (newMaterial: TrainingMaterial | undefined) => {
-        if (newMaterial && newMaterial.userId == this.firebase.getUserData()?.uid) {
-          this.loadMaterial(newMaterial);
-        }
-        else {
+      (orgsList: {_id: string, name: string}[]) => {
+        const userData = this.firebase.getUserData();
+        const userOrgIds = orgsList.map(org => org._id);
+        if (!this.material || !((this.material.orgId && userOrgIds.includes(this.material.orgId)) || (userData && this.material.userId === userData.uid))) {
           this.exitWithoutSavingService.bypassGuard.next(true);
           this.router.navigate(['/not_found']);
         }

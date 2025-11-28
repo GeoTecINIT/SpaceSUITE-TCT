@@ -78,7 +78,9 @@ export class ActionFormComponent {
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
-      if (state?.logged) this.action.userId = state.uid;
+      if (state?.logged) {
+        if (this.inputAction === undefined) this.action.userId = state.uid;
+      }
       else {
         this.exitWithoutSavingService.bypassGuard.next(true);
         this.router.navigate(['action']);
