@@ -22,7 +22,7 @@
         </p-tabs>
         <div *ngIf="filteredTrainingItems.length != 0 || loading" class="flex flex-column mt-2">
             <div class="flex gap-5 flex-wrap align-content-start justify-content-center mb-4">
-                <ng-container *ngIf="!showSkelleton else cardSkeleton">
+                <ng-container *ngIf="!showSkeleton else cardSkeleton">
                     <ng-container *ngFor="let item of paginationTrainingItems; trackBy: trackById">
                         <card [trainingItem]="item"></card>
                     </ng-container>
@@ -46,7 +46,7 @@
 </p-menu>
 
 <ng-template #cardSkeleton>
-    <ng-content *ngFor="let i of skelletonElements">
+    <ng-content *ngFor="let i of skeletonElements">
         <p-skeleton width="19rem" height="27.5rem" class="custom-skeleton" />
     </ng-content>
 </ng-template>

@@ -45,12 +45,12 @@ export class ItemExplorerComponent {
   searchOption: string = "Title";
   bokConcepts: string[] = [];
   loading: boolean = true;
-  showSkelleton: boolean = false;
+  showSkeleton: boolean = false;
 
   filterUserItemOptions: any[] = [];
   filterByUserItem: boolean = false;
 
-  skelletonElements: number[] = [];
+  skeletonElements: number[] = [];
 
   first: number = 0;
   rows: number = 16;
@@ -75,14 +75,14 @@ export class ItemExplorerComponent {
 
   constructor(private trainingMaterialService: TrainingMaterialService, private filterService: CardFilterService, private router: Router, private location: Location, private trainingActionsService: TrainingActionService,
               private firebase: FirebaseService, private messageService: MessageService, private route: ActivatedRoute, private ngZone: NgZone, private sortingSerice: CardSortingService) {
-    this.skelletonElements = Array(16).fill(null);
+    this.skeletonElements = Array(16).fill(null);
     this.sortOptions = [{ label: 'Title' }, { label: 'Date' }, {label: 'EQF'}];
   }
 
   ngOnInit() {
-    // Show skelleton if load is too low
+    // Show skeleton if load is too low
     setTimeout(() => {
-      if (this.loading) this.showSkelleton = true;
+      if (this.loading) this.showSkeleton = true;
     }, 200);
 
     // Define selected tab based on lastSuccessfulNavigation
@@ -127,7 +127,7 @@ export class ItemExplorerComponent {
         this.onPageChange(this.filterService.paginatorState);
       }
       this.loading = false;
-      this.showSkelleton = false;
+      this.showSkeleton = false;
     });
   }
 
