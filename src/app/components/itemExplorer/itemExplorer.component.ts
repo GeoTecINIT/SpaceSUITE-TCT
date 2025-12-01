@@ -117,7 +117,6 @@ export class ItemExplorerComponent {
         tap((newValue: TrainingAction[]) => this.trainingActions = newValue)
       ),
       this.firebase.getUserOrganizationList().pipe(
-        take(1),
         map(orgs => orgs.map(o => o._id)),
         tap(ids => this.userOrgIds = ids)
       )
