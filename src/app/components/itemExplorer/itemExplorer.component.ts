@@ -5,7 +5,7 @@ import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
-import { concatMap, filter, map, Subscription, take, tap } from "rxjs";
+import { combineLatest, concatMap, filter, forkJoin, map, Subscription, switchMap, take, tap } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
@@ -45,6 +45,7 @@ export class ItemExplorerComponent {
   searchOption: string = "Title";
   bokConcepts: string[] = [];
   loading: boolean = true;
+  showSkelleton: boolean = false;
 
   filterUserItemOptions: any[] = [];
   filterByUserItem: boolean = false;
@@ -79,44 +80,54 @@ export class ItemExplorerComponent {
   }
 
   ngOnInit() {
+    // Show skelleton if load is too low
+    setTimeout(() => {
+      if (this.loading) this.showSkelleton = true;
+    }, 200);
+
     // Define selected tab based on lastSuccessfulNavigation
     if (this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action') this.selectedTab = 1;
     else this.selectedTab = 0;
 
     // Load filters value from FilterService
-    this.filterService.getGeneralMaterialFilterOptions().pipe(take(1)).subscribe(value => this.filterOptions = value);
-    this.filterService.getAdvancedMaterialFilterOptions().pipe(take(1)).subscribe(value => this.advancedFilterOptions = value);
-    this.showAdvancedFilters = this.filterService.showAdvancedFilters;
+    forkJoin({
+      general: this.filterService.getGeneralMaterialFilterOptions().pipe(take(1)),
+      advanced: this.filterService.getAdvancedMaterialFilterOptions().pipe(take(1))
+    }).subscribe(({ general, advanced }) => {
+      this.filterOptions = general;
+      this.advancedFilterOptions = advanced;
+      this.showAdvancedFilters = this.filterService.showAdvancedFilters;
+    });
 
-    // Load Training Items & filters state from FilterService
-    this.trainingItemsSubscription = this.trainingMaterialService.getTrainingMaterialsArray().pipe(
-      filter(value => value !== undefined),
-      tap((newValue: TrainingMaterial[]) => this.trainingMaterials = newValue),
-      concatMap(() => this.trainingActionsService.getTrainingActionsArray()),
-      filter(value => value !== undefined),
-      tap((newValue: TrainingAction[]) => this.trainingActions = newValue)
-    ).subscribe(() => {
-      this.searchValue = this.filterService.searchValue;
-      this.searchOption = this.filterService.searchOption;
-      this.filterByUserItem = this.filterService.userItemFilter;
-      this.sortAsc = this.sortingSerice.sortAsc;
-      this.selectedSortOption = this.sortingSerice.sortOption;
+    // Load filters & sorting state
+    this.searchValue = this.filterService.searchValue;
+    this.searchOption = this.filterService.searchOption;
+    this.filterByUserItem = this.filterService.userItemFilter;
+    this.sortAsc = this.sortingSerice.sortAsc;
+    this.selectedSortOption = this.sortingSerice.sortOption;
+
+    // Load Training Items & User orgs
+    this.trainingItemsSubscription = combineLatest([
+      this.trainingMaterialService.getTrainingMaterialsArray().pipe(
+        filter(value => value !== undefined),
+        tap((newValue: TrainingMaterial[]) => this.trainingMaterials = newValue)
+      ),
+      this.trainingActionsService.getTrainingActionsArray().pipe(
+        filter(value => value !== undefined),
+        tap((newValue: TrainingAction[]) => this.trainingActions = newValue)
+      ),
+      this.firebase.getUserOrganizationList().pipe(
+        take(1),
+        map(orgs => orgs.map(o => o._id)),
+        tap(ids => this.userOrgIds = ids)
+      )
+    ]).subscribe(() => {
       this.setSelectedTab(this.selectedTab);
       if(this.filterService.paginatorState.rows && this.filterService.paginatorState.rows) {
         this.onPageChange(this.filterService.paginatorState);
       }
       this.loading = false;
-    });
-
-    // Load user organization IDs
-    this.firebase.getUserOrganizationList().pipe(
-      take(1),
-      map(orgs => orgs.map(o => o._id))
-    ).subscribe(ids => {
-      if (this.userOrgIds !== ids) {
-        this.userOrgIds = ids;
-        this.filterPipeline();
-      }
+      this.showSkelleton = false;
     });
   }
 

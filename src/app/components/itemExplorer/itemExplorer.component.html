@@ -22,7 +22,7 @@
         </p-tabs>
         <div *ngIf="filteredTrainingItems.length != 0 || loading" class="flex flex-column mt-2">
             <div class="flex gap-5 flex-wrap align-content-start justify-content-center mb-4">
-                <ng-container *ngIf="!loading else cardSkeleton">
+                <ng-container *ngIf="!showSkelleton else cardSkeleton">
                     <ng-container *ngFor="let item of paginationTrainingItems; trackBy: trackById">
                         <card [trainingItem]="item"></card>
                     </ng-container>
