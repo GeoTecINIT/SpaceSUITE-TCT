@@ -5,7 +5,7 @@ import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
-import { combineLatest, concatMap, filter, forkJoin, map, Subscription, switchMap, take, tap } from "rxjs";
+import { combineLatest, filter, forkJoin, map, Subscription, take, tap } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
