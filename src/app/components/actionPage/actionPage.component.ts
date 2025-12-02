@@ -12,12 +12,19 @@ import { DividerModule } from 'primeng/divider';
 import { UtilsService } from "../../services/utils.service";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { FirebaseService } from "../../services/firebase.service";
-import { catchError, combineLatest, concatMap, finalize, map, of, retry, take, tap } from "rxjs";
+import { catchError, combineLatest, concatMap, finalize, forkJoin, map, of, retry, skip, Subscription, take, tap } from "rxjs";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { RdfConverterService } from "../../services/rdfConverter.service";
+import { AuthService } from "@eo4geo/ngx-bok-utils";
+
+interface AuthState {
+  logged: boolean;
+  nameInitial: string;
+  uid: string;
+}
 
 @Component({
   standalone: true,
@@ -40,18 +47,22 @@ export class ActionPageComponent {
 
   imagePlaceholder: string;
 
+  private userOrgIdsSubscription!: Subscription;
   private userOrgIds: string[] = [];
+
+  private authStateSubscription!: Subscription;
+  private authState: AuthState | undefined = undefined;
 
   @ViewChild('op') op!: Popover;
 
-  constructor(private route: ActivatedRoute, private router: Router, private trainingActionService: TrainingActionService, 
+  constructor(private route: ActivatedRoute, private router: Router, private trainingActionService: TrainingActionService, private authService: AuthService,
               private utilsService: UtilsService, private bokInfo: BokInformationService, private firebaseService: FirebaseService,
               private confirmationService: ConfirmationService,private messageService: MessageService, private rdfConverter: RdfConverterService) {
                 this.imagePlaceholder = this.utilsService.imagePlaceholder;
               }
 
   ngOnInit() {
-    combineLatest([
+     const routeData$ = combineLatest([
       this.route.paramMap,
       this.route.queryParams
     ]).pipe(
@@ -70,19 +81,34 @@ export class ActionPageComponent {
         )
       ),
       take(1),
-    ).subscribe(
-      (newAction: TrainingAction | undefined) => {
-        if (newAction) this.loadAction(newAction);
-        else this.router.navigate(['not_found']);
-      }
     );
 
-    this.firebaseService.getUserOrganizationList().pipe(
-      take(1),
+    const orgIds$ = this.firebaseService.getUserOrganizationList().pipe(
+      map(orgs => orgs.map(o => o._id)),
+      tap(orgIds => this.userOrgIds = orgIds),
+      take(1)
+    );
+
+    const userState$ = this.authService.getUserState().pipe(
+      tap(authState => this.authState = authState),
+      take(1)
+    )
+    
+    forkJoin([routeData$, orgIds$,userState$]).subscribe(([newAction, _, userData]) => {
+      if (!newAction || !((newAction.orgId && this.userOrgIds.includes(newAction.orgId)) || (userData && newAction.userId === userData.uid))) {
+          this.router.navigate(['not_found']);
+      }
+      else this.loadAction(newAction);
+    });
+
+    this.userOrgIdsSubscription = this.firebaseService.getUserOrganizationList().pipe(
+      skip(1),
       map(orgs => orgs.map(o => o._id))
     ).subscribe(ids => {
       this.userOrgIds = ids;
     });
+
+    this.authStateSubscription = this.authService.getUserState().pipe(skip(1)).subscribe(authState => this.authState = authState);
   }
 
   ngAfterViewInit() {
@@ -112,6 +138,11 @@ export class ActionPageComponent {
         }
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.authStateSubscription.unsubscribe();
+    this.userOrgIdsSubscription.unsubscribe();
   }
 
   private loadAction(newAction: TrainingAction) {
@@ -213,7 +244,7 @@ export class ActionPageComponent {
   }
 
   checkUser() {
-    return (this.firebaseService.userId == this.action?.userId);
+    return (this.authState?.uid == this.action?.userId);
   }
 
   checkOrganizations() {

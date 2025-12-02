@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { Auth, authState } from "@angular/fire/auth";
 import { collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
-import { concatMap, from, map, Observable, of } from 'rxjs';
+import { concatMap, from, map, Observable, of, switchMap } from 'rxjs';
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { deleteObject, getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
 import { TrainingAction } from "../model/trainingAction";
@@ -17,7 +17,6 @@ export class FirebaseService {
   private materialCollection: CollectionReference;
   private actionCollection: CollectionReference;
 
-  userId: string = '';
 
   constructor() {
       this.auth = inject(Auth);
@@ -26,8 +25,6 @@ export class FirebaseService {
       this.orgCollection = collection(this.db, 'Organizations');
       this.materialCollection = collection(this.db, 'TrainingMaterials');
       this.actionCollection = collection(this.db, 'TrainingActions');
-
-      authState(this.auth).subscribe(user => this.userId = user?.uid ?? '');
   }
 
   getOrganizationList(): Observable<{ _id: string, name: string }[]> {
@@ -40,7 +37,7 @@ export class FirebaseService {
   getUserOrganizationList(): Observable<{ _id: string, name: string }[]> {
     let uid = ''
     return authState(this.auth).pipe(
-      concatMap(user => {
+      switchMap(user => {
         if (!user) return of([]);
         uid = user.uid;
         return collectionData(this.orgCollection) as Observable<{ _id: string, name: string, regular: string[], admin: string[] }[]>;
