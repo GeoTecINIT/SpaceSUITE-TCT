@@ -11,6 +11,6 @@
         <ng-content *ngFor="let chip of chips">
             <p-chip [label]="chip" [removable]="true" (onRemove)="deleteElement(chip)" class="custom-chip" [ngClass]="chipAnimations[chip] ? 'chip-animation' : ''"/>
         </ng-content>
-        <p-button icon="pi pi-plus" rounded class="custom-button" (onClick)="clickButton()" [disabled]="currentText == ''"></p-button>
+        <p-button icon="pi pi-plus" rounded class="custom-button" (onClick)="clickButton()" *ngIf="currentText !== ''"></p-button>
     </div>
 </div>
