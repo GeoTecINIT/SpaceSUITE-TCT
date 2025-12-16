@@ -95,7 +95,12 @@ export class MaterialPageComponent {
     )
 
     forkJoin([routeData$, orgIds$, userState$]).subscribe(([newMaterial, _, userData]) => {
-      if (!newMaterial || !((newMaterial.orgId && this.userOrgIds.includes(newMaterial.orgId)) || (userData && newMaterial.userId === userData.uid))) {
+      const isMaterialMissing = !newMaterial;
+      const isNotPublic = newMaterial && !newMaterial.isPublic;
+      const belongsToUserOrg = newMaterial?.orgId && this.userOrgIds.includes(newMaterial.orgId);
+      const belongsToUser = newMaterial && userData && newMaterial.userId === userData.uid;
+
+      if (isMaterialMissing || (isNotPublic && !(belongsToUserOrg || belongsToUser))) {
           this.router.navigate(['not_found']);
       }
       else this.loadMaterial(newMaterial);

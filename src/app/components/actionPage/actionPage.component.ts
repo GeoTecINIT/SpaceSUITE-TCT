@@ -95,7 +95,12 @@ export class ActionPageComponent {
     )
     
     forkJoin([routeData$, orgIds$,userState$]).subscribe(([newAction, _, userData]) => {
-      if (!newAction || !((newAction.orgId && this.userOrgIds.includes(newAction.orgId)) || (userData && newAction.userId === userData.uid))) {
+      const isActionMissing = !newAction;
+      const isNotPublic = newAction && !newAction.isPublic;
+      const belongsToUserOrg = newAction?.orgId && this.userOrgIds.includes(newAction.orgId);
+      const belongsToUser = newAction && userData && newAction.userId === userData.uid;
+
+      if (isActionMissing || (isNotPublic && !(belongsToUserOrg || belongsToUser))) {
           this.router.navigate(['not_found']);
       }
       else this.loadAction(newAction);
