@@ -32,10 +32,12 @@ export class RdfConverterService {
               `@prefix geospacebok: <https://geospacebok.eu/> . \n@prefix elm: <http://data.europa.eu/snb/model/elm> . \n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . \n` + 
               `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . \n\n`;
 
-    ttl += `_:TrainingMaterial rdf:type rdfs:Class . \n\n`;
+    if (model instanceof TrainingMaterial) ttl += `geospacebok:TrainingMaterial rdf:type rdfs:Class . \n\n`;
+    else ttl += `geospacebok:TrainingAction rdf:type rdfs:Class . \n\n`;
 
     ttl += `<${model.url}> \n`;
-    ttl += `  rdf:type _:TrainingMaterial ;\n`;
+    if (model instanceof TrainingMaterial) ttl += `  rdf:type geospacebok:TrainingMaterial ;\n`;
+    else ttl += `  rdf:type geospacebok:TrainingAction ;\n`;
     if (model.title) ttl += `  dcterms:title "${model.title}" ;\n`;
     if (model.creators) {
       model.creators.forEach((creator: string, index: number) => {
@@ -164,7 +166,8 @@ export class RdfConverterService {
     const resourceUri = model.url;
 
     xml += `  <rdf:Description rdf:about="${resourceUri}">\n`;
-    xml += `    <rdf:type rdf:resource="${rdfs}Class"/>\n`;
+    if (model instanceof TrainingMaterial) xml += `    <rdf:type rdf:resource="${bok}TrainingMaterial"/>\n`;
+    else xml += `    <rdf:type rdf:resource="${bok}TrainingAction"/>\n`;
 
     if (model.title) xml += `    <dcterms:title>${this.escapeXml(model.title)}</dcterms:title>\n`;
 
@@ -323,7 +326,8 @@ export class RdfConverterService {
   }
 
   private convertModelToRDFa(model: TrainingItem): string {
-    let html = `<div vocab="http://purl.org/dc/terms/" typeof="http://www.w3.org/2000/01/rdf-schema#Class" about="${model.url}">\n`;
+    const type = 'https://geospacebok.eu/' + (model instanceof TrainingMaterial ? 'TrainingMaterial' : 'TrainingAction');
+    let html = `<div vocab="http://purl.org/dc/terms/" typeof="${type}" about="${model.url}">\n`;
 
     if (model.title) {
       html += `  <span property="title">${this.escapeHtml(model.title)}</span><br/>\n`;
