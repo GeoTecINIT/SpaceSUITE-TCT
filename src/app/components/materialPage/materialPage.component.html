@@ -166,19 +166,6 @@
                 </ng-content>
             </div>
         </p-panel>
-        <p-panel #deprecatedConceptsPanel *ngIf="deprecatedConcepts.length > 0" [header]="'Annotated Deprecated Knowledge (' + deprecatedConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
-            <ng-template #headericons>
-                <p-button *ngIf="!deprecatedConceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
-                <p-button *ngIf="deprecatedConceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
-            </ng-template>  
-            <div class="text-xs mb-3" style="color: var(--danger-color);">*These are obsolete concepts, so they are not present in the current version of the Bok.</div>
-            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
-                <ng-content *ngFor="let concept of deprecatedConcepts">
-                    <p-tag [value]="concept" [rounded]="true" class="xs:white-space-nowrap bok-tag" [style.background]="selectedConceptsColor.get(concept)"
-                        (click)="onClickConcept(concept)" />
-                </ng-content>
-            </div>
-        </p-panel>
         <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()" *ngIf="checkUser() || checkOrganizations()"></p-button>
         <p-button label="Delete Material" icon="pi pi-trash" class="flex md:hidden justify-content-center delete-button my-2" (onClick)="deleteModal($event)" *ngIf="checkUser() || checkOrganizations()"></p-button>
         <p-button label="Return to Homepage" severity="secondary" icon="pi pi-arrow-left" class="flex md:hidden justify-content-center custom-secondary-button my-2" (onClick)="goToMainPage()"></p-button>

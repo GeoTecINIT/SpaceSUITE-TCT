@@ -52,7 +52,7 @@ export class CardComponent {
         }
       );
       this.bokInfo.getConceptName(concept).subscribe(
-        tooltip => this.selectedConceptsTooltip.set(concept, tooltip ? tooltip : 'Deprecated concept')
+        tooltip => this.selectedConceptsTooltip.set(concept, tooltip)
       );
     })
     this.trainingItem.subject.forEach(concept => {
@@ -65,7 +65,7 @@ export class CardComponent {
           }
         );
         this.bokInfo.getConceptName(concept).subscribe(
-          tooltip => this.selectedConceptsTooltip.set(concept, tooltip ? tooltip : 'Deprecated concept')
+          tooltip => this.selectedConceptsTooltip.set(concept, tooltip)
         );
       }
     })
@@ -124,7 +124,7 @@ export class CardComponent {
   }
 
   getTooltipClass(tooltipContent: string): string {
-    if (tooltipContent == 'Deprecated concept') return 'custom-p-tooltip-text';
+    if (tooltipContent == 'Unknown Concept') return 'custom-p-tooltip-text';
     return '';
   }
 

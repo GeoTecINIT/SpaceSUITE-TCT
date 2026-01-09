@@ -37,7 +37,6 @@ interface AuthState {
 export class MaterialPageComponent {
   material: TrainingMaterial | undefined;
 
-  deprecatedConcepts: string[] = [];
   currentConcepts: string[] = [];
   knowledgeAreas: string[] = [];
   customSubjects: string[] = [];
@@ -153,7 +152,6 @@ export class MaterialPageComponent {
   private loadMaterial(newMaterial: TrainingMaterial) {
     this.material = newMaterial;
     this.currentConcepts = [];
-    this.deprecatedConcepts = [];
     this.knowledgeAreas = [];
     this.customSubjects = [];
     this.material.concepts.forEach(concept => {
@@ -165,14 +163,8 @@ export class MaterialPageComponent {
       );
       this.bokInfo.getConceptName(concept).subscribe(
         tooltip => {
-          if (tooltip){
-            this.selectedConceptsTooltip.set(concept, tooltip);
-            this.currentConcepts.push(concept);
-          }
-          else {
-            this.selectedConceptsTooltip.set(concept, 'Deprecated concept');
-            this.deprecatedConcepts.push(concept);
-          }
+          this.selectedConceptsTooltip.set(concept, tooltip);
+          this.currentConcepts.push(concept);
         }
       );
     });

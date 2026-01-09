@@ -37,7 +37,6 @@ interface AuthState {
 export class ActionPageComponent {
   action: TrainingAction | undefined;
 
-  deprecatedConcepts: string[] = [];
   currentConcepts: string[] = [];
   knowledgeAreas: string[] = [];
   customSubjects: string[] = [];
@@ -153,7 +152,6 @@ export class ActionPageComponent {
   private loadAction(newAction: TrainingAction) {
     this.action = newAction;
     this.currentConcepts = [];
-    this.deprecatedConcepts = [];
     this.knowledgeAreas = [];
     this.customSubjects = [];
     this.action.concepts.forEach(concept => {
@@ -165,14 +163,8 @@ export class ActionPageComponent {
       );
       this.bokInfo.getConceptName(concept).pipe(take(1)).subscribe(
         tooltip => {
-          if (tooltip){
-            this.selectedConceptsTooltip.set(concept, tooltip);
-            this.currentConcepts.push(concept);
-          }
-          else {
-            this.selectedConceptsTooltip.set(concept, 'Deprecated concept');
-            this.deprecatedConcepts.push(concept);
-          }
+          this.selectedConceptsTooltip.set(concept, tooltip);
+          this.currentConcepts.push(concept);
         }
       );
     });
