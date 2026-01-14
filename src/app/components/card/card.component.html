@@ -20,12 +20,9 @@
     </ng-template>
     <div #container class="mt-2 h-4rem overflow-hidden">
         <div #subjects class="flex align-items-start align-items-center gap-2 flex-wrap">
-            <ng-content *ngFor="let concept of visibleConcepts">
-                <div [pTooltip]="selectedConceptsTooltip.get(concept)" tooltipPosition="top" [tooltipStyleClass]="getTooltipClass(selectedConceptsTooltip.get(concept) ?? '')">
-                    <p-tag [value]="concept" [rounded]="true" class="white-space-nowrap custom-tag" [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
-                </div>
-            </ng-content>
-            <i *ngIf="overflow" class="pi pi-chevron-circle-down more-tag" (click)="op.toggle($event)"></i>
+            <skill-tags [tags]="visibleConcepts" [compactBoKTags]="compactConcepts" (layoutUpdated)="tagsChanged()">
+                <i *ngIf="overflow" class="pi pi-chevron-circle-down more-tag align-self-center" (click)="op.toggle($event)"></i>
+            </skill-tags>
         </div>
     </div>
     <ng-template #footer>
@@ -47,10 +44,6 @@
 
 <p-popover #op>
     <div class="flex align-items-center gap-2 my-2 flex-wrap max-w-10rem">
-        <ng-content *ngFor="let concept of concepts">
-            <div [pTooltip]="selectedConceptsTooltip.get(concept)" tooltipPosition="top" [tooltipStyleClass]="getTooltipClass(selectedConceptsTooltip.get(concept) ?? '')">
-                <p-tag [value]="concept" [rounded]="true" class="white-space-nowrap custom-tag" [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
-            </div>
-        </ng-content>
+        <skill-tags [tags]="concepts"></skill-tags>
     </div>
 </p-popover>

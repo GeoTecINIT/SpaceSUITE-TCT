@@ -5,7 +5,6 @@ import { TrainingAction } from "../../model/trainingAction";
 import { CommonModule } from "@angular/common";
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
 import { TabsModule } from 'primeng/tabs';
 import { DividerModule } from 'primeng/divider';
@@ -18,7 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { RdfConverterService } from "../../services/rdfConverter.service";
-import { AuthService } from "@eo4geo/ngx-bok-utils";
+import { AuthService, SkillTagComponent, Tag } from "@eo4geo/ngx-bok-utils";
 
 interface AuthState {
   logged: boolean;
@@ -31,18 +30,15 @@ interface AuthState {
   selector: 'action-page',
   templateUrl: './actionPage.component.html',
   styleUrls: ['../materialPage/materialPage.component.css'],
-  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, TagModule, PanelModule, TabsModule, DividerModule, ConfirmDialogModule, ToastModule, PopoverModule],
+  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, PanelModule, TabsModule, DividerModule, ConfirmDialogModule, ToastModule, PopoverModule, SkillTagComponent],
   providers: [ConfirmationService, MessageService]
 })
 export class ActionPageComponent {
   action: TrainingAction | undefined;
 
-  currentConcepts: string[] = [];
-  knowledgeAreas: string[] = [];
-  customSubjects: string[] = [];
-  
-  selectedConceptsColor: Map<string, string> = new Map();
-  selectedConceptsTooltip: Map<string, string> = new Map();  
+  currentConcepts: Tag[] = [];
+  knowledgeAreas: Tag[] = [];
+  customSubjects: Tag[] = [];
 
   imagePlaceholder: string;
 
@@ -154,37 +150,26 @@ export class ActionPageComponent {
     this.currentConcepts = [];
     this.knowledgeAreas = [];
     this.customSubjects = [];
-    this.action.concepts.forEach(concept => {
-      this.bokInfo.getConceptColor(concept).pipe(take(1)).subscribe(
-        color => {
-          const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
-          this.selectedConceptsColor.set(concept, softColor)
-        }
-      );
-      this.bokInfo.getConceptName(concept).pipe(take(1)).subscribe(
-        tooltip => {
-          this.selectedConceptsTooltip.set(concept, tooltip);
-          this.currentConcepts.push(concept);
-        }
-      );
-    });
+
+    this.utilsService
+      .stringToTag(this.action.concepts.sort(), 'bok')
+      .subscribe(tags => (this.currentConcepts = tags));
+    
+    const knowledgeAreasStrings: string[] = [];
+    const customSubjectsStrings: string[] = [];
+
     this.action.subject.forEach(subject => {
-      if (this.utilsService.codeToKnowledgeArea.has(subject)) {
-        this.bokInfo.getConceptColor(subject).pipe(take(1)).subscribe(
-          color => {
-            const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
-            this.selectedConceptsColor.set(subject, softColor)
-          }
-        );
-        this.bokInfo.getConceptName(subject).pipe(take(1)).subscribe(
-          tooltip => {
-            this.selectedConceptsTooltip.set(subject, tooltip);
-            this.knowledgeAreas.push(subject);
-          }
-        );
-      }
-      else this.customSubjects.push(subject);
-    });
+      if (this.utilsService.codeToKnowledgeArea.has(subject)) knowledgeAreasStrings.push(subject);
+      else customSubjectsStrings.push(subject);
+    })
+    
+    this.utilsService
+      .stringToTag(knowledgeAreasStrings.sort(), 'bok')
+      .subscribe(tags => (this.knowledgeAreas = tags));
+    
+    this.utilsService
+      .stringToTag(customSubjectsStrings.sort())
+      .subscribe(tags => (this.customSubjects = tags));
   }
 
   goToMainPage() {

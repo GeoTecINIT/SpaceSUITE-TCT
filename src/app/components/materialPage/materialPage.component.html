@@ -144,27 +144,14 @@
         <img src="{{material.image != '' ? material.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
 
         <p-panel #subjectsPanel [header]="'Subjects (' + material.subject.length + ')'" class="my-2 custom-panel">
-            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
-                <ng-content *ngFor="let concept of knowledgeAreas">
-                    <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
-                        [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
-                </ng-content>
-                <ng-content *ngFor="let subject of customSubjects">
-                    <p-tag [value]="subject" [rounded]="true" class="xs:white-space-nowrap custom-tag" [style.background]="'var(--primary-color)'" />
-                </ng-content>
-            </div>
+            <skill-tags [tags]="knowledgeAreas.concat(customSubjects)" [compactBoKTags]="false"></skill-tags>
         </p-panel>
         <p-panel #conceptsPanel [header]="'Knowledge (' + currentConcepts.length + ')'" toggleable="true" collapsed="true" class="my-2 custom-panel">
             <ng-template #headericons>
                 <p-button *ngIf="!conceptsPanel.collapsed" icon="pi pi-chevron-up" severity="secondary" rounded text/>
                 <p-button *ngIf="conceptsPanel.collapsed" icon="pi pi-chevron-down" severity="secondary" rounded text/>
             </ng-template>      
-            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
-                <ng-content *ngFor="let concept of currentConcepts">
-                    <p-tag [value]="'[' + concept + '] ' + selectedConceptsTooltip.get(concept)" [rounded]="true" class="xs:white-space-nowrap bok-tag"
-                        [style.background]="selectedConceptsColor.get(concept)" (click)="onClickConcept(concept)" />
-                </ng-content>
-            </div>
+            <skill-tags [tags]="currentConcepts" [compactBoKTags]="false"></skill-tags>
         </p-panel>
         <p-button label="Edit Material" icon="pi pi-pencil" class="md:hidden flex justify-content-center custom-button my-2" (onClick)="editMaterial()" *ngIf="checkUser() || checkOrganizations()"></p-button>
         <p-button label="Delete Material" icon="pi pi-trash" class="flex md:hidden justify-content-center delete-button my-2" (onClick)="deleteModal($event)" *ngIf="checkUser() || checkOrganizations()"></p-button>

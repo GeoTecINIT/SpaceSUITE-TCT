@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild} from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, Input, NgZone, ViewChild} from "@angular/core";
 import { CardModule } from 'primeng/card';
-import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from "@angular/common";
@@ -10,26 +9,30 @@ import { UtilsService } from "../../services/utils.service";
 import { Router } from "@angular/router";
 import { TrainingItem } from "../../model/trainingItem";
 import { TrainingMaterial } from "../../model/trainingMaterial";
+import { SkillTagComponent, Tag } from "@eo4geo/ngx-bok-utils";
+import { take } from "rxjs";
 
 @Component({
   standalone: true,
   selector: 'card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
-  imports: [CommonModule, CardModule, TagModule, DividerModule, PopoverModule, TooltipModule],
+  imports: [CommonModule, CardModule, SkillTagComponent, DividerModule, PopoverModule, TooltipModule],
 })
 export class CardComponent {
   @Input() trainingItem!: TrainingItem;
+
   @ViewChild('container') containerElement!: ElementRef;
   @ViewChild('subjects') subjectsElement!: ElementRef;
+
   @ViewChild('titleRef') titleRef!: ElementRef;
   @ViewChild('orgRef') orgRef!: ElementRef;
 
-  concepts: string[] = [];
-  visibleConcepts: string[] = [];
-  selectedConceptsColor: Map<string, string> = new Map();
-  selectedConceptsTooltip: Map<string, string> = new Map();
+  concepts: Tag[] = [];
+  visibleConcepts: Tag[] = [];
+
   overflow: boolean = false;
+  compactConcepts: boolean = false;
   showTitleTooltip: boolean = false;
   showOrgTooltip: boolean = false;
 
@@ -37,80 +40,68 @@ export class CardComponent {
 
   isMaterial: boolean = true;
 
-  constructor(private bokInfo: BokInformationService, private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(private bokInfo: BokInformationService, private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router, private ngZone: NgZone) {
     this.imagePlaceholder = this.utilsService.imagePlaceholder;
   }
 
   ngOnInit() {
     this.isMaterial = this.trainingItem instanceof TrainingMaterial;
-    this.trainingItem.concepts.forEach(concept => {
-      this.concepts.push(concept)
-      this.bokInfo.getConceptColor(concept).subscribe(
-        color => {
-          const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
-          this.selectedConceptsColor.set(concept, softColor)
-        }
-      );
-      this.bokInfo.getConceptName(concept).subscribe(
-        tooltip => this.selectedConceptsTooltip.set(concept, tooltip)
-      );
+    
+    const bokSubjects: string[] = [];
+    this.trainingItem.subject.forEach(subject => {
+      if (this.utilsService.codeToKnowledgeArea.has(subject)) bokSubjects.push(subject);
     })
-    this.trainingItem.subject.forEach(concept => {
-      if (this.utilsService.codeToKnowledgeArea.has(concept)){
-        this.concepts.push(concept)
-        this.bokInfo.getConceptColor(concept).subscribe(
-          color => {
-            const softColor = color ? this.utilsService.convertHexToRgba(color, 0.5) : '';
-            this.selectedConceptsColor.set(concept, softColor)
-          }
-        );
-        this.bokInfo.getConceptName(concept).subscribe(
-          tooltip => this.selectedConceptsTooltip.set(concept, tooltip)
-        );
-      }
-    })
-    this.concepts.sort()
+
+    this.utilsService.stringToTag(this.trainingItem.concepts, 'bok').subscribe(value => this.concepts = this.concepts.concat(value));
+    this.utilsService.stringToTag(bokSubjects, 'bok').subscribe(value => this.concepts = this.concepts.concat(value));
+
+    this.concepts.sort((a, b) => a.label.localeCompare(b.label));
     this.visibleConcepts = [...this.concepts];
   }
 
   ngAfterViewInit() {
-    this.checkOverflow();
-    if (this.overflow) {
-      this.hideOverflowElements();
-    }
     const titleEl = this.titleRef.nativeElement;
     const orgEl = this.orgRef.nativeElement;
     this.showTitleTooltip = titleEl.scrollHeight > titleEl.clientHeight;
     this.showOrgTooltip = orgEl.scrollWidth > orgEl.clientWidth;
+
+    this.compactConcepts = this.checkOverflow();
     this.cdr.detectChanges();
   }
 
-  checkOverflow() {
+  tagsChanged() {
+    this.overflow = this.checkOverflow();
+    if (this.overflow) this.hideOverflowElements();
+    this.cdr.detectChanges();
+  }
+
+  checkOverflow(): boolean {
     const containerHeight = this.containerElement.nativeElement.clientHeight;
     const subjectsHeight = this.subjectsElement.nativeElement.scrollHeight;
-    this.overflow = (subjectsHeight > containerHeight);
+    return (subjectsHeight > containerHeight);
   }
 
   hideOverflowElements() {
     const containerRect = this.containerElement.nativeElement.getBoundingClientRect();
-    const subjectChildren: HTMLElement[] = this.subjectsElement.nativeElement.children;
-    const hiddenElements: string[] = [];
+    const subjectChildren: HTMLElement[] = this.subjectsElement.nativeElement.querySelectorAll(
+      'skill-tags > div > div'
+    );
+    const hiddenElements: number[] = [];
   
-    Array.from(subjectChildren).forEach((child: HTMLElement) => {
+    Array.from(subjectChildren).forEach((child: HTMLElement, index: number) => {
       const childRect = child.getBoundingClientRect();
       const isVisible = childRect.top >= containerRect.top && childRect.bottom <= containerRect.bottom;
 
       if (!isVisible) {
-        hiddenElements.push(child.textContent!);
+        hiddenElements.push(index);
       }
     });
-  
-    this.visibleConcepts = this.concepts.filter(item => !hiddenElements.includes(item));
-    this.visibleConcepts.pop();
-  }
 
-  onClickConcept(code: string) {
-    window.open('https://geospacebok.eu/' + code);
+    this.visibleConcepts = this.concepts.filter(
+      (_, index) => !hiddenElements.includes(index)
+    );
+    
+    this.visibleConcepts.pop();
   }
 
   onClickTitle(event: MouseEvent) {
@@ -122,10 +113,4 @@ export class CardComponent {
       this.router.navigate(['action/' + this.trainingItem._id]);
     }
   }
-
-  getTooltipClass(tooltipContent: string): string {
-    if (tooltipContent == 'Unknown Concept') return 'custom-p-tooltip-text';
-    return '';
-  }
-
 }
