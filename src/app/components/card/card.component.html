@@ -21,7 +21,7 @@
     <div #container class="mt-2 h-4rem overflow-hidden">
         <div #subjects class="flex align-items-start align-items-center gap-2 flex-wrap">
             <skill-tags [tags]="visibleConcepts" [compactBoKTags]="compactConcepts" (layoutUpdated)="tagsChanged()">
-                <i *ngIf="overflow" class="pi pi-chevron-circle-down more-tag align-self-center" (click)="op.toggle($event)"></i>
+                <i *ngIf="compactConcepts" class="pi {{overflow ? 'pi-ellipsis-h ml-2' : 'pi-info-circle'}} more-tag align-self-center" (click)="op.toggle($event)"></i>
             </skill-tags>
         </div>
     </div>
@@ -43,7 +43,7 @@
 </p-card>
 
 <p-popover #op>
-    <div class="flex align-items-center gap-2 my-2 flex-wrap max-w-10rem">
-        <skill-tags [tags]="concepts"></skill-tags>
+    <div class="flex align-items-center gap-2 my-2 flex-wrap max-w-19rem">
+        <skill-tags [tags]="concepts" [compactBoKTags]="false"></skill-tags>
     </div>
 </p-popover>
