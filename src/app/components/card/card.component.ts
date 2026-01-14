@@ -1,16 +1,15 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, NgZone, ViewChild} from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild} from "@angular/core";
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from "@angular/common";
-import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { TooltipModule } from 'primeng/tooltip';
 import { UtilsService } from "../../services/utils.service";
 import { Router } from "@angular/router";
 import { TrainingItem } from "../../model/trainingItem";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { SkillTagComponent, Tag } from "@eo4geo/ngx-bok-utils";
-import { take } from "rxjs";
+import { defaultIfEmpty, forkJoin } from "rxjs";
 
 @Component({
   standalone: true,
@@ -30,6 +29,8 @@ export class CardComponent {
 
   concepts: Tag[] = [];
   visibleConcepts: Tag[] = [];
+  conceptsLoaded: boolean = false;
+  conceptsOverflowChecked: boolean = false;
 
   overflow: boolean = false;
   compactConcepts: boolean = false;
@@ -40,7 +41,7 @@ export class CardComponent {
 
   isMaterial: boolean = true;
 
-  constructor(private bokInfo: BokInformationService, private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router, private ngZone: NgZone) {
+  constructor(private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {
     this.imagePlaceholder = this.utilsService.imagePlaceholder;
   }
 
@@ -52,11 +53,15 @@ export class CardComponent {
       if (this.utilsService.codeToKnowledgeArea.has(subject)) bokSubjects.push(subject);
     })
 
-    this.utilsService.stringToTag(this.trainingItem.concepts, 'bok').subscribe(value => this.concepts = this.concepts.concat(value));
-    this.utilsService.stringToTag(bokSubjects, 'bok').subscribe(value => this.concepts = this.concepts.concat(value));
-
-    this.concepts.sort((a, b) => a.label.localeCompare(b.label));
-    this.visibleConcepts = [...this.concepts];
+    forkJoin([
+      this.utilsService.stringToTag(this.trainingItem.concepts, 'bok').pipe(defaultIfEmpty([])),
+      this.utilsService.stringToTag(bokSubjects, 'bok').pipe(defaultIfEmpty([]))
+    ]).subscribe(results => {
+      this.concepts = [...this.concepts, ...results[0], ...results[1]];
+      this.concepts.sort((a, b) => a.label.localeCompare(b.label));
+      this.visibleConcepts = [...this.concepts];
+      this.conceptsLoaded = true;
+    });
   }
 
   ngAfterViewInit() {
@@ -64,9 +69,15 @@ export class CardComponent {
     const orgEl = this.orgRef.nativeElement;
     this.showTitleTooltip = titleEl.scrollHeight > titleEl.clientHeight;
     this.showOrgTooltip = orgEl.scrollWidth > orgEl.clientWidth;
-
-    this.compactConcepts = this.checkOverflow();
     this.cdr.detectChanges();
+  }
+
+  ngAfterViewChecked() {
+    if (this.conceptsLoaded && !this.conceptsOverflowChecked) {
+      this.compactConcepts = this.checkOverflow();
+      this.conceptsOverflowChecked = true;
+      this.cdr.detectChanges();
+    }
   }
 
   tagsChanged() {
