@@ -13,6 +13,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from "primeng/button";
+import { SkeletonModule } from "primeng/skeleton";
 
 @Component({
   standalone: true,
@@ -20,7 +21,7 @@ import { ButtonModule } from "primeng/button";
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css'],
   imports: [CommonModule, FormsModule, DividerModule, InputTextModule, MultiSelectModule, BokModalComponent, SelectButtonModule, TooltipModule,
-            InputGroupModule, InputGroupAddonModule, MenuModule, ButtonModule],
+            InputGroupModule, InputGroupAddonModule, MenuModule, ButtonModule, SkeletonModule],
 })
 export class FiltersComponent {
   @Input() multiSelectOptions: FilterOption[] = [];
@@ -50,7 +51,11 @@ export class FiltersComponent {
   @Input() showAdvancedFilters: boolean = false;
   @Output() showAdvancedFiltersChange: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() {}
+  skeletonElements: number[] = [];
+
+  constructor() {
+    this.skeletonElements = Array(5).fill(null);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["logged"] && !changes["logged"].isFirstChange() && changes['logged'].currentValue == false) { 

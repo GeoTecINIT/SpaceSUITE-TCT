@@ -1,6 +1,6 @@
 <p-toast class="custom-toast" position="bottom-right"/>
 <div #container class="flex flex-column xl:flex-row gap-4 m-2">
-    <filters [(multiSelectOptions)]="filterOptions" [(advancedMultiSelectOptions)]="advancedFilterOptions" [loading]="loading" 
+    <filters [(multiSelectOptions)]="filterOptions" [(advancedMultiSelectOptions)]="advancedFilterOptions" [loading]="loadingFilters" 
         (multiSelectOptionsChange)="filterPipeline()" (advancedMultiSelectOptionsChange)="filterPipeline()" [filterUserItemOptions]="filterUserItemOptions"
         [searchValue]="searchValue" (searchValueChange)="setSearchValue($event)" [selectedOption]="searchOption" (selectedOptionChange)="setSearchOption($event)"
         [bokConcepts]="bokConcepts" (bokConceptsChange)="setBoKConcepts($event)" [filterUserItem]="filterByUserItem" (filterUserItemChange)="setFilterByUserMaterial($event)" 
@@ -20,17 +20,17 @@
                 </p-buttongroup>
             </p-tablist>
         </p-tabs>
-        <div *ngIf="filteredTrainingItems.length != 0 || loading" class="flex flex-column mt-2">
+        <div *ngIf="filteredTrainingItems.length != 0 || loadingCards" class="flex flex-column mt-2">
             <div class="flex gap-5 flex-wrap align-content-start justify-content-center mb-4">
-                <ng-container *ngIf="!showSkeleton else cardSkeleton">
+                <ng-container *ngIf="!loadingCards else cardSkeleton">
                     <ng-container *ngFor="let item of paginationTrainingItems; trackBy: trackById">
                         <card [trainingItem]="item"></card>
                     </ng-container>
                 </ng-container>
             </div>
-            <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="filteredTrainingItems.length" class="custom-paginator"/>
+            <p-paginator *ngIf="filteredTrainingItems.length != 0 && !loadingCards" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="filteredTrainingItems.length" class="custom-paginator"/>
         </div>
-        <p *ngIf="filteredTrainingItems.length == 0 && !loading" class="font-italic flex mx-auto justify-content-center">No {{selectedTab === 0 ? 'material' : 'action'}} found</p>
+        <p *ngIf="filteredTrainingItems.length == 0 && !loadingCards" class="font-italic flex mx-auto justify-content-center">No {{selectedTab === 0 ? 'material' : 'action'}} found</p>
     </div>
 </div>
 <div class="floating-container flex flex-column gap-2 align-items-end" [ngStyle]="{ bottom: buttonBottom + 'px' }">

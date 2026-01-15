@@ -44,8 +44,8 @@ export class ItemExplorerComponent {
   searchValue: string = '';
   searchOption: string = "Title";
   bokConcepts: string[] = [];
-  loading: boolean = true;
-  showSkeleton: boolean = false;
+  loadingFilters: boolean = true;
+  loadingCards: boolean = true;
 
   filterUserItemOptions: any[] = [];
   filterByUserItem: boolean = false;
@@ -80,14 +80,15 @@ export class ItemExplorerComponent {
   }
 
   ngOnInit() {
-    // Show skeleton if load is too low
-    setTimeout(() => {
-      if (this.loading) this.showSkeleton = true;
-    }, 200);
-
     // Define selected tab based on lastSuccessfulNavigation
-    if (this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action') this.selectedTab = 1;
-    else this.selectedTab = 0;
+    if (this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action') {
+      this.selectedTab = 1;
+      this.filterUserItemOptions = [{ label: 'My Actions', value: true, icon: 'pi pi-user' },{ label: 'All Actions', value: false, icon: 'pi pi-globe' }]
+    }
+    else {
+      this.selectedTab = 0;
+      this.filterUserItemOptions = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }]
+    }
 
     // Load filters value from FilterService
     forkJoin({
@@ -97,6 +98,7 @@ export class ItemExplorerComponent {
       this.filterOptions = general;
       this.advancedFilterOptions = advanced;
       this.showAdvancedFilters = this.filterService.showAdvancedFilters;
+      this.loadingFilters = false;
     });
 
     // Load filters & sorting state
@@ -125,8 +127,7 @@ export class ItemExplorerComponent {
       if(this.filterService.paginatorState.rows && this.filterService.paginatorState.rows) {
         this.onPageChange(this.filterService.paginatorState);
       }
-      this.loading = false;
-      this.showSkeleton = false;
+      this.loadingCards = false;
     });
   }
 
