@@ -5,7 +5,7 @@ import { CardComponent } from "../card/card.component";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { CommonModule, Location } from "@angular/common";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
-import { combineLatest, filter, forkJoin, map, Subscription, take, tap } from "rxjs";
+import { combineLatest, filter, forkJoin, map, Observable, Subscription, take, tap } from "rxjs";
 import { FiltersComponent } from "../filters/filters.component";
 import { FilterOption } from "../../model/filterOption";
 import { CardFilterService } from "../../services/cardFilter.service";
@@ -80,20 +80,27 @@ export class ItemExplorerComponent {
   }
 
   ngOnInit() {
+    let generalFilterObservable: Observable<FilterOption[]>;
+    let advancedFilterObservable: Observable<FilterOption[]>;
+
     // Define selected tab based on lastSuccessfulNavigation
     if (this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action') {
       this.selectedTab = 1;
-      this.filterUserItemOptions = [{ label: 'My Actions', value: true, icon: 'pi pi-user' },{ label: 'All Actions', value: false, icon: 'pi pi-globe' }]
+      this.filterUserItemOptions = [{ label: 'My Actions', value: true, icon: 'pi pi-user' },{ label: 'All Actions', value: false, icon: 'pi pi-globe' }];
+      generalFilterObservable = this.filterService.getGeneralActionFilterOptions().pipe(take(1));
+      advancedFilterObservable = this.filterService.getAdvancedActionFilterOptions().pipe(take(1));
     }
     else {
       this.selectedTab = 0;
-      this.filterUserItemOptions = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }]
+      this.filterUserItemOptions = [{ label: 'My Materials', value: true, icon: 'pi pi-user' },{ label: 'All Materials', value: false, icon: 'pi pi-globe' }];
+      generalFilterObservable = this.filterService.getGeneralMaterialFilterOptions().pipe(take(1));
+      advancedFilterObservable = this.filterService.getAdvancedMaterialFilterOptions().pipe(take(1));
     }
 
     // Load filters value from FilterService
     forkJoin({
-      general: this.filterService.getGeneralMaterialFilterOptions().pipe(take(1)),
-      advanced: this.filterService.getAdvancedMaterialFilterOptions().pipe(take(1))
+      general: generalFilterObservable,
+      advanced: advancedFilterObservable
     }).subscribe(({ general, advanced }) => {
       this.filterOptions = general;
       this.advancedFilterOptions = advanced;
@@ -105,6 +112,7 @@ export class ItemExplorerComponent {
     this.searchValue = this.filterService.searchValue;
     this.searchOption = this.filterService.searchOption;
     this.filterByUserItem = this.filterService.userItemFilter;
+    this.bokConcepts = this.filterService.bokConcepts;
     this.sortAsc = this.sortingSerice.sortAsc;
     this.selectedSortOption = this.sortingSerice.sortOption;
 
