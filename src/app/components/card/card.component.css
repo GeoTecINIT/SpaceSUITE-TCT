@@ -94,3 +94,13 @@
 ::ng-deep .large-tooltip {
     --p-tooltip-max-width: 18rem;
 }
+
+.measure-only {
+    position: absolute;
+    top: 0;
+    left: -9999px;
+    width: 19rem;
+    box-sizing: border-box;
+    padding-left: var(--p-card-body-padding);
+    padding-right: var(--p-card-body-padding);
+}

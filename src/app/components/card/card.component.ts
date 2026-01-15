@@ -10,13 +10,14 @@ import { TrainingItem } from "../../model/trainingItem";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { SkillTagComponent, Tag } from "@eo4geo/ngx-bok-utils";
 import { defaultIfEmpty, forkJoin } from "rxjs";
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   standalone: true,
   selector: 'card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
-  imports: [CommonModule, CardModule, SkillTagComponent, DividerModule, PopoverModule, TooltipModule],
+  imports: [CommonModule, CardModule, SkillTagComponent, DividerModule, PopoverModule, TooltipModule, SkeletonModule],
 })
 export class CardComponent {
   @Input() trainingItem!: TrainingItem;
@@ -41,8 +42,12 @@ export class CardComponent {
 
   isMaterial: boolean = true;
 
+  skeletonElements: number[] = [];
+  showSkelleton: boolean = true;
+
   constructor(private utilsService: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {
     this.imagePlaceholder = this.utilsService.imagePlaceholder;
+    this.skeletonElements = Array(10).fill(null);
   }
 
   ngOnInit() {
@@ -73,8 +78,9 @@ export class CardComponent {
   }
 
   ngAfterViewChecked() {
-    if (this.conceptsLoaded && !this.conceptsOverflowChecked) {
+    if (!this.conceptsOverflowChecked && this.conceptsLoaded) {
       this.compactConcepts = this.checkOverflow();
+      this.showSkelleton = this.compactConcepts;
       this.conceptsOverflowChecked = true;
       this.cdr.detectChanges();
     }
@@ -82,8 +88,10 @@ export class CardComponent {
 
   tagsChanged() {
     this.overflow = this.checkOverflow();
-    if (this.overflow) this.hideOverflowElements();
-    this.cdr.detectChanges();
+    if (this.overflow) {
+      this.hideOverflowElements();
+    }
+    this.showSkelleton = false;
   }
 
   checkOverflow(): boolean {

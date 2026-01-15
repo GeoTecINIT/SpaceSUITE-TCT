@@ -18,7 +18,16 @@
             <strong>Created:</strong> {{trainingItem.created?.toLocaleDateString()}}
         </div>
     </ng-template>
-    <div #container class="mt-2 h-4rem overflow-hidden">
+    <ng-content *ngIf="showSkelleton">
+        <div class="mt-2 h-4rem overflow-hidden">
+            <div class="flex align-items-start align-items-center gap-2 flex-wrap">
+                <ng-content *ngFor="let i of skeletonElements">
+                    <p-skeleton height="1.5rem" width="2.5rem" class="mb-2" borderRadius="16px" />
+                </ng-content>
+            </div>
+        </div>
+    </ng-content>
+    <div #container class="mt-2 h-4rem overflow-hidden" [class.measure-only]="showSkelleton">
         <div #subjects class="flex align-items-start align-items-center gap-2 flex-wrap">
             <skill-tags [tags]="visibleConcepts" [compactBoKTags]="compactConcepts" (layoutUpdated)="tagsChanged()">
                 <i *ngIf="compactConcepts" class="pi {{overflow ? 'pi-ellipsis-h ml-2' : 'pi-info-circle'}} more-tag align-self-center" (click)="op.toggle($event)"></i>
@@ -47,3 +56,9 @@
         <skill-tags [tags]="concepts" [compactBoKTags]="false"></skill-tags>
     </div>
 </p-popover>
+
+<ng-template #tagsSkelleton>
+    <ng-content *ngFor="let i of skeletonElements">
+        <p-skeleton height="1.5rem" width="2.5rem" class="mb-2" borderRadius="16px" />
+    </ng-content>
+</ng-template>
