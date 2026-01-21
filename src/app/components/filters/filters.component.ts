@@ -79,7 +79,8 @@ export class FiltersComponent {
     this.searchValueChange.emit(this.searchValue);
   }
 
-  updateFilterUserItem() {
+  updateFilterUserItem(newValue: boolean) {
+    this.filterUserItem = newValue;
     this.filterUserItemChange.emit(this.filterUserItem);
   }
 
