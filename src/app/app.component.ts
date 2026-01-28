@@ -55,7 +55,7 @@ export class AppComponent {
           iconStyle: {'color': 'var(--hover-color)'}
         },
         {
-          label: 'Skill Portfolio Tool',
+          label: 'Skill Portfolio',
           icon: 'pi pi-user',
           url: 'https://spacesuite-project-spt.web.app',
           target: '_blank'
