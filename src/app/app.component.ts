@@ -55,6 +55,12 @@ export class AppComponent {
           iconStyle: {'color': 'var(--hover-color)'}
         },
         {
+          label: 'Skill Portfolio Tool',
+          icon: 'pi pi-user',
+          url: 'https://spacesuite-project-spt.web.app',
+          target: '_blank'
+        },
+        {
           label: 'BoK Annotation Tool',
           icon: 'pi pi-pencil',
           url: 'https://eo4geo-bat.web.app',
