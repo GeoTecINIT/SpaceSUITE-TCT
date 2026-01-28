@@ -4,7 +4,7 @@
         <p-divider class="flex-grow-1 mt-0"/>
         <ng-content *ngIf="!loading else filterSkelleton">
             <div class="my-4 flex">
-                <p-selectbutton [ngModel]="logged ? filterUserItem : undefined" [options]="filterUserItemOptions" class="custom-togglebutton" 
+                <p-selectbutton [ngModel]="logged ? filterUserItem : undefined" [options]="logged ? filterUserItemOptions : [filterUserItemOptions[1]]" class="custom-togglebutton" 
                                 [allowEmpty]="!logged" optionLabel="label" optionValue="value" (ngModelChange)="updateFilterUserItem($event)" 
                                 [disabled]="!logged" [pTooltip]="!logged ? 'You must be logged in to use this field' : ''" tooltipPosition="top">
                     <ng-template #item let-item>

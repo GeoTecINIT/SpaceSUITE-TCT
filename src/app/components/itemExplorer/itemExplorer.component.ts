@@ -132,7 +132,7 @@ export class ItemExplorerComponent {
       )
     ]).subscribe(() => {
       this.setSelectedTab(this.selectedTab);
-      if(this.filterService.paginatorState.rows && this.filterService.paginatorState.rows) {
+      if(this.filterService.paginatorState.rows && this.filterService.paginatorState.first) {
         this.onPageChange(this.filterService.paginatorState);
       }
       this.loadingCards = false;
