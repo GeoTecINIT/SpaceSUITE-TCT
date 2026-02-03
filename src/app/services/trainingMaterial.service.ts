@@ -50,10 +50,6 @@ export class TrainingMaterialService extends TrainingItemService {
     );
   }
 
-  public getTrainingMaterialsMap(): Observable<Map<string, TrainingMaterial> | undefined> {
-    return this.trainingMaterialMap.asObservable();
-  }
-
   private checkTrainingMaterials(): Observable<void> {
     return this.firebaseService.getTrainingMaterials().pipe(map( newTrainingMaterials => {
       const cleanedMaterials = this.formatTrainingItems(newTrainingMaterials) as TrainingMaterial[];
@@ -75,12 +71,6 @@ export class TrainingMaterialService extends TrainingItemService {
 
   public getTrainingMaterial(materialId: string): Observable<TrainingMaterial | undefined> {
     return this.trainingMaterialMap.asObservable().pipe(
-      concatMap( value => {
-        if (value == undefined) {
-          return this.getTrainingMaterialsMap().pipe(take(1));
-        }
-        return of(value);
-      }),
       filter(value => value != undefined),
       map(materiaMap => materiaMap.get(materialId))
     );
