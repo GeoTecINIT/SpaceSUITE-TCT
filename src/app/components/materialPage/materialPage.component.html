@@ -141,7 +141,7 @@
     </div>
     <div class="flex flex-column image-column">
 
-        <img src="{{material.image != '' ? material.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3"/>
+        <img src="{{material.image != '' ? material.image : imagePlaceholder}}" alt="Image" class="hidden md:inline rounded-image mt-3" (error)="onImageError($event)"/>
 
         <p-panel #subjectsPanel [header]="'Subjects (' + material.subject.length + ')'" class="my-2 custom-panel">
             <skill-tags [tags]="knowledgeAreas.concat(customSubjects)" [compactBoKTags]="false"></skill-tags>

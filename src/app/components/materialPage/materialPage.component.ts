@@ -276,4 +276,10 @@ export class MaterialPageComponent {
       closable: true 
     });
   }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = this.imagePlaceholder;
+    img.onerror = null;  // Prevent loops
+  }
 }
