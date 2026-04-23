@@ -1,64 +1,127 @@
-<p-card [style]="{ width: '19rem', height: '27.5rem', overflow: 'auto'}" class="custom-color">
-    <ng-template #header>
-        <a class="image-container" href="{{isMaterial ? 'material' : 'action'}}/{{trainingItem._id}}" target="_self" (click)="onClickTitle($event)">
-            <img src="{{trainingItem.image == '' ? imagePlaceholder : trainingItem.image}}" loading="lazy" alt="Image" (error)="onImageError($event)"/>
-            <div class="overlay"><i class="pi pi-link"></i></div>
-        </a>
-    </ng-template>
-    <ng-template #title>
-        <div class="overflow-hidden" style="max-height: 3.25rem;">
-            <a class="card-title" href="{{isMaterial ? 'material' : 'action'}}/{{trainingItem._id}}" target="_self" (click)="onClickTitle($event)" 
-                [pTooltip]="showTitleTooltip ? trainingItem.title : ''" tooltipPosition="bottom" tooltipStyleClass="large-tooltip" showDelay="100" hideDelay="50">
-                <strong #titleRef class="text-overflow-multiline">{{trainingItem.title}}</strong>
-            </a>
-        </div>
-    </ng-template>
-    <ng-template #subtitle>
-        <div class="text-sm">
-            <strong>Created:</strong> {{trainingItem.created?.toLocaleDateString()}}
-        </div>
-    </ng-template>
-    <ng-content *ngIf="showSkelleton">
-        <div class="mt-2 h-4rem overflow-hidden">
-            <div class="flex align-items-center gap-2 flex-wrap">
-                <ng-content *ngFor="let i of skeletonElements">
-                    <p-skeleton height="1.5rem" width="2.5rem" class="mb-2" borderRadius="16px" />
-                </ng-content>
-            </div>
-        </div>
-    </ng-content>
-    <div #container class="mt-2 h-4rem overflow-hidden" [class.measure-only]="showSkelleton">
-        <div #subjects class="flex align-items-center">
-            <skill-tags [tags]="visibleConcepts" [compactBoKTags]="compactConcepts" (layoutUpdated)="tagsChanged()">
-                <i *ngIf="compactConcepts" class="pi {{overflow ? 'pi-ellipsis-h ml-2' : 'pi-info-circle'}} more-tag align-self-center" (click)="op.toggle($event)"></i>
-            </skill-tags>
-        </div>
+<p-card
+  [style]="{ width: '19rem', height: '27.5rem', overflow: 'auto' }"
+  class="custom-color"
+>
+  <ng-template #header>
+    <a
+      class="image-container"
+      href="{{ isMaterial ? 'material' : 'action' }}/{{ trainingItem._id }}"
+      target="_self"
+      (click)="onClickTitle($event)"
+    >
+      <img
+        src="{{
+          trainingItem.image == '' ? imagePlaceholder : trainingItem.image
+        }}"
+        loading="lazy"
+        alt="Image"
+        (error)="onImageError($event)"
+      />
+      <div class="overlay"><i class="pi pi-link"></i></div>
+    </a>
+  </ng-template>
+  <ng-template #title>
+    <div class="overflow-hidden" style="max-height: 3.25rem">
+      <a
+        class="card-title"
+        href="{{ isMaterial ? 'material' : 'action' }}/{{ trainingItem._id }}"
+        target="_self"
+        (click)="onClickTitle($event)"
+        [pTooltip]="showTitleTooltip ? trainingItem.title : ''"
+        tooltipPosition="bottom"
+        tooltipStyleClass="large-tooltip"
+        showDelay="100"
+        hideDelay="50"
+      >
+        <strong #titleRef class="text-overflow-multiline">{{
+          trainingItem.title
+        }}</strong>
+      </a>
     </div>
-    <ng-template #footer>
-        <p-divider class="mt-2"/>
-        <div class="flex align-items-end gap-2 flex-nowrap white-space-nowrap">
-            <div class="text-sm"><strong>{{trainingItem.language ?? 'Undefined'}}</strong></div>
-            |
-            <div class="text-sm"><strong>EQF: {{trainingItem.educationLevel}}</strong></div>
-            <ng-content *ngIf="!trainingItem.isPublic">
-            |
-            <div class="text-sm flex align-items-center gap-1"><i class="pi pi-eye-slash"></i><strong>Private</strong></div>
-            </ng-content> 
-            |
-            <div #orgRef class="text-sm overflow-hidden text-overflow-ellipsis" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
-                [pTooltip]="showOrgTooltip ? trainingItem.orgName : ''"><strong>{{trainingItem.orgName}}</strong></div>
+  </ng-template>
+  <ng-template #subtitle>
+    <div class="text-sm">
+      <strong>Created:</strong> {{ trainingItem.created?.toLocaleDateString() }}
+    </div>
+  </ng-template>
+  <ng-content *ngIf="showSkeleton">
+    <div class="mt-2 h-4rem overflow-hidden">
+      <div class="flex align-items-center gap-2 flex-wrap">
+        <ng-content *ngFor="let i of skeletonElements">
+          <p-skeleton
+            height="1.5rem"
+            width="2.5rem"
+            class="mb-2"
+            borderRadius="16px"
+          />
+        </ng-content>
+      </div>
+    </div>
+  </ng-content>
+  <div
+    #container
+    class="mt-2 h-4rem overflow-hidden"
+    [class.measure-only]="showSkeleton"
+  >
+    <div #subjects class="flex align-items-center">
+      <skill-tags
+        [tags]="visibleConcepts"
+        [compactBoKTags]="compactConcepts"
+        (layoutUpdated)="tagsChanged()"
+      >
+        <i
+          *ngIf="compactConcepts"
+          class="pi {{
+            overflow ? 'pi-ellipsis-h ml-2' : 'pi-info-circle'
+          }} more-tag align-self-center"
+          (click)="op.toggle($event)"
+        ></i>
+      </skill-tags>
+    </div>
+  </div>
+  <ng-template #footer>
+    <p-divider class="mt-2" />
+    <div class="flex align-items-end gap-2 flex-nowrap white-space-nowrap">
+      <div class="text-sm">
+        <strong>{{ trainingItem.language ?? "Undefined" }}</strong>
+      </div>
+      |
+      <div class="text-sm">
+        <strong>EQF: {{ trainingItem.educationLevel }}</strong>
+      </div>
+      <ng-content *ngIf="!trainingItem.isPublic">
+        |
+        <div class="text-sm flex align-items-center gap-1">
+          <i class="pi pi-eye-slash"></i><strong>Private</strong>
         </div>
-    </ng-template>
+      </ng-content>
+      |
+      <div
+        #orgRef
+        class="text-sm overflow-hidden text-overflow-ellipsis"
+        tooltipPosition="bottom"
+        tooltipStyleClass="large-tooltip"
+        [pTooltip]="showOrgTooltip ? trainingItem.orgName : ''"
+      >
+        <strong>{{ trainingItem.orgName }}</strong>
+      </div>
+    </div>
+  </ng-template>
 </p-card>
 
 <p-popover #op>
-    <div class="flex align-items-center gap-2 my-2 flex-wrap max-w-19rem">
-        <skill-tags [tags]="concepts" [compactBoKTags]="false"></skill-tags>
-    </div>
+  <div class="flex align-items-center gap-2 my-2 flex-wrap max-w-19rem">
+    <skill-tags [tags]="concepts" [compactBoKTags]="false"></skill-tags>
+  </div>
 </p-popover>
 
-<ng-template #tagsSkelleton>
-    <ng-content *ngFor="let i of skeletonElements">
-        <p-skeleton height="1.5rem" width="2.5rem" class="mb-2" borderRadius="16px" />
-    </ng-content>
+<ng-template #tagsSkeleton>
+  <ng-content *ngFor="let i of skeletonElements">
+    <p-skeleton
+      height="1.5rem"
+      width="2.5rem"
+      class="mb-2"
+      borderRadius="16px"
+    />
+  </ng-content>
 </ng-template>
