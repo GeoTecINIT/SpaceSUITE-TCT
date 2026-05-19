@@ -31,6 +31,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { RdfConverterService } from '../../services/rdfConverter.service';
 import { TrainingMaterialService } from '../../services/trainingMaterial.service';
 import { UtilsService } from '../../services/utils.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 interface AuthState {
   logged: boolean;
@@ -54,6 +55,7 @@ interface AuthState {
     ToastModule,
     PopoverModule,
     SkillTagComponent,
+    TooltipModule
   ],
   providers: [ConfirmationService, MessageService],
 })

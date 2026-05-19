@@ -12,9 +12,15 @@
         <div class="flex align-items-center gap-2 flex-wrap white-space-nowrap mb-2">
             <div class="text-sm"><strong>Language:</strong> {{material.language ?? 'Undefined'}}</div>
             |
-            <div class="text-sm"><strong>EQF Level:</strong> {{material.educationLevel}}</div>
+            <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
+                pTooltip="The European Qualifications Framework. Indicates level of knowledge from 1 to 8">
+                <strong>EQF Level:</strong> {{material.educationLevel}}
+            </div>
             |
-            <div class="text-sm"><strong>Workload:</strong> {{material.workload}} ECTS</div>
+            <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
+                pTooltip="Amount of time expected to invest, quantified using ECTS (1 ECTS = +/- 25 hours)">
+                <strong>Workload:</strong> {{material.workload}} ECTS
+            </div>
             |
             <div class="text-sm"><strong>Provided by:</strong> {{material.publisher}}</div>
             |

@@ -86,7 +86,8 @@
         <strong>{{ trainingItem.language ?? "Undefined" }}</strong>
       </div>
       |
-      <div class="text-sm">
+      <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
+        pTooltip="The European Qualifications Framework. Indicates level of knowledge from 1 to 8">
         <strong>EQF: {{ trainingItem.educationLevel }}</strong>
       </div>
       <ng-content *ngIf="!trainingItem.isPublic">

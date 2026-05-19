@@ -112,3 +112,7 @@
 .popover-element:hover {
     color: var(--hover-color);
 }
+
+::ng-deep .large-tooltip {
+    --p-tooltip-max-width: 18rem;
+}
