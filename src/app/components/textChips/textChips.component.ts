@@ -27,6 +27,8 @@ export class TextChipsComponent {
 
   @Input() error: boolean = false;
 
+  @Input() allowDuplicatedChips: boolean = false;
+
   @ViewChild('component', { static: true }) containerRef!: ElementRef;
 
   chipAnimations: Record<string, boolean> = {}
@@ -39,7 +41,7 @@ export class TextChipsComponent {
 
   clickButton() {
     const inputValue: string = this.currentText.trim();
-    if (inputValue != '' && !this.chips.includes(inputValue)){
+    if (inputValue != '' && (this.allowDuplicatedChips || !this.chips.includes(inputValue))){
       this.chipsChange.emit(this.chips.concat(inputValue));
       this.chipAnimations[inputValue] = false;
     }
@@ -52,9 +54,18 @@ export class TextChipsComponent {
     this.currentText = '';
   }
 
-  deleteElement(element: string) {
-    this.chipsChange.emit(this.chips.filter(value => value != element));
-    delete this.chipAnimations[element]
+  deleteElement(element: string, index?: number) {
+    if (!this.allowDuplicatedChips || index == undefined) {
+      this.chipsChange.emit(this.chips.filter(value => value != element));
+      delete this.chipAnimations[element];
+    }
+    else {
+      this.chips.splice(index, 1);
+      this.chipsChange.emit(this.chips);
+      if (!this.chips.includes(element)) {
+        delete this.chipAnimations[element];
+      }
+    }
   }
   
   focusOut(event: FocusEvent) {

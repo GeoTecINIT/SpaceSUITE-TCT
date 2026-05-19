@@ -8,9 +8,9 @@
         <label for="{{fieldName}}">{{fieldName}}</label>
     </p-floatlabel>
     <div class="flex mt-3 flex-wrap gap-2">
-        <ng-content *ngFor="let chip of chips">
-            <p-chip [label]="chip" [removable]="true" (onRemove)="deleteElement(chip)" class="custom-chip" [ngClass]="chipAnimations[chip] ? 'chip-animation' : ''"/>
-        </ng-content>
+        @for(chip of chips; let index = $index; track chip) {
+            <p-chip [label]="chip" [removable]="true" (onRemove)="deleteElement(chip, index)" class="custom-chip" [ngClass]="chipAnimations[chip] ? 'chip-animation' : ''"/>
+        }
         <p-button icon="pi pi-plus" rounded class="custom-button" (onClick)="clickButton()" *ngIf="currentText !== ''"></p-button>
     </div>
 </div>
