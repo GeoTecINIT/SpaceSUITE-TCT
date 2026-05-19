@@ -138,8 +138,8 @@
                         <div>
                             <p-floatlabel variant="on" class="w-full custom-floatlabel">
                                 <p-iconfield>
-                                    <p-inputnumber id="workload" [min]="0" [useGrouping]="false" suffix=" ECTS" allowEmpty="false"
-                                        [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined" 
+                                    <p-inputnumber id="workload" [min]="0" [useGrouping]="false" suffix=" ECTS" mode="decimal" [minFractionDigits]="1" [maxFractionDigits]="1"
+                                        [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined"
                                         class="custom-input" [(ngModel)]="action.workload" fluid tooltipPosition="right" showDelay="200" hideDelay="200"
                                         pTooltip="Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS (1 ECTS = +/- 25 hours total student work)"/>
                                     <p-inputicon class="pi pi-clock"/>
