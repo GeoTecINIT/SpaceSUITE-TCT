@@ -140,7 +140,7 @@
                                     <p-inputnumber id="workload" [min]="0" [useGrouping]="false" suffix=" ECTS"
                                         [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined" 
                                         class="custom-input" [(ngModel)]="material.workload" fluid tooltipPosition="right" showDelay="200" hideDelay="200"
-                                        pTooltip="Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS"/>
+                                        pTooltip="Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS (1 ECTS = +/- 25 hours total student work)"/>
                                     <p-inputicon class="pi pi-clock"/>
                                 </p-iconfield>
                                 <label for="workload">Workload *</label>
@@ -175,7 +175,7 @@
                         <div>
                             <multiselect-chips [fieldName]="'EQF Level'" [(chips)]="material.educationLevel" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('educationLevel') != undefined" [optionsName]="'EQF Level'"
-                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
+                                    pTooltip="The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized)." 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" [filter]="false"></multiselect-chips>
                             <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
                         </div>
