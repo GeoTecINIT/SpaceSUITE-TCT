@@ -1,23 +1,36 @@
-import { Component, ViewChild} from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { TrainingActionService } from "../../services/trainingAction.service";
-import { TrainingAction } from "../../model/trainingAction";
-import { CommonModule } from "@angular/common";
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService, SkillTagComponent, Tag } from '@eo4geo/ngx-bok-utils';
+import { BokInformationService } from '@eo4geo/ngx-bok-visualization';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { PanelModule } from 'primeng/panel';
-import { TabsModule } from 'primeng/tabs';
-import { DividerModule } from 'primeng/divider';
-import { UtilsService } from "../../services/utils.service";
-import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
-import { FirebaseService } from "../../services/firebase.service";
-import { catchError, combineLatest, concatMap, finalize, forkJoin, map, of, retry, skip, Subscription, take, tap } from "rxjs";
-import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
+import { DividerModule } from 'primeng/divider';
+import { PanelModule } from 'primeng/panel';
 import { Popover, PopoverModule } from 'primeng/popover';
-import { RdfConverterService } from "../../services/rdfConverter.service";
-import { AuthService, SkillTagComponent, Tag } from "@eo4geo/ngx-bok-utils";
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TabsModule } from 'primeng/tabs';
+import { ToastModule } from 'primeng/toast';
+import {
+  catchError,
+  combineLatest,
+  concatMap,
+  finalize,
+  forkJoin,
+  map,
+  of,
+  retry,
+  skip,
+  Subscription,
+  take,
+  tap,
+} from 'rxjs';
+import { TrainingAction } from '../../model/trainingAction';
+import { FirebaseService } from '../../services/firebase.service';
+import { RdfConverterService } from '../../services/rdfConverter.service';
+import { TrainingActionService } from '../../services/trainingAction.service';
+import { UtilsService } from '../../services/utils.service';
 
 interface AuthState {
   logged: boolean;
@@ -30,8 +43,19 @@ interface AuthState {
   selector: 'action-page',
   templateUrl: './actionPage.component.html',
   styleUrls: ['../materialPage/materialPage.component.css'],
-  imports: [CommonModule, ProgressSpinnerModule, ButtonModule, PanelModule, TabsModule, DividerModule, ConfirmDialogModule, ToastModule, PopoverModule, SkillTagComponent],
-  providers: [ConfirmationService, MessageService]
+  imports: [
+    CommonModule,
+    ProgressSpinnerModule,
+    ButtonModule,
+    PanelModule,
+    TabsModule,
+    DividerModule,
+    ConfirmDialogModule,
+    ToastModule,
+    PopoverModule,
+    SkillTagComponent,
+  ],
+  providers: [ConfirmationService, MessageService],
 })
 export class ActionPageComponent {
   action: TrainingAction | undefined;
@@ -50,16 +74,27 @@ export class ActionPageComponent {
 
   @ViewChild('op') op!: Popover;
 
-  constructor(private route: ActivatedRoute, private router: Router, private trainingActionService: TrainingActionService, private authService: AuthService,
-              private utilsService: UtilsService, private bokInfo: BokInformationService, private firebaseService: FirebaseService,
-              private confirmationService: ConfirmationService,private messageService: MessageService, private rdfConverter: RdfConverterService) {
-                this.imagePlaceholder = this.utilsService.imagePlaceholder;
-              }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private trainingActionService: TrainingActionService,
+    private authService: AuthService,
+    private utilsService: UtilsService,
+    private firebaseService: FirebaseService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private rdfConverter: RdfConverterService,
+  ) {
+    this.imagePlaceholder = this.utilsService.imagePlaceholder;
+  }
 
   ngOnInit() {
-     const routeData$ = combineLatest([
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+    const routeData$ = combineLatest([
       this.route.paramMap,
-      this.route.queryParams
+      this.route.queryParams,
     ]).pipe(
       map(([paramMap, queryParams]) => {
         const actionName = paramMap.get('dynamicValue') || '';
@@ -71,70 +106,82 @@ export class ActionPageComponent {
           tap((action) => {
             if (submited && !action) throw new Error('Material not found');
           }),
-          retry({count: 1, delay: 500}),
-          catchError(() => of(undefined))
-        )
+          retry({ count: 1, delay: 500 }),
+          catchError(() => of(undefined)),
+        ),
       ),
       take(1),
     );
 
     const orgIds$ = this.firebaseService.getUserOrganizationList().pipe(
-      map(orgs => orgs.map(o => o._id)),
-      tap(orgIds => this.userOrgIds = orgIds),
-      take(1)
+      map((orgs) => orgs.map((o) => o._id)),
+      tap((orgIds) => (this.userOrgIds = orgIds)),
+      take(1),
     );
 
     const userState$ = this.authService.getUserState().pipe(
-      tap(authState => this.authState = authState),
-      take(1)
-    )
-    
-    forkJoin([routeData$, orgIds$,userState$]).subscribe(([newAction, _, userData]) => {
-      const isActionMissing = !newAction;
-      const isNotPublic = newAction && !newAction.isPublic;
-      const belongsToUserOrg = newAction?.orgId && this.userOrgIds.includes(newAction.orgId);
-      const belongsToUser = newAction && userData && newAction.userId === userData.uid;
+      tap((authState) => (this.authState = authState)),
+      take(1),
+    );
 
-      if (isActionMissing || (isNotPublic && !(belongsToUserOrg || belongsToUser))) {
+    forkJoin([routeData$, orgIds$, userState$]).subscribe(
+      ([newAction, _, userData]) => {
+        const isActionMissing = !newAction;
+        const isNotPublic = newAction && !newAction.isPublic;
+        const belongsToUserOrg =
+          newAction?.orgId && this.userOrgIds.includes(newAction.orgId);
+        const belongsToUser =
+          newAction && userData && newAction.userId === userData.uid;
+
+        if (
+          isActionMissing ||
+          (isNotPublic && !(belongsToUserOrg || belongsToUser))
+        ) {
           this.router.navigate(['not_found']);
-      }
-      else this.loadAction(newAction);
-    });
+        } else this.loadAction(newAction);
+      },
+    );
 
-    this.userOrgIdsSubscription = this.firebaseService.getUserOrganizationList().pipe(
-      skip(1),
-      map(orgs => orgs.map(o => o._id))
-    ).subscribe(ids => {
-      this.userOrgIds = ids;
-    });
+    this.userOrgIdsSubscription = this.firebaseService
+      .getUserOrganizationList()
+      .pipe(
+        skip(1),
+        map((orgs) => orgs.map((o) => o._id)),
+      )
+      .subscribe((ids) => {
+        this.userOrgIds = ids;
+      });
 
-    this.authStateSubscription = this.authService.getUserState().pipe(skip(1)).subscribe(authState => this.authState = authState);
+    this.authStateSubscription = this.authService
+      .getUserState()
+      .pipe(skip(1))
+      .subscribe((authState) => (this.authState = authState));
   }
 
   ngAfterViewInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const submited: boolean = params['submited'];
       const mode: string = params['mode'];
-      if (submited){
-        switch (mode){
+      if (submited) {
+        switch (mode) {
           case 'update':
-            this.messageService.add({ 
-              severity: 'info', 
-              summary: 'Info', 
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
               detail: `Action successfully updated!`,
-              life: 3000, 
-              closable: true 
-            }); 
-            break
+              life: 3000,
+              closable: true,
+            });
+            break;
           case 'create':
-            this.messageService.add({ 
-              severity: 'info', 
-              summary: 'Info', 
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Info',
               detail: `Action successfully created!`,
-              life: 3000, 
-              closable: true 
-            }); 
-            break
+              life: 3000,
+              closable: true,
+            });
+            break;
         }
       }
     });
@@ -153,23 +200,24 @@ export class ActionPageComponent {
 
     this.utilsService
       .stringToTag(this.action.concepts.sort(), 'bok')
-      .subscribe(tags => (this.currentConcepts = tags));
-    
+      .subscribe((tags) => (this.currentConcepts = tags));
+
     const knowledgeAreasStrings: string[] = [];
     const customSubjectsStrings: string[] = [];
 
-    this.action.subject.forEach(subject => {
-      if (this.utilsService.codeToKnowledgeArea.has(subject)) knowledgeAreasStrings.push(subject);
+    this.action.subject.forEach((subject) => {
+      if (this.utilsService.codeToKnowledgeArea.has(subject))
+        knowledgeAreasStrings.push(subject);
       else customSubjectsStrings.push(subject);
-    })
-    
+    });
+
     this.utilsService
       .stringToTag(knowledgeAreasStrings.sort(), 'bok')
-      .subscribe(tags => (this.knowledgeAreas = tags));
-    
+      .subscribe((tags) => (this.knowledgeAreas = tags));
+
     this.utilsService
       .stringToTag(customSubjectsStrings.sort())
-      .subscribe(tags => (this.customSubjects = tags));
+      .subscribe((tags) => (this.customSubjects = tags));
   }
 
   goToMainPage() {
@@ -182,59 +230,66 @@ export class ActionPageComponent {
 
   deleteModal(event: Event) {
     this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Do you want to delete this training action?',
-        header: 'Delete Action',
-        icon: 'pi pi-info-circle',
-        rejectLabel: 'Cancel',
-        rejectButtonProps: {
-            label: 'Cancel',
-            severity: 'secondary',
-        },
-        acceptButtonProps: {
-            label: 'Delete',
-            severity: 'primary',
-        },
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this training action?',
+      header: 'Delete Action',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'primary',
+      },
 
-        accept: () => {
-          this.deleteAction();
-        },
-        reject: () => {
-        },
+      accept: () => {
+        this.deleteAction();
+      },
+      reject: () => {},
     });
   }
 
   deleteAction() {
     let deleteError = false;
-    this.trainingActionService.deleteTrainingAction(this.action!).pipe(
-      take(1),
-      catchError((error) => {
-        this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Error', 
-          detail: error.message ?? 'Something went wrong. Try again later or contact the administrator.', 
-          life: 3000, 
-          closable: true 
-        });
-        deleteError = true;
-        return of(null)
-      }),
-      finalize(() => {
-        if (!deleteError) this.router.navigate(['action'], {queryParams: { submited: true, mode: 'delete' }});
-      })
-    ).subscribe();
+    this.trainingActionService
+      .deleteTrainingAction(this.action!)
+      .pipe(
+        take(1),
+        catchError((error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              error.message ??
+              'Something went wrong. Try again later or contact the administrator.',
+            life: 3000,
+            closable: true,
+          });
+          deleteError = true;
+          return of(null);
+        }),
+        finalize(() => {
+          if (!deleteError)
+            this.router.navigate(['action'], {
+              queryParams: { submited: true, mode: 'delete' },
+            });
+        }),
+      )
+      .subscribe();
   }
 
   checkUser() {
-    return (this.authState?.uid == this.action?.userId);
+    return this.authState?.uid == this.action?.userId;
   }
 
   checkOrganizations() {
-    return (this.action?.orgId && this.userOrgIds.includes(this.action?.orgId));
+    return this.action?.orgId && this.userOrgIds.includes(this.action?.orgId);
   }
 
   onClickConcept(code: string) {
-    window.open('https://geospacebok.eu/' + code)
+    window.open('https://geospacebok.eu/' + code);
   }
 
   toggle(event: any) {
@@ -260,7 +315,7 @@ export class ActionPageComponent {
   }
 
   private downloadURI(uri: string, name: string) {
-    let link = document.createElement("a");
+    let link = document.createElement('a');
     link.download = name;
     link.href = uri;
     link.click();
@@ -268,18 +323,18 @@ export class ActionPageComponent {
 
   copyURIToClipboard() {
     navigator.clipboard.writeText(window.location.href);
-    this.messageService.add({ 
-      severity: 'info', 
-      summary: 'Info', 
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Info',
       detail: `You copied the action url to clipboard!`,
-      life: 3000, 
-      closable: true 
+      life: 3000,
+      closable: true,
     });
   }
 
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.src = this.imagePlaceholder;
-    img.onerror = null;  // Prevent loops
+    img.onerror = null; // Prevent loops
   }
 }
