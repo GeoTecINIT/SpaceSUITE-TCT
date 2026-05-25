@@ -1,10 +1,16 @@
 import { ActionLocation } from "./actionLocation";
 import { TrainingItem } from "./trainingItem";
 
+export interface TimePeriod {
+  start: any;
+  end?: any;
+}
+
 export class TrainingAction extends TrainingItem {
   actionModality?: string; 
   location: ActionLocation;
   certification?: string;
+  timing: TimePeriod[];
   microcredentialAwardingBody?: string;
   relatedMaterials: string[] = [];
 
@@ -13,6 +19,7 @@ export class TrainingAction extends TrainingItem {
     this.actionModality = data?.actionModality;
     this.location = new ActionLocation(data?.location);
     this.certification = data?.certification;
+    this.timing = data?.timing || [];
     this.microcredentialAwardingBody = data?.microcredentialAwardingBody;
     this.relatedMaterials = data?.relatedMaterials || [];
   }
@@ -20,14 +27,15 @@ export class TrainingAction extends TrainingItem {
   override toPlain(): Record<string, any> {
     return {
       ...super.toPlain(),
-      actionModality: this.actionModality,
-      location: this.location ? {
+      actionModality: this.actionModality || null,
+      location: {
         name: this.location.name,
         coordinates: this.location.coordinates || []
-      } : undefined,
+      },
       certification: this.certification,
+      timing: this.timing,
       license: this.microcredentialAwardingBody || "",
-      relatedMaterials: this.relatedMaterials || []
+      relatedMaterials: this.relatedMaterials
     };
   }
 }

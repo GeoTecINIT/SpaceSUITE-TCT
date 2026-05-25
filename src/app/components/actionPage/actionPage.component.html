@@ -156,6 +156,14 @@
                             </div>
                         </div>
                     }
+                    <div class="mb-2">
+                        <strong>Timing:</strong>
+                        <ul *ngIf="action.timing.length > 0">
+                            <li *ngFor="let period of action.timing">
+                                {{period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : '')}}
+                            </li>
+                        </ul>
+                    </div>
                     <div class="mb-2"><strong>Organization:</strong> {{action.orgName ?? 'Not specified'}}</div>
                     <div class="mb-2"><strong>Division:</strong> {{action.division ?? 'Not specified'}}</div>
                   </p-tabpanel>

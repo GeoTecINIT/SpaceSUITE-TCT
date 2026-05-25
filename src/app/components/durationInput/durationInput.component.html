@@ -1,0 +1,27 @@
+<div class="p-2 custom-border" [class.custom-border-error]="checkErrorMap()">
+    <div class="ml-1" [style]="checkErrorMap() ? 'color: var(--danger-color);' : 'color: #64748b;'">Timing</div>
+    <div *ngFor="let period of periods; let  i = index">
+        <div class="flex flex-column sm:flex-row flex-wrap gap-3 mt-3">
+            <div class="flex-1">
+                <p-floatlabel variant="on" class="custom-floatlabel">
+                    <p-datepicker inputId="'initialCalendar' + i" [(ngModel)]="period.start" (ngModelChange)="validatePeriod()" 
+                        [showTime]="true" [hourFormat]="'24'" class="custom-datepicker"/>
+                    <label [for]="'initialCalendar' + i">Start Date *</label>
+                </p-floatlabel>
+            </div>
+            <div class="flex-1">
+                <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('actionPeriod'  + i) != undefined">
+                    <p-datepicker inputId="'final' + i" [(ngModel)]="period.end" [class.invalid-datepicker]="errorMap.get('actionPeriod'  + i) != undefined"
+                        (ngModelChange)="validatePeriod()" [showTime]="true" [hourFormat]="'24'" class="custom-datepicker"/>
+                    <label [for]="'finalCalendar' + i">End Date</label>
+                </p-floatlabel>
+            </div>
+            <p-button icon="pi pi-trash" rounded class="delete-button" (onClick)="deletePeriod(i)"></p-button>
+        </div>
+        <p *ngIf="errorMap.get('actionPeriod'  + i) != undefined" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('actionPeriod'  + i)}}</p>
+        <p-divider *ngIf="i != this.periods.length - 1"></p-divider>
+    </div>
+    <div class="flex gap-3 mt-3">
+        <p-button icon="pi pi-plus" rounded class="custom-button" (onClick)="addPeriod()"></p-button>
+    </div>
+</div>

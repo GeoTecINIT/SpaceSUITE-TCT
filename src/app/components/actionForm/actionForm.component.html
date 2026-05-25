@@ -139,7 +139,7 @@
                             <p-floatlabel variant="on" class="w-full custom-floatlabel">
                                 <p-iconfield>
                                     <p-inputnumber id="workload" [min]="0" [useGrouping]="false" suffix=" ECTS" mode="decimal" [minFractionDigits]="1" [maxFractionDigits]="1"
-                                        [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined"
+                                        [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined" allowEmpty="false"
                                         class="custom-input" [(ngModel)]="action.workload" fluid tooltipPosition="right" showDelay="200" hideDelay="200"
                                         pTooltip="Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS (1 ECTS = +/- 25 hours total student work)"/>
                                     <p-inputicon class="pi pi-clock"/>
@@ -244,6 +244,12 @@
                                 </p-floatlabel>
                             </div>
                         }
+
+                        <div>
+                            <duration-input [(periods)]="action.timing" [errorMap]="errorMap" 
+                                pTooltip="The date ranges that define when this event is active. Each period has a start date and an optional end date" 
+                                tooltipPosition="right" showDelay="200" hideDelay="200"></duration-input>
+                        </div>
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="source" pTextarea [(ngModel)]="action.source"

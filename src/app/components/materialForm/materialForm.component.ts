@@ -22,7 +22,7 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, finalize, of, Subscription, take } from "rxjs";
+import { catchError, EMPTY, finalize, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
@@ -131,6 +131,7 @@ export class MaterialFormComponent {
   }
 
   submitMaterial() {
+    let submitted: boolean = false;
     this.errorMap = this.trainingMaterialService.validate(this.material)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
@@ -147,10 +148,10 @@ export class MaterialFormComponent {
             life: 3000, 
             closable: true 
           });
-          return of(null)
+          return EMPTY
         }),
         finalize(() => {
-          if (this.material._id !== ''){
+          if (submitted){
             this.router.navigate(
               ['material/' + this.material._id], 
               { 
@@ -162,8 +163,9 @@ export class MaterialFormComponent {
             );
           }
         })
-      ).subscribe(actionId => {
-        this.material._id = actionId || '';
+      ).subscribe(materialId => {
+        submitted = true;
+        this.material._id = materialId;
       });
     }
     else {

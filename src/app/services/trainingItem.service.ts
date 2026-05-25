@@ -55,7 +55,12 @@ export abstract class TrainingItemService {
         setError('assessment', item.assessment.length === 0, 'At least one assessment is required.');
         setError('subject', item.subject.length === 0, 'At least one subject is required.');
         if (isAction) setError('relatedMaterials', item.relatedMaterials.some(value => !urlRegex.test(value)), 'A related material must be a properly formatted URL.');   
-    
+        if (isAction) {
+            item.timing.forEach((value, index) => {
+                setError('actionPeriod'  + index, value.end != undefined && value.start.getTime() >= value.end.getTime(), 'End date must be after start date.')
+            });
+        }
+
         return errors;
     }
 }

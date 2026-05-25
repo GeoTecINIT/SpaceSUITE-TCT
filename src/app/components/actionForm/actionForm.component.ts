@@ -20,7 +20,7 @@ import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, finalize, map, of, Subscription, take } from "rxjs";
+import { catchError, EMPTY, finalize, map, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
@@ -33,6 +33,7 @@ import { TrainingAction } from "../../model/trainingAction";
 import { TrainingActionService } from "../../services/trainingAction.service";
 import { OpenrouteService } from "../../services/openroute.service";
 import { ActionLocation } from "../../model/actionLocation";
+import { DurationInputComponent } from "../durationInput/durationInput.component";
 
 @Component({
   standalone: true,
@@ -41,7 +42,7 @@ import { ActionLocation } from "../../model/actionLocation";
   styleUrls: ['../materialForm/materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, AutoCompleteModule],
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, AutoCompleteModule, DurationInputComponent],
   providers: [MessageService, ConfirmationService]
 })
 export class ActionFormComponent {
@@ -135,6 +136,7 @@ export class ActionFormComponent {
   }
 
   submitAction() {
+    let submitted: boolean = false;
     this.errorMap = this.trainingActionService.validate(this.action)
     const allValid: boolean = Array.from(this.errorMap.values()).every(value => value === undefined);
     if (allValid) {
@@ -151,10 +153,10 @@ export class ActionFormComponent {
             life: 3000, 
             closable: true 
           });
-          return of(null)
+          return EMPTY
         }),
         finalize(() => {
-          if (this.action._id !== ''){
+          if (submitted){
             this.router.navigate(
               ['action/' + this.action._id], 
               { 
@@ -167,7 +169,8 @@ export class ActionFormComponent {
           }
         })
       ).subscribe(actionId => {
-        this.action._id = actionId || '';
+        submitted = true;
+        this.action._id = actionId;
       });
     }
     else {
