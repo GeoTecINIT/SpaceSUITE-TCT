@@ -69,7 +69,7 @@
                         </div>
 
                         <div>
-                            <custom-select [fieldName]="'Language'" [(selection)]="action.language" [icon]="'pi pi-bookmark'"
+                            <custom-select [fieldName]="'Language *'" [(selection)]="action.language" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('language') != undefined" [optionsName]="'Language'"
                                     pTooltip="The language of the resource" [filter]="false"
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
@@ -158,7 +158,7 @@
                         </div>
 
                         <div>
-                            <custom-select [fieldName]="'Certification'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
+                            <custom-select [fieldName]="'Certification *'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('certification') != undefined" [optionsName]="'Certification'"
                                     pTooltip="Information on whether participants will receive upon completion" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
@@ -224,17 +224,26 @@
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
                         <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <p-iconfield>
-                                    <p-autocomplete inputId="location" fluid class="custom-input" [ngModel]="action.location.name" (ngModelChange)="onLocationChange($event)"
-                                        [suggestions]="locationSuggestions" (completeMethod)="searchLocation($event)" optionLabel="name"
-                                        pTooltip="A physical or geographical place where the resource is located" 
-                                        tooltipPosition="right" showDelay="200" hideDelay="200"></p-autocomplete>
-                                    <p-inputicon class="pi pi-map-marker" />
-                                </p-iconfield>
-                                <label for="location">Location</label>
-                            </p-floatlabel>
+                            <custom-select [fieldName]="'Action Modality'" [(selection)]="action.actionModality" [icon]="'pi pi-bookmark'"
+                                    [optionsName]="'Action Modality'" [filter]="false" (selectionChange)="onActionModalityChange($event)"
+                                    pTooltip="The mode in which the action is delivered or takes place." 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
                         </div>
+
+                        @if (action.actionModality && action.actionModality != 'Online') {
+                            <div>
+                                <p-floatlabel variant="on" class="custom-floatlabel">
+                                    <p-iconfield>
+                                        <p-autocomplete inputId="location" fluid class="custom-input" [ngModel]="action.location.name" (ngModelChange)="onLocationChange($event)"
+                                            [suggestions]="locationSuggestions" (completeMethod)="searchLocation($event)" optionLabel="name"
+                                            pTooltip="A physical or geographical place where the resource is located" 
+                                            tooltipPosition="right" showDelay="200" hideDelay="200"></p-autocomplete>
+                                        <p-inputicon class="pi pi-map-marker" />
+                                    </p-iconfield>
+                                    <label for="location">Location</label>
+                                </p-floatlabel>
+                            </div>
+                        }
 
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="source" pTextarea [(ngModel)]="action.source"

@@ -15,7 +15,7 @@ export class ActionLocation {
 	}
 
 	public getOpenStreetMapURI(): string {
-		if (this.coordinates) return this.openStreetMapQueryBaseURI + encodeURI(`lat=${this.coordinates[1]}&lon=${this.coordinates[0]}`);
+		if (this.coordinates && this.coordinates.length >= 2) return this.openStreetMapQueryBaseURI + encodeURI(`lat=${this.coordinates[1]}&lon=${this.coordinates[0]}`);
 		else return this.openStreetMapQueryBaseURI + encodeURI(`query=${this.name}`);
 	}
 }

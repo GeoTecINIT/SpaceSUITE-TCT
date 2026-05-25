@@ -70,6 +70,16 @@
     "tooltip": "The predominant mode of learning supported by the learning resource."
   },
   {
+    "label": "Action Modality",
+    "values": [
+      "In-person",
+      "Online",
+      "Hybrid"
+    ],
+    "selection": [],
+    "tooltip": "The mode in which the action is delivered or takes place."
+  },
+  {
     "label": "Target Audience",
     "tags": [
       "Teachers / trainers",

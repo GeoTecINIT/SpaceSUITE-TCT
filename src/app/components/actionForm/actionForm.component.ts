@@ -241,4 +241,8 @@ export class ActionFormComponent {
     if (value instanceof ActionLocation) this.action.location = value;
     else this.action.location.name = value;
   }
+
+  onActionModalityChange(value: string) {
+    if (value === 'Online') this.action.location = new ActionLocation();
+  }
 }
