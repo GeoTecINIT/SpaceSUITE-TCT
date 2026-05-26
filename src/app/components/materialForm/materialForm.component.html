@@ -149,19 +149,11 @@
                         </div>
 
                         <div>
-                            <custom-select [fieldName]="'License'" [(selection)]="material.license" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('license') != undefined" [optionsName]="'License'"
-                                    pTooltip="License agreement (most commonly CC-BY-SA)" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
-                            <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
-                        </div>
-
-                         <div>
-                            <custom-select [fieldName]="'Interactivity Type'" [(selection)]="material.interactivityType" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('interactivityType') != undefined" [optionsName]="'Interactivity Type'"
-                                    pTooltip="Select the main mode of learning through which the resource is intended to be used. This refers to how learners engage with the material" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
-                            <p *ngIf="errorMap.get('interactivityType')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('interactivityType')}}</p>
+                            <multiselect-chips [fieldName]="'EQF Level'" [(chips)]="material.educationLevel" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('educationLevel') != undefined" [optionsName]="'EQF Level'"
+                                    pTooltip="The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized)." 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [filter]="false"></multiselect-chips>
+                            <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
                         </div>
 
                         <div>
@@ -170,14 +162,6 @@
                                     pTooltip="Select one or more types that best describe the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('type')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('type')}}</p>
-                        </div>
-
-                        <div>
-                            <multiselect-chips [fieldName]="'EQF Level'" [(chips)]="material.educationLevel" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('educationLevel') != undefined" [optionsName]="'EQF Level'"
-                                    pTooltip="The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized)." 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" [filter]="false"></multiselect-chips>
-                            <p *ngIf="errorMap.get('educationLevel')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('educationLevel')}}</p>
                         </div>
 
                         <div>
@@ -204,6 +188,14 @@
                             <p *ngIf="errorMap.get('learningOutcomes')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('learningOutcomes')}}</p>
                         </div>
 
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites"
+                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="material.tableOfContents" [allowDuplicatedChips]="true"
+                                    pTooltip=" Provide the main structural elements of the resource. This may include chapter titles, lesson breakdowns, or thematic sections" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+
                         <div>
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
@@ -224,6 +216,22 @@
             <p-step-panel [value]="3">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
+                        <div>
+                            <custom-select [fieldName]="'License'" [(selection)]="material.license" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('license') != undefined" [optionsName]="'License'"
+                                    pTooltip="License agreement (most commonly CC-BY-SA)" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
+                            <p *ngIf="errorMap.get('license')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('license')}}</p>
+                        </div>
+
+                         <div>
+                            <custom-select [fieldName]="'Interactivity Type'" [(selection)]="material.interactivityType" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('interactivityType') != undefined" [optionsName]="'Interactivity Type'"
+                                    pTooltip="Select the main mode of learning through which the resource is intended to be used. This refers to how learners engage with the material" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
+                            <p *ngIf="errorMap.get('interactivityType')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('interactivityType')}}</p>
+                        </div>
+
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="source" pTextarea [(ngModel)]="material.source"
                                     rows="2" class="w-full custom-textarea m-0" 
@@ -238,14 +246,6 @@
 
                         <text-chips [fieldName]="'Contributors'" [(chips)]="material.contributors" 
                                     pTooltip="List any individuals or organizations that contributed to the creation or development of the resource" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
-                        
-                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites"
-                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
-
-                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="material.tableOfContents" [allowDuplicatedChips]="true"
-                                    pTooltip=" Provide the main structural elements of the resource. This may include chapter titles, lesson breakdowns, or thematic sections" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
                         <div>

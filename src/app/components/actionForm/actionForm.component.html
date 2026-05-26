@@ -203,6 +203,14 @@
                             <p *ngIf="errorMap.get('learningOutcomes')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('learningOutcomes')}}</p>
                         </div>
 
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="action.prerequisites"
+                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents" [allowDuplicatedChips]="true"
+                                    pTooltip=" Provide the main structural elements of the resource. This may include chapter titles, lesson breakdowns, or thematic sections" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+
                         <div>
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
@@ -269,14 +277,6 @@
                                     tooltipPosition="right" showDelay="200" hideDelay="200" [error]="errorMap.get('relatedMaterials') != undefined"></text-chips>
                             <p *ngIf="errorMap.get('relatedMaterials')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('relatedMaterials')}}</p>
                         </div>
-
-                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="action.prerequisites"
-                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
-
-                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents" [allowDuplicatedChips]="true"
-                                    pTooltip=" Provide the main structural elements of the resource. This may include chapter titles, lesson breakdowns, or thematic sections" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
                         <div>
                             <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" auto
