@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TrainingMaterial } from '../model/trainingMaterial';
 import { UtilsService } from './utils.service';
 import { TrainingItem } from '../model/trainingItem';
-import { TrainingAction } from '../model/trainingAction';
+import { TimePeriod, TrainingAction } from '../model/trainingAction';
 
 @Injectable({
   providedIn: 'root'
@@ -101,7 +101,13 @@ export class RdfConverterService {
     }
     if (model.url) ttl += `  dcterms:identifier <${model.url}> ;\n`;
     if (model.language) ttl += `  dcterms:language <https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}> ;\n`;
-    if (model instanceof TrainingAction && model.location) ttl += `  elm:location "${model.location.name}" ;\n`;
+    if (model instanceof TrainingAction && model.actionModality) ttl += `  elm:mode "${model.actionModality}" ;\n`;
+    if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') ttl += `  elm:location "${model.location.name}" ;\n`;
+    if (model instanceof TrainingAction && model.timing) {
+      model.timing.forEach((period: TimePeriod) => {
+        ttl += `  elm:scheduleInformation "${period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : '')}" ;\n`;
+      });  
+    }
     if (model.source) ttl += `  dcterms:source "${model.source}" ;\n`;
     if (model instanceof TrainingMaterial && model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
     if (model.educationLevel) {
@@ -259,7 +265,17 @@ export class RdfConverterService {
       xml += `    <dcterms:language rdf:resource="${langUri}"/>\n`;
     }
 
-    if (model instanceof TrainingAction && model.location) xml += `    <elm:location>${this.escapeXml(model.location.name)}</elm:location>\n`; // TODO - check GeoSPARQL
+    if (model instanceof TrainingAction && model.actionModality) xml += `    <elm:mode>${this.escapeXml(model.actionModality)}</elm:mode>\n`;
+
+    if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') {
+      xml += `    <elm:location>${this.escapeXml(model.location.name)}</elm:location>\n`; // TODO - check GeoSPARQL
+    }
+
+    if (model instanceof TrainingAction && model.timing) {
+      model.timing.forEach((period: TimePeriod) => {
+        xml += `    <elm:scheduleInformation>${this.escapeXml(period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : ''))}</elm:scheduleInformation>\n`;
+      });
+    }
 
     if (model.source) xml += `    <dcterms:source>${this.escapeXml(model.source)}</dcterms:source>\n`;
 
@@ -426,8 +442,18 @@ export class RdfConverterService {
       html += `  <a property="language" href="https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}">${this.escapeHtml(model.language)}</a><br/>\n`;
     }
 
-    if (model instanceof TrainingAction && model.location) {
+    if (model instanceof TrainingAction && model.actionModality){
+      html += `  <span property="http://data.europa.eu/snb/model/elm/mode">${this.escapeHtml(model.actionModality)}</span><br/>\n`; 
+    }
+
+    if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') {
       html += `  <span property="http://data.europa.eu/snb/model/elm/location">${this.escapeHtml(model.location.name)}</span><br/>\n`; // TODO - check GeoSPARQL
+    }
+
+    if (model instanceof TrainingAction && model.timing) {
+      model.timing.forEach((period: TimePeriod) => {
+        html += `  <span property="http://data.europa.eu/snb/model/elm/scheduleInformation">${this.escapeHtml(period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : ''))}</span><br/>\n`; 
+      });  
     }
 
     if (model.source) {
