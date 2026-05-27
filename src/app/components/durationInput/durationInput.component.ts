@@ -21,8 +21,18 @@ export class DurationInputComponent {
 
   @Input() errorMap: Map<string, string | undefined> = new Map();
 
+  public defaultStartDate: Date;
+  public defaultEndDate: Date;
+
+  constructor() {
+    this.defaultStartDate = new Date();
+    this.defaultStartDate.setHours(9, 0, 0);
+    this.defaultEndDate = new Date();
+    this.defaultEndDate.setHours(16, 0, 0);
+  }
+
   addPeriod() {
-    this.periods = [...this.periods, { start: new Date(), showTime: false }];
+    this.periods = [...this.periods, { start: new Date(this.defaultStartDate), showTime: true }];
     this.periodsChange.emit(this.periods);
   }
 
