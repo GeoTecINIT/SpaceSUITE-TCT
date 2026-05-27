@@ -20,7 +20,7 @@ import { FirebaseService } from "../../services/firebase.service";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MessageService } from "primeng/api";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
 import { catchError, EMPTY, finalize, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
@@ -31,6 +31,10 @@ import { CustomSelectComponent } from "../customSelect/customSelect.component";
 import { AuthService, ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
 import { ConfirmDialog } from "primeng/confirmdialog";
 import { SelectButton } from 'primeng/selectbutton';
+import { MenuModule } from "primeng/menu";
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
+import { InputGroupModule } from "primeng/inputgroup";
+import { WorkloadUnit } from "../../model/trainingItem";
 
 @Component({
   standalone: true,
@@ -39,7 +43,7 @@ import { SelectButton } from 'primeng/selectbutton';
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton],
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, MenuModule, InputGroupAddonModule, InputGroupModule],
   providers: [MessageService, ConfirmationService]
 })
 export class MaterialFormComponent {
@@ -68,6 +72,11 @@ export class MaterialFormComponent {
   private userOrgsSubscription!: Subscription
 
   visibilityFieldOptions: any[] = [{ label: 'Public', value: true },{ label: 'Private', value: false }];
+
+  wrokloadUnitOptions: MenuItem[] = [
+      { label: WorkloadUnit.ECTS },
+      { label: WorkloadUnit.Hours }
+    ];
 
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, private authService: AuthService) {}
@@ -226,5 +235,9 @@ export class MaterialFormComponent {
       accept: () => this.exitWithoutSavingService.exitSubject.next(true),
       reject: () => this.exitWithoutSavingService.exitSubject.next(false),
     });
+  }
+
+  setWorkloadUnit(value: WorkloadUnit) {
+    this.material.workloadUnit = value;
   }
 }

@@ -1,3 +1,8 @@
+export enum WorkloadUnit {
+  ECTS = "ECTS",
+  Hours = "Hours"
+}
+
 export class TrainingItem {
   // SpaceSuite Metadata
   _id: string;
@@ -16,6 +21,7 @@ export class TrainingItem {
   educationLevel: string[];
   tableOfContents: string[];
   workload: number;
+  workloadUnit: WorkloadUnit;
   prerequisites: string[];
   assessment: string[];
   concepts: string[];
@@ -52,6 +58,7 @@ export class TrainingItem {
     this.educationLevel = data?.educationLevel ?? [];
     this.tableOfContents = data?.tableOfContents ?? [];
     this.workload = data?.workload ?? 0;
+    this.workloadUnit = data?.workloadUnit ?? WorkloadUnit.ECTS;
     this.prerequisites = data?.prerequisites ?? [];
     this.assessment = data?.assessment ?? [];
     this.concepts = data?.concepts ?? [];
@@ -87,6 +94,7 @@ export class TrainingItem {
       educationLevel: this.educationLevel,
       tableOfContents: this.tableOfContents,
       workload: this.workload,
+      workloadUnit: this.workloadUnit,
       prerequisites: this.prerequisites,
       assessment: this.assessment,
       concepts: this.concepts,

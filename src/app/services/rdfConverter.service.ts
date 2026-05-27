@@ -117,11 +117,11 @@ export class RdfConverterService {
     }
     if (model.tableOfContents) ttl += `  dcterms:tableOfContents "${model.tableOfContents.join(', ')}" ;\n`;
     if (model.workload) {
-      ttl += `  elm:creditPoint _:ECTS ;\n`;
+      ttl += `  elm:creditPoint _:${model.workloadUnit} ;\n`;
       ttl += `  elm:creditReceived "${model.workload}" ;\n`;
-      additionalObjects += `_:ECTS\n`;
+      additionalObjects += `_:${model.workloadUnit}\n`;
       additionalObjects += `  rdf:type elm:CreditPoint ;\n`;
-      additionalObjects += `  dcterms:title "ECTS" .\n\n`;
+      additionalObjects += `  dcterms:title "${model.workloadUnit}" .\n\n`;
     }
     if (model.prerequisites) {
       model.prerequisites.forEach((prerequisite: string, index: number) => {
@@ -294,7 +294,7 @@ export class RdfConverterService {
     if (model.workload) {
       xml += `    <elm:creditPoint>\n`;
       xml += `      <elm:CreditPoint>\n`;
-      xml += `        <dcterms:title>ECTS</dcterms:title>\n`;
+      xml += `        <dcterms:title>${model.workloadUnit}</dcterms:title>\n`;
       xml += `      </elm:CreditPoint>\n`;
       xml += `    </elm:creditPoint>\n`;
       xml += `    <elm:creditReceived>${model.workload}</elm:creditReceived>\n`;
@@ -477,7 +477,7 @@ export class RdfConverterService {
     if (model.workload) {
       html += `  <div rel="http://data.europa.eu/snb/model/elm/creditPoint">\n`;
       html += `    <div typeof="http://data.europa.eu/snb/model/elm/CreditPoint">\n`;
-      html += `      <span property="title">ECTS</span>\n`;
+      html += `      <span property="title">${model.workloadUnit}</span>\n`;
       html += `    </div>\n`;
       html += `  </div>\n`;
       html += `  <span property="http://data.europa.eu/snb/model/elm/creditReceived">${model.workload}</span><br/>\n`;

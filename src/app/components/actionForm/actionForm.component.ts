@@ -18,7 +18,7 @@ import { BokModalComponent } from "../bokModal/bokModal.component";
 import { FirebaseService } from "../../services/firebase.service";
 import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MessageService } from "primeng/api";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
 import { catchError, EMPTY, finalize, map, of, Subscription, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
@@ -34,6 +34,10 @@ import { TrainingActionService } from "../../services/trainingAction.service";
 import { OpenrouteService } from "../../services/openroute.service";
 import { ActionLocation } from "../../model/actionLocation";
 import { DurationInputComponent } from "../durationInput/durationInput.component";
+import { InputGroupModule } from "primeng/inputgroup";
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
+import { MenuModule } from "primeng/menu";
+import { WorkloadUnit } from "../../model/trainingItem";
 
 @Component({
   standalone: true,
@@ -41,8 +45,8 @@ import { DurationInputComponent } from "../durationInput/durationInput.component
   templateUrl: './actionForm.component.html',
   styleUrls: ['../materialForm/materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
-    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, AutoCompleteModule, DurationInputComponent],
+    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule, MenuModule,
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, AutoCompleteModule, DurationInputComponent, InputGroupModule, InputGroupAddonModule],
   providers: [MessageService, ConfirmationService]
 })
 export class ActionFormComponent {
@@ -73,6 +77,11 @@ export class ActionFormComponent {
   visibilityFieldOptions: any[] = [{ label: 'Public', value: true },{ label: 'Private', value: false }];
 
   locationSuggestions: ActionLocation[] = [];
+
+  wrokloadUnitOptions: MenuItem[] = [
+    { label: WorkloadUnit.ECTS },
+    { label: WorkloadUnit.Hours }
+  ];
 
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService, private openrouteService: OpenrouteService,
               private trainingActionService: TrainingActionService, private router: Router, private confirmationService: ConfirmationService, private authService: AuthService) {}
@@ -247,5 +256,9 @@ export class ActionFormComponent {
 
   onActionModalityChange(value: string) {
     if (value === 'Online') this.action.location = new ActionLocation();
+  }
+
+  setWorkloadUnit(value: WorkloadUnit) {
+    this.action.workloadUnit = value;
   }
 }

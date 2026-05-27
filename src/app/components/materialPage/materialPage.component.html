@@ -18,8 +18,11 @@
             </div>
             |
             <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
-                pTooltip="Amount of time expected to invest, quantified using ECTS (1 ECTS = +/- 25 hours)">
-                <strong>Workload:</strong> {{material.workload}} ECTS
+                [pTooltip]="material.workloadUnit == 'ECTS' ? 
+                    'Amount of time expected to invest, quantified using ECTS (1 ECTS = +/- 25 hours)'
+                    :
+                    'Amount of time expected to invest, quantified using hours'">
+                <strong>Workload:</strong> {{material.workload}} {{material.workloadUnit}}
             </div>
             |
             <div class="text-sm"><strong>Provided by:</strong> {{material.publisher}}</div>
