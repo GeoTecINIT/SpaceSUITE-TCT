@@ -5,14 +5,30 @@
             <div class="flex-1">
                 <p-floatlabel variant="on" class="custom-floatlabel">
                     <p-datepicker inputId="'initialCalendar' + i" [(ngModel)]="period.start" (ngModelChange)="validatePeriod()" 
-                        [showTime]="true" [hourFormat]="'24'" class="custom-datepicker"/>
+                        [showTime]="period.showTime" [hourFormat]="'24'" class="custom-datepicker" dateFormat="dd/mm/yy">
+                        <ng-template #footer let-todayCallback="todayCallback" let-clearCallback="clearCallback">
+                            <p-divider [class]="period.showTime ? 'mt-2' : 'm-0'"></p-divider>
+                            <div class="flex gap-2 mt-3">
+                                Show Time 
+                                <p-toggleswitch class="flex custom-toogleswitch" [(ngModel)]="period.showTime" />
+                            </div>
+                        </ng-template>
+                    </p-datepicker>
                     <label [for]="'initialCalendar' + i">Start Date *</label>
                 </p-floatlabel>
             </div>
             <div class="flex-1">
                 <p-floatlabel variant="on" class="custom-floatlabel" [class.invalid-floatlabel]="errorMap.get('actionPeriod'  + i) != undefined">
                     <p-datepicker inputId="'final' + i" [(ngModel)]="period.end" [class.invalid-datepicker]="errorMap.get('actionPeriod'  + i) != undefined"
-                        (ngModelChange)="validatePeriod()" [showTime]="true" [hourFormat]="'24'" class="custom-datepicker"/>
+                        (ngModelChange)="validatePeriod()" [showTime]="period.showTime" [hourFormat]="'24'" class="custom-datepicker" dateFormat="dd/mm/yy">
+                        <ng-template #footer let-todayCallback="todayCallback" let-clearCallback="clearCallback">
+                            <p-divider [class]="period.showTime ? 'mt-2' : 'm-0'"></p-divider>
+                            <div class="flex gap-2 mt-3 align-content-end">
+                                Show Time 
+                                <p-toggleswitch [(ngModel)]="period.showTime" />
+                            </div>
+                        </ng-template>
+                    </p-datepicker>
                     <label [for]="'finalCalendar' + i">End Date</label>
                 </p-floatlabel>
             </div>

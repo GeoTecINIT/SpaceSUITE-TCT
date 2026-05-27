@@ -52,10 +52,17 @@
   --p-inputtext-focus-border-color: var(--hover-color);
   --p-datepicker-date-selected-background: var(--secondary-color);
   --p-button-text-primary-color: var(--secondary-color);
+  --p-button-text-primary-hover-background: color-mix(in srgb, var(--secondary-color) 10%, rgba(255, 255, 255, 0) 90%);
 }
 
 .invalid-datepicker {
   --p-inputtext-border-color: var(--danger-color);
   --p-inputtext-hover-border-color: var(--danger-color);
   --p-inputtext-focus-border-color: var(--danger-color);
+}
+
+.custom-toogleswitch {
+    --p-toggleswitch-checked-background: var(--secondary-color);
+    --p-toggleswitch-checked-hover-background: color-mix(in srgb, var(--secondary-color) 80%, black 20%);
+
 }

@@ -6,13 +6,14 @@ import { ButtonModule } from "primeng/button";
 import { DividerModule } from "primeng/divider";
 import { DatePickerModule } from "primeng/datepicker";
 import { TimePeriod } from "../../model/trainingAction";
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   standalone: true,
   selector: 'duration-input',
   templateUrl: './durationInput.component.html',
   styleUrls: ['./durationInput.component.css'],
-  imports: [CommonModule, FloatLabelModule, FormsModule, ButtonModule, DividerModule, DatePickerModule],
+  imports: [CommonModule, FloatLabelModule, FormsModule, ButtonModule, DividerModule, DatePickerModule, ToggleSwitchModule],
 })
 export class DurationInputComponent {
   @Input() periods: TimePeriod[] = [];
@@ -21,7 +22,7 @@ export class DurationInputComponent {
   @Input() errorMap: Map<string, string | undefined> = new Map();
 
   addPeriod() {
-    this.periods = [...this.periods, { start: new Date() }];
+    this.periods = [...this.periods, { start: new Date(), showTime: false }];
     this.periodsChange.emit(this.periods);
   }
 

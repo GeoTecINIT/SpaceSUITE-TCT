@@ -4,6 +4,7 @@ import { TrainingItem } from "./trainingItem";
 export interface TimePeriod {
   start: any;
   end?: any;
+  showTime: boolean;
 }
 
 export class TrainingAction extends TrainingItem {
@@ -33,7 +34,13 @@ export class TrainingAction extends TrainingItem {
         coordinates: this.location.coordinates || []
       },
       certification: this.certification,
-      timing: this.timing,
+      timing: this.timing.map(value => {
+        return {
+          start: value.start,
+          end: value.end ?? null,
+          showTime: value.showTime
+        }
+      }),
       license: this.microcredentialAwardingBody || "",
       relatedMaterials: this.relatedMaterials
     };

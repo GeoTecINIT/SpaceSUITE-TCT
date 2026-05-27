@@ -105,8 +105,13 @@ export class RdfConverterService {
     if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') ttl += `  elm:location "${model.location.name}" ;\n`;
     if (model instanceof TrainingAction && model.timing) {
       model.timing.forEach((period: TimePeriod) => {
-        ttl += `  elm:scheduleInformation "${period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : '')}" ;\n`;
-      });  
+        if(period.showTime) {
+          ttl += `  elm:scheduleInformation "${period.start.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) + (period.end ? ' - ' + period.end.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) : '')}" ;\n`;
+        }
+        else {
+          ttl += `  elm:scheduleInformation "${period.start.toLocaleDateString('en-UK') + (period.end ? ' - ' + period.end.toLocaleDateString('en-UK') : '')}" ;\n`;
+        }
+      });
     }
     if (model.source) ttl += `  dcterms:source "${model.source}" ;\n`;
     if (model instanceof TrainingMaterial && model.license) ttl += `  dcterms:license "${model.license}" ;\n`;
@@ -273,7 +278,12 @@ export class RdfConverterService {
 
     if (model instanceof TrainingAction && model.timing) {
       model.timing.forEach((period: TimePeriod) => {
-        xml += `    <elm:scheduleInformation>${this.escapeXml(period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : ''))}</elm:scheduleInformation>\n`;
+        if(period.showTime) {
+          xml += `    <elm:scheduleInformation>${this.escapeXml(period.start.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) + (period.end ? ' - ' + period.end.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) : ''))}</elm:scheduleInformation>\n`;
+        }
+        else {
+          xml += `    <elm:scheduleInformation>${this.escapeXml(period.start.toLocaleDateString('en-UK') + (period.end ? ' - ' + period.end.toLocaleDateString('en-UK') : ''))}</elm:scheduleInformation>\n`;
+        }
       });
     }
 
@@ -452,7 +462,12 @@ export class RdfConverterService {
 
     if (model instanceof TrainingAction && model.timing) {
       model.timing.forEach((period: TimePeriod) => {
-        html += `  <span property="http://data.europa.eu/snb/model/elm/scheduleInformation">${this.escapeHtml(period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : ''))}</span><br/>\n`; 
+        if(period.showTime) {
+          html += `  <span property="http://data.europa.eu/snb/model/elm/scheduleInformation">${this.escapeHtml(period.start.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) + (period.end ? ' - ' + period.end.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) : ''))}</span><br/>\n`; 
+        }
+        else {
+          html += `  <span property="http://data.europa.eu/snb/model/elm/scheduleInformation">${this.escapeHtml(period.start.toLocaleDateString('en-UK') + (period.end ? ' - ' + period.end.toLocaleDateString('en-UK') : ''))}</span><br/>\n`; 
+        }
       });  
     }
 

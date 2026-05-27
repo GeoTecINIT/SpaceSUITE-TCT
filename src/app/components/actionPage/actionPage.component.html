@@ -27,7 +27,7 @@
             |
             <div class="text-sm"><strong>Provided by:</strong> {{action.publisher}}</div>
             |
-            <div class="text-sm"><strong>Created:</strong> {{action.created?.toLocaleDateString()}}</div>
+            <div class="text-sm"><strong>Created:</strong> {{action.created?.toLocaleDateString('en-UK')}}</div>
             |
             <div class="text-sm"><strong>Visibility:</strong> {{action.isPublic ? 'Public' : 'Private'}}</div>
             |
@@ -163,7 +163,12 @@
                         <strong>Timing:</strong>
                         <ul *ngIf="action.timing.length > 0">
                             <li *ngFor="let period of action.timing">
-                                {{period.start.toLocaleString() + (period.end ? ' - ' + period.end.toLocaleString() : '')}}
+                                @if(period.showTime) {
+                                    {{period.start.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) + (period.end ? ' - ' + period.end.toLocaleString('en-UK', {dateStyle: 'short', timeStyle: 'short'}) : '')}}
+                                }
+                                @else {
+                                    {{period.start.toLocaleDateString('en-UK') + (period.end ? ' - ' + period.end.toLocaleDateString('en-UK') : '')}}
+                                }
                             </li>
                         </ul>
                     </div>
