@@ -21,7 +21,7 @@ import {
   tap,
 } from 'rxjs';
 import { FilterOption } from '../../model/filterOption';
-import { TrainingAction } from '../../model/trainingAction';
+import { TimePeriod, TrainingAction } from '../../model/trainingAction';
 import { TrainingItem } from '../../model/trainingItem';
 import { TrainingMaterial } from '../../model/trainingMaterial';
 import { CardFilterService } from '../../services/cardFilter.service';
@@ -66,6 +66,7 @@ export class ItemExplorerComponent {
   searchOption: string = 'Title';
   showPrivate: boolean = false;
   dateValue?: Date[];
+  showOnlyFutureActions: boolean = false;
   bokConcepts: string[] = [];
   loadingFilters: boolean = true;
   loadingCards: boolean = true;
@@ -130,7 +131,8 @@ export class ItemExplorerComponent {
 
     // Define selected tab based on lastSuccessfulNavigation
     if (
-      this.router.lastSuccessfulNavigation?.initialUrl.toString() === '/action'
+      this.router.lastSuccessfulNavigation?.initialUrl.toString().includes('/action') ||
+      this.router.lastSuccessfulNavigation?.previousNavigation?.initialUrl.toString().includes('/action')
     ) {
       this.selectedTab = 1;
       this.filterUserItemOptions = [
@@ -319,9 +321,14 @@ export class ItemExplorerComponent {
   }
 
   setDateValue(option: Date[]) {
-    console.log(option)
     this.dateValue = option;
-    //this.filterService.dateValue = option;
+    this.filterService.dateValue = option;
+    this.filterPipeline();
+  }
+
+  setShowOnlyFutureActions(option: boolean) {
+    this.showOnlyFutureActions = option;
+    this.filterService.showOnlyFutureActions = option;
     this.filterPipeline();
   }
 
@@ -372,7 +379,18 @@ export class ItemExplorerComponent {
   }
 
   filterByDate(items: TrainingItem[]): TrainingItem[] {
-    if (!this.dateValue || this.dateValue.length == 0) return items;
+    const todayStart = this.startOfDay(new Date()).getTime();
+
+    if (!this.dateValue || this.dateValue.length === 0) {
+      if (!this.showOnlyFutureActions || !this.isTrainingActionArray(items)) {
+        return items;
+      }
+
+      return items.filter(item =>
+        Array.isArray(item.timing) &&
+        item.timing.some(period => this.isFuturePeriod(period, todayStart))
+      );
+    }
 
     const rawStart = this.dateValue[0];
     const rawEnd = this.dateValue[1] ?? null;
@@ -392,8 +410,10 @@ export class ItemExplorerComponent {
         Array.isArray(item.timing) &&
         item.timing.some(period => {
           if (!period?.start) return false;
-          const periodTime = this.startOfDay(new Date(period.start)).getTime();
-          return inRange(periodTime);
+          const startPeriod = this.startOfDay(new Date(period.start)).getTime();
+          const endPeriod = period.end ? this.startOfDay(new Date(period.end)).getTime() : undefined;
+          if (this.showOnlyFutureActions) return this.isFuturePeriod(period, todayStart);
+          return inRange(startPeriod) || (endPeriod != undefined ? inRange(endPeriod!) : false);
         })
       );
     }
@@ -413,6 +433,13 @@ export class ItemExplorerComponent {
 
   private isTrainingActionArray(items: TrainingItem[]): items is TrainingAction[] {
     return items.length > 0 && items.every(item => item instanceof TrainingAction);
+  }
+
+  private isFuturePeriod(period: TimePeriod, todayStart: number): boolean {
+    if (!period?.start) return false;
+    const start = this.startOfDay(new Date(period.start)).getTime();
+    const end = period.end ? this.startOfDay(new Date(period.end)).getTime() : null;
+    return start >= todayStart || (end !== null && end >= todayStart);
   }
 
   sortItems(inputItems: TrainingItem[]): TrainingItem[] {

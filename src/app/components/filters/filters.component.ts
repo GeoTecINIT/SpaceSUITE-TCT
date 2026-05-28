@@ -79,6 +79,7 @@ export class FiltersComponent {
   @Output() filterUserItemChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() logged: boolean = false;
+  @Input() isAction: boolean = false;
 
   @Input() showAdvancedFilters: boolean = false;
   @Output() showAdvancedFiltersChange: EventEmitter<boolean> =
@@ -89,6 +90,9 @@ export class FiltersComponent {
 
   @Input() dateValue?: Date[];
   @Output() dateValueChange: EventEmitter<Date[]> = new EventEmitter();
+
+  @Input() showOnlyFuture: boolean = false;
+  @Output() showOnlyFutureChanged: EventEmitter<boolean> = new EventEmitter();
 
   skeletonElements: number[] = [];
 

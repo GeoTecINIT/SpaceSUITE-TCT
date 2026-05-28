@@ -32,6 +32,8 @@ export class CardFilterService {
   public paginatorState: PaginatorState = {};
   public showPrivate: boolean = false;
   public showAdvancedFilters: boolean = false;
+  public dateValue?: Date[];
+  public showOnlyFutureActions: boolean = false;
 
   constructor(
     private readonly languageService: LanguageService,

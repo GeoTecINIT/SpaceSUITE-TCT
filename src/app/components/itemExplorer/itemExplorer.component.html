@@ -22,6 +22,9 @@
     (showPrivateChange)="setPrivateFilter($event)"
     [dateValue]="dateValue"
     (dateValueChange)="setDateValue($event)"
+    [showOnlyFuture]="showOnlyFutureActions"
+    (showOnlyFutureChanged)="setShowOnlyFutureActions($event)"
+    [isAction]="selectedTab == 1"
     class="flex justify-content-center"
   ></filters>
   <div class="w-full">

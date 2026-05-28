@@ -28,7 +28,7 @@
       </div>
       @if (logged) {
         <div class="flex align-items-center gap-3">
-          Show private items?
+          Show private {{isAction ? 'actions' : 'materials'}}?
           <p-checkbox
             class="flex custom-checkbox"
             [(ngModel)]="showPrivate"
@@ -84,6 +84,18 @@
         Search by Date
         <p-datepicker [ngModel]="dateValue" (ngModelChange)="dateValueChange.emit($event)" [hourFormat]="'24'" class="custom-datepicker w-20rem" 
           dateFormat="dd/mm/yy" selectionMode="range" readonlyInput="true" showClear="true" placeholder="Choose a Date or Period"/>
+        @if (isAction) {
+          <div class="flex align-items-center mt-1 text-sm gap-2">
+            Show only future actions?
+            <p-checkbox
+              class="flex custom-checkbox"
+              [binary]="true"
+              size="small"
+              [ngModel]="showOnlyFuture"
+              (ngModelChange)="showOnlyFutureChanged.emit($event)"
+            />
+          </div>
+        }
       </div>
       <ng-container
         *ngFor="let option of multiSelectOptions; trackBy: trackByLabel"
