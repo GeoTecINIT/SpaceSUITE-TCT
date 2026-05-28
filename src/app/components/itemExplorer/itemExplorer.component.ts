@@ -10,6 +10,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
 import {
+  BehaviorSubject,
   combineLatest,
   filter,
   forkJoin,
@@ -30,6 +31,7 @@ import { TrainingActionService } from '../../services/trainingAction.service';
 import { TrainingMaterialService } from '../../services/trainingMaterial.service';
 import { CardComponent } from '../card/card.component';
 import { FiltersComponent } from '../filters/filters.component';
+import { AuthService } from '@eo4geo/ngx-bok-utils';
 
 @Component({
   standalone: true,
@@ -88,6 +90,8 @@ export class ItemExplorerComponent {
   private trainingItemsSubscription!: Subscription;
   private userOrgIds: string[] = [];
 
+  isLogged: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   tabs = [
     { id: 0, label: 'Training Materials', icon: 'pi pi-book', disabled: false },
     {
@@ -106,6 +110,7 @@ export class ItemExplorerComponent {
     private location: Location,
     private trainingActionsService: TrainingActionService,
     private firebase: FirebaseService,
+    private authService: AuthService,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private ngZone: NgZone,
@@ -171,12 +176,15 @@ export class ItemExplorerComponent {
     this.sortAsc = this.sortingService.sortAsc;
     this.selectedSortOption = this.sortingService.sortOption;
 
-    if (!this.isLogged()) {
-      this.showPrivate = false;
-      this.filterService.showPrivate = false;
-    } else {
-      this.showPrivate = this.filterService.showPrivate;
-    }
+    this,this.authService.getUserState().subscribe(value => {
+      this.isLogged.next(value?.logged ?? false);
+      if (value?.logged) {
+        this.showPrivate = this.filterService.showPrivate;
+      }
+      else {
+        this.showPrivate = false;
+      }
+    })
 
     // Load Training Items & User orgs
     this.trainingItemsSubscription = combineLatest([
@@ -500,10 +508,6 @@ export class ItemExplorerComponent {
     return filteredItems.filter((item) =>
       this.bokConcepts.some((concept) => item.concepts.includes(concept)),
     );
-  }
-
-  isLogged(): boolean {
-    return this.firebase.getUserData() != null;
   }
 
   onPageChange(event: PaginatorState) {

@@ -15,7 +15,7 @@
     (bokConceptsChange)="setBoKConcepts($event)"
     [filterUserItem]="filterByUserItem"
     (filterUserItemChange)="setFilterByUserMaterial($event)"
-    [logged]="isLogged()"
+    [logged]="(isLogged.asObservable() | async) ?? false"
     [showAdvancedFilters]="showAdvancedFilters"
     (showAdvancedFiltersChange)="setShowAdvancedFilters($event)"
     [showPrivate]="showPrivate"
@@ -99,7 +99,7 @@
   [ngStyle]="{ bottom: buttonBottom + 'px' }"
 >
   <p-button
-    *ngIf="isLogged() && showButton"
+    *ngIf="((isLogged.asObservable() | async) ?? false) && showButton"
     (click)="createTrainingItem()"
     icon="pi pi-plus"
     label="Add {{ selectedTab === 0 ? 'Material' : 'Action' }}"
