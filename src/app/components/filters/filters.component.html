@@ -80,6 +80,11 @@
           </ng-template>
         </p-menu>
       </div>
+      <div class="flex flex-column my-4">
+        Search by Date
+        <p-datepicker [ngModel]="dateValue" (ngModelChange)="dateValueChange.emit($event)" [hourFormat]="'24'" class="custom-datepicker w-20rem" 
+          dateFormat="dd/mm/yy" selectionMode="range" readonlyInput="true" showClear="true" placeholder="Choose a Date or Period"/>
+      </div>
       <ng-container
         *ngFor="let option of multiSelectOptions; trackBy: trackByLabel"
       >

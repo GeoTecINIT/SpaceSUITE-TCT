@@ -17,6 +17,7 @@ import { TrainingMaterial } from '../../model/trainingMaterial';
 import { SkillTagComponent, Tag } from '@eo4geo/ngx-bok-utils';
 import { defaultIfEmpty, forkJoin } from 'rxjs';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TrainingAction } from '../../model/trainingAction';
 
 @Component({
   standalone: true,
@@ -163,5 +164,16 @@ export class CardComponent {
     const img = event.target as HTMLImageElement;
     img.src = this.imagePlaceholder;
     img.onerror = null; // Prevent loops
+  }
+
+  getActionDates(): string {
+    if (this.trainingItem instanceof TrainingAction && this.trainingItem.timing.length > 0) {
+      const timing = this.trainingItem.timing;
+      const startDate = timing[0].start.toLocaleDateString('en-UK');
+      const endDate = timing[timing.length -1].end?.toLocaleDateString('en-UK') ?? timing[timing.length -1].start.toLocaleDateString('en-UK');
+      if (startDate == endDate) return startDate;
+      return startDate + ' - ' + endDate;
+    }
+    return 'Not Defined';
   }
 }

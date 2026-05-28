@@ -27,7 +27,7 @@
             |
             <div class="text-sm"><strong>Provided by:</strong> {{action.publisher}}</div>
             |
-            <div class="text-sm"><strong>Created:</strong> {{action.created?.toLocaleDateString('en-UK')}}</div>
+            <div class="text-sm"><strong>Dates:</strong> {{ this.getActionDates() }}</div>
             |
             <div class="text-sm"><strong>Visibility:</strong> {{action.isPublic ? 'Public' : 'Private'}}</div>
             |
@@ -126,6 +126,7 @@
                     </div>
                 </p-tabpanel>
                 <p-tabpanel value="3">
+                    <div class="mb-2"><strong>Created:</strong> {{action.created.toLocaleDateString('en-UK')}}</div>
                     <div class="mb-2 text-justify">
                         <strong>Source/s:</strong>
                         <div class="my-2">{{action.source}}</div>

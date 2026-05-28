@@ -339,4 +339,15 @@ export class ActionPageComponent {
     img.src = this.imagePlaceholder;
     img.onerror = null; // Prevent loops
   }
+
+  getActionDates(): string {
+    if (this.action && this.action.timing.length > 0) {
+      const timing = this.action.timing;
+      const startDate = timing[0].start.toLocaleDateString('en-UK');
+      const endDate = timing[timing.length -1].end?.toLocaleDateString('en-UK') ?? timing[timing.length -1].start.toLocaleDateString('en-UK');
+      if (startDate == endDate) return startDate;
+      return startDate + ' - ' + endDate;
+    }
+    return 'Not Defined';
+  }
 }

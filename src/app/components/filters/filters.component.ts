@@ -21,6 +21,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
 import { FilterOption } from '../../model/filterOption';
 import { BokModalComponent } from '../bokModal/bokModal.component';
+import { DatePickerModule } from 'primeng/datepicker';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   standalone: true,
@@ -42,6 +44,8 @@ import { BokModalComponent } from '../bokModal/bokModal.component';
     ButtonModule,
     SkeletonModule,
     CheckboxModule,
+    DatePickerModule,
+    ToggleSwitchModule
   ],
 })
 export class FiltersComponent {
@@ -63,6 +67,7 @@ export class FiltersComponent {
     { label: 'Description' },
     { label: 'Learning Outcome' },
   ];
+
   @Input() selectedOption: string = 'Title';
   @Output() selectedOptionChange: EventEmitter<string> = new EventEmitter();
 
@@ -81,6 +86,9 @@ export class FiltersComponent {
 
   @Input() showPrivate: boolean = false;
   @Output() showPrivateChange: EventEmitter<boolean> = new EventEmitter();
+
+  @Input() dateValue?: Date[];
+  @Output() dateValueChange: EventEmitter<Date[]> = new EventEmitter();
 
   skeletonElements: number[] = [];
 

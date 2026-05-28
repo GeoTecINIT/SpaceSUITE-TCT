@@ -60,7 +60,6 @@ export class CardFilterService {
     const filters = [
       'Subject',
       'Language',
-      'Training Material Type',
       'Target Audience',
     ];
     const observables = filters.map((value) => this.getOptionByLabel(value));
@@ -70,6 +69,7 @@ export class CardFilterService {
   public getAdvancedMaterialFilterOptions(): Observable<FilterOption[]> {
     const filters = [
       'EQF Level',
+      'Training Material Type',
       'Type of Assessment',
       'Interactivity Type',
       'License',
@@ -88,6 +88,7 @@ export class CardFilterService {
   public getAdvancedActionFilterOptions(): Observable<FilterOption[]> {
     const filters = [
       'EQF Level',
+      'Action Modality',
       'Type of Assessment',
       'Certification',
       'Organizations',
@@ -198,6 +199,13 @@ export class CardFilterService {
         return filter.selection.some(
           (selection) => item.orgName?.toLowerCase() == selection.toLowerCase(),
         );
+      case 'Action Modality':
+        if (item instanceof TrainingAction) {
+          return filter.selection.some(
+            (selection) => item.actionModality == selection
+          );
+        }
+        return false;
       default:
         return true;
     }

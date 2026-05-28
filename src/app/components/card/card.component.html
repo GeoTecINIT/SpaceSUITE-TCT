@@ -41,7 +41,12 @@
   </ng-template>
   <ng-template #subtitle>
     <div class="text-sm">
-      <strong>Created:</strong> {{ trainingItem.created?.toLocaleDateString('en-UK') }}
+      @if(isMaterial) {
+        <strong>Created:</strong> {{ trainingItem.created?.toLocaleDateString('en-UK') }}
+      }
+      @else {
+        <strong>Dates:</strong> {{ this.getActionDates() }}
+      }
     </div>
   </ng-template>
   <ng-content *ngIf="showSkeleton">

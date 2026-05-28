@@ -20,7 +20,7 @@ export class TrainingAction extends TrainingItem {
     this.actionModality = data?.actionModality;
     this.location = new ActionLocation(data?.location);
     this.certification = data?.certification;
-    this.timing = data?.timing || [];
+    this.timing = data?.timing?.sort((a, b) => a.start.getTime() - b.start.getTime()) || [];
     this.microcredentialAwardingBody = data?.microcredentialAwardingBody;
     this.relatedMaterials = data?.relatedMaterials || [];
   }

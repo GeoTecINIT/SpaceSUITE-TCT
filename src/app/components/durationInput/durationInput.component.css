@@ -64,5 +64,4 @@
 .custom-toogleswitch {
     --p-toggleswitch-checked-background: var(--secondary-color);
     --p-toggleswitch-checked-hover-background: color-mix(in srgb, var(--secondary-color) 80%, black 20%);
-
 }

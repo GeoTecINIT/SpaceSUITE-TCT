@@ -63,6 +63,7 @@ export class ItemExplorerComponent {
   searchValue: string = '';
   searchOption: string = 'Title';
   showPrivate: boolean = false;
+  dateValue?: Date[];
   bokConcepts: string[] = [];
   loadingFilters: boolean = true;
   loadingCards: boolean = true;
@@ -309,6 +310,13 @@ export class ItemExplorerComponent {
     this.filterPipeline();
   }
 
+  setDateValue(option: Date[]) {
+    console.log(option)
+    this.dateValue = option;
+    //this.filterService.dateValue = option;
+    this.filterPipeline();
+  }
+
   setFilterByUserMaterial(newValue: boolean) {
     this.filterByUserItem = newValue;
     this.filterService.userItemFilter = newValue;
@@ -338,7 +346,8 @@ export class ItemExplorerComponent {
 
   filterPipeline() {
     const changed = this.handlePrivateItems(this.trainingItems);
-    const sortedItems = this.sortItems(changed);
+    const periodItems = this.filterByDate(changed);
+    const sortedItems = this.sortItems(periodItems);
     const searchedItems = this.searchItems(sortedItems);
     const filteredItems = this.filterItems(searchedItems);
     this.filteredTrainingItems = this.filterByBoKConcept(filteredItems);
@@ -352,6 +361,50 @@ export class ItemExplorerComponent {
     return this.showPrivate
       ? items
       : items.filter((item) => item.isPublic === true);
+  }
+
+  filterByDate(items: TrainingItem[]): TrainingItem[] {
+    if (!this.dateValue || this.dateValue.length == 0) return items;
+
+    const rawStart = this.dateValue[0];
+    const rawEnd = this.dateValue[1] ?? null;
+
+    const startTime = this.startOfDay(rawStart).getTime();
+    const endTime = rawEnd ? this.startOfDay(rawEnd).getTime() : null;
+
+    const inRange = (time: number): boolean => {
+      if (endTime === null) {
+        return time === startTime;
+      }
+      return time >= startTime && time <= endTime;
+    };
+
+    if (this.isTrainingActionArray(items)) {
+      return items.filter(item =>
+        Array.isArray(item.timing) &&
+        item.timing.some(period => {
+          if (!period?.start) return false;
+          const periodTime = this.startOfDay(new Date(period.start)).getTime();
+          return inRange(periodTime);
+        })
+      );
+    }
+
+    return items.filter(item => {
+      if (!item?.created) return false;
+      const createdTime = this.startOfDay(new Date(item.created)).getTime();
+      return inRange(createdTime);
+    });
+  }
+
+  private startOfDay(date: Date): Date {
+    const normalized = new Date(date);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized;
+  }
+
+  private isTrainingActionArray(items: TrainingItem[]): items is TrainingAction[] {
+    return items.length > 0 && items.every(item => item instanceof TrainingAction);
   }
 
   sortItems(inputItems: TrainingItem[]): TrainingItem[] {
