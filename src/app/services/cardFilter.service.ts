@@ -30,7 +30,7 @@ export class CardFilterService {
   public bokConcepts: string[] = [];
   public userItemFilter: boolean = false;
   public paginatorState: PaginatorState = {};
-  public showPrivate: boolean = false;
+  public hidePrivate: boolean = false;
   public showAdvancedFilters: boolean = false;
   public dateValue?: Date[];
   public showOnlyFutureActions: boolean = false;

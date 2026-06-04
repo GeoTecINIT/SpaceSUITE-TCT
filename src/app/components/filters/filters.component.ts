@@ -85,8 +85,8 @@ export class FiltersComponent {
   @Output() showAdvancedFiltersChange: EventEmitter<boolean> =
     new EventEmitter();
 
-  @Input() showPrivate: boolean = false;
-  @Output() showPrivateChange: EventEmitter<boolean> = new EventEmitter();
+  @Input() hidePrivate: boolean = true;
+  @Output() hidePrivateChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() dateValue?: Date[];
   @Output() dateValueChange: EventEmitter<Date[]> = new EventEmitter();
@@ -107,7 +107,7 @@ export class FiltersComponent {
       changes['logged'].currentValue == false
     ) {
       this.filterUserItemChange.emit(false);
-      this.showPrivateChange.emit(false);
+      this.hidePrivateChange.emit(true);
     }
   }
 
@@ -132,8 +132,8 @@ export class FiltersComponent {
     this.searchValueChange.emit(this.searchValue);
   }
 
-  updateShowPrivate(): void {
-    this.showPrivateChange.emit(this.showPrivate);
+  updateHidePrivate(): void {
+    this.hidePrivateChange.emit(this.hidePrivate);
   }
 
   updateFilterUserItem(newValue: boolean) {

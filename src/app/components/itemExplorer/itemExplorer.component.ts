@@ -64,7 +64,7 @@ export class ItemExplorerComponent {
   showAdvancedFilters: boolean = false;
   searchValue: string = '';
   searchOption: string = 'Title';
-  showPrivate: boolean = false;
+  hidePrivate: boolean = true;
   dateValue?: Date[];
   showOnlyFutureActions: boolean = false;
   bokConcepts: string[] = [];
@@ -181,10 +181,10 @@ export class ItemExplorerComponent {
     this,this.authService.getUserState().subscribe(value => {
       this.isLogged.next(value?.logged ?? false);
       if (value?.logged) {
-        this.showPrivate = this.filterService.showPrivate;
+        this.hidePrivate = this.filterService.hidePrivate;
       }
       else {
-        this.showPrivate = false;
+        this.hidePrivate = true;
       }
     })
 
@@ -353,9 +353,9 @@ export class ItemExplorerComponent {
   }
 
   setPrivateFilter(filter: boolean): void {
-    this.showPrivate = filter;
-    this.filterService.showPrivate = filter;
-
+    this.hidePrivate = filter;
+    if (this.isLogged.value) this.filterService.hidePrivate = filter;
+    
     this.filterPipeline();
   }
 
@@ -373,9 +373,9 @@ export class ItemExplorerComponent {
   }
 
   handlePrivateItems(items: TrainingItem[]): TrainingItem[] {
-    return this.showPrivate
-      ? items
-      : items.filter((item) => item.isPublic === true);
+    return this.hidePrivate
+      ? items.filter((item) => item.isPublic === true)
+      : items;
   }
 
   filterByDate(items: TrainingItem[]): TrainingItem[] {
