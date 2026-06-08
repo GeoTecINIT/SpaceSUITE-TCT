@@ -178,7 +178,7 @@ export class ItemExplorerComponent {
     this.sortAsc = this.sortingService.sortAsc;
     this.selectedSortOption = this.sortingService.sortOption;
 
-    this,this.authService.getUserState().subscribe(value => {
+    this.authService.getUserState().subscribe(value => {
       this.isLogged.next(value?.logged ?? false);
       if (value?.logged) {
         this.hidePrivate = this.filterService.hidePrivate;
