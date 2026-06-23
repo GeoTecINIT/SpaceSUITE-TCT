@@ -20,7 +20,7 @@ export class TrainingMaterial extends TrainingItem {
       materialType: this.materialType,
       interactivityType: this.interactivityType || "",
       contributors: this.contributors,
-      license: this.license
+      license: this.license || null
     };
   }
 }

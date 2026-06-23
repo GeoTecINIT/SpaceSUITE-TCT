@@ -36,7 +36,7 @@
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="100"/>
                                     <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
-                                <label for="publisher">Provided By *</label>
+                                <label for="publisher">Provided By</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('publisher')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('publisher')}}</p>
                         </div>
@@ -50,7 +50,7 @@
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000"/>
                                     <p-inputicon class="pi pi-link" [style]="errorMap.get('url') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
-                                <label for="url">URL *</label>
+                                <label for="url">URL</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('url')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('url')}}</p>
                         </div>
@@ -69,7 +69,7 @@
                         </div>
 
                         <div>
-                            <custom-select [fieldName]="'Language *'" [(selection)]="action.language" [icon]="'pi pi-bookmark'"
+                            <custom-select [fieldName]="'Language'" [(selection)]="action.language" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('language') != undefined" [optionsName]="'Language'"
                                     pTooltip="The language of the resource" [filter]="false"
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
@@ -87,7 +87,7 @@
                                     <span>{{action.description.length + ' '}}</span>
                                     <span>/ 2000</span>
                                 </div>
-                                <label for="description">Description *</label>
+                                <label for="description">Description</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('description')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('description')}}</p>
                         </div>
@@ -103,7 +103,7 @@
                                     <span>{{action.abstract.length + ' '}}</span>
                                     <span>/ 500</span>
                                 </div>
-                                <label for="abstract">Abstract *</label>
+                                <label for="abstract">Abstract</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('abstract')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('abstract')}}</p>
                         </div>
@@ -117,7 +117,7 @@
                         </div>
 
                         <div>
-                            <text-chips [fieldName]="'Creators *'" [(chips)]="action.creators"
+                            <text-chips [fieldName]="'Creators'" [(chips)]="action.creators"
                                     [error]="errorMap.get('creators') != undefined" 
                                     pTooltip="Specify the authors of the action. First name first, then second name" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
@@ -144,7 +144,7 @@
                                         <p-inputnumber id="workload" [min]="0" [useGrouping]="false" mode="decimal" [minFractionDigits]="1" [maxFractionDigits]="1"
                                             [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined" allowEmpty="false"
                                             class="custom-input" [(ngModel)]="action.workload" fluid/>
-                                    <label for="workload">Workload *</label>
+                                    <label for="workload">Workload</label>
                                 </p-floatlabel>
                                 <p-inputgroup-addon>
                                     <p-button
@@ -177,7 +177,7 @@
                         </div>
 
                         <div>
-                            <custom-select [fieldName]="'Certification *'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
+                            <custom-select [fieldName]="'Certification'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('certification') != undefined" [optionsName]="'Certification'"
                                     pTooltip="Information on whether participants will receive upon completion" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
@@ -193,7 +193,7 @@
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000"/>
                                     <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('microcredentialAwardingBody') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
-                                <label for="microcredentialAwardingBody">Microcredential Awarding Body *</label>
+                                <label for="microcredentialAwardingBody">Microcredential Awarding Body</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('microcredentialAwardingBody')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('microcredentialAwardingBody')}}</p>
                         </div>
@@ -215,7 +215,7 @@
                         </div>
 
                         <div>
-                            <text-chips [fieldName]="'Learning Outcomes *'" [icon]="'pi pi-graduation-cap'" [(chips)]="action.learningOutcomes"
+                            <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="action.learningOutcomes"
                                     [error]="errorMap.get('learningOutcomes') != undefined" 
                                     pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
@@ -234,7 +234,7 @@
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
                                 [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
-                                <bokModal [(selectedConcepts)]="action.concepts" [label]="'Knowledge Annotations *'" [allowKnowledgeAreas]="false"
+                                <bokModal [(selectedConcepts)]="action.concepts" [label]="'Knowledge Annotations'" [allowKnowledgeAreas]="false"
                                     [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' "></bokModal>
                             </div>
                             <p *ngIf="errorMap.get('concepts')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('concepts')}}</p>
@@ -367,7 +367,7 @@
                         <div class="flex w-full">
                             <p-selectbutton [options]="visibilityFieldOptions" [(ngModel)]="action.isPublic" optionLabel="label" optionValue="value"
                                 pTooltip="Specifies whether this action is public or restricted to your account." allowEmpty="false"
-                                tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                tooltipPosition="right" showDelay="200" hideDelay="200" class="custom-togglebutton"/>
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">

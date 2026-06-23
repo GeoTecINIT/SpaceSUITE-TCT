@@ -22,7 +22,7 @@
                 {{chips.length}} items selected
             </ng-template>
         </p-multiselect>
-        <label for="{{fieldName}}">{{fieldName}} *</label>
+        <label for="{{fieldName}}">{{fieldName}}</label>
     </p-floatlabel>
     <div class="mt-3 flex-wrap gap-2 align-items-center" [style.display]="chips.length == 0 ? 'none' : 'flex'">
         <ng-content *ngFor="let chip of chips">

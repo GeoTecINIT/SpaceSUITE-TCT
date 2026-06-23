@@ -183,13 +183,17 @@ export class ActionFormComponent {
       });
     }
     else {
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'Error', 
-        detail: 'There are incomplete mandatory fields. Please review the form and try to submit again.', 
-        life: 3000, 
-        closable: true 
-      });
+      for (let entry of this.errorMap.entries()) {
+        if (entry[1] != undefined) {
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: 'Error', 
+            detail: entry[1], 
+            life: 3000, 
+            closable: true 
+          });
+        }
+      }
     }
   }
 

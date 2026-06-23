@@ -47,7 +47,7 @@ export class EditActionPageComponent {
   private loadMaterial(newAction: TrainingAction) {
     this.action = new TrainingAction(newAction);
     this.action.educationLevel = this.action.educationLevel.map( value => 'EQF ' + value);
-    this.action.language = this.languageService.getLanguage(this.action.language!);
+    this.action.language = this.action.language ? this.languageService.getLanguage(this.action.language!) : undefined;
     this.action.subject = this.action.subject.map(subject => this.utilsService.codeToKnowledgeArea.get(subject) || subject);
   }
 }

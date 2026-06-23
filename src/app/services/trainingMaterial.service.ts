@@ -26,7 +26,7 @@ export class TrainingMaterialService extends TrainingItemService {
   public submitMaterial(material: TrainingMaterial, image: File | undefined, update: boolean = false): Observable<string> {
     const newMaterial = new TrainingMaterial(material);
     newMaterial.subject = newMaterial.subject.map( subject => this.utilsService.knowledgeAreaToCode.get(subject) || subject)
-    newMaterial.language = this.languageService.getIsoCode(newMaterial.language!).toUpperCase();
+    newMaterial.language = newMaterial.language ? this.languageService.getIsoCode(newMaterial.language).toUpperCase() : undefined;
     newMaterial.educationLevel = newMaterial.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newMaterial.concepts.length > 0 ? forkJoin(newMaterial.concepts.map(concept =>
       this.bokInfoService.getConceptName(concept).pipe(

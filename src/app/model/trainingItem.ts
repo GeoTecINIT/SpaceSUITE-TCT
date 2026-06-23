@@ -20,7 +20,7 @@ export class TrainingItem {
   source?: string;
   educationLevel: string[];
   tableOfContents: string[];
-  workload: number;
+  workload?: number;
   workloadUnit: WorkloadUnit;
   prerequisites: string[];
   assessment: string[];
@@ -57,7 +57,7 @@ export class TrainingItem {
     this.source = data?.source;
     this.educationLevel = data?.educationLevel ?? [];
     this.tableOfContents = data?.tableOfContents ?? [];
-    this.workload = data?.workload ?? 0;
+    this.workload = data?.workload;
     this.workloadUnit = data?.workloadUnit ?? WorkloadUnit.ECTS;
     this.prerequisites = data?.prerequisites ?? [];
     this.assessment = data?.assessment ?? [];
@@ -89,11 +89,11 @@ export class TrainingItem {
       created: this.created,
       publisher: this.publisher,
       url: this.url,
-      language: this.language,
+      language: this.language || null,
       source: this.source || "",
       educationLevel: this.educationLevel,
       tableOfContents: this.tableOfContents,
-      workload: this.workload,
+      workload: this.workload || null,
       workloadUnit: this.workloadUnit,
       prerequisites: this.prerequisites,
       assessment: this.assessment,

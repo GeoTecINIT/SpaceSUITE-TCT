@@ -47,7 +47,7 @@ export class EditMaterialPageComponent {
   private loadMaterial(newMaterial: TrainingMaterial) {
     this.material = new TrainingMaterial(newMaterial);
     this.material.educationLevel = this.material.educationLevel.map( value => 'EQF ' + value);
-    this.material.language = this.languageService.getLanguage(this.material.language!);
+    this.material.language = this.material.language ? this.languageService.getLanguage(this.material.language!) : undefined;
     this.material.subject = this.material.subject.map(subject => this.utilsService.codeToKnowledgeArea.get(subject) || subject);
   }
 }

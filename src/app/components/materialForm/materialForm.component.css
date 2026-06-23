@@ -162,6 +162,11 @@
 
 ::ng-deep .p-selectbutton {
     flex: auto;
+    --p-togglebutton-background: #E2E8F0;
+    --p-togglebutton-hover-background: #E2E8F0;
+    --p-togglebutton-checked-background: #E2E8F0;
+    --p-togglebutton-checked-border-color: #E2E8F0;
+    --p-togglebutton-border-color: #E2E8F0;
 }
 
 ::ng-deep p-togglebutton {
@@ -170,4 +175,11 @@
 
 ::ng-deep .p-togglebutton {
     flex: auto;
+}
+
+.custom-togglebutton {
+  --p-togglebutton-checked-color: var(--primary-color);
+  --p-togglebutton-icon-checked-color: var(--primary-color);
+  --p-togglebutton-hover-color: var(--primary-color);
+  --p-togglebutton-icon-hover-color: var(--primary-color);
 }

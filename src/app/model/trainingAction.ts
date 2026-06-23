@@ -33,7 +33,7 @@ export class TrainingAction extends TrainingItem {
         name: this.location.name,
         coordinates: this.location.coordinates || []
       },
-      certification: this.certification,
+      certification: this.certification || null,
       timing: this.timing.map(value => {
         return {
           start: value.start,

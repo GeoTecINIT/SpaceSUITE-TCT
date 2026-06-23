@@ -12,7 +12,6 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TextChipsComponent } from "../textChips/textChips.component";
 import { FilterOption } from "../../model/filterOption";
-import { CardFilterService } from "../../services/cardFilter.service";
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { BokModalComponent } from "../bokModal/bokModal.component";
@@ -178,13 +177,17 @@ export class MaterialFormComponent {
       });
     }
     else {
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'Error', 
-        detail: 'There are incomplete mandatory fields. Please review the form and try to submit again.', 
-        life: 3000, 
-        closable: true 
-      });
+      for (let entry of this.errorMap.entries()) {
+        if (entry[1] != undefined) {
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: 'Error', 
+            detail: entry[1], 
+            life: 3000, 
+            closable: true 
+          });
+        }
+      }
     }
   }
 

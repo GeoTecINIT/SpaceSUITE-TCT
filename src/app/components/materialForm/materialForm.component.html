@@ -36,7 +36,7 @@
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="100"/>
                                     <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
-                                <label for="publisher">Provided By *</label>
+                                <label for="publisher">Provided By</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('publisher')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('publisher')}}</p>
                         </div>
@@ -50,7 +50,7 @@
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000"/>
                                     <p-inputicon class="pi pi-link" [style]="errorMap.get('url') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
-                                <label for="url">URL *</label>
+                                <label for="url">URL</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('url')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('url')}}</p>
                         </div>
@@ -87,7 +87,7 @@
                                     <span>{{material.description.length + ' '}}</span>
                                     <span>/ 2000</span>
                                 </div>
-                                <label for="description">Description *</label>
+                                <label for="description">Description</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('description')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('description')}}</p>
                         </div>
@@ -103,7 +103,7 @@
                                     <span>{{material.abstract.length + ' '}}</span>
                                     <span>/ 500</span>
                                 </div>
-                                <label for="abstract">Abstract *</label>
+                                <label for="abstract">Abstract</label>
                             </p-floatlabel>
                             <p *ngIf="errorMap.get('abstract')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('abstract')}}</p>
                         </div>
@@ -117,7 +117,7 @@
                         </div>
 
                         <div>
-                            <text-chips [fieldName]="'Creators *'" [(chips)]="material.creators"
+                            <text-chips [fieldName]="'Creators'" [(chips)]="material.creators"
                                     [error]="errorMap.get('creators') != undefined" 
                                     pTooltip="Specify the authors of the material. First name first, then second name" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
@@ -142,9 +142,9 @@
                             <p-inputgroup>
                                 <p-floatlabel variant="on" class="w-full custom-floatlabel">
                                         <p-inputnumber id="workload" [min]="0" [useGrouping]="false" mode="decimal" [minFractionDigits]="1" [maxFractionDigits]="1"
-                                            [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined" allowEmpty="false"
+                                            [class.ng-invalid]="errorMap.get('workload') != undefined" [class.ng-dirty]="errorMap.get('workload') != undefined"
                                             class="custom-input" [(ngModel)]="material.workload" fluid/>
-                                    <label for="workload">Workload *</label>
+                                    <label for="workload">Workload</label>
                                 </p-floatlabel>
                                 <p-inputgroup-addon>
                                     <p-button
@@ -201,7 +201,7 @@
                         </div>
 
                         <div>
-                            <text-chips [fieldName]="'Learning Outcomes *'" [icon]="'pi pi-graduation-cap'" [(chips)]="material.learningOutcomes"
+                            <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="material.learningOutcomes"
                                     [error]="errorMap.get('learningOutcomes') != undefined" 
                                     pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the resource" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
@@ -220,7 +220,7 @@
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
                                 [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
-                                <bokModal [(selectedConcepts)]="material.concepts" [label]="'Knowledge Annotations *'" [allowKnowledgeAreas]="false"
+                                <bokModal [(selectedConcepts)]="material.concepts" [label]="'Knowledge Annotations'" [allowKnowledgeAreas]="false"
                                     [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' "></bokModal>
                             </div>
                             <p *ngIf="errorMap.get('concepts')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('concepts')}}</p>
@@ -338,7 +338,7 @@
                         <div class="flex w-full">
                             <p-selectbutton [options]="visibilityFieldOptions" [(ngModel)]="material.isPublic" optionLabel="label" optionValue="value"
                                 pTooltip="Specifies whether this material is public or restricted to your account." allowEmpty="false"
-                                tooltipPosition="right" showDelay="200" hideDelay="200"/>
+                                tooltipPosition="right" showDelay="200" hideDelay="200" class="custom-togglebutton"/>
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">

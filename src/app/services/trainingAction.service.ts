@@ -26,7 +26,7 @@ export class TrainingActionService extends TrainingItemService {
   public submitAction(action: TrainingAction, image: File | undefined, update: boolean = false): Observable<string> {
     const newAction = new TrainingAction(action);
     newAction.subject = newAction.subject.map( subject => this.utilsService.knowledgeAreaToCode.get(subject) || subject)
-    newAction.language = this.languageService.getIsoCode(newAction.language!).toUpperCase();
+    newAction.language = newAction.language ? this.languageService.getIsoCode(newAction.language!).toUpperCase() : undefined;
     newAction.educationLevel = newAction.educationLevel.map(level => level.replace('EQF','').trim()).sort()
     const conceptObservables = newAction.concepts.length > 0 ? forkJoin(newAction.concepts.map(concept =>
       this.bokInfoService.getConceptName(concept).pipe(
