@@ -88,12 +88,12 @@
     <p-divider class="mt-2" />
     <div class="flex align-items-end gap-2 flex-nowrap white-space-nowrap">
       <div class="text-sm">
-        <strong>{{ trainingItem.language ?? "Undefined" }}</strong>
+        <strong>{{ trainingItem.language ?? "-" }}</strong>
       </div>
       |
       <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
         pTooltip="The European Qualifications Framework. Indicates level of knowledge from 1 to 8">
-        <strong>EQF: {{ trainingItem.educationLevel }}</strong>
+        <strong>EQF: {{ trainingItem.educationLevel.length > 0 ? trainingItem.educationLevel : '-' }}</strong>
       </div>
       <ng-content *ngIf="!trainingItem.isPublic">
         |

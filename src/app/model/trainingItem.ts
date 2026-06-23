@@ -67,7 +67,7 @@ export class TrainingItem {
     this.orgName = data?.orgName;
     this.division = data?.division;
     this.userId = data?.userId ?? '';
-    this.isPublic = data?.isPublic ?? true;
+    this.isPublic = data?.isPublic ?? false;
     this.updatedAt = data?.updatedAt ?? new Date();
     this.collection = data?.collection ?? 'TrainingMaterials';
     this.collectionDisplay = data?.collectionDisplay ?? 'TrainingMaterials';

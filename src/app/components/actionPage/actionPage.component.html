@@ -10,11 +10,11 @@
             </a>
         </h1>
         <div class="flex align-items-center gap-2 flex-wrap white-space-nowrap mb-2">
-            <div class="text-sm"><strong>Language:</strong> {{action.language ?? 'Undefined'}}</div>
+            <div class="text-sm"><strong>Language:</strong> {{action.language ?? '-'}}</div>
             |
             <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
                 pTooltip="The European Qualifications Framework. Indicates level of knowledge from 1 to 8">
-                <strong>EQF Level:</strong> {{action.educationLevel}}
+                <strong>EQF Level:</strong> {{action.educationLevel.length > 0 ? action.educationLevel : '-'}}
             </div>
             |
             <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
@@ -22,20 +22,22 @@
                     'Amount of time expected to invest, quantified using ECTS (1 ECTS = +/- 25 hours)'
                     :
                     'Amount of time expected to invest, quantified using hours'">
-                <strong>Workload:</strong> {{action.workload}} {{action.workloadUnit}}
+                <strong>Workload:</strong> {{action.workload ?? '-'}} {{action.workloadUnit}}
             </div>
             |
-            <div class="text-sm"><strong>Provided by:</strong> {{action.publisher}}</div>
+            <div class="text-sm"><strong>Provided by:</strong> {{action.publisher == '' ? action.publisher : '-'}}</div>
             |
             <div class="text-sm"><strong>Dates:</strong> {{ this.getActionDates() }}</div>
             |
             <div class="text-sm"><strong>Visibility:</strong> {{action.isPublic ? 'Public' : 'Private'}}</div>
             |
-            <a class="icon-link text-sm align-items-center mx-1" href="{{action.url}}" target="_blank">
-                Go to Action
-                <i class="pi pi-external-link text-sm mx-1"></i>
-            </a>
-            |
+            @if(action.url != '') {
+                <a class="icon-link text-sm align-items-center mx-1" href="{{action.url}}" target="_blank">
+                    Go to Action
+                    <i class="pi pi-external-link text-sm mx-1"></i>
+                </a>
+                |
+            }
             <a class="icon-link text-sm align-items-center mx-1 cursor-pointer" (click)="toggle($event)">
                 Download Metadata
                 <i class="pi pi-download text-sm mx-1"></i>

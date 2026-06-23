@@ -10,11 +10,11 @@
             </a>
         </h1>
         <div class="flex align-items-center gap-2 flex-wrap white-space-nowrap mb-2">
-            <div class="text-sm"><strong>Language:</strong> {{material.language ?? 'Undefined'}}</div>
+            <div class="text-sm"><strong>Language:</strong> {{material.language ?? '-'}}</div>
             |
             <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
                 pTooltip="The European Qualifications Framework. Indicates level of knowledge from 1 to 8">
-                <strong>EQF Level:</strong> {{material.educationLevel}}
+                <strong>EQF Level:</strong> {{material.educationLevel.length > 0 ? material.educationLevel : '-'}}
             </div>
             |
             <div class="text-sm" tooltipPosition="bottom" tooltipStyleClass="large-tooltip"
@@ -22,20 +22,22 @@
                     'Amount of time expected to invest, quantified using ECTS (1 ECTS = +/- 25 hours)'
                     :
                     'Amount of time expected to invest, quantified using hours'">
-                <strong>Workload:</strong> {{material.workload}} {{material.workloadUnit}}
+                <strong>Workload:</strong> {{material.workload ?? '-'}} {{material.workloadUnit}}
             </div>
             |
-            <div class="text-sm"><strong>Provided by:</strong> {{material.publisher}}</div>
+            <div class="text-sm"><strong>Provided by:</strong> {{material.publisher == '' ? material.publisher : '-'}}</div>
             |
             <div class="text-sm"><strong>Created:</strong> {{material.created?.toLocaleDateString('en-UK')}}</div>
             |
             <div class="text-sm"><strong>Visibility:</strong> {{material.isPublic ? 'Public' : 'Private'}}</div>
             |
-            <a class="icon-link text-sm align-items-center mx-1" href="{{material.url}}" target="_blank">
-                Go to Material
-                <i class="pi pi-external-link text-sm mx-1"></i>
-            </a>
-            |
+            @if(material.url != '') {
+                <a class="icon-link text-sm align-items-center mx-1" href="{{material.url}}" target="_blank">
+                    Go to Material
+                    <i class="pi pi-external-link text-sm mx-1"></i>
+                </a>
+                |
+            }
             <a class="icon-link text-sm align-items-center mx-1 cursor-pointer" (click)="toggle($event)">
                 Download Metadata
                 <i class="pi pi-download text-sm mx-1"></i>
