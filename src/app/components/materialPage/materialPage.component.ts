@@ -32,6 +32,7 @@ import { RdfConverterService } from '../../services/rdfConverter.service';
 import { TrainingMaterialService } from '../../services/trainingMaterial.service';
 import { UtilsService } from '../../services/utils.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { PdfService } from '../../services/pdf.service';
 
 interface AuthState {
   logged: boolean;
@@ -86,6 +87,7 @@ export class MaterialPageComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private rdfConverter: RdfConverterService,
+    private pdfService: PdfService
   ) {
     this.imagePlaceholder = this.utilsService.imagePlaceholder;
   }
@@ -301,6 +303,18 @@ export class MaterialPageComponent {
   toggle(event: any) {
     this.op.toggle(event);
   }
+
+  downloadMaterialPDF() {
+      document.body.style.cursor = 'wait';
+      this.op.hide();
+  
+      this.pdfService
+        .generateItemPdf(new TrainingMaterial(this.material))
+        .subscribe((pdf) => {
+          this.downloadURI(pdf.url, pdf.filename);
+          document.body.style.cursor = '';
+        });
+    }
 
   downloadMaterialXML() {
     const url = this.rdfConverter.getRdfXmlUrl(this.material!);

@@ -38,7 +38,7 @@ export class TrainingAction extends TrainingItem {
         return {
           start: value.start,
           end: value.end ?? null,
-          showTime: value.showTime || true
+          showTime: value.showTime ?? false
         }
       }),
       license: this.microcredentialAwardingBody || "",
