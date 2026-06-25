@@ -148,12 +148,11 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
   if (p.creators.length > 0) {
     doc.setFont('Poppins', 'italic');
     y += 4 * 1.35;
-    doc.text(
-      p.creators.join(', '),
-      20,
-      y
-    );
-    y += 4 * 1.35;
+    const abstractLines = doc.splitTextToSize(cleanPdfText(p.creators.join(', ')), 170);
+    const abstractLinesSize = abstractLines.length * 4 * 1.35;
+    y = checkEnd(doc, y, abstractLinesSize, assets);
+    doc.text(abstractLines, 20, y);
+    y += abstractLinesSize;
     doc.setFont('Poppins', 'normal');
   }
 
@@ -298,7 +297,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y = sectionTitle(doc, 'Abstract', y, assets);
 
   y += 4 * 1.35;
-  const abstractLines = doc.splitTextToSize(p.abstract, 170);
+  const abstractLines = doc.splitTextToSize(cleanPdfText(p.abstract), 170);
   const abstractLinesSize = abstractLines.length * 4 * 1.35;
   y = checkEnd(doc, y, abstractLinesSize, assets);
   doc.text(abstractLines, 20, y);
@@ -307,7 +306,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y = sectionTitle(doc, 'Description', y, assets);
 
   y += 4 * 1.35;
-  const descriptionLines = doc.splitTextToSize(p.description, 170);
+  const descriptionLines = doc.splitTextToSize(cleanPdfText(p.description), 170);
   const descriptionLinesSize = descriptionLines.length * 4 * 1.35;
   y = checkEnd(doc, y, descriptionLinesSize, assets);
   doc.text(descriptionLines, 20, y);
@@ -317,7 +316,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
 
   y += 4 * 1.35;
   p.tableOfContents.forEach((content) => {
-    const lines = doc.splitTextToSize(content, 170);
+    const lines = doc.splitTextToSize(cleanPdfText(content), 170);
     for (let i = 0; i < lines.length; i++) {
       if (i == 0) lines[i] = '• ' + lines[i];
       else lines[i] = '   ' + lines[i];
@@ -425,7 +424,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y += 4 * 1.35;
   if (p.prerequisites.length > 0) {
     p.prerequisites.forEach((pre) => {
-      const lines = doc.splitTextToSize(pre, 170);
+      const lines = doc.splitTextToSize(cleanPdfText(pre), 170);
       for (let i = 0; i < lines.length; i++) {
         if (i == 0) lines[i] = '• ' + lines[i];
         else lines[i] = '   ' + lines[i];
@@ -450,7 +449,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y += 4 * 1.35;
   if (p.learningOutcomes.length > 0) {
     p.learningOutcomes.forEach((outcome) => {
-      const lines = doc.splitTextToSize(outcome, 170);
+      const lines = doc.splitTextToSize(cleanPdfText(outcome), 170);
       for (let i = 0; i < lines.length; i++) {
         if (i == 0) lines[i] = '• ' + lines[i];
         else lines[i] = '   ' + lines[i];
@@ -475,7 +474,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y += 4 * 1.35;
   if (p.assessment.length > 0) {
     p.assessment.forEach((assessment) => {
-      const lines = doc.splitTextToSize(assessment, 170);
+      const lines = doc.splitTextToSize(cleanPdfText(assessment), 170);
       for (let i = 0; i < lines.length; i++) {
         if (i == 0) lines[i] = '• ' + lines[i];
         else lines[i] = '   ' + lines[i];
@@ -603,11 +602,18 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     doc.text('Contributors:', 20, y);
     doc.setFont('Poppins', 'normal')
     y += 4 * 1.35;
-    const contributorLines = doc.splitTextToSize(p.contributors.join(', '), 170);
-    const contributorLinesSize = contributorLines.length * 4 * 1.35;
-    y = checkEnd(doc, y, contributorLinesSize, assets);
-    doc.text(contributorLines, 20, y);
-    y += contributorLinesSize;
+    if (p.contributors.length > 0) {
+      const contributorLines = doc.splitTextToSize(p.contributors.join(', '), 170);
+      const contributorLinesSize = contributorLines.length * 4 * 1.35;
+      y = checkEnd(doc, y, contributorLinesSize, assets);
+      doc.text(contributorLines, 20, y);
+      y += contributorLinesSize;
+    }
+    else {
+      y = checkEnd(doc, y, 0, assets);
+      doc.text('Undefined', 20, y);
+      y += 4 * 1.35;
+    }
 
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
@@ -680,4 +686,52 @@ function rehydrate(data: TrainingItem) {
     return new TrainingMaterial(data as TrainingMaterial);
   }
   return new TrainingAction(data as TrainingAction);
+}
+function cleanPdfText(input: string) {
+  const bulletsTo = '-';          // '-', '•', or ''
+  const keepLineBreaks = true;
+  const collapseSpaces = true;
+  const normalizeQuotes = true;
+  const normalizeDashes = true;
+  const removeListMarkers = false;
+
+
+  let text = String(input ?? '').normalize('NFKC');
+
+  text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  if (normalizeQuotes) {
+    text = text
+      .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
+      .replace(/[\u201C\u201D\u201E\u201F]/g, '"');
+  }
+
+  if (normalizeDashes) {
+    text = text
+      .replace(/[\u2010\u2011\u2012\u2013\u2014\u2015]/g, '-');
+  }
+
+  text = text
+    .replace(/[\u2022\u00B7\u2023\u25E6\u2043]/g, bulletsTo) // bullet-like chars
+    .replace(/\u00A0/g, ' ') // nbsp
+    .replace(/[\u200B-\u200D\uFEFF]/g, ''); // zero-width chars
+
+  if (removeListMarkers) {
+    text = text.replace(/^\s*(?:\d+[.)]|[-•·‣◦⁃])\s+/gm, '');
+  }
+
+  if (collapseSpaces) {
+    text = text
+      .replace(/[ \t]+/g, ' ')
+      .replace(/\n[ \t]+/g, '\n')
+      .replace(/[ \t]+\n/g, '\n');
+  }
+
+  if (!keepLineBreaks) {
+    text = text.replace(/\n+/g, ' ');
+  } else {
+    text = text.replace(/\n{3,}/g, '\n\n');
+  }
+
+  return text.trim();
 }
