@@ -25,7 +25,7 @@
                 <strong>Workload:</strong> {{material.workload ?? '-'}} {{material.workloadUnit}}
             </div>
             |
-            <div class="text-sm"><strong>Provided by:</strong> {{material.publisher == '' ? material.publisher : '-'}}</div>
+            <div class="text-sm"><strong>Provided by:</strong> {{material.publisher != '' ? material.publisher : '-'}}</div>
             |
             <div class="text-sm"><strong>Created:</strong> {{material.created?.toLocaleDateString('en-UK')}}</div>
             |
