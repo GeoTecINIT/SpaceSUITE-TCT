@@ -542,13 +542,14 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     doc.text(p.actionModality ?? 'Undefined', 20, y);
     y += 4 * 1.35;
 
+    
+    y += 4 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
+    doc.setFont('Poppins', 'italic');
+    doc.text('Location:', 20, y);
+    doc.setFont('Poppins', 'normal')
+    y += 4 * 1.35;
     if(p.actionModality && p.actionModality != 'Online' && p.location.name != '') {
-      y += 4 * 1.35;
-      y = checkEnd(doc, y, 0, assets);
-      doc.setFont('Poppins', 'italic');
-      doc.text('Location:', 20, y);
-      doc.setFont('Poppins', 'normal')
-      y += 4 * 1.35;
       const locationLines = doc.splitTextToSize(p.location.name, 170);
       const locationLinesSize = locationLines.length * 4 * 1.35;
       y = checkEnd(doc, y, locationLinesSize, assets);
@@ -556,6 +557,11 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
       doc.textWithLink(locationLines, 20, y, { url: p.location.getGoogleMapURI() });
       doc.setTextColor('#0e145d');
       y += locationLinesSize;
+    }
+    else {
+      y = checkEnd(doc, y, 0, assets);
+      doc.text('Undefined', 20, y);
+      y += 4 * 1.35;
     }
 
     y += 4 * 1.35;
