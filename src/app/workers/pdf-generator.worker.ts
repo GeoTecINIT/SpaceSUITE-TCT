@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import { PdfWorkerPayload } from '../model/pdfWorkerPayload';
 import { TrainingItem } from '../model/trainingItem';
 import { TrainingMaterial } from '../model/trainingMaterial';
-import { TrainingAction } from '../model/trainingAction';
+import { TimePeriod, TrainingAction } from '../model/trainingAction';
 
 addEventListener('message', ({data}: {data: PdfWorkerPayload}) => {
   const { item, assets, scaleFactor } = data;
@@ -101,49 +101,6 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
   y += linesSize;
 
   doc.setFontSize(10);
-  doc.setFont('Poppins', 'italic');
-  doc.text(
-    [
-      p.division ? p.orgName + ', ' + p.division : p.orgName, 
-    ].filter(Boolean).join(' | '),
-    20,
-    y
-  );
-  doc.setFont('Poppins', 'normal');
-  y += 4 * 1.35;
-
-  y += 4 * 1.35;
-  doc.text(
-    [
-      p instanceof TrainingMaterial ? 'Material' : 'Action',
-      'Provided by: ' + (p.publisher ?? '-'),
-    ].filter(Boolean).join(' | '),
-    20,
-    y
-  );
-  y += 4 * 1.35;
-
-  doc.text(
-    [
-      'Language: ' + (p.language ?? '-'),
-      'EQF ' + (p.educationLevel.length > 0 ? p.educationLevel : '-'),
-      (p.workload ?? '-') + ' ' + p.workloadUnit,
-    ].filter(Boolean).join(' | '),
-    20,
-    y
-  );
-  y += 4 * 1.35;
-
-  doc.text(
-    [
-      'Created: ' + p.created.toLocaleDateString('en-UK'),
-      p.updatedAt ? 'Updated: ' + p.updatedAt.toLocaleDateString('en-UK') : undefined,
-      'Visibility: ' + (p.isPublic ? 'Public' : 'Private')
-    ].filter(Boolean).join(' | '),
-    20,
-    y
-  );
-  y += 4 * 1.35;
 
   if (p.creators.length > 0) {
     doc.setFont('Poppins', 'italic');
@@ -156,12 +113,81 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
     doc.setFont('Poppins', 'normal');
   }
 
+  y += 4 * 1.35;
+  doc.text(p.publisher, 20, y);
+  y += 4 * 1.35;
+
+  if(p instanceof TrainingAction && p.timing.length > 0) {
+    y += 4 * 1.35;
+    doc.text(getActionDates(p.timing), 20, y);
+    y += 4 * 1.35;
+  }
+
+  y = sectionTitle(doc, 'Summary', y, assets);
+
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
+  doc.text('Type:', 20, y);
+  doc.text('Language:', 100, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  doc.text('Training ' + (p instanceof TrainingMaterial ? 'Material' : 'Action'), 20, y);
+  doc.text(p.language ?? 'Undefined', 100, y);
+  y += 4 * 1.35;
+
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
+  doc.text('Educational Level:', 20, y);
+  doc.text('Workload:', 100, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  doc.text((p.educationLevel.length > 0 ? 'EQF ' + p.educationLevel : 'Undefined'), 20, y);
+  doc.text(p.workload ? (p.workload + ' ' + p.workloadUnit) : 'Undefined', 100, y);
+  y += 4 * 1.35;
+
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
+  doc.text('Created:', 20, y);
+  doc.text('Last Updated:', 100, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  doc.text(p.created.toLocaleDateString('en-UK'), 20, y);
+  doc.text((p.updatedAt ? p.updatedAt.toLocaleDateString('en-UK') : p.created.toLocaleDateString('en-UK')), 100, y);
+  y += 4 * 1.35;
+
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
+  doc.text('Visibility:', 20, y);
+  doc.text('Published Under:', 100, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  doc.text((p.isPublic ? 'Public' : 'Private'), 20, y);
+  doc.text((p.division ? p.orgName + ', ' + p.division : p.orgName) ?? 'Undefined', 100, y);
+  y += 4 * 1.35;
+
+  doc.setFont('Poppins', 'italic');
+  y += 4 * 1.35;
+  doc.setTextColor('#3fb3f8');
+  doc.textWithLink(
+    `View Training ${p instanceof TrainingMaterial ? 'Material' : 'Action'} in the SpaceSuite Training Catalogue`,
+    20,
+    y,
+    {url: p.url}
+  );
+  doc.setTextColor('#0e145d');
+  y += 4 * 1.35;
+  doc.setFont('Poppins', 'normal');
+
   if (p.url != '') {
     doc.setFont('Poppins', 'italic');
     y += 4 * 1.35;
     doc.setTextColor('#3fb3f8');
     doc.textWithLink(
-      'Link to training item',
+      `View Training ${p instanceof TrainingMaterial ? 'Material' : 'Action'} web page`,
       20,
       y,
       {url: p.url}
@@ -273,7 +299,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     y += linesSize;
   });
 
-  y = sectionTitle(doc, 'Knowledge', y, assets);
+  y = sectionTitle(doc, 'Associated Knowledge', y, assets);
 
   y += 4 * 1.35;
   p.concepts.forEach((concept) => {
@@ -333,6 +359,27 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
     doc.setFont('Poppins', 'italic');
+    doc.text('Certification:', 20, y);
+    doc.setFont('Poppins', 'normal')
+    y += 4 * 1.35;
+    doc.text(p.certification ?? 'Undefined', 20, y);
+    y += 4 * 1.35;
+
+    if (p.certification && p.certification === 'Micro-credential') {
+      y += 4 * 1.35;
+      y = checkEnd(doc, y, 0, assets);
+      doc.setFont('Poppins', 'italic');
+      doc.text('Microcredential Awarding Body:', 20, y);
+      doc.setFont('Poppins', 'normal')
+      y += 4 * 1.35;
+      y = checkEnd(doc, y, 0, assets);
+      doc.text(p.microcredentialAwardingBody ?? 'Undefined', 20, y);
+      y += 4 * 1.35;
+    }
+
+    y += 4 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
+    doc.setFont('Poppins', 'italic');
     doc.text('Related Materials:', 20, y);
     doc.setFont('Poppins', 'normal')
     y += 4 * 1.35;
@@ -356,30 +403,18 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
       doc.text('Undefined', 20, y);
       y += 4 * 1.35;
     }
+  }
+  else if (p instanceof TrainingMaterial) {
+    y = sectionTitle(doc, 'Material Detail', y, assets);
 
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
     doc.setFont('Poppins', 'italic');
-    doc.text('Certification:', 20, y);
+    doc.text('Interactivity Type:', 20, y);
     doc.setFont('Poppins', 'normal')
     y += 4 * 1.35;
-    doc.text(p.certification ?? 'Undefined', 20, y);
+    doc.text(p.interactivityType ?? 'Undefined', 20, y);
     y += 4 * 1.35;
-
-    if (p.certification && p.certification === 'Micro-credential') {
-      y += 4 * 1.35;
-      y = checkEnd(doc, y, 0, assets);
-      doc.setFont('Poppins', 'italic');
-      doc.text('Microcredential Awarding Body:', 20, y);
-      doc.setFont('Poppins', 'normal')
-      y += 4 * 1.35;
-      y = checkEnd(doc, y, 0, assets);
-      doc.text(p.microcredentialAwardingBody ?? 'Undefined', 20, y);
-      y += 4 * 1.35;
-    }
-  }
-  else if (p instanceof TrainingMaterial) {
-    y = sectionTitle(doc, 'Material Detail', y, assets);
 
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
@@ -405,15 +440,6 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
       doc.text('Undefined', 20, y);
       y += 4 * 1.35;
     }
-
-    y += 4 * 1.35;
-    y = checkEnd(doc, y, 0, assets);
-    doc.setFont('Poppins', 'italic');
-    doc.text('Interactivity Type:', 20, y);
-    doc.setFont('Poppins', 'normal')
-    y += 4 * 1.35;
-    doc.text(p.interactivityType ?? 'Undefined', 20, y);
-     y += 4 * 1.35;
   }
 
   y += 4 * 1.35;
@@ -493,43 +519,6 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
 
   y = sectionTitle(doc, 'Additional Information', y, assets);
 
-  y += 4 * 1.35;
-  y = checkEnd(doc, y, 0, assets);
-  doc.setFont('Poppins', 'italic');
-  doc.text('Sources:', 20, y);
-  doc.setFont('Poppins', 'normal')
-  y += 4 * 1.35;
-  const lines = doc.splitTextToSize((p.source && p.source != '') ? p.source : 'Undefined', 170);
-  const linesSize = lines.length * 4 * 1.35;
-  y = checkEnd(doc, y, linesSize, assets);
-  doc.text(lines, 20, y);
-  y += linesSize;
-
-  y += 4 * 1.35;
-  y = checkEnd(doc, y, 0, assets);
-  doc.setFont('Poppins', 'italic');
-  doc.text('Audience:', 20, y);
-  doc.setFont('Poppins', 'normal')
-  y += 4 * 1.35;
-  if (p.audience.length > 0) {
-    p.audience.forEach((audience) => {
-      const lines = doc.splitTextToSize(audience, 170);
-      for (let i = 0; i < lines.length; i++) {
-        if (i == 0) lines[i] = '• ' + lines[i];
-        else lines[i] = '   ' + lines[i];
-      }
-      const linesSize = lines.length * 4 * 1.35;
-      y = checkEnd(doc, y, linesSize, assets);
-      doc.text(lines, 20, y);
-      y += linesSize;
-    });
-  }
-  else {
-    y = checkEnd(doc, y, 0, assets);
-    doc.text('Undefined', 20, y);
-    y += 4 * 1.35;
-  }
-
   if(p instanceof TrainingAction) {
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
@@ -562,7 +551,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
       doc.text('Undefined', 20, y);
       y += 4 * 1.35;
     }
-
+    
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
     doc.setFont('Poppins', 'italic');
@@ -599,6 +588,16 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
     doc.setFont('Poppins', 'italic');
+    doc.text('License:', 20, y);
+    doc.setFont('Poppins', 'normal')
+    y += 4 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
+    doc.text(p.license ?? 'Undefined', 20, y);
+    y += 4 * 1.35;
+    
+    y += 4 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
+    doc.setFont('Poppins', 'italic');
     doc.text('Contributors:', 20, y);
     doc.setFont('Poppins', 'normal')
     y += 4 * 1.35;
@@ -614,15 +613,42 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
       doc.text('Undefined', 20, y);
       y += 4 * 1.35;
     }
+  }
 
-    y += 4 * 1.35;
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
+  doc.text('Sources:', 20, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  const lines = doc.splitTextToSize((p.source && p.source != '') ? p.source : 'Undefined', 170);
+  const linesSize = lines.length * 4 * 1.35;
+  y = checkEnd(doc, y, linesSize, assets);
+  doc.text(lines, 20, y);
+  y += linesSize;
+
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
+  doc.text('Audience:', 20, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  if (p.audience.length > 0) {
+    p.audience.forEach((audience) => {
+      const lines = doc.splitTextToSize(audience, 170);
+      for (let i = 0; i < lines.length; i++) {
+        if (i == 0) lines[i] = '• ' + lines[i];
+        else lines[i] = '   ' + lines[i];
+      }
+      const linesSize = lines.length * 4 * 1.35;
+      y = checkEnd(doc, y, linesSize, assets);
+      doc.text(lines, 20, y);
+      y += linesSize;
+    });
+  }
+  else {
     y = checkEnd(doc, y, 0, assets);
-    doc.setFont('Poppins', 'italic');
-    doc.text('License:', 20, y);
-    doc.setFont('Poppins', 'normal')
-    y += 4 * 1.35;
-    y = checkEnd(doc, y, 0, assets);
-    doc.text(p.license ?? 'Undefined', 20, y);
+    doc.text('Undefined', 20, y);
     y += 4 * 1.35;
   }
 
@@ -734,4 +760,14 @@ function cleanPdfText(input: string) {
   }
 
   return text.trim();
+}
+
+function getActionDates(timing: TimePeriod[]): string {
+  if (timing.length > 0) {
+    const startDate = timing[0].start.toLocaleDateString('en-UK');
+    const endDate = timing[timing.length -1].end?.toLocaleDateString('en-UK') ?? timing[timing.length -1].start.toLocaleDateString('en-UK');
+    if (startDate == endDate) return startDate;
+    return startDate + ' - ' + endDate;
+  }
+  return 'Not Defined';
 }
