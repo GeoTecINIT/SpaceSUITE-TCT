@@ -91,11 +91,11 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
     euLogo?: string | undefined;
     spaceSuiteLogo?: string | undefined;
   }): number {
-  doc.setFontSize(26).setFont('Poppins', 'bold');
+  doc.setFontSize(20).setFont('Poppins', 'bold');
   doc.setTextColor('#0e145d');
 
   const lines = doc.splitTextToSize(p.title, 170);
-  const linesSize = lines.length * 10.4 * 1.35;
+  const linesSize = lines.length * 8 * 1.35;
   y = checkEnd(doc, y, linesSize, assets);
   doc.text(lines, 20, y);
   y += linesSize;
@@ -104,22 +104,32 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
 
   if (p.creators.length > 0) {
     doc.setFont('Poppins', 'italic');
-    y += 4 * 1.35;
-    const abstractLines = doc.splitTextToSize(cleanPdfText(p.creators.join(', ')), 170);
-    const abstractLinesSize = abstractLines.length * 4 * 1.35;
-    y = checkEnd(doc, y, abstractLinesSize, assets);
-    doc.text(abstractLines, 20, y);
-    y += abstractLinesSize;
+    const creatorLines = doc.splitTextToSize(cleanPdfText(p.creators.join(', ')), 147);
+    const creatorLinesSize = creatorLines.length * 4 * 1.35;
+    y = checkEnd(doc, y, creatorLinesSize, assets);
+    doc.text('Instructors:', 20, y);
     doc.setFont('Poppins', 'normal');
+    doc.text(creatorLines, 41, y);
+    y += creatorLinesSize;
   }
 
-  y += 4 * 1.35;
-  doc.text(p.publisher, 20, y);
+  y += 2 * 1.35;
+  doc.setFont('Poppins', 'italic');
+  const providerLines = doc.splitTextToSize(cleanPdfText(p.publisher), 147);
+  const providerLinesSize = providerLines.length * 4 * 1.35;
+  y = checkEnd(doc, y, providerLinesSize, assets);
+  doc.text('Provided by:', 20, y);
+  doc.setFont('Poppins', 'normal');
+  doc.text(providerLines, 43, y);
   y += 4 * 1.35;
 
   if(p instanceof TrainingAction && p.timing.length > 0) {
-    y += 4 * 1.35;
-    doc.text(getActionDates(p.timing), 20, y);
+    y += 2 * 1.35;
+    doc.setFont('Poppins', 'italic');
+    y = checkEnd(doc, y, 0, assets);
+    doc.text('Date Range:', 20, y);
+    doc.setFont('Poppins', 'normal');
+    doc.text(getActionDates(p.timing), 43, y);
     y += 4 * 1.35;
   }
 
@@ -131,52 +141,51 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
   doc.text('Type:', 20, y);
   doc.text('Language:', 100, y);
   doc.setFont('Poppins', 'normal')
-  y += 4 * 1.35;
-  doc.text('Training ' + (p instanceof TrainingMaterial ? 'Material' : 'Action'), 20, y);
-  doc.text(p.language ?? 'Undefined', 100, y);
+  doc.text('Training ' + (p instanceof TrainingMaterial ? 'Material' : 'Action'), 30, y);
+  doc.text(p.language ?? 'Undefined', 120, y);
   y += 4 * 1.35;
 
-  y += 4 * 1.35;
+  y += 2 * 1.35;
   y = checkEnd(doc, y, 0, assets);
   doc.setFont('Poppins', 'italic');
   doc.text('Educational Level:', 20, y);
   doc.text('Workload:', 100, y);
   doc.setFont('Poppins', 'normal')
-  y += 4 * 1.35;
-  doc.text((p.educationLevel.length > 0 ? 'EQF ' + p.educationLevel : 'Undefined'), 20, y);
-  doc.text(p.workload ? (p.workload + ' ' + p.workloadUnit) : 'Undefined', 100, y);
+  doc.text((p.educationLevel.length > 0 ? 'EQF ' + p.educationLevel : 'Undefined'), 53, y);
+  doc.text(p.workload ? (p.workload + ' ' + p.workloadUnit) : 'Undefined', 119, y);
   y += 4 * 1.35;
 
-  y += 4 * 1.35;
+  y += 2 * 1.35;
   y = checkEnd(doc, y, 0, assets);
   doc.setFont('Poppins', 'italic');
   doc.text('Created:', 20, y);
   doc.text('Last Updated:', 100, y);
   doc.setFont('Poppins', 'normal')
-  y += 4 * 1.35;
-  doc.text(p.created.toLocaleDateString('en-UK'), 20, y);
-  doc.text((p.updatedAt ? p.updatedAt.toLocaleDateString('en-UK') : p.created.toLocaleDateString('en-UK')), 100, y);
+  doc.text(p.created.toLocaleDateString('en-UK'), 36, y);
+  doc.text((p.updatedAt ? p.updatedAt.toLocaleDateString('en-UK') : p.created.toLocaleDateString('en-UK')), 125, y);
   y += 4 * 1.35;
 
-  y += 4 * 1.35;
-  y = checkEnd(doc, y, 0, assets);
+  y += 2 * 1.35;
   doc.setFont('Poppins', 'italic');
   doc.text('Visibility:', 20, y);
-  doc.text('Published Under:', 100, y);
+  doc.text('Published by:', 100, y);
   doc.setFont('Poppins', 'normal')
-  y += 4 * 1.35;
-  doc.text((p.isPublic ? 'Public' : 'Private'), 20, y);
-  doc.text((p.division ? p.orgName + ', ' + p.division : p.orgName) ?? 'Undefined', 100, y);
-  y += 4 * 1.35;
+  doc.text((p.isPublic ? 'Public' : 'Private'), 36, y);
+  const orgLines = doc.splitTextToSize((p.division ? p.orgName + ', ' + p.division : p.orgName) ?? 'Undefined', 50);
+  const orgLinesSize = orgLines.length * 4 * 1.35;
+  y = checkEnd(doc, y, orgLinesSize, assets);
+  doc.text(orgLines, 124, y);
+  y += orgLinesSize;
 
   doc.setFont('Poppins', 'italic');
   y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
   doc.setTextColor('#3fb3f8');
   doc.textWithLink(
     `View Training ${p instanceof TrainingMaterial ? 'Material' : 'Action'} in the SpaceSuite Training Catalogue`,
     20,
     y,
-    {url: p.url}
+    {url: `https://spacesuite-project-tct.web.app/${p instanceof TrainingMaterial ? 'material' : 'action'}/${p._id}`}
   );
   doc.setTextColor('#0e145d');
   y += 4 * 1.35;
@@ -184,7 +193,8 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
 
   if (p.url != '') {
     doc.setFont('Poppins', 'italic');
-    y += 4 * 1.35;
+    y += 2 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
     doc.setTextColor('#3fb3f8');
     doc.textWithLink(
       `View Training ${p instanceof TrainingMaterial ? 'Material' : 'Action'} web page`,
@@ -323,20 +333,30 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y = sectionTitle(doc, 'Abstract', y, assets);
 
   y += 4 * 1.35;
-  const abstractLines = doc.splitTextToSize(cleanPdfText(p.abstract), 170);
-  const abstractLinesSize = abstractLines.length * 4 * 1.35;
-  y = checkEnd(doc, y, abstractLinesSize, assets);
-  doc.text(abstractLines, 20, y);
-  y += abstractLinesSize;
+  const abstractParagraphs = cleanPdfText(p.abstract)
+    .split('\n')
+    .map(s => s.trim());
+  for (const paragraph of abstractParagraphs) {
+    const abstractLines = doc.splitTextToSize(paragraph, 170);
+    const abstractLinesSize = abstractLines.length * 4 * 1.35;
+    y = checkEnd(doc, y, abstractLinesSize, assets);
+    doc.text(abstractLines, 20, y);
+    y += abstractLinesSize;
+  }
 
   y = sectionTitle(doc, 'Description', y, assets);
 
   y += 4 * 1.35;
-  const descriptionLines = doc.splitTextToSize(cleanPdfText(p.description), 170);
-  const descriptionLinesSize = descriptionLines.length * 4 * 1.35;
-  y = checkEnd(doc, y, descriptionLinesSize, assets);
-  doc.text(descriptionLines, 20, y);
-  y += descriptionLinesSize;
+  const descriptionParagraphs = cleanPdfText(p.description)
+    .split('\n')
+    .map(s => s.trim());
+  for (const paragraph of descriptionParagraphs) {
+    const descriptionLines = doc.splitTextToSize(paragraph, 170);
+    const descriptionLinesSize = descriptionLines.length * 4 * 1.35;
+    y = checkEnd(doc, y, descriptionLinesSize, assets);
+    doc.text(descriptionLines, 20, y);
+    y += descriptionLinesSize;
+  }
 
   y = sectionTitle(doc, 'Table of Contents', y, assets);
 
