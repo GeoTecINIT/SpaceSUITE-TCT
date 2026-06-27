@@ -34,6 +34,7 @@ import { MenuModule } from "primeng/menu";
 import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { InputGroupModule } from "primeng/inputgroup";
 import { WorkloadUnit } from "../../model/trainingItem";
+import { DraftStorageService } from "../../services/draftStorage.service";
 
 @Component({
   standalone: true,
@@ -78,7 +79,8 @@ export class MaterialFormComponent {
     ];
 
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
-              private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, private authService: AuthService) {}
+              private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, 
+              private authService: AuthService, private draftService: DraftStorageService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -98,12 +100,16 @@ export class MaterialFormComponent {
       )
     });
 
-    if (this.inputMaterial) {
-      this.material = this.inputMaterial;
-      if (this.material.division == '') this.material.division = undefined;
-      this.firebaseService.getOrganizationDivisions(this.material.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
+    const formDraft: TrainingMaterial | null = this.draftService.loadMaterial();
+    if (formDraft && (!this.inputMaterial || formDraft._id == this.inputMaterial._id)) {
+      this.material = formDraft;
     }
-
+    else if (this.inputMaterial) {
+      this.material = this.inputMaterial;
+    }
+    if (this.material.division == '') this.material.division = undefined;
+    if (this.material.orgId) this.firebaseService.getOrganizationDivisions(this.material.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
+    
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()
     })
@@ -174,6 +180,7 @@ export class MaterialFormComponent {
       ).subscribe(materialId => {
         submitted = true;
         this.material._id = materialId;
+        this.draftService.clearMaterial();
       });
     }
     else {
@@ -222,6 +229,10 @@ export class MaterialFormComponent {
     }, 0);
   }
 
+  saveDraft() {
+    this.draftService.saveMaterial(this.material);
+  }
+
   confirmExitWithoutSaving() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to exit without saving?',
@@ -235,7 +246,10 @@ export class MaterialFormComponent {
         label: 'Exit',
         severity: 'primary',
       },
-      accept: () => this.exitWithoutSavingService.exitSubject.next(true),
+      accept: () => {
+        this.draftService.clearMaterial();
+        this.exitWithoutSavingService.exitSubject.next(true);
+      },
       reject: () => this.exitWithoutSavingService.exitSubject.next(false),
     });
   }

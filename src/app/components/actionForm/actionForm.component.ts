@@ -38,6 +38,7 @@ import { InputGroupModule } from "primeng/inputgroup";
 import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { MenuModule } from "primeng/menu";
 import { WorkloadUnit } from "../../model/trainingItem";
+import { DraftStorageService } from "../../services/draftStorage.service";
 
 @Component({
   standalone: true,
@@ -83,8 +84,9 @@ export class ActionFormComponent {
     { label: WorkloadUnit.Hours }
   ];
 
-  constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService, private openrouteService: OpenrouteService,
-              private trainingActionService: TrainingActionService, private router: Router, private confirmationService: ConfirmationService, private authService: AuthService) {}
+  constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService, 
+              private openrouteService: OpenrouteService, private trainingActionService: TrainingActionService, private router: Router, 
+              private confirmationService: ConfirmationService, private authService: AuthService, private draftService: DraftStorageService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -104,11 +106,16 @@ export class ActionFormComponent {
       )
     });
 
-    if (this.inputAction) {
-      this.action = this.inputAction;
-      if (this.action.division == '') this.action.division = undefined;
-      this.firebaseService.getOrganizationDivisions(this.action.orgId!).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
+    const formDraft: TrainingAction | null = this.draftService.loadAction();
+    if (formDraft && (!this.inputAction || formDraft._id == this.inputAction._id)) {
+      this.action = formDraft;
     }
+    else if (this.inputAction) {
+      this.action = this.inputAction;
+      
+    }
+    if (this.action.division == '') this.action.division = undefined;
+    if (this.action.orgId) this.firebaseService.getOrganizationDivisions(this.action.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
 
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()
@@ -180,6 +187,7 @@ export class ActionFormComponent {
       ).subscribe(actionId => {
         submitted = true;
         this.action._id = actionId;
+        this.draftService.clearAction();
       });
     }
     else {
@@ -228,6 +236,10 @@ export class ActionFormComponent {
     }, 0);
   }
 
+  saveDraft() {
+    this.draftService.saveAction(this.action);
+  }
+
   confirmExitWithoutSaving() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to exit without saving?',
@@ -241,7 +253,10 @@ export class ActionFormComponent {
         label: 'Exit',
         severity: 'primary',
       },
-      accept: () => this.exitWithoutSavingService.exitSubject.next(true),
+      accept: () => {
+        this.draftService.clearAction();
+        this.exitWithoutSavingService.exitSubject.next(true);
+      },
       reject: () => this.exitWithoutSavingService.exitSubject.next(false),
     });
   }
