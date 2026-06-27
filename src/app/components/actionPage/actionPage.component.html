@@ -33,11 +33,11 @@
                 <div class="text-sm"><strong>Last Updated:</strong> {{action.updatedAt.toLocaleDateString('en-UK')}}</div>
                 |
             }
-            <div class="text-sm"><strong>Dates:</strong> {{ this.getActionDates() }}</div>
+            <div class="text-sm"><strong>Date Range:</strong> {{ this.getActionDates() }}</div>
             |
             <div class="text-sm"><strong>Visibility:</strong> {{action.isPublic ? 'Public' : 'Private'}}</div>
             |
-            <div class="text-sm"><strong>Published Under:</strong> {{action.division ? action.orgName + ' - ' + action.division : action.orgName}}</div>
+            <div class="text-sm"><strong>Published by:</strong> {{action.division ? action.orgName + ' - ' + action.division : action.orgName}}</div>
             |
             @if(action.url != '') {
                 <a class="icon-link text-sm align-items-center mx-1" href="{{action.url}}" target="_blank">

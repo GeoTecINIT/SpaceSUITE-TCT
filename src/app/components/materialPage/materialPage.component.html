@@ -35,7 +35,7 @@
             }
             <div class="text-sm"><strong>Visibility:</strong> {{material.isPublic ? 'Public' : 'Private'}}</div>
             |
-            <div class="text-sm"><strong>Published Under:</strong> {{material.division ? material.orgName + ' - ' + material.division : material.orgName}}</div>
+            <div class="text-sm"><strong>Published by:</strong> {{material.division ? material.orgName + ' - ' + material.division : material.orgName}}</div>
             |
             @if(material.url != '') {
                 <a class="icon-link text-sm align-items-center mx-1" href="{{material.url}}" target="_blank">
