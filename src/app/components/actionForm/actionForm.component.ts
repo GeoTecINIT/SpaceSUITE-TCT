@@ -134,6 +134,7 @@ export class ActionFormComponent {
   }
 
   loadDivisions(newValue: {label: string, value: string}) {
+    this.saveDraft()
     this.action.orgId = newValue.value;
     this.action.orgName = newValue.label;
     this.action.division = undefined;
@@ -278,6 +279,7 @@ export class ActionFormComponent {
   }
 
   setWorkloadUnit(value: WorkloadUnit) {
+    this.saveDraft();
     this.action.workloadUnit = value;
   }
 }
