@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 import { TimePeriod, TrainingAction } from '../model/trainingAction';
 import { TrainingMaterial } from '../model/trainingMaterial';
 
-type StorageWithExpiry<T> = {
-  data: T;
-  expiresAt: number;
-};
-
 @Injectable({
   providedIn: 'root',
 })
@@ -15,14 +10,12 @@ export class DraftStorageService {
   private readonly materialKey = 'training-material-draft';
   private readonly actionKey = 'training-action-draft';
 
-  private readonly ttlMs = 1000 * 60 * 60;
-
   saveMaterial(item: TrainingMaterial): void {
-    this.setWithExpiry(this.materialKey, item.toPlain());
+    this.setDraft(this.materialKey, item.toPlain());
   }
 
   loadMaterial(): TrainingMaterial | null {
-    const plain = this.getWithExpiry<TrainingMaterial>(this.materialKey);
+    const plain = this.getDraft<TrainingMaterial>(this.materialKey);
     if (plain) {
       plain.created = new Date(plain.created);
       plain.updatedAt = new Date(plain.updatedAt);
@@ -36,11 +29,11 @@ export class DraftStorageService {
   }
 
   saveAction(item: TrainingAction): void {
-    this.setWithExpiry(this.actionKey, item.toPlain());
+    this.setDraft(this.actionKey, item.toPlain());
   }
 
   loadAction(): TrainingAction | null {
-    const plain = this.getWithExpiry<TrainingAction>(this.actionKey);
+    const plain = this.getDraft<TrainingAction>(this.actionKey);
     if (plain) {
       plain.created = new Date(plain.created);
       plain.updatedAt = new Date(plain.updatedAt);
@@ -60,16 +53,11 @@ export class DraftStorageService {
     localStorage.removeItem(this.actionKey);
   }
 
-  private setWithExpiry<T>(key: string, data: T): void {
-    const payload: StorageWithExpiry<T> = {
-      data,
-      expiresAt: Date.now() + this.ttlMs,
-    };
-
-    localStorage.setItem(key, JSON.stringify(payload));
+  private setDraft<T>(key: string, data: T): void {
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
-  private getWithExpiry<T>(key: string): T | null {
+  private getDraft<T>(key: string): T | null {
     const raw = localStorage.getItem(key);
 
     if (!raw) {
@@ -77,14 +65,8 @@ export class DraftStorageService {
     }
 
     try {
-      const payload = JSON.parse(raw) as StorageWithExpiry<T>;
-
-      if (Date.now() > payload.expiresAt) {
-        localStorage.removeItem(key);
-        return null;
-      }
-
-      return payload.data;
+      const payload = JSON.parse(raw) as T;
+      return payload;
     } catch {
       localStorage.removeItem(key);
       return null;

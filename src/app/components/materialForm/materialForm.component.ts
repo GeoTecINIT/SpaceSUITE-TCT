@@ -127,6 +127,7 @@ export class MaterialFormComponent {
   }
 
   loadDivisions(newValue: {label: string, value: string}) {
+    this.saveDraft();
     this.material.orgId = newValue.value;
     this.material.orgName = newValue.label;
     this.material.division = undefined;
@@ -256,5 +257,6 @@ export class MaterialFormComponent {
 
   setWorkloadUnit(value: WorkloadUnit) {
     this.material.workloadUnit = value;
+    this.saveDraft();
   }
 }
