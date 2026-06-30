@@ -305,16 +305,39 @@ export class MaterialPageComponent {
   }
 
   downloadMaterialPDF() {
-      document.body.style.cursor = 'wait';
-      this.op.hide();
-  
-      this.pdfService
-        .generateItemPdf(new TrainingMaterial(this.material))
-        .subscribe((pdf) => {
-          this.downloadURI(pdf.url, pdf.filename);
-          document.body.style.cursor = '';
-        });
+    document.body.style.cursor = 'wait';
+    this.op.hide();
+
+    this.pdfService
+      .generateItemPdf(new TrainingMaterial(this.material))
+      .subscribe((pdf) => {
+        this.downloadURI(pdf.url, pdf.filename);
+        document.body.style.cursor = '';
+      });
+  }
+
+  downloadMaterialJSON() {
+    this.op.hide();
+
+    const fileName = (this.material!.title || 'default_name')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '_')
+      .replace(/[^\w_-]/g, '')
+      .toLowerCase();
+
+    const plainProfile = this.material?.toPlain();
+    if (plainProfile) {
+      delete plainProfile['_id'];
+      delete plainProfile['userId'];
+      delete plainProfile['orgId'];
     }
+    const jsonStr = JSON.stringify(plainProfile, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    this.downloadURI(url, fileName + '_profile.json');
+  }
 
   downloadMaterialXML() {
     const url = this.rdfConverter.getRdfXmlUrl(this.material!);

@@ -312,6 +312,29 @@ export class ActionPageComponent {
       });
   }
 
+  downloadMaterialJSON() {
+    this.op.hide();
+
+    const fileName = (this.action!.title || 'default_name')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '_')
+      .replace(/[^\w_-]/g, '')
+      .toLowerCase();
+
+    const plainProfile = this.action?.toPlain();
+    if (plainProfile) {
+      delete plainProfile['_id'];
+      delete plainProfile['userId'];
+      delete plainProfile['orgId'];
+    }
+    const jsonStr = JSON.stringify(plainProfile, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    this.downloadURI(url, fileName + '_profile.json');
+  }
+
   downloadMaterialXML() {
     const url = this.rdfConverter.getRdfXmlUrl(this.action!);
     this.downloadURI(url, this.action?._id + '_metadata.xml');

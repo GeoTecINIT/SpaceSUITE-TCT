@@ -41,7 +41,7 @@ export class TrainingAction extends TrainingItem {
           showTime: value.showTime ?? false
         }
       }),
-      license: this.microcredentialAwardingBody || "",
+      microcredentialAwardingBody: this.microcredentialAwardingBody || "",
       relatedMaterials: this.relatedMaterials
     };
   }
