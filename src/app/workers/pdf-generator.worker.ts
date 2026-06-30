@@ -107,9 +107,16 @@ function renderHeader(doc: jsPDF, p: TrainingItem, y: number,  assets: {
     const creatorLines = doc.splitTextToSize(cleanPdfText(p.creators.join(', ')), 147);
     const creatorLinesSize = creatorLines.length * 4 * 1.35;
     y = checkEnd(doc, y, creatorLinesSize, assets);
-    doc.text(p instanceof TrainingAction ? 'Instructors:' : 'Authors:', 20, y);
-    doc.setFont('Poppins', 'normal');
-    doc.text(creatorLines, 41, y);
+    if (p instanceof TrainingAction) {
+      doc.text('Instructors:', 20, y);
+      doc.setFont('Poppins', 'normal');
+      doc.text(creatorLines, 41, y);
+    }
+    else {
+      doc.text('Authors:', 20, y);
+      doc.setFont('Poppins', 'normal');
+      doc.text(creatorLines, 36, y);
+    }
     y += creatorLinesSize;
   }
 
