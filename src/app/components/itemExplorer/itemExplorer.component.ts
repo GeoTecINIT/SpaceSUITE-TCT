@@ -224,7 +224,7 @@ export class ItemExplorerComponent {
             this.messageService.add({
               severity: 'info',
               summary: 'Info',
-              detail: `Material deleted without problems.`,
+              detail: `Item successfully deleted.`,
               life: 3000,
               closable: true,
             });
