@@ -192,9 +192,7 @@ export class ItemExplorerComponent {
     this.trainingItemsSubscription = combineLatest([
       this.trainingMaterialService.getTrainingMaterialsArray().pipe(
         filter((value) => value !== undefined),
-        tap(
-          (newValue: TrainingMaterial[]) => (this.trainingMaterials = newValue),
-        ),
+        tap((newValue: TrainingMaterial[]) => (this.trainingMaterials = newValue)),
       ),
       this.trainingActionsService.getTrainingActionsArray().pipe(
         filter((value) => value !== undefined),

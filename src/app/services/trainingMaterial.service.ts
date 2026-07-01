@@ -63,12 +63,11 @@ export class TrainingMaterialService extends TrainingItemService {
     return trainingItems.map(item => {
       const newItem = new TrainingMaterial(item);
       newItem.concepts = this.formatFirestoreConcepts(newItem.concepts);
-      newItem.updatedAt = newItem.updatedAt.toDate();
-      if (!newItem.created) newItem.created = newItem.updatedAt.toDate();
-      else newItem.created = newItem.created.toDate();
+      if (newItem.updatedAt && !(newItem.updatedAt instanceof Date)) newItem.updatedAt = newItem.updatedAt.toDate();
+      if (newItem.created) newItem.created = newItem.created.toDate();
       return newItem;
     });
-    }
+  }
 
   public getTrainingMaterial(materialId: string): Observable<TrainingMaterial | undefined> {
     return this.trainingMaterialMap.asObservable().pipe(

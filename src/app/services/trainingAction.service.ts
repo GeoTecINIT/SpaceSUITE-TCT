@@ -63,9 +63,8 @@ export class TrainingActionService extends TrainingItemService {
     return trainingItems.map(item => {
       const newItem = new TrainingAction(item);
       newItem.concepts = this.formatFirestoreConcepts(newItem.concepts);
-      newItem.updatedAt = newItem.updatedAt.toDate();
-      if (!newItem.created) newItem.created = newItem.updatedAt.toDate();
-      else newItem.created = newItem.created.toDate();
+      if (newItem.updatedAt && !(newItem.updatedAt instanceof Date)) newItem.updatedAt = newItem.updatedAt.toDate();
+      if (newItem.created) newItem.created = newItem.created.toDate();
       newItem.timing = 
         newItem.timing
           .map(value => ({start: value.start.toDate(), end: value.end ? value.end.toDate() : undefined, showTime: value.showTime}))
