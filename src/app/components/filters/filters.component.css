@@ -5,6 +5,10 @@
   color: var(--p-multiselect-clear-icon-color);
 }
 
+::ng-deep .p-datepicker {
+  width: 100%;
+}
+
 ::ng-deep .p-multiselect-option span {
   white-space: nowrap;
   overflow: hidden;
