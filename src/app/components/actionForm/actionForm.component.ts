@@ -282,4 +282,13 @@ export class ActionFormComponent {
     this.saveDraft();
     this.action.workloadUnit = value;
   }
+
+  wordCounter(input: string) : number {
+    return input.split(" ").filter(value => value != '').length;
+  }
+
+  limitInputByWordsLimit(input: string, maxWords: number): number | null {
+    if (this.wordCounter(input) >= maxWords) return input.length;
+    else return null
+  }
 }

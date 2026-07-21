@@ -82,10 +82,10 @@
                                     [class.ng-invalid]="errorMap.get('description') != undefined" [class.ng-dirty]="errorMap.get('description') != undefined"
                                     rows="4" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
                                     pTooltip="Provide a concise summary or overview of the resource content. Include key topics, purpose, scope, and any important features or intended audience" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="2000"></textarea>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.description, 400)"></textarea>
                                 <div class="textarea-length" [style]="errorMap.get('description') != undefined ? 'color: var(--danger-color)' : ''">
-                                    <span>{{action.description.length + ' '}}</span>
-                                    <span>/ 2000</span>
+                                    <span>{{wordCounter(action.description) + ' '}}</span>
+                                    <span>/ 400 words</span>
                                 </div>
                                 <label for="description">Description</label>
                             </p-floatlabel>
@@ -98,10 +98,10 @@
                                     [class.ng-invalid]="errorMap.get('abstract') != undefined" [class.ng-dirty]="errorMap.get('abstract') != undefined"
                                     rows="2" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
                                     pTooltip="Provide a brief summary of the resource as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="500"></textarea>
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.abstract, 150)"></textarea>
                                 <div class="textarea-length" [style]="errorMap.get('abstract') != undefined ? 'color: var(--danger-color)' : ''">
-                                    <span>{{action.abstract.length + ' '}}</span>
-                                    <span>/ 500</span>
+                                    <span>{{wordCounter(action.abstract) + ' '}}</span>
+                                    <span>/ 150 words</span>
                                 </div>
                                 <label for="abstract">Abstract</label>
                             </p-floatlabel>
