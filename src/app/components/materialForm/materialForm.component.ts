@@ -1,4 +1,4 @@
-import { Component, Input} from "@angular/core";
+import { Component, Input, signal, WritableSignal} from "@angular/core";
 import { TrainingMaterial } from "../../model/trainingMaterial";
 import { InputTextModule } from "primeng/inputtext";
 import { FloatLabelModule } from "primeng/floatlabel";
@@ -27,7 +27,7 @@ import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
 import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
 import { CustomSelectComponent } from "../customSelect/customSelect.component";
-import { AuthService, ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
+import { AuthService, ExitWithoutSavingService, PermissionService } from "@eo4geo/ngx-bok-utils";
 import { ConfirmDialog } from "primeng/confirmdialog";
 import { SelectButton } from 'primeng/selectbutton';
 import { MenuModule } from "primeng/menu";
@@ -68,6 +68,8 @@ export class MaterialFormComponent {
   uploadedImage: File | undefined;
   uploadedImageB64: string | undefined;
 
+  selectedOrgCanPublish: WritableSignal<boolean> = signal(false);
+
   private authSubscription!: Subscription
   private userOrgsSubscription!: Subscription
 
@@ -80,7 +82,7 @@ export class MaterialFormComponent {
 
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, 
-              private authService: AuthService, private draftService: DraftStorageService) {}
+              private authService: AuthService, private draftService: DraftStorageService, private permissionService: PermissionService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -108,7 +110,10 @@ export class MaterialFormComponent {
       this.material = this.inputMaterial;
     }
     if (this.material.division == '') this.material.division = undefined;
-    if (this.material.orgId) this.firebaseService.getOrganizationDivisions(this.material.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
+    if (this.material.orgId) {
+      this.firebaseService.getOrganizationDivisions(this.material.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
+      this.permissionService.organizationHasPermission(this.material.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => this.selectedOrgCanPublish.set(hasPermission));
+    }
     
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()
@@ -132,6 +137,12 @@ export class MaterialFormComponent {
     this.material.orgName = newValue.label;
     this.material.division = undefined;
     this.firebaseService.getOrganizationDivisions(this.material.orgId!).subscribe(divisions => this.divisionSelector.values = divisions);
+    this.permissionService.organizationHasPermission(this.material.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => {
+      this.selectedOrgCanPublish.set(hasPermission);
+      if (!hasPermission) {
+        this.material.isPublic = false;
+      }
+    });
   }
 
   getUserName() {

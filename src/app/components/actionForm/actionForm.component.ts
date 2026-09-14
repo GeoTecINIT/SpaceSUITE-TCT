@@ -1,4 +1,4 @@
-import { Component, Input} from "@angular/core";
+import { Component, Input, signal, WritableSignal} from "@angular/core";
 import { InputTextModule } from "primeng/inputtext";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { FormsModule } from "@angular/forms";
@@ -26,7 +26,7 @@ import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
 import { MultiselectChipsComponent } from "../multiselectChips/multiselectChips.component";
 import { CustomSelectComponent } from "../customSelect/customSelect.component";
-import { AuthService, ExitWithoutSavingService } from "@eo4geo/ngx-bok-utils";
+import { AuthService, ExitWithoutSavingService, PermissionService } from "@eo4geo/ngx-bok-utils";
 import { ConfirmDialog } from "primeng/confirmdialog";
 import { SelectButton } from 'primeng/selectbutton';
 import { TrainingAction } from "../../model/trainingAction";
@@ -72,6 +72,8 @@ export class ActionFormComponent {
   uploadedImage: File | undefined;
   uploadedImageB64: string | undefined;
 
+  selectedOrgCanPublish: WritableSignal<boolean> = signal(false);
+
   private authSubscription!: Subscription
   private userOrgsSubscription!: Subscription
 
@@ -86,7 +88,8 @@ export class ActionFormComponent {
 
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService, 
               private openrouteService: OpenrouteService, private trainingActionService: TrainingActionService, private router: Router, 
-              private confirmationService: ConfirmationService, private authService: AuthService, private draftService: DraftStorageService) {}
+              private confirmationService: ConfirmationService, private authService: AuthService, private draftService: DraftStorageService,
+              private permissionService: PermissionService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -115,7 +118,10 @@ export class ActionFormComponent {
       
     }
     if (this.action.division == '') this.action.division = undefined;
-    if (this.action.orgId) this.firebaseService.getOrganizationDivisions(this.action.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
+    if (this.action.orgId) {
+      this.firebaseService.getOrganizationDivisions(this.action.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
+      this.permissionService.organizationHasPermission(this.action.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => this.selectedOrgCanPublish.set(hasPermission));
+    }
 
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()
@@ -139,6 +145,12 @@ export class ActionFormComponent {
     this.action.orgName = newValue.label;
     this.action.division = undefined;
     this.firebaseService.getOrganizationDivisions(this.action.orgId!).subscribe(divisions => this.divisionSelector.values = divisions);
+    this.permissionService.organizationHasPermission(this.action.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => {
+      this.selectedOrgCanPublish.set(hasPermission);
+      if (!hasPermission) {
+        this.action.isPublic = false;
+      }
+    });
   }
 
   getUserName() {

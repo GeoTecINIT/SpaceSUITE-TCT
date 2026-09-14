@@ -366,8 +366,9 @@
 
                         <div class="flex w-full">
                             <p-selectbutton [options]="visibilityFieldOptions" [(ngModel)]="action.isPublic" optionLabel="label" optionValue="value"
-                                pTooltip="Specifies whether this action is public or restricted to your account." allowEmpty="false" (ngModelChange)="saveDraft()"
-                                tooltipPosition="right" showDelay="200" hideDelay="200" class="custom-togglebutton"/>
+                                [pTooltip]="selectedOrgCanPublish() ? 'Specifies whether this action is public or restricted to your account.' : 'The selected organization do not have permission to save public actions.'" 
+                                allowEmpty="false" [disabled]="!selectedOrgCanPublish()" [tooltipStyleClass]="selectedOrgCanPublish() ? '' : 'danger-tooltip'"
+                                tooltipPosition="right" showDelay="200" hideDelay="200" class="custom-togglebutton" (ngModelChange)="saveDraft()"/>
                         </div>
                     </div>
                     <div class="flex justify-content-between mt-3">
