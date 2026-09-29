@@ -38,7 +38,9 @@ export class DraftStorageService {
   }
 
   loadCurriculumAction(): TrainingAction | null {
-    return this.loadActionFromStorage(this.curriculumKey);
+    const loadedAction = this.loadActionFromStorage(this.curriculumKey);
+    if (loadedAction) localStorage.removeItem(this.curriculumKey);
+    return loadedAction;
   }
 
   private loadActionFromStorage(key: string) {
