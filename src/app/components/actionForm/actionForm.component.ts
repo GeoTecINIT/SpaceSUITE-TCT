@@ -110,12 +110,15 @@ export class ActionFormComponent {
     });
 
     const formDraft: TrainingAction | null = this.draftService.loadAction();
-    if (formDraft && (!this.inputAction || formDraft._id == this.inputAction._id)) {
+    const curriculumAction: TrainingAction | null = this.draftService.loadCurriculumAction();
+    if (formDraft && (!this.inputAction || formDraft._id == this.inputAction._id) && !curriculumAction) {
       this.action = formDraft;
     }
     else if (this.inputAction) {
       this.action = this.inputAction;
-      
+    }
+    else if (curriculumAction) {
+      this.action = curriculumAction;
     }
     if (this.action.division == '') this.action.division = undefined;
     if (this.action.orgId) {

@@ -9,6 +9,7 @@ import { TrainingMaterial } from '../model/trainingMaterial';
 export class DraftStorageService {
   private readonly materialKey = 'training-material-draft';
   private readonly actionKey = 'training-action-draft';
+  private readonly curriculumKey = 'curriculum-to-action';
 
   saveMaterial(item: TrainingMaterial): void {
     this.setDraft(this.materialKey, item.toPlain());
@@ -33,7 +34,15 @@ export class DraftStorageService {
   }
 
   loadAction(): TrainingAction | null {
-    const plain = this.getDraft<TrainingAction>(this.actionKey);
+    return this.loadActionFromStorage(this.actionKey);
+  }
+
+  loadCurriculumAction(): TrainingAction | null {
+    return this.loadActionFromStorage(this.curriculumKey);
+  }
+
+  private loadActionFromStorage(key: string) {
+    const plain = this.getDraft<TrainingAction>(key);
     if (plain) {
       plain.created = new Date(plain.created);
       plain.updatedAt = new Date(plain.updatedAt);
