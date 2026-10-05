@@ -16,11 +16,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { BokModalComponent } from "../bokModal/bokModal.component";
 import { FirebaseService } from "../../services/firebase.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, EMPTY, finalize, map, of, Subscription, take } from "rxjs";
+import { catchError, EMPTY, finalize, map, of, Subscription, switchMap, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
@@ -39,6 +39,8 @@ import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { MenuModule } from "primeng/menu";
 import { WorkloadUnit } from "../../model/trainingItem";
 import { DraftStorageService } from "../../services/draftStorage.service";
+import { OfferToActionService } from "../../services/offerToAction.service";
+import { UtilsService } from "../../services/utils.service";
 
 @Component({
   standalone: true,
@@ -89,7 +91,8 @@ export class ActionFormComponent {
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService, 
               private openrouteService: OpenrouteService, private trainingActionService: TrainingActionService, private router: Router, 
               private confirmationService: ConfirmationService, private authService: AuthService, private draftService: DraftStorageService,
-              private permissionService: PermissionService) {}
+              private permissionService: PermissionService, private route: ActivatedRoute, private offerToActionService: OfferToActionService,
+              private utilsService: UtilsService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -109,22 +112,35 @@ export class ActionFormComponent {
       )
     });
 
-    const formDraft: TrainingAction | null = this.draftService.loadAction();
-    const curriculumAction: TrainingAction | null = this.draftService.loadCurriculumAction();
-    if (formDraft && (!this.inputAction || formDraft._id == this.inputAction._id) && !curriculumAction) {
-      this.action = formDraft;
-    }
-    else if (this.inputAction) {
-      this.action = this.inputAction;
-    }
-    else if (curriculumAction) {
-      this.action = curriculumAction;
-    }
-    if (this.action.division == '') this.action.division = undefined;
-    if (this.action.orgId) {
-      this.firebaseService.getOrganizationDivisions(this.action.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
-      this.permissionService.organizationHasPermission(this.action.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => this.selectedOrgCanPublish.set(hasPermission));
-    }
+    this.route.queryParamMap.pipe(
+      take(1),
+      map( paramMap => paramMap.get('offerId')),
+      switchMap(id => {
+        if (id != null) {
+          return this.offerToActionService.getActionDraft(id);
+        }
+        else return of(null);
+      }),
+      map((curriculumAction: TrainingAction | null) => {
+        const formDraft: TrainingAction | null = this.draftService.loadAction();
+        if (formDraft && (!this.inputAction || formDraft._id == this.inputAction._id) && !curriculumAction) {
+          this.action = formDraft;
+        }
+        else if (this.inputAction) {
+          this.action = this.inputAction;
+        }
+        else if (curriculumAction) {
+          this.action = new TrainingAction(curriculumAction);
+          this.action.educationLevel = this.action.educationLevel.map( value => 'EQF ' + value);
+          this.action.subject = this.action.subject.map(subject => this.utilsService.codeToKnowledgeArea.get(subject) || subject);
+        }
+        if (this.action.division == '') this.action.division = undefined;
+        if (this.action.orgId) {
+          this.firebaseService.getOrganizationDivisions(this.action.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.values = divisions);
+          this.permissionService.organizationHasPermission(this.action.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => this.selectedOrgCanPublish.set(hasPermission));
+        }
+      })
+    ).subscribe();
 
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()

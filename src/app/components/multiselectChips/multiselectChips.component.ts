@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild} from "@angular/core";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { FormsModule } from "@angular/forms";
 import { IconFieldModule } from 'primeng/iconfield';
@@ -43,10 +43,15 @@ export class MultiselectChipsComponent {
     this.filterService.getOptionByLabel(this.optionsName).subscribe( filterOption =>
       this.multiselectOptions = filterOption.values.filter(value => value != 'Other').map(x => ({ id: x, value: x }))
     );
-    this.chips.forEach(chip => {
-      this.chipAnimations[chip] = false;
-      this.getBackgroundColor(chip);
-    });
+  }
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges['chips']) {
+      simpleChanges['chips'].currentValue.forEach((chip: string) => {
+        this.chipAnimations[chip] = false;
+        this.getBackgroundColor(chip);
+      });
+    }
   }
 
   getBackgroundColor(chip: string) {
