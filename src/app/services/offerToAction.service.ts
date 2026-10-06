@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
-import { collection, CollectionReference, doc, docData, Firestore } from "@angular/fire/firestore";
-import { map, Observable } from "rxjs";
+import { collection, CollectionReference, deleteDoc, doc, docData, Firestore } from "@angular/fire/firestore";
+import { map, Observable, tap } from "rxjs";
 import { TrainingAction } from "../model/trainingAction";
 
 @Injectable({
@@ -17,7 +17,8 @@ export class OfferToActionService {
   public getActionDraft(id: string): Observable<TrainingAction> {
     const docRef = doc(this.offerToActionCollection, id);
     return (docData(docRef) as Observable<TrainingAction>).pipe(
-      map(value => this.formatTrainingAction(value))
+      map(value => this.formatTrainingAction(value)),
+      tap(() => deleteDoc(docRef))
     );
   }
 
