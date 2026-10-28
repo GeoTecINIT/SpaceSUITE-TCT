@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { Auth, authState } from "@angular/fire/auth";
-import { collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, serverTimestamp, setDoc } from '@angular/fire/firestore';
-import { concatMap, from, map, Observable, of, switchMap } from 'rxjs';
+import { collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, query, serverTimestamp, setDoc, where } from '@angular/fire/firestore';
+import { combineLatest, concatMap, from, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { TrainingMaterial } from "../model/trainingMaterial";
 import { deleteObject, getDownloadURL, ref, Storage, uploadBytes } from "@angular/fire/storage";
 import { TrainingAction } from "../model/trainingAction";
@@ -17,6 +17,8 @@ export class FirebaseService {
   private materialCollection: CollectionReference;
   private actionCollection: CollectionReference;
 
+  private organizations$?: Observable<{ _id: string, name: string }[]>
+  private userOrganizations$?: Observable<{ _id: string, name: string }[]>
 
   constructor() {
       this.auth = inject(Auth);
@@ -28,25 +30,47 @@ export class FirebaseService {
   }
 
   getOrganizationList(): Observable<{ _id: string, name: string }[]> {
-    const organizations = collectionData(this.orgCollection) as Observable<{ _id: string, name: string}[]>
-    return organizations.pipe(
-      map( orgs => orgs.sort((a, b) => a.name.localeCompare(b.name)))
-    );
+    if (!this.organizations$) {
+      const organizations = collectionData(this.orgCollection) as Observable<{ _id: string, name: string}[]>
+      this.organizations$ = organizations.pipe(
+        map( orgs => orgs.sort((a, b) => a.name.localeCompare(b.name))),
+        shareReplay({bufferSize: 1, refCount: true})
+      );
+    }
+    return this.organizations$;
   }
 
   getUserOrganizationList(): Observable<{ _id: string, name: string }[]> {
-    let uid = ''
-    return authState(this.auth).pipe(
-      switchMap(user => {
-        if (!user) return of([]);
-        uid = user.uid;
-        return collectionData(this.orgCollection) as Observable<{ _id: string, name: string, regular: string[], admin: string[] }[]>;
-      }),
-      map(organizations => 
-        organizations.filter(organization => organization.regular.includes(uid) || organization.admin.includes(uid))
-        .map(organization => ({ _id: organization._id, name: organization.name }))
-      )
-    );
+    if (!this.userOrganizations$) {
+      this.userOrganizations$ = authState(this.auth).pipe(
+        switchMap(user => {
+          if (!user) return of([]);
+          const regularQuery = query(
+            this.orgCollection,
+            where('regular', 'array-contains', user.uid)
+          );
+          const adminQuery = query(
+            this.orgCollection,
+            where('admin', 'array-contains', user.uid)
+          );
+          return combineLatest([
+            collectionData(regularQuery) as Observable<{ _id: string, name: string }[]>,
+            collectionData(adminQuery) as Observable<{ _id: string, name: string }[]>,
+          ]).pipe(
+            map(([regular, admin]) => {
+              const seen = new Set<string>();
+              return [...regular, ...admin].filter(org => {
+                if (seen.has(org._id)) return false;
+                seen.add(org._id);
+                return true;
+              })
+            })
+          )
+        }),
+        shareReplay({bufferSize: 1, refCount: true})
+      );
+    }
+    return this.userOrganizations$;
   }
     
   getOrganizationDivisions(orgId: string): Observable<string[]> {
