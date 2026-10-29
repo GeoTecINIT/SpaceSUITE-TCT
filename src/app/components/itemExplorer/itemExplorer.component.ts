@@ -32,6 +32,7 @@ import { TrainingMaterialService } from '../../services/trainingMaterial.service
 import { CardComponent } from '../card/card.component';
 import { FiltersComponent } from '../filters/filters.component';
 import { AuthService } from '@eo4geo/ngx-bok-utils';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -49,6 +50,7 @@ import { AuthService } from '@eo4geo/ngx-bok-utils';
     MenuModule,
     ButtonGroupModule,
     TabsModule,
+    TooltipModule
   ],
   providers: [MessageService],
 })
@@ -561,5 +563,9 @@ export class ItemExplorerComponent {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 0);
+  }
+
+  public get disableAddButton() {
+    return this.userOrgIds.length == 0;
   }
 }

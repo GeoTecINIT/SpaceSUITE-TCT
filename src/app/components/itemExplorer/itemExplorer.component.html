@@ -107,6 +107,9 @@
     icon="pi pi-plus"
     label="Add {{ selectedTab === 0 ? 'Material' : 'Action' }}"
     class="custom-button floating-button"
+    [disabled]="disableAddButton" 
+    [pTooltip]="disableAddButton ? 'You must be part of an organization to create an ' + (selectedTab === 0 ? 'material' : 'action') : ''"
+    tooltipPosition="top"
   />
 </div>
 <p-menu

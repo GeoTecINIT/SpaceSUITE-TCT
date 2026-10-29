@@ -96,10 +96,16 @@ export class MaterialFormComponent {
     })
     
     this.userOrgsSubscription = this.firebaseService.getUserOrganizationList().subscribe(organizations => {
-      this.organizationSelector.values = [];
-      organizations.forEach(organization =>
-        this.organizationSelector.values.push({label: organization.name, value: organization._id})
-      )
+      if (organizations.length == 0) {
+        this.exitWithoutSavingService.bypassGuard.next(true);
+        this.router.navigate(['material']);
+      }
+      else {
+        this.organizationSelector.values = [];
+        organizations.forEach(organization =>
+          this.organizationSelector.values.push({label: organization.name, value: organization._id})
+        )
+      }
     });
 
     const formDraft: TrainingMaterial | null = this.draftService.loadMaterial();

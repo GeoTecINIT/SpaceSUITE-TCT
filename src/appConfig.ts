@@ -24,6 +24,7 @@ import { EditMaterialPageComponent } from './app/components/editMaterialPage/edi
 import { ActionFormComponent } from './app/components/actionForm/actionForm.component';
 import { EditActionPageComponent } from './app/components/editActionPage/editActionPage.component';
 import { ActionPageComponent } from './app/components/actionPage/actionPage.component';
+import { UserOrgsGuard } from './app/guards/userOrgs.guard';
 
 const routes: Routes = [
   { path: '', component: ItemExplorerComponent },
@@ -37,13 +38,13 @@ const routes: Routes = [
   {
     path: 'material/new',
     component: MaterialFormComponent,
-    canMatch: [AuthGuard],
+    canMatch: [AuthGuard, UserOrgsGuard],
     canDeactivate: [exitWithoutSavingGuard],
   },
   {
     path: 'material/edit/:dynamicValue',
     component: EditMaterialPageComponent,
-    canMatch: [AuthGuard],
+    canMatch: [AuthGuard, UserOrgsGuard],
     canDeactivate: [exitWithoutSavingGuard],
   },
   { path: 'material/:dynamicValue', component: MaterialPageComponent },
@@ -51,13 +52,13 @@ const routes: Routes = [
   {
     path: 'action/new',
     component: ActionFormComponent,
-    canMatch: [AuthGuard],
+    canMatch: [AuthGuard, UserOrgsGuard],
     canDeactivate: [exitWithoutSavingGuard],
   },
   {
     path: 'action/edit/:dynamicValue',
     component: EditActionPageComponent,
-    canMatch: [AuthGuard],
+    canMatch: [AuthGuard, UserOrgsGuard],
     canDeactivate: [exitWithoutSavingGuard],
   },
   { path: 'action/:dynamicValue', component: ActionPageComponent },
