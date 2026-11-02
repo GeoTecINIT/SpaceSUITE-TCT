@@ -108,7 +108,7 @@
     label="Add {{ selectedTab === 0 ? 'Material' : 'Action' }}"
     class="custom-button floating-button"
     [disabled]="disableAddButton" 
-    [pTooltip]="disableAddButton ? 'You must be part of an organization to create an ' + (selectedTab === 0 ? 'material' : 'action') : ''"
+    [pTooltip]="disableAddButton ? 'You must be part of an organization to create ' + (selectedTab === 0 ? 'a material' : 'an action') : ''"
     tooltipPosition="top"
   />
 </div>
