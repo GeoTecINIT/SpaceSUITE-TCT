@@ -102,6 +102,7 @@ export class RdfConverterService {
     if (model.url) ttl += `  dcterms:identifier <${model.url}> ;\n`;
     if (model.language) ttl += `  dcterms:language <https://id.loc.gov/vocabulary/iso639-1/${model.language.toLowerCase()}> ;\n`;
     if (model instanceof TrainingAction && model.actionModality) ttl += `  elm:mode "${model.actionModality}" ;\n`;
+    if (model instanceof TrainingAction && model.actionType) ttl += `  elm:category "${model.actionType}" ;\n`;
     if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') ttl += `  elm:location "${model.location.name}" ;\n`;
     if (model instanceof TrainingAction && model.timing) {
       model.timing.forEach((period: TimePeriod) => {
@@ -271,6 +272,8 @@ export class RdfConverterService {
     }
 
     if (model instanceof TrainingAction && model.actionModality) xml += `    <elm:mode>${this.escapeXml(model.actionModality)}</elm:mode>\n`;
+
+    if (model instanceof TrainingAction && model.actionType) xml += `    <elm:category>${this.escapeXml(model.actionType)}</elm:mode>\n`;
 
     if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') {
       xml += `    <elm:location>${this.escapeXml(model.location.name)}</elm:location>\n`; // TODO - check GeoSPARQL
@@ -454,6 +457,10 @@ export class RdfConverterService {
 
     if (model instanceof TrainingAction && model.actionModality){
       html += `  <span property="http://data.europa.eu/snb/model/elm/mode">${this.escapeHtml(model.actionModality)}</span><br/>\n`; 
+    }
+
+    if (model instanceof TrainingAction && model.actionType){
+      html += `  <span property="http://data.europa.eu/snb/model/elm/category">${this.escapeHtml(model.actionType)}</span><br/>\n`; 
     }
 
     if (model instanceof TrainingAction && model.actionModality != 'Online' && model.location.name != '') {

@@ -61,12 +61,14 @@ export class ActionFormComponent {
   organizationSelector = {
     label: 'Organization',
     values: [] as any[],
-    selection: []
+    selection: [],
+    dynamicValues: false
   };
   divisionSelector: FilterOption = {
     label: 'Division',
     values: [],
-    selection: []
+    selection: [],
+    dynamicValues: false
   };
 
   errorMap: Map<string, string | undefined> = new Map();

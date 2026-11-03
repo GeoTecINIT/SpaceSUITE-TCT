@@ -251,9 +251,16 @@
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
                         <div>
-                            <custom-select [fieldName]="'Action Modality'" [(selection)]="action.actionModality" [icon]="'pi pi-bookmark'"
+                            <custom-select [fieldName]="'Action Modality'" [(selection)]="action.actionModality"
                                     [optionsName]="'Action Modality'" [filter]="false" (selectionChange)="onActionModalityChange($event)"
                                     pTooltip="The mode in which the action is delivered or takes place." (selectionChange)="saveDraft()"
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
+                        </div>
+
+                        <div>
+                            <custom-select [fieldName]="'Action Type'" [(selection)]="action.actionType" [dynamicOptionName]="action.actionModality ?? ''"
+                                    [optionsName]="'Training Action Type'" [filter]="false" (selectionChange)="saveDraft()"
+                                    pTooltip="The mode in which the action is delivered or takes place."
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
                         </div>
 

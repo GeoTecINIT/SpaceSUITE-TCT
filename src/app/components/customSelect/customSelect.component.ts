@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild} from "@angular/core";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { FormsModule } from "@angular/forms";
 import { IconFieldModule } from 'primeng/iconfield';
@@ -19,10 +19,13 @@ export class CustomSelectComponent {
 
   @Input() selection?: string;
   @Input() optionsName: string = "";
+  @Input() dynamicOptionName: string = "";
   @Output() selectionChange: EventEmitter<string> = new EventEmitter();
 
   currentText: string = '';
   selectOptions: any[] = [];
+
+  private dynamicOptions: Map<string, string[]> = new Map();
 
   @Input() fieldName: string = 'Field Name';
   @Input() icon: string = 'pi pi-users';
@@ -35,11 +38,24 @@ export class CustomSelectComponent {
 
   ngOnInit() {
     this.filterService.getOptionByLabel(this.optionsName).subscribe( filterOption => {
-      this.selectOptions = filterOption.values.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
+      if (filterOption.dynamicValues && filterOption.valuesMap) {
+        this.dynamicOptions = filterOption.valuesMap;
+        this.selectOptions = filterOption.valuesMap.get(this.dynamicOptionName)?.map(x => ({ id: x, value: x})) ?? [];
+      }
+      else this.selectOptions = filterOption.values.filter(value => value != 'Other').map(x => ({ id: x, value: x}));
       if (this.selection && this.selection != '' && !this.selectOptions.map(value => value.value).includes(this.selection)){
         this.selectOptions = this.selectOptions.concat({ id: this.selection, value: this.selection})
       }
     })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['dynamicOptionName'] && !changes['dynamicOptionName'].firstChange) {
+      if (this.dynamicOptions) {
+        this.selectionChange.emit(undefined)
+        this.selectOptions = this.dynamicOptions.get(changes['dynamicOptionName'].currentValue)?.map(x => ({ id: x, value: x})) ?? [];
+      }
+    }
   }
 
   onDropdownOpen() {

@@ -4,4 +4,6 @@ export interface FilterOption {
     values: string[],
     selection: string[],
     tooltip?: string,
+    dynamicValues: boolean,
+    valuesMap?: Map<string, string[]>
 }

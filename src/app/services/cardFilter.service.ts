@@ -54,6 +54,11 @@ export class CardFilterService {
       .subscribe(({ filters, organizations }) => {
         const updatedFilters = [...filters];
         updatedFilters[updatedFilters.length - 1].values = organizations;
+        updatedFilters.forEach(value => {
+          if (value.valuesMap && !(value.valuesMap instanceof Map)) {
+            value.valuesMap = new Map(Object.entries(value.valuesMap));
+          }
+        })
         this.filterOptions.next(updatedFilters);
       });
   }
@@ -222,6 +227,7 @@ export class CardFilterService {
           label: label,
           values: [],
           selection: [],
+          dynamicValues: false
         };
       }),
     );

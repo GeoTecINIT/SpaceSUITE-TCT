@@ -145,6 +145,9 @@
                     <div class="mb-2">
                         <strong>Action Modality:</strong> {{action.actionModality}}
                     </div>
+                    <div class="mb-2">
+                        <strong>Action Type:</strong> {{action.actionType}}
+                    </div>
                     @if(action.actionModality && action.actionModality != 'Online' && action.location.name != '') {
                         <div class="mb-2">
                             <strong>Location: </strong>

@@ -557,6 +557,16 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     doc.text(p.actionModality ?? 'Undefined', 20, y);
     y += 4 * 1.35;
 
+    y += 4 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
+    doc.setFont('Poppins', 'italic');
+    doc.text('Action Type:', 20, y);
+    doc.setFont('Poppins', 'normal')
+    y += 4 * 1.35;
+    y = checkEnd(doc, y, 0, assets);
+    doc.text(p.actionType ?? 'Undefined', 20, y);
+    y += 4 * 1.35;
+
     
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);

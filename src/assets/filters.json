@@ -22,7 +22,8 @@
       "EQF 8"
     ],
     "selection": [],
-    "tooltip": "The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized)."
+    "tooltip": "The European Qualifications Framework. Indicates level of knowledge, skills and competences, from 1 (basic) to 8 (highly specialized).",
+    "dynamicValues": false
   },
   {
     "label": "Training Material Type",
@@ -53,7 +54,8 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The nature or genre of the resource."
+    "tooltip": "The nature or genre of the resource.",
+    "dynamicValues": false
   },
   {
     "label": "Interactivity Type",
@@ -67,17 +69,45 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The predominant mode of learning supported by the learning resource."
+    "tooltip": "The predominant mode of learning supported by the learning resource.",
+    "dynamicValues": false
   },
   {
     "label": "Action Modality",
     "values": [
       "In-person",
       "Online",
+      "Work-based",
       "Hybrid"
     ],
     "selection": [],
-    "tooltip": "The mode in which the action is delivered or takes place."
+    "tooltip": "The mode in which the action is delivered or takes place.",
+    "dynamicValues": false
+  },
+  {
+    "label": "Training Action Type",
+    "values": [],
+    "selection": [],
+    "tooltip": "",
+    "dynamicValues": true,
+    "valuesMap": {
+      "In-person": [
+        "Short event - seminar, workshop, info day",
+        "Structured course - multi-session programme"
+      ],
+      "Online": [
+        "Live online session - webinar, virtual class",
+        "Self-paced online course",
+        "Open online course - MOOC"
+      ],
+      "Work-based": [
+        "On-the-job training - real work context",
+        "Simulated work environment - lab, simulator"
+      ],
+      "Hybrid": [
+        "Blended course - in person + online"
+      ]
+    }
   },
   {
     "label": "Target Audience",
@@ -110,7 +140,8 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The intended participants for the resource."
+    "tooltip": "The intended participants for the resource.",
+    "dynamicValues": false
   },
   {
     "label": "Type of Assessment",
@@ -127,7 +158,8 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The methods or tools used to evaluate and verify the learner's achievement of the Learning Outcomes."
+    "tooltip": "The methods or tools used to evaluate and verify the learner's achievement of the Learning Outcomes.",
+    "dynamicValues": false
   },
   {
     "label": "Subject",
@@ -152,7 +184,8 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "Topic of the resource."
+    "tooltip": "Topic of the resource.",
+    "dynamicValues": false
   },
   {
     "label": "Language",
@@ -185,7 +218,8 @@
       "Estonian"      
     ],
     "selection": [],
-    "tooltip": "A language of the resource."
+    "tooltip": "A language of the resource.",
+    "dynamicValues": false
   },
   {
     "label": "License",
@@ -218,7 +252,8 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions."
+    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions.",
+    "dynamicValues": false
   },
   {
     "label": "Certification",
@@ -241,11 +276,13 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions."
+    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions.",
+    "dynamicValues": false
   },
   {
     "label": "Organizations",
     "values": [],
-    "selection": []
+    "selection": [],
+    "dynamicValues": false
   }
 ]

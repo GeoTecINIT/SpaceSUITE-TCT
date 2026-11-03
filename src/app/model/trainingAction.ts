@@ -9,6 +9,7 @@ export interface TimePeriod {
 
 export class TrainingAction extends TrainingItem {
   actionModality?: string; 
+  actionType?: string;
   location: ActionLocation;
   certification?: string;
   timing: TimePeriod[];
@@ -18,6 +19,7 @@ export class TrainingAction extends TrainingItem {
   constructor(data?: Partial<TrainingAction>) {
     super(data);
     this.actionModality = data?.actionModality;
+    this.actionType = data?.actionType;
     this.location = new ActionLocation(data?.location);
     this.certification = data?.certification;
     this.timing = data?.timing || [];
@@ -29,6 +31,7 @@ export class TrainingAction extends TrainingItem {
     return {
       ...super.toPlain(),
       actionModality: this.actionModality || null,
+      actionType: this.actionType || null,
       location: {
         name: this.location.name,
         coordinates: this.location.coordinates || []
