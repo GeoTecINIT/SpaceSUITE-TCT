@@ -550,7 +550,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
     doc.setFont('Poppins', 'italic');
-    doc.text('Action Modality:', 20, y);
+    doc.text('Delivery Mode:', 20, y);
     doc.setFont('Poppins', 'normal')
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
@@ -560,7 +560,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);
     doc.setFont('Poppins', 'italic');
-    doc.text('Action Type:', 20, y);
+    doc.text('Type of Action:', 20, y);
     doc.setFont('Poppins', 'normal')
     y += 4 * 1.35;
     y = checkEnd(doc, y, 0, assets);

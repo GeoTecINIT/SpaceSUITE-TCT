@@ -143,10 +143,10 @@
                 </p-tabpanel>
                 <p-tabpanel value="3">
                     <div class="mb-2">
-                        <strong>Action Modality:</strong> {{action.actionModality}}
+                        <strong>Delivery Mode:</strong> {{action.actionModality}}
                     </div>
                     <div class="mb-2">
-                        <strong>Action Type:</strong> {{action.actionType}}
+                        <strong>Type of Action:</strong> {{action.actionType}}
                     </div>
                     @if(action.actionModality && action.actionModality != 'Online' && action.location.name != '') {
                         <div class="mb-2">
