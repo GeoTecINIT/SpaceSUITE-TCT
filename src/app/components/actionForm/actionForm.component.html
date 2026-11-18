@@ -18,7 +18,7 @@
                                 <p-iconfield>
                                     <input pInputText id="title" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('title') != undefined" [class.ng-dirty]="errorMap.get('title') != undefined" 
-                                        [(ngModel)]="action.title" pTooltip="A name given to the resource" (ngModelChange)="saveDraft()"
+                                        [(ngModel)]="action.title" pTooltip="A name given to the training action" (ngModelChange)="saveDraft()"
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="200"/>
                                     <p-inputicon class="pi pi-pencil" [style]="errorMap.get('title') != undefined ? 'color: var(--danger-color)' : ''" />
                                 </p-iconfield>
@@ -32,7 +32,7 @@
                                 <p-iconfield>
                                     <input pInputText id="publisher" autocomplete="off" class="w-full custom-input" 
                                         [class.ng-invalid]="errorMap.get('publisher') != undefined" [class.ng-dirty]="errorMap.get('publisher') != undefined" 
-                                        [(ngModel)]="action.publisher" pTooltip="Enter the name of the organization or company making the resource available or organizing the training activity" 
+                                        [(ngModel)]="action.publisher" pTooltip="Enter the name of the organization or company making the training action available or organizing the training activity" 
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="100" (ngModelChange)="saveDraft()"/>
                                     <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('publisher') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
@@ -46,7 +46,7 @@
                                 <p-iconfield>
                                     <input pInputText id="url" autocomplete="off" class="w-full custom-input" [(ngModel)]="action.url"
                                         [class.ng-invalid]="errorMap.get('url') != undefined" [class.ng-dirty]="errorMap.get('url') != undefined" 
-                                        pTooltip="The address for accessing the resource in the form of a URL" type="url"
+                                        pTooltip="The address for accessing the training action in the form of a URL" type="url"
                                         tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000" (ngModelChange)="saveDraft()"/>
                                     <p-inputicon class="pi pi-link" [style]="errorMap.get('url') != undefined ? 'color: var(--danger-color)' : ''"/>
                                 </p-iconfield>
@@ -61,7 +61,7 @@
                                     [(ngModel)]="action.created" fluid class="custom-input custom-datepicker"
                                     [class.ng-invalid]="errorMap.get('created') != undefined" [class.ng-dirty]="errorMap.get('created') != undefined"
                                     [class.custom-datepicker-icon-error]="errorMap.get('created') != undefined"
-                                    pTooltip="Enter the date when the resource was originally created/finished (not when it was published, modified, or uploaded)" 
+                                    pTooltip="Enter the date when the training action was originally created/finished (not when it was published, modified, or uploaded)" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" (ngModelChange)="saveDraft()"/>
                                 <label for="created">Date Created *</label>
                             </p-floatlabel>
@@ -71,7 +71,7 @@
                         <div>
                             <custom-select [fieldName]="'Language'" [(selection)]="action.language" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('language') != undefined" [optionsName]="'Language'"
-                                    pTooltip="The language of the resource" [filter]="false" (selectionChange)="saveDraft()"
+                                    pTooltip="The language of the training action" [filter]="false" (selectionChange)="saveDraft()"
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
                             <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
                         </div>
@@ -81,7 +81,7 @@
                                 <textarea id="description" pTextarea [(ngModel)]="action.description"
                                     [class.ng-invalid]="errorMap.get('description') != undefined" [class.ng-dirty]="errorMap.get('description') != undefined"
                                     rows="4" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
-                                    pTooltip="Provide a concise summary or overview of the resource content. Include key topics, purpose, scope, and any important features or intended audience" 
+                                    pTooltip="Provide a concise summary or overview of the training action content. Include key topics, purpose, scope, and any important features or intended audience" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.description, 400)"></textarea>
                                 <div class="textarea-length" [style]="errorMap.get('description') != undefined ? 'color: var(--danger-color)' : ''">
                                     <span>{{wordCounter(action.description) + ' '}}</span>
@@ -97,7 +97,7 @@
                                 <textarea id="abstract" pTextarea [(ngModel)]="action.abstract"
                                     [class.ng-invalid]="errorMap.get('abstract') != undefined" [class.ng-dirty]="errorMap.get('abstract') != undefined"
                                     rows="2" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
-                                    pTooltip="Provide a brief summary of the resource as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
+                                    pTooltip="Provide a brief summary of the training action as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.abstract, 150)"></textarea>
                                 <div class="textarea-length" [style]="errorMap.get('abstract') != undefined ? 'color: var(--danger-color)' : ''">
                                     <span>{{wordCounter(action.abstract) + ' '}}</span>
@@ -111,7 +111,7 @@
                         <div>
                             <multiselect-chips [fieldName]="'Subjects'" [(chips)]="action.subject" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'" (chipsChange)="saveDraft()"
-                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the resource" 
+                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the training action" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
                         </div>
@@ -201,7 +201,7 @@
                         <div>
                             <multiselect-chips [fieldName]="'Target Audience'" [(chips)]="action.audience" [icon]="'pi pi-bookmark'"
                                     [error]="errorMap.get('audience') != undefined" [optionsName]="'Target Audience'"
-                                    pTooltip="The intended participants for the resource" (chipsChange)="saveDraft()"
+                                    pTooltip="The intended participants for the training action" (chipsChange)="saveDraft()"
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('audience')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('audience')}}</p>
                         </div>
@@ -217,7 +217,7 @@
                         <div>
                             <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="action.learningOutcomes"
                                     [error]="errorMap.get('learningOutcomes') != undefined" (chipsChange)="saveDraft()"
-                                    pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the resource" 
+                                    pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the training action" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
                             <p *ngIf="errorMap.get('learningOutcomes')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('learningOutcomes')}}</p>
                         </div>
@@ -227,11 +227,11 @@
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
 
                         <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents" [allowDuplicatedChips]="true"
-                                    pTooltip=" Provide the main structural elements of the resource. This may include chapter titles, lesson breakdowns, or thematic sections" 
+                                    pTooltip=" Provide the main structural elements of the training action. This may include chapter titles, lesson breakdowns, or thematic sections" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" (chipsChange)="saveDraft()"></text-chips>
 
                         <div>
-                            <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the resource" 
+                            <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the training action" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
                                 [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
                                 <bokModal [(selectedConcepts)]="action.concepts" [label]="'Knowledge Annotations'" [allowKnowledgeAreas]="false"
@@ -270,7 +270,7 @@
                                     <p-iconfield>
                                         <p-autocomplete inputId="location" fluid class="custom-input" [ngModel]="action.location.name" (ngModelChange)="onLocationChange($event)"
                                             [suggestions]="locationSuggestions" (completeMethod)="searchLocation($event)" optionLabel="name"
-                                            pTooltip="A physical or geographical place where the resource is located" (ngModelChange)="saveDraft()"
+                                            pTooltip="A physical or geographical place where the training action is located" (ngModelChange)="saveDraft()"
                                             tooltipPosition="right" showDelay="200" hideDelay="200"></p-autocomplete>
                                         <p-inputicon class="pi pi-map-marker" />
                                     </p-iconfield>
@@ -307,7 +307,7 @@
                         <div>
                             <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" auto
                                 class="custom-button custom-secondary-button custom-fileupload" (uploadHandler)="onFileSelected($event); fileUpload.clear();"
-                                pTooltip="Image to be displayed in the Training Catalogue with this resource" 
+                                pTooltip="Image to be displayed in the Training Catalogue with this training action" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200">
                                 <ng-template #header let-chooseCallback="chooseCallback">
                                     <div class="flex flex-wrap gap-2">
@@ -342,7 +342,7 @@
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <p-iconfield>
                                 <input pInputText id="user" autocomplete="off" class="w-full custom-input" [ngModel]="getUserName()" disabled
-                                    pTooltip="User registering the resource" 
+                                    pTooltip="User registering the training action" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <p-inputicon class="pi pi-user" />
                             </p-iconfield>
@@ -354,7 +354,7 @@
                                 <p-select inputId="org" [options]="organizationSelector.values" [ngModel]="action.orgId == undefined ? undefined : {value: action.orgId, label: action.orgName}" (ngModelChange)="loadDivisions($event)"
                                     class="w-full custom-select" optionLabel="label" [checkmark]="true"
                                     [class.invalid-select]="errorMap.get('organization') != undefined"
-                                    pTooltip="The organization under which the resource is to be registered" 
+                                    pTooltip="The organization under which the training action is to be registered" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="org">{{organizationSelector.label}} *</label>
                             </p-floatlabel>
@@ -365,7 +365,7 @@
                             <p-floatlabel variant="on" class="custom-floatlabel">
                                 <p-select [options]="divisionSelector.values" [(ngModel)]="action.division" class="w-full custom-select" 
                                     [disabled]="divisionSelector.values.length == 0" [checkmark]="true" inputId="division"
-                                    pTooltip="The organization division under which the resource is to be registered" (ngModelChange)="saveDraft()"
+                                    pTooltip="The organization division under which the training action is to be registered" (ngModelChange)="saveDraft()"
                                     tooltipPosition="right" showDelay="200" hideDelay="200"/>
                                 <label for="division">{{divisionSelector.label}}</label>
                             </p-floatlabel>

@@ -54,7 +54,7 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The nature or genre of the resource.",
+    "tooltip": "The nature or genre of the training material.",
     "dynamicValues": false
   },
   {
@@ -69,7 +69,7 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The predominant mode of learning supported by the learning resource.",
+    "tooltip": "The predominant mode of learning supported by the learning material.",
     "dynamicValues": false
   },
   {
@@ -140,7 +140,7 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "The intended participants for the resource.",
+    "tooltip": "The intended participants for the training item.",
     "dynamicValues": false
   },
   {
@@ -184,7 +184,7 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "Topic of the resource.",
+    "tooltip": "Topic of the training item.",
     "dynamicValues": false
   },
   {
@@ -218,7 +218,7 @@
       "Estonian"      
     ],
     "selection": [],
-    "tooltip": "A language of the resource.",
+    "tooltip": "A language of the training item.",
     "dynamicValues": false
   },
   {
@@ -252,7 +252,7 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions.",
+    "tooltip": "Information about the license under which the training item is made available, specifying usage rights and conditions.",
     "dynamicValues": false
   },
   {
@@ -276,7 +276,7 @@
       "Other"
     ],
     "selection": [],
-    "tooltip": "Information about the license under which the resource is made available, specifying usage rights and conditions.",
+    "tooltip": "Information about the license under which the training item is made available, specifying usage rights and conditions.",
     "dynamicValues": false
   },
   {
