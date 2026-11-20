@@ -19,9 +19,9 @@ import { FirebaseService } from "../../services/firebase.service";
 import { TrainingMaterialService } from "../../services/trainingMaterial.service";
 import { Router } from "@angular/router";
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
+import { ConfirmationService, MenuItem, MessageService, TreeNode } from "primeng/api";
 import { CommonModule } from "@angular/common";
-import { catchError, EMPTY, finalize, of, Subscription, take } from "rxjs";
+import { catchError, EMPTY, finalize, of, Subscription, switchMap, take } from "rxjs";
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from "primeng/tooltip";
@@ -35,6 +35,10 @@ import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { InputGroupModule } from "primeng/inputgroup";
 import { WorkloadUnit } from "../../model/trainingItem";
 import { DraftStorageService } from "../../services/draftStorage.service";
+import { LearningOutcomesSelectComponent } from "../learningOutcomesSelect/learningOutcomesSelect.component";
+import { BloomSkill } from "../../model/bloomSkill";
+import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
+import { UtilsService } from "../../services/utils.service";
 
 @Component({
   standalone: true,
@@ -43,8 +47,8 @@ import { DraftStorageService } from "../../services/draftStorage.service";
   styleUrls: ['./materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
-    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, MenuModule, InputGroupAddonModule, InputGroupModule],
-  providers: [MessageService, ConfirmationService]
+    TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, MenuModule, InputGroupAddonModule, InputGroupModule, LearningOutcomesSelectComponent],
+  providers: [MessageService, ConfirmationService, LearningOutcomesSelectComponent]
 })
 export class MaterialFormComponent {
 
@@ -82,9 +86,14 @@ export class MaterialFormComponent {
       { label: WorkloadUnit.Hours }
     ];
 
+  public showCustomSkills: boolean = false;
+  public skillOptions: WritableSignal<TreeNode[]> = signal([]);
+  public skillSelection: WritableSignal<TreeNode[]> = signal([]);
+
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, 
-              private authService: AuthService, private draftService: DraftStorageService, private permissionService: PermissionService) {}
+              private authService: AuthService, private draftService: DraftStorageService, private permissionService: PermissionService,
+              private bokInfoService: BokInformationService, private utilsService: UtilsService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -122,6 +131,20 @@ export class MaterialFormComponent {
       this.firebaseService.getOrganizationDivisions(this.material.orgId).pipe(take(1)).subscribe(divisions => this.divisionSelector.tags = divisions);
       this.permissionService.organizationHasPermission(this.material.orgId, 'tct').pipe(take(1)).subscribe(hasPermission => this.selectedOrgCanPublish.set(hasPermission));
     }
+
+    this.skillSelection.set(this.material.learningOutcomes.map(skill => {
+      return ({
+        key: `${skill.level}-${skill.concept}-${skill.verb}`,
+        label: skill.label,
+        children: [],
+        leaf: true,
+        expanded: false,
+        type: 'leaf',
+        data: skill
+      })
+    }));
+
+    this.buildSkillOptions();
     
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {
       if (value) this.confirmExitWithoutSaving()
@@ -286,5 +309,115 @@ export class MaterialFormComponent {
   limitInputByWordsLimit(input: string, maxWords: number): number | null {
     if (this.wordCounter(input) >= maxWords) return input.length;
     else return null
+  }
+
+  onLearningObjectivesChange(newSkills: TreeNode[]) {
+    this.material.learningOutcomes = newSkills.filter(skill => skill.data).map(skill => skill.data);
+    this.saveDraft();
+  }
+
+  buildSkillOptions() {
+    const tempTree: TreeNode[] = [];
+    const conceptSet: Set<string> = new Set();
+    this.material.learningOutcomes.forEach(learningObj => conceptSet.add(learningObj.concept));
+    this.material.concepts.forEach(concept => conceptSet.add(concept));
+    this.material.subject.forEach(subj => {
+      const code = this.utilsService.knowledgeAreaToCode.get(subj);
+      if(code) conceptSet.add(code)
+    });
+    conceptSet.forEach(concept => {
+      const conceptTree: TreeNode[] = [
+        {
+          label: "Level 1: Remember",
+          key: concept + '-1',
+          expanded: false,
+          leaf: false
+        },
+        {
+          label: "Level 2: Understand",
+          key: concept + '-2',
+          expanded: false,
+          leaf: false
+        },
+        {
+          label: "Level 3: Apply",
+          key: concept + '-3',
+          expanded: false,
+          leaf: false
+        },
+        {
+          label: "Level 4: Analyze",
+          key: concept + '-4',
+          expanded: false,
+          leaf: false
+        },
+        {
+          label: "Level 5: Evaluate",
+          key: concept + '-5',
+          expanded: false,
+          leaf: false
+        },
+        {
+          label: "Level 6: Create",
+          key: concept + '-6',
+          expanded: false,
+          leaf: false
+        },
+        {
+          label: "Unclassified",
+          key: concept + '-0',
+          expanded: false,
+          leaf: false
+        }
+      ]
+      this.bokInfoService.getConceptSkills(concept).pipe(
+        switchMap(skills => {
+          skills.forEach(skill => {
+            const levelNode: TreeNode | undefined = conceptTree.at(skill.bloomLevel - 1);
+            if (!levelNode) return
+            levelNode.children ??= [];
+            levelNode.children.push({
+              key: `${skill.bloomLevel}-${concept}-${skill.bloomVerb}`,
+              label: skill.name,
+              children: [],
+              leaf: true,
+              expanded: false,
+              type: 'leaf',
+              data: new BloomSkill({ 
+                level: skill.bloomLevel,
+                verb: skill.bloomVerb, 
+                label: skill.name,
+                concept: concept
+              })
+            })
+          })
+          return this.bokInfoService.getConceptName(concept)
+        }),
+        take(1)
+      ).subscribe(conceptName => {
+        tempTree.push({
+          label: `[${concept}] ${conceptName}`,
+          key: concept,
+          expanded: true,
+          leaf: false,
+          children: conceptTree,
+          selectable: false
+        })
+      });
+    })
+    tempTree.forEach(levelNode => {
+      levelNode.children = this.getSortedArray(levelNode.children ?? []);
+    })
+    this.skillOptions.set(tempTree);
+    this.saveDraft();
+  }
+  
+  private getSortedArray(values: TreeNode[]) {
+    if (values.length > 0) {
+      return [...values].sort((a, b) =>
+        (a.label || '').localeCompare(b.label || '')
+      );
+    }
+    return values;
   }
 }

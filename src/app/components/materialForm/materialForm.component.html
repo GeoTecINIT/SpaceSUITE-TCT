@@ -110,7 +110,7 @@
 
                         <div>
                             <multiselect-chips [fieldName]="'Subjects'" [(chips)]="material.subject" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'" (chipsChange)="saveDraft()"
+                                    [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'" (chipsChange)="saveDraft(); buildSkillOptions()"
                                     pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the training material" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
@@ -200,14 +200,6 @@
                             <p *ngIf="errorMap.get('assessment')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('assessment')}}</p>
                         </div>
 
-                        <div>
-                            <text-chips [fieldName]="'Learning Outcomes'" [icon]="'pi pi-graduation-cap'" [(chips)]="material.learningOutcomes"
-                                    [error]="errorMap.get('learningOutcomes') != undefined" (chipsChange)="saveDraft()"
-                                    pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the training material" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
-                            <p *ngIf="errorMap.get('learningOutcomes')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('learningOutcomes')}}</p>
-                        </div>
-
                         <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="material.prerequisites" (chipsChange)="saveDraft()"
                                     pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
@@ -221,10 +213,41 @@
                                 tooltipPosition="right" showDelay="200" hideDelay="200" 
                                 [style.border-color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' ">
                                 <bokModal [(selectedConcepts)]="material.concepts" [label]="'Knowledge Annotations'" [allowKnowledgeAreas]="false"
-                                    [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' " (selectedConceptsChange)="saveDraft()"></bokModal>
+                                    [style.color]="errorMap.get('concepts') != undefined ? 'var(--danger-color)' : '' " (selectedConceptsChange)="saveDraft(); buildSkillOptions()"></bokModal>
                             </div>
                             <p *ngIf="errorMap.get('concepts')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('concepts')}}</p>
                         </div>
+
+                        <div class="flex flex-column">
+                            <learningOutcomes-select fieldName="Learning Outcomes" [error]="errorMap.get('learningOutcomes') != undefined"
+                                pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the training material" 
+                                tooltipPosition="right" showDelay="200" hideDelay="200"
+                                [treeSelection]="skillSelection()"
+                                (treeSelectionChange)="skillSelection.set($event)"
+                                (treeSelectionChange)="onLearningObjectivesChange($event)"
+                                [treeSelectOptions]="skillOptions()">
+                            </learningOutcomes-select>
+                            @if (!showCustomSkills) {
+                                <p-button
+                                    [rounded]="true"
+                                    [text]="true"
+                                    size="small"
+                                    (onClick)="showCustomSkills = true"
+                                    class="text-button ml-auto mt-1 p-0 text-xs font-italic custom-option"
+                                >
+                                    Add custom skills
+                                </p-button>
+                            }
+                            <p *ngIf="errorMap.get('learningOutcomes')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('learningOutcomes')}}</p>
+                        </div>
+                        @if(showCustomSkills) {
+                            <div>
+                                <text-chips fieldName="Custom Learning Outcomes" [icon]="'pi pi-graduation-cap'" [(chips)]="material.customLearningOutcomes"
+                                    (chipsChange)="saveDraft()" tooltipPosition="right" showDelay="200" hideDelay="200"
+                                    pTooltip="Custom learning outcomes related to this material">
+                                </text-chips>
+                            </div>
+                        }
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 1)" />

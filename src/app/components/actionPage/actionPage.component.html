@@ -126,8 +126,11 @@
                     </div>
                     <div class="mb-2">
                         <strong>Learning Outcomes:</strong>
-                        <ul *ngIf="action.learningOutcomes.length > 0">
+                        <ul *ngIf="action.learningOutcomes.length > 0 || action.customLearningOutcomes.length > 0">
                             <li *ngFor="let outcome of action.learningOutcomes">
+                                {{outcome.label}}
+                            </li>
+                            <li *ngFor="let outcome of action.customLearningOutcomes">
                                 {{outcome}}
                             </li>
                         </ul>

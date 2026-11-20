@@ -1,3 +1,5 @@
+import { BloomSkill } from "./bloomSkill";
+
 export enum WorkloadUnit {
   ECTS = "ECTS",
   Hours = "Hours"
@@ -11,7 +13,8 @@ export class TrainingItem {
   subject: string[];
   description: string;
   abstract: string;
-  learningOutcomes: string[];
+  learningOutcomes: BloomSkill[];
+  customLearningOutcomes: string[];
   audience: string[];
   created: any;
   publisher: string;
@@ -48,7 +51,8 @@ export class TrainingItem {
     this.subject = data?.subject ?? [];
     this.description = data?.description ?? '';
     this.abstract = data?.abstract ?? '';
-    this.learningOutcomes = data?.learningOutcomes ?? [];
+    this.learningOutcomes = data?.learningOutcomes?.map(value => new BloomSkill(value)) ?? [];
+    this.customLearningOutcomes = data?.customLearningOutcomes ?? [];
     this.audience = data?.audience ?? [];
     this.created = data?.created ?? new Date();
     this.publisher = data?.publisher ?? '';
@@ -84,7 +88,8 @@ export class TrainingItem {
       subject: this.subject,
       description: this.description,
       abstract: this.abstract,
-      learningOutcomes: this.learningOutcomes,
+      learningOutcomes: this.learningOutcomes.map(value => value.toPlainObject()),
+      customLearningOutcomes: this.customLearningOutcomes,
       audience: this.audience,
       created: this.created,
       publisher: this.publisher,

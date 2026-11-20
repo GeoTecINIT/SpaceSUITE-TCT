@@ -502,6 +502,17 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y += 4 * 1.35;
   if (p.learningOutcomes.length > 0) {
     p.learningOutcomes.forEach((outcome) => {
+      const lines = doc.splitTextToSize(cleanPdfText(outcome.label), 170);
+      for (let i = 0; i < lines.length; i++) {
+        if (i == 0) lines[i] = '• ' + lines[i];
+        else lines[i] = '   ' + lines[i];
+      }
+      const linesSize = lines.length * 4 * 1.35;
+      y = checkEnd(doc, y, linesSize, assets);
+      doc.text(lines, 20, y);
+      y += linesSize;
+    });
+    p.customLearningOutcomes.forEach((outcome) => {
       const lines = doc.splitTextToSize(cleanPdfText(outcome), 170);
       for (let i = 0; i < lines.length; i++) {
         if (i == 0) lines[i] = '• ' + lines[i];

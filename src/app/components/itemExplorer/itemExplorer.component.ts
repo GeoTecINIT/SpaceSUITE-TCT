@@ -472,7 +472,8 @@ export class ItemExplorerComponent {
       case 'Learning Outcome':
         sortedItems.forEach((material) => {
           if (
-            material.learningOutcomes
+            material.learningOutcomes.map(value => value.label)
+              .concat(material.customLearningOutcomes)
               .join(';')
               .toLowerCase()
               .includes(this.searchValue.toLowerCase())

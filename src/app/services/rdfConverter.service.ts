@@ -3,6 +3,7 @@ import { TrainingMaterial } from '../model/trainingMaterial';
 import { UtilsService } from './utils.service';
 import { TrainingItem } from '../model/trainingItem';
 import { TimePeriod, TrainingAction } from '../model/trainingAction';
+import { BloomSkill } from '../model/bloomSkill';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,15 @@ export class RdfConverterService {
     if (model.description) ttl += `  dcterms:description "${model.description}" ;\n`;
     if (model.abstract) ttl += `  dcterms:abstract "${model.abstract}" ;\n`;
     if (model.learningOutcomes) {
-      model.learningOutcomes.forEach((outcome: string, index: number) => {
+      model.learningOutcomes.forEach((outcome: BloomSkill, index: number) => {
+        ttl += `  elm:learningOutcome _:LO${index} ;\n`;
+        additionalObjects += `_:LO${index}\n`;
+        additionalObjects += `  rdf:type elm:LearningOutcome ;\n`;
+        additionalObjects += `  dcterms:description "${outcome.label}" .\n\n`
+      });
+    }
+    if (model.customLearningOutcomes) {
+      model.customLearningOutcomes.forEach((outcome: string, index: number) => {
         ttl += `  elm:learningOutcome _:LO${index} ;\n`;
         additionalObjects += `_:LO${index}\n`;
         additionalObjects += `  rdf:type elm:LearningOutcome ;\n`;
@@ -208,7 +217,17 @@ export class RdfConverterService {
     if (model.abstract) xml += `    <dcterms:abstract>${this.escapeXml(model.abstract)}</dcterms:abstract>\n`;
 
     if (model.learningOutcomes) {
-      model.learningOutcomes.forEach((outcome: string) => {
+      model.learningOutcomes.forEach((outcome: BloomSkill) => {
+        xml += `    <elm:learningOutcome>\n`;
+        xml += `      <elm:LearningOutcome>\n`;
+        xml += `        <dcterms:description>${this.escapeXml(outcome.label)}</dcterms:description>\n`;
+        xml += `      </elm:LearningOutcome>\n`;
+        xml += `    </elm:learningOutcome>\n`;
+      });
+    }
+
+    if (model.customLearningOutcomes) {
+      model.customLearningOutcomes.forEach((outcome: string) => {
         xml += `    <elm:learningOutcome>\n`;
         xml += `      <elm:LearningOutcome>\n`;
         xml += `        <dcterms:description>${this.escapeXml(outcome)}</dcterms:description>\n`;
@@ -391,7 +410,17 @@ export class RdfConverterService {
     }
 
     if (model.learningOutcomes) {
-      model.learningOutcomes.forEach((outcome: string) => {
+      model.learningOutcomes.forEach((outcome: BloomSkill) => {
+        html += `  <div rel="http://data.europa.eu/snb/model/elm/learningOutcome">\n`;
+        html += `    <div typeof="http://data.europa.eu/snb/model/elm/LearningOutcome">\n`;
+        html += `      <span property="description">${this.escapeHtml(outcome.label)}</span>\n`;
+        html += `    </div>\n`;
+        html += `  </div>\n`;
+      });
+    }
+
+    if (model.customLearningOutcomes) {
+      model.customLearningOutcomes.forEach((outcome: string) => {
         html += `  <div rel="http://data.europa.eu/snb/model/elm/learningOutcome">\n`;
         html += `    <div typeof="http://data.europa.eu/snb/model/elm/LearningOutcome">\n`;
         html += `      <span property="description">${this.escapeHtml(outcome)}</span>\n`;
