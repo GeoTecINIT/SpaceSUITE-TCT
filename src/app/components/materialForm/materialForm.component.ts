@@ -144,6 +144,8 @@ export class MaterialFormComponent {
       })
     }));
 
+    this.showCustomSkills = this.material.customLearningOutcomes.length > 0;
+
     this.buildSkillOptions();
     
     this.exitWithoutSavingService.showModalSubject.subscribe(value => {

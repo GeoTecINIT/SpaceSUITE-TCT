@@ -166,6 +166,8 @@ export class ActionFormComponent {
           })
         }));
 
+        this.showCustomSkills = this.action.customLearningOutcomes.length > 0;
+
         this.buildSkillOptions();
       })
     ).subscribe();
