@@ -33,6 +33,7 @@ import { TrainingActionService } from '../../services/trainingAction.service';
 import { UtilsService } from '../../services/utils.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { PdfService } from '../../services/pdf.service';
+import { SkillsTreeComponent } from '../skillsTree/skillsTree.component';
 
 interface AuthState {
   logged: boolean;
@@ -56,8 +57,9 @@ interface AuthState {
     ToastModule,
     PopoverModule,
     SkillTagComponent,
-    TooltipModule
-  ],
+    TooltipModule,
+    SkillsTreeComponent
+],
   providers: [ConfirmationService, MessageService],
 })
 export class ActionPageComponent {

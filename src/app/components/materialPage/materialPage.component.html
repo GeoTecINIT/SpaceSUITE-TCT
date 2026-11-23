@@ -115,15 +115,11 @@
                         </ul>
                     </div>
                     <div class="mb-2">
-                        <strong>Learning Outcomes:</strong>
-                        <ul *ngIf="material.learningOutcomes.length > 0 || material.customLearningOutcomes.length > 0">
-                            <li *ngFor="let outcome of material.learningOutcomes">
-                                {{outcome.label}}
-                            </li>
-                            <li *ngFor="let outcome of material.customLearningOutcomes">
-                                {{outcome}}
-                            </li>
-                        </ul>
+                        <strong class="block">Learning Outcomes:</strong>
+                        <div class="mb-3 mt-2">
+                            <skillsTree [array]="material.learningOutcomes" [custom]="material.customLearningOutcomes"></skillsTree>
+                        </div>
+                        
                     </div>
                     <div class="mb-2">
                         <strong>Type of Assessment:</strong>
