@@ -220,7 +220,7 @@
 
                         <div class="flex flex-column">
                             <learningOutcomes-select fieldName="Learning Outcomes" [error]="errorMap.get('learningOutcomes') != undefined"
-                                pTooltip="The specific skills, knowledge, or competencies participants are expected to gain by the end of the training material" 
+                                pTooltip="The specified skills, knowledge, or competencies learners are expected to gain. Items listed are ready-to-use examples. If needed, copy-paste-adjust them in the ‘Custom Learning Outcomes’ field below to use an updated version." 
                                 tooltipPosition="right" showDelay="200" hideDelay="200"
                                 [treeSelection]="skillSelection()"
                                 (treeSelectionChange)="skillSelection.set($event)"
