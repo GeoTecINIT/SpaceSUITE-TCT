@@ -61,18 +61,18 @@ function applyMetadata(doc: jsPDF, item: TrainingItem) {
 
 function getSubjectMetadata(item: TrainingItem) {
   const isMaterial = item instanceof TrainingMaterial;
-  let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix geospacebok: <https://geospacebok.eu/> . ';
+  let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <https://geospacebok.eu/> . ';
   subject = subject + '<> dc:type "' + (isMaterial ? 'Training Material' : 'Training Action') +'"; <> dc:title "' + item.title + '"';
   item.subject.forEach(subject => {
     const bokCode = subject.split(']', 1)[0].split('[', 2)[1];
     if (bokCode) {
-      subject = subject + '; dc:relation geospacebok:' + bokCode;
+      subject = subject + '; dc:relation eo4geo:' + bokCode;
     }
   });
   item.concepts.forEach(know => {
     const bokCode = know.split(']', 1)[0].split('[', 2)[1];
     if (bokCode) {
-      subject = subject + '; dc:relation geospacebok:' + bokCode;
+      subject = subject + '; dc:relation eo4geo:' + bokCode;
     }
   });
   subject = subject + '  .';
@@ -500,7 +500,7 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   doc.text('Learning Outcomes:', 20, y);
   doc.setFont('Poppins', 'normal')
   y += 4 * 1.35;
-  if (p.learningOutcomes.length > 0) {
+  if (p.learningOutcomes.length > 0 || p.customLearningOutcomes.length > 0) {
     p.learningOutcomes.forEach((outcome) => {
       const lines = doc.splitTextToSize(cleanPdfText(outcome.label), 170);
       for (let i = 0; i < lines.length; i++) {
