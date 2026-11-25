@@ -1,4 +1,5 @@
 import { BloomSkill } from "./bloomSkill";
+import { ESCOSkill } from "./escoSkill";
 
 export enum WorkloadUnit {
   ECTS = "ECTS",
@@ -28,6 +29,8 @@ export class TrainingItem {
   prerequisites: string[];
   assessment: string[];
   concepts: string[];
+  transversalSkills: ESCOSkill[];
+  customTransversalSkills: string[];
   
   // Training Catalogue Metadata
   image: string;
@@ -66,6 +69,8 @@ export class TrainingItem {
     this.prerequisites = data?.prerequisites ?? [];
     this.assessment = data?.assessment ?? [];
     this.concepts = data?.concepts ?? [];
+    this.transversalSkills = data?.transversalSkills?.map(skill => new ESCOSkill(skill)) || [];
+    this.customTransversalSkills = [...data?.customTransversalSkills || []];
     this.image = data?.image ?? '';
     this.orgId = data?.orgId;
     this.orgName = data?.orgName;
@@ -103,6 +108,8 @@ export class TrainingItem {
       prerequisites: this.prerequisites,
       assessment: this.assessment,
       concepts: this.concepts,
+      transversalSkills: this.transversalSkills.map(skill => skill.toPlainObject()),
+      customTransversalSkills: this.customTransversalSkills,
       image: this.image,
       orgId: this.orgId,
       orgName: this.orgName,

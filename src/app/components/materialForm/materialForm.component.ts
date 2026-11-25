@@ -39,13 +39,16 @@ import { LearningOutcomesSelectComponent } from "../learningOutcomesSelect/learn
 import { BloomSkill } from "../../model/bloomSkill";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { UtilsService } from "../../services/utils.service";
+import { TreeselectChipsComponent } from "../treeselectChips/treeselectChips.component";
+import { ESCOService } from "../../services/esco.service";
+import { ESCOSkill } from "../../model/escoSkill";
 
 @Component({
   standalone: true,
   selector: 'material-form',
   templateUrl: './materialForm.component.html',
   styleUrls: ['./materialForm.component.css'],
-  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule,
+  imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule, TreeselectChipsComponent,
     StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule,
     TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, MenuModule, InputGroupAddonModule, InputGroupModule, LearningOutcomesSelectComponent],
   providers: [MessageService, ConfirmationService, LearningOutcomesSelectComponent]
@@ -90,10 +93,14 @@ export class MaterialFormComponent {
   public skillOptions: WritableSignal<TreeNode[]> = signal([]);
   public skillSelection: WritableSignal<TreeNode[]> = signal([]);
 
+  public showCustomTransversalSkills: boolean = false;
+  public selectedTransversalSkills: TreeNode[] = [];
+  public transversalSkills: TreeNode<any>[] = [];
+
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService,
               private trainingMaterialService: TrainingMaterialService, private router: Router, private confirmationService: ConfirmationService, 
               private authService: AuthService, private draftService: DraftStorageService, private permissionService: PermissionService,
-              private bokInfoService: BokInformationService, private utilsService: UtilsService) {}
+              private bokInfoService: BokInformationService, private utilsService: UtilsService, private escoService: ESCOService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -144,7 +151,16 @@ export class MaterialFormComponent {
       })
     }));
 
+    this.escoService.getTransversalSkillsFromJson().pipe(take(1)).subscribe(
+      data => {
+        this.transversalSkills = data;
+        this.selectedTransversalSkills = this.material.transversalSkills
+          .map(skill => this.findTransversalSkill(skill.preferredLabel, this.transversalSkills)).filter(value => value != undefined);
+      }
+    );
+
     this.showCustomSkills = this.material.customLearningOutcomes.length > 0;
+    this.showCustomTransversalSkills = this.material.customTransversalSkills.length > 0;
 
     this.buildSkillOptions();
     
@@ -162,6 +178,16 @@ export class MaterialFormComponent {
   ngOnDestroy() {
     this.authSubscription.unsubscribe();
     this.userOrgsSubscription.unsubscribe();
+  }
+
+  private findTransversalSkill(label: string, nodes: TreeNode[]): TreeNode | undefined {
+    let match: TreeNode | undefined;
+    for(let node of nodes) {
+      if (node.label === label) return node;
+      match = this.findTransversalSkill(label, node.children || []);
+      if (match) return match;
+    }
+    return undefined;
   }
 
   loadDivisions(newValue: {label: string, value: string}) {
@@ -315,6 +341,15 @@ export class MaterialFormComponent {
 
   onLearningObjectivesChange(newSkills: TreeNode[]) {
     this.material.learningOutcomes = newSkills.filter(skill => skill.data).map(skill => skill.data);
+    this.saveDraft();
+  }
+
+  onTransversalSkillChange() {
+    this.material.transversalSkills = this.selectedTransversalSkills.map(value => {
+      const newEscoSkill: ESCOSkill = new ESCOSkill(value as any); 
+      newEscoSkill.preferredLabel = value.label!;
+      return newEscoSkill;
+    });
     this.saveDraft();
   }
 

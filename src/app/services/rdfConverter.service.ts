@@ -76,6 +76,15 @@ export class RdfConverterService {
         additionalObjects += `  dcterms:description "${outcome}" .\n\n`
       });
     }
+
+    model.transversalSkills?.forEach(skill => {
+      ttl += `  elm:relatedESCOSkill <${skill.uri}> ;\n`;
+    });
+
+    model.customTransversalSkills?.forEach((skill: string) => {
+      ttl += `  elm:relatedSkill "${skill}" ;\n`;
+    });
+
     if (model.audience) {
       model.audience.forEach((audience: string, index: number) => {
         ttl += `  dcterms:audience _:AUDIENCE${index} ;\n`;
@@ -235,6 +244,14 @@ export class RdfConverterService {
         xml += `    </elm:learningOutcome>\n`;
       });
     }
+
+    model.transversalSkills?.forEach(skill => {
+      xml += `    <elm:relatedESCOSkill rdf:resource="${this.escapeXml(skill.uri)}"/>\n`;
+    });
+
+    model.customTransversalSkills?.forEach((skill: string) => {
+      xml += `    <elm:relatedSkill>${this.escapeXml(skill)}</elm:relatedSkill>\n`;
+    });
 
     if (model.audience) {
       model.audience.forEach((audience: string) => {
@@ -428,6 +445,14 @@ export class RdfConverterService {
         html += `  </div>\n`;
       });
     }
+
+    model.transversalSkills?.forEach(skill => {
+      html += `  <a rel="elm:relatedESCOSkill" href="${this.escapeHtml(skill.uri)}">${this.escapeHtml(skill.uri)}</a><br/>\n`;
+    });
+
+    model.customTransversalSkills?.forEach((skill: string) => {
+      html += `  <span property="elm:relatedSkill">${this.escapeHtml(skill)}</span><br/>\n`;
+    });
 
     if (model.audience) {
       model.audience.forEach((audience: string) => {

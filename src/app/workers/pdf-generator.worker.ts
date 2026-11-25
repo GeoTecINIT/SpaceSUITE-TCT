@@ -533,6 +533,42 @@ function renderCurriculumNodes(doc: jsPDF, p: TrainingItem, y: number, assets: {
   y += 4 * 1.35;
   y = checkEnd(doc, y, 0, assets);
   doc.setFont('Poppins', 'italic');
+  doc.text('Transversal Skills:', 20, y);
+  doc.setFont('Poppins', 'normal')
+  y += 4 * 1.35;
+  if (p.transversalSkills.length > 0 || p.customTransversalSkills.length > 0) {
+    p.transversalSkills.forEach((skill) => {
+      const lines = doc.splitTextToSize(cleanPdfText(skill.preferredLabel), 170);
+      for (let i = 0; i < lines.length; i++) {
+        if (i == 0) lines[i] = '• ' + lines[i];
+        else lines[i] = '   ' + lines[i];
+      }
+      const linesSize = lines.length * 4 * 1.35;
+      y = checkEnd(doc, y, linesSize, assets);
+      doc.text(lines, 20, y);
+      y += linesSize;
+    });
+    p.customTransversalSkills.forEach((skill) => {
+      const lines = doc.splitTextToSize(cleanPdfText(skill), 170);
+      for (let i = 0; i < lines.length; i++) {
+        if (i == 0) lines[i] = '• ' + lines[i];
+        else lines[i] = '   ' + lines[i];
+      }
+      const linesSize = lines.length * 4 * 1.35;
+      y = checkEnd(doc, y, linesSize, assets);
+      doc.text(lines, 20, y);
+      y += linesSize;
+    });
+  }
+  else {
+    y = checkEnd(doc, y, 0, assets);
+    doc.text('Undefined', 20, y);
+    y += 4 * 1.35;
+  }
+
+  y += 4 * 1.35;
+  y = checkEnd(doc, y, 0, assets);
+  doc.setFont('Poppins', 'italic');
   doc.text('Type of Assessment:', 20, y);
   doc.setFont('Poppins', 'normal')
   y += 4 * 1.35;

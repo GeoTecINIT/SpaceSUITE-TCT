@@ -100,23 +100,6 @@
                 </p-tabpanel>
                 <p-tabpanel value="2">
                     <div class="mb-2">
-                        <strong>Certification:</strong> {{action.certification}}
-                    </div>
-                    <div class="mb-2" *ngIf="action.certification && action.certification === 'Micro-credential'">
-                        <strong>Micro-credential Awarding Body</strong> {{action.microcredentialAwardingBody}}
-                    </div>
-                    <div class="mb-2">
-                        <strong>Related Materials:</strong>
-                        <ul *ngIf="action.relatedMaterials.length > 0">
-                            <li *ngFor="let material of action.relatedMaterials">
-                                <div class="white-space-nowrap overflow-hidden text-overflow-ellipsis" [style.color]="'var(--secondary-color)'">
-                                    <a class="icon-link" 
-                                    target="_blank" href="{{material}}">{{material}}</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mb-2">
                         <strong>Prerequisites:</strong>
                         <ul *ngIf="action.prerequisites.length > 0">
                             <li *ngFor="let requisite of action.prerequisites">
@@ -131,6 +114,28 @@
                         </div>
                     </div>
                     <div class="mb-2">
+                        <strong>Transversal Skills:</strong>
+                        <ul *ngIf="action.transversalSkills.length > 0 || action.customTransversalSkills.length > 0">
+                            <li *ngFor="let skill of action.transversalSkills">
+                                {{skill.preferredLabel}}
+                            </li>
+                            <li *ngFor="let skill of action.customLearningOutcomes">
+                                {{skill}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Related Materials:</strong>
+                        <ul *ngIf="action.relatedMaterials.length > 0">
+                            <li *ngFor="let material of action.relatedMaterials">
+                                <div class="white-space-nowrap overflow-hidden text-overflow-ellipsis" [style.color]="'var(--secondary-color)'">
+                                    <a class="icon-link" 
+                                    target="_blank" href="{{material}}">{{material}}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
                         <strong>Type of Assessment:</strong>
                         <ul *ngIf="action.assessment.length > 0">
                             <li *ngFor="let assessmentType of action.assessment">
@@ -140,6 +145,12 @@
                     </div>
                 </p-tabpanel>
                 <p-tabpanel value="3">
+                    <div class="mb-2">
+                        <strong>Certification:</strong> {{action.certification}}
+                    </div>
+                    <div class="mb-2" *ngIf="action.certification && action.certification === 'Micro-credential'">
+                        <strong>Micro-credential Awarding Body</strong> {{action.microcredentialAwardingBody}}
+                    </div>
                     <div class="mb-2">
                         <strong>Delivery Mode:</strong> {{action.actionModality}}
                     </div>
@@ -178,17 +189,17 @@
                         </ul>
                     </div>
                     <div class="mb-2">
-                        <strong>Source/s:</strong>
-                        <div class="text-justify my-2" style="white-space: pre-wrap;">{{action.source}}</div>
-                    </div>
-                    <div class="mb-2">
                         <strong>Audience:</strong>
                         <ul *ngIf="action.audience.length > 0">
                             <li *ngFor="let audience of action.audience">
                                 {{audience}}
                             </li>
                         </ul>
-                    </div>                   
+                    </div>        
+                    <div class="mb-2">
+                        <strong>Source/s:</strong>
+                        <div class="text-justify my-2" style="white-space: pre-wrap;">{{action.source}}</div>
+                    </div>           
                   </p-tabpanel>
             </p-tabpanels>
         </p-tabs>

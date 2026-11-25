@@ -44,6 +44,9 @@ import { UtilsService } from "../../services/utils.service";
 import { LearningOutcomesSelectComponent } from "../learningOutcomesSelect/learningOutcomesSelect.component";
 import { BokInformationService } from "@eo4geo/ngx-bok-visualization";
 import { BloomSkill } from "../../model/bloomSkill";
+import { TreeselectChipsComponent } from "../treeselectChips/treeselectChips.component";
+import { ESCOService } from "../../services/esco.service";
+import { ESCOSkill } from "../../model/escoSkill";
 
 @Component({
   standalone: true,
@@ -51,7 +54,7 @@ import { BloomSkill } from "../../model/bloomSkill";
   templateUrl: './actionForm.component.html',
   styleUrls: ['../materialForm/materialForm.component.css'],
   imports: [InputTextModule, FloatLabelModule, FormsModule, InputIconModule, IconFieldModule, TextareaModule, SelectModule, CommonModule, DividerModule, LearningOutcomesSelectComponent,
-    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule, MenuModule,
+    StepperModule, ButtonModule, DatePickerModule, MultiSelectModule, TextChipsComponent, InputNumberModule, BokModalComponent, ToastModule, FileUploadModule, MenuModule, TreeselectChipsComponent,
     TooltipModule, MultiselectChipsComponent, CustomSelectComponent, ConfirmDialog, SelectButton, AutoCompleteModule, DurationInputComponent, InputGroupModule, InputGroupAddonModule],
   providers: [MessageService, ConfirmationService]
 })
@@ -97,11 +100,16 @@ export class ActionFormComponent {
   public skillOptions: WritableSignal<TreeNode[]> = signal([]);
   public skillSelection: WritableSignal<TreeNode[]> = signal([]);
 
+
+  public showCustomTransversalSkills: boolean = false;
+  public selectedTransversalSkills: TreeNode[] = [];
+  public transversalSkills: TreeNode<any>[] = [];
+
   constructor(private exitWithoutSavingService: ExitWithoutSavingService, private firebaseService: FirebaseService, private messageService: MessageService, 
               private openrouteService: OpenrouteService, private trainingActionService: TrainingActionService, private router: Router, 
               private confirmationService: ConfirmationService, private authService: AuthService, private draftService: DraftStorageService,
               private permissionService: PermissionService, private route: ActivatedRoute, private offerToActionService: OfferToActionService,
-              private utilsService: UtilsService, private bokInfoService: BokInformationService) {}
+              private utilsService: UtilsService, private bokInfoService: BokInformationService, private escoService: ESCOService) {}
 
   ngOnInit() {
     this.authSubscription = this.authService.getUserState().subscribe(state => {
@@ -166,7 +174,16 @@ export class ActionFormComponent {
           })
         }));
 
+        this.escoService.getTransversalSkillsFromJson().pipe(take(1)).subscribe(
+          data => {
+            this.transversalSkills = data;
+            this.selectedTransversalSkills = this.action.transversalSkills
+              .map(skill => this.findTransversalSkill(skill.preferredLabel, this.transversalSkills)).filter(value => value != undefined);
+          }
+        );
+
         this.showCustomSkills = this.action.customLearningOutcomes.length > 0;
+        this.showCustomTransversalSkills = this.action.customTransversalSkills.length > 0;
 
         this.buildSkillOptions();
       })
@@ -186,6 +203,16 @@ export class ActionFormComponent {
   ngOnDestroy() {
     this.authSubscription.unsubscribe();
     this.userOrgsSubscription.unsubscribe();
+  }
+
+  private findTransversalSkill(label: string, nodes: TreeNode[]): TreeNode | undefined {
+    let match: TreeNode | undefined;
+    for(let node of nodes) {
+      if (node.label === label) return node;
+      match = this.findTransversalSkill(label, node.children || []);
+      if (match) return match;
+    }
+    return undefined;
   }
 
   loadDivisions(newValue: {label: string, value: string}) {
@@ -355,6 +382,15 @@ export class ActionFormComponent {
 
   onLearningObjectivesChange(newSkills: TreeNode[]) {
     this.action.learningOutcomes = newSkills.filter(skill => skill.data).map(skill => skill.data);
+    this.saveDraft();
+  }
+
+  onTransversalSkillChange() {
+    this.action.transversalSkills = this.selectedTransversalSkills.map(value => {
+      const newEscoSkill: ESCOSkill = new ESCOSkill(value as any); 
+      newEscoSkill.preferredLabel = value.label!;
+      return newEscoSkill;
+    });
     this.saveDraft();
   }
 

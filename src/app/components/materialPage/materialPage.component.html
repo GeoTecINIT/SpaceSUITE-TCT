@@ -97,15 +97,6 @@
                     </ul>
                 </p-tabpanel>
                 <p-tabpanel value="2">
-                    <div class="mb-2"><strong>Interactivity Type:</strong> {{material.interactivityType}}</div>
-                    <div class="mb-2">
-                        <strong>Training Material Type:</strong>
-                        <ul *ngIf="material.materialType.length > 0">
-                            <li *ngFor="let type of material.materialType">
-                                {{type}}
-                            </li>
-                        </ul>
-                    </div>
                     <div class="mb-2">
                         <strong>Prerequisites:</strong>
                         <ul *ngIf="material.prerequisites.length > 0">
@@ -119,18 +110,29 @@
                         <div class="mb-3 mt-2">
                             <skillsTree [array]="material.learningOutcomes" [custom]="material.customLearningOutcomes"></skillsTree>
                         </div>
-                        
                     </div>
                     <div class="mb-2">
-                        <strong>Type of Assessment:</strong>
-                        <ul *ngIf="material.assessment.length > 0">
-                            <li *ngFor="let assessmentType of material.assessment">
-                                {{assessmentType}}
+                        <strong>Transversal Skills:</strong>
+                        <ul *ngIf="material.transversalSkills.length > 0 || material.customTransversalSkills.length > 0">
+                            <li *ngFor="let skill of material.transversalSkills">
+                                {{skill.preferredLabel}}
+                            </li>
+                            <li *ngFor="let skill of material.customLearningOutcomes">
+                                {{skill}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Training Material Type:</strong>
+                        <ul *ngIf="material.materialType.length > 0">
+                            <li *ngFor="let type of material.materialType">
+                                {{type}}
                             </li>
                         </ul>
                     </div>
                 </p-tabpanel>
                 <p-tabpanel value="3">
+                    <div class="mb-2"><strong>Interactivity Type:</strong> {{material.interactivityType}}</div>
                     <div class="mb-2"><strong>License:</strong> {{material.license ?? 'Not specified'}}</div>
                     <div class="mb-2">
                         <strong>Contributors:</strong>
@@ -139,6 +141,14 @@
                     <div class="mb-2">
                         <strong>Source/s:</strong>
                         <div class="text-justify my-2" style="white-space: pre-wrap;">{{material.source}}</div>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Type of Assessment:</strong>
+                        <ul *ngIf="material.assessment.length > 0">
+                            <li *ngFor="let assessmentType of material.assessment">
+                                {{assessmentType}}
+                            </li>
+                        </ul>
                     </div>
                     <div class="mb-2">
                         <strong>Audience:</strong>

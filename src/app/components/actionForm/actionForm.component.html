@@ -76,64 +76,6 @@
                             <p *ngIf="errorMap.get('language')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('language')}}</p>
                         </div>
 
-                        <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <textarea id="description" pTextarea [(ngModel)]="action.description"
-                                    [class.ng-invalid]="errorMap.get('description') != undefined" [class.ng-dirty]="errorMap.get('description') != undefined"
-                                    rows="4" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
-                                    pTooltip="Provide a concise summary or overview of the training action content. Include key topics, purpose, scope, and any important features or intended audience" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.description, 400)"></textarea>
-                                <div class="textarea-length" [style]="errorMap.get('description') != undefined ? 'color: var(--danger-color)' : ''">
-                                    <span>{{wordCounter(action.description) + ' '}}</span>
-                                    <span>/ 400 words</span>
-                                </div>
-                                <label for="description">Description</label>
-                            </p-floatlabel>
-                            <p *ngIf="errorMap.get('description')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('description')}}</p>
-                        </div>
-    
-                        <div>
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <textarea id="abstract" pTextarea [(ngModel)]="action.abstract"
-                                    [class.ng-invalid]="errorMap.get('abstract') != undefined" [class.ng-dirty]="errorMap.get('abstract') != undefined"
-                                    rows="2" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
-                                    pTooltip="Provide a brief summary of the training action as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.abstract, 150)"></textarea>
-                                <div class="textarea-length" [style]="errorMap.get('abstract') != undefined ? 'color: var(--danger-color)' : ''">
-                                    <span>{{wordCounter(action.abstract) + ' '}}</span>
-                                    <span>/ 150 words</span>
-                                </div>
-                                <label for="abstract">Abstract</label>
-                            </p-floatlabel>
-                            <p *ngIf="errorMap.get('abstract')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('abstract')}}</p>
-                        </div>
-
-                        <div>
-                            <multiselect-chips [fieldName]="'Subjects'" [(chips)]="action.subject" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'" (chipsChange)="saveDraft(); buildSkillOptions()"
-                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the training action" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
-                            <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
-                        </div>
-
-                        <div>
-                            <text-chips [fieldName]="'Creators'" [(chips)]="action.creators"
-                                    [error]="errorMap.get('creators') != undefined" (chipsChange)="saveDraft()"
-                                    pTooltip="Specify the authors of the action. First name first, then second name" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
-                            <p *ngIf="errorMap.get('creators')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('creators')}}</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-content-between mt-3">
-                        <p-button class="custom-secondary-button" label="Return" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
-                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 2)" />
-                    </div>
-                </ng-template>
-            </p-step-panel>
-    
-            <p-step-panel [value]="2">
-                <ng-template #content let-activateCallback="activateCallback">
-                    <div class="flex flex-column gap-3">
                         <div tooltipPosition="right" showDelay="200" hideDelay="200"
                             [pTooltip]="action.workloadUnit == 'ECTS' ?
                                         'Amount of time expected to invest in order to meet the defined learning outcomes, quantified using ECTS (1 ECTS = +/- 25 hours total student work)'
@@ -177,34 +119,62 @@
                         </div>
 
                         <div>
-                            <custom-select [fieldName]="'Certification'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('certification') != undefined" [optionsName]="'Certification'"
-                                    pTooltip="Information on whether participants will receive upon completion" (selectionChange)="saveDraft()"
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
-                            <p *ngIf="errorMap.get('certification')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('certification')}}</p>
+                            <text-chips [fieldName]="'Creators'" [(chips)]="action.creators"
+                                    [error]="errorMap.get('creators') != undefined" (chipsChange)="saveDraft()"
+                                    pTooltip="Specify the authors of the action. First name first, then second name" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+                            <p *ngIf="errorMap.get('creators')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('creators')}}</p>
                         </div>
 
-                        <div *ngIf="action.certification && action.certification === 'Micro-credential'">
-                            <p-floatlabel variant="on" class="custom-floatlabel">
-                                <p-iconfield>
-                                    <input pInputText id="microcredentialAwardingBody" autocomplete="off" class="w-full custom-input" [(ngModel)]="action.microcredentialAwardingBody"
-                                        [class.ng-invalid]="errorMap.get('microcredentialAwardingBody') != undefined" [class.ng-dirty]="errorMap.get('microcredentialAwardingBody') != undefined" 
-                                        pTooltip="The institution, organization, or entity responsible for issuing or validating the micro-credential"
-                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000" (ngModelChange)="saveDraft()"/>
-                                    <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('microcredentialAwardingBody') != undefined ? 'color: var(--danger-color)' : ''"/>
-                                </p-iconfield>
-                                <label for="microcredentialAwardingBody">Microcredential Awarding Body</label>
-                            </p-floatlabel>
-                            <p *ngIf="errorMap.get('microcredentialAwardingBody')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('microcredentialAwardingBody')}}</p>
-                        </div>
-
+                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="action.prerequisites" (chipsChange)="saveDraft()"
+                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+                    </div>
+                    <div class="flex justify-content-between mt-3">
+                        <p-button class="custom-secondary-button" label="Return" severity="secondary" icon="pi pi-arrow-left" (onClick)="returnToHomepage()" />
+                        <p-button class="custom-button" label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goToNextStep(activateCallback, 2)" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+    
+            <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-column gap-3">
                         <div>
-                            <multiselect-chips [fieldName]="'Target Audience'" [(chips)]="action.audience" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('audience') != undefined" [optionsName]="'Target Audience'"
-                                    pTooltip="The intended participants for the training action" (chipsChange)="saveDraft()"
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
-                            <p *ngIf="errorMap.get('audience')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('audience')}}</p>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <textarea id="description" pTextarea [(ngModel)]="action.description"
+                                    [class.ng-invalid]="errorMap.get('description') != undefined" [class.ng-dirty]="errorMap.get('description') != undefined"
+                                    rows="4" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
+                                    pTooltip="Provide a concise summary or overview of the training action content. Include key topics, purpose, scope, and any important features or intended audience" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.description, 400)"></textarea>
+                                <div class="textarea-length" [style]="errorMap.get('description') != undefined ? 'color: var(--danger-color)' : ''">
+                                    <span>{{wordCounter(action.description) + ' '}}</span>
+                                    <span>/ 400 words</span>
+                                </div>
+                                <label for="description">Description</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('description')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('description')}}</p>
                         </div>
+    
+                        <div>
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <textarea id="abstract" pTextarea [(ngModel)]="action.abstract"
+                                    [class.ng-invalid]="errorMap.get('abstract') != undefined" [class.ng-dirty]="errorMap.get('abstract') != undefined"
+                                    rows="2" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
+                                    pTooltip="Provide a brief summary of the training action as a shorter version of the description. Focus on the main purpose and key points in a concise way" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [maxlength]="limitInputByWordsLimit(action.abstract, 150)"></textarea>
+                                <div class="textarea-length" [style]="errorMap.get('abstract') != undefined ? 'color: var(--danger-color)' : ''">
+                                    <span>{{wordCounter(action.abstract) + ' '}}</span>
+                                    <span>/ 150 words</span>
+                                </div>
+                                <label for="abstract">Abstract</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('abstract')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('abstract')}}</p>
+                        </div>
+
+                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents" [allowDuplicatedChips]="true"
+                                    pTooltip=" Provide the main structural elements of the training action. This may include chapter titles, lesson breakdowns, or thematic sections" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" (chipsChange)="saveDraft()"></text-chips>
 
                         <div>
                             <multiselect-chips [fieldName]="'Type of Assessment'" [(chips)]="action.assessment" [icon]="'pi pi-bookmark'"
@@ -213,14 +183,21 @@
                                     tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
                             <p *ngIf="errorMap.get('assessment')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('assessment')}}</p>
                         </div>
+                        
+                        <div>
+                            <text-chips [fieldName]="'Related Materials'" [icon]="'pi pi-link'" [(chips)]="action.relatedMaterials" (chipsChange)="saveDraft()"
+                                    pTooltip="Provide links to resources related to this training action. These materials may exist inside or outside the catalogue, but each link must be a valid URL." 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200" [error]="errorMap.get('relatedMaterials') != undefined"></text-chips>
+                            <p *ngIf="errorMap.get('relatedMaterials')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('relatedMaterials')}}</p>
+                        </div>
 
-                        <text-chips [fieldName]="'Prerequisites'" [icon]="'pi pi-list-check'" [(chips)]="action.prerequisites" (chipsChange)="saveDraft()"
-                                    pTooltip="Prerequisites describe the knowledge, skills, qualifications, or experiences that a learner is expected to have before starting this learning activity" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
-
-                        <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents" [allowDuplicatedChips]="true"
-                                    pTooltip=" Provide the main structural elements of the training action. This may include chapter titles, lesson breakdowns, or thematic sections" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" (chipsChange)="saveDraft()"></text-chips>
+                        <div>
+                            <multiselect-chips [fieldName]="'Subjects'" [(chips)]="action.subject" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('subject') != undefined" [optionsName]="'Subject'" (chipsChange)="saveDraft(); buildSkillOptions()"
+                                    pTooltip="Use the following knowledge areas from the BoK to define the general topic or field of the training action" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('subject')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('subject')}}</p>
+                        </div>
 
                         <div>
                             <div class="custom-border p-2" style="color: #64748b;" pTooltip="List of Body of Knowledge concepts addressed in the training action" 
@@ -262,6 +239,25 @@
                                 </text-chips>
                             </div>
                         }
+                        <div class="flex flex-column">
+                            <treeselect-chips
+                                [(treeSelection)]="selectedTransversalSkills" (treeSelectionChange)="onTransversalSkillChange()" [treeselectOptions]="transversalSkills"
+                                [pTooltip]="'Skills considered unrelated to a particular job, task, academic discipline or area of knowledge but that can be used in a wide variety of situations and work settings. Based on the ESCO transversal and cross-sector skills.'" 
+                                [fieldName]="'Transversal Skills'"
+                                tooltipPosition="top" showDelay="200" hideDelay="200" 
+                            ></treeselect-chips>
+                            @if(!showCustomTransversalSkills) {
+                                <p-button [rounded]="true" [text]="true" size="small" (onClick)="showCustomTransversalSkills = true"
+                                    class="text-button ml-auto mt-1 p-0 text-xs font-italic">Add custom Transversal Skills</p-button>
+                            }
+                        </div>
+                        @if(showCustomTransversalSkills) {
+                            <div>
+                                <text-chips [fieldName]="'Custom Transversal Skills'" [icon]="'pi pi-chart-bar'" [(chips)]="action.customTransversalSkills"
+                                    [pTooltip]="'Custom transversal skills related to this action.'"  (chipsChange)="saveDraft()"
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></text-chips>
+                            </div>
+                        }
                     </div>
                     <div class="flex justify-content-between mt-3">
                         <p-button class="custom-secondary-button" label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goToNextStep(activateCallback, 1)" />
@@ -273,6 +269,28 @@
             <p-step-panel [value]="3">
                 <ng-template #content let-activateCallback="activateCallback">
                     <div class="flex flex-column gap-3">
+                        <div>
+                            <custom-select [fieldName]="'Certification'" [(selection)]="action.certification" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('certification') != undefined" [optionsName]="'Certification'"
+                                    pTooltip="Information on whether participants will receive upon completion" (selectionChange)="saveDraft()"
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></custom-select>
+                            <p *ngIf="errorMap.get('certification')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('certification')}}</p>
+                        </div>
+
+                        <div *ngIf="action.certification && action.certification === 'Micro-credential'">
+                            <p-floatlabel variant="on" class="custom-floatlabel">
+                                <p-iconfield>
+                                    <input pInputText id="microcredentialAwardingBody" autocomplete="off" class="w-full custom-input" [(ngModel)]="action.microcredentialAwardingBody"
+                                        [class.ng-invalid]="errorMap.get('microcredentialAwardingBody') != undefined" [class.ng-dirty]="errorMap.get('microcredentialAwardingBody') != undefined" 
+                                        pTooltip="The institution, organization, or entity responsible for issuing or validating the micro-credential"
+                                        tooltipPosition="right" showDelay="200" hideDelay="200" maxlength="1000" (ngModelChange)="saveDraft()"/>
+                                    <p-inputicon class="pi pi-building-columns" [style]="errorMap.get('microcredentialAwardingBody') != undefined ? 'color: var(--danger-color)' : ''"/>
+                                </p-iconfield>
+                                <label for="microcredentialAwardingBody">Microcredential Awarding Body</label>
+                            </p-floatlabel>
+                            <p *ngIf="errorMap.get('microcredentialAwardingBody')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('microcredentialAwardingBody')}}</p>
+                        </div>
+                        
                         <div>
                             <custom-select [fieldName]="'Delivery Mode'" [(selection)]="action.actionModality"
                                     [optionsName]="'Action Modality'" [filter]="false" (selectionChange)="onActionModalityChange($event)"
@@ -308,6 +326,14 @@
                                 tooltipPosition="right" showDelay="200" hideDelay="200"></duration-input>
                         </div>
 
+                        <div>
+                            <multiselect-chips [fieldName]="'Target Audience'" [(chips)]="action.audience" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('audience') != undefined" [optionsName]="'Target Audience'"
+                                    pTooltip="The intended participants for the training action" (chipsChange)="saveDraft()"
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('audience')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('audience')}}</p>
+                        </div>
+
                         <p-floatlabel variant="on" class="custom-floatlabel">
                             <textarea id="source" pTextarea [(ngModel)]="action.source"
                                     rows="2" class="w-full custom-textarea m-0" (ngModelChange)="saveDraft()"
@@ -319,13 +345,6 @@
                             </div>
                             <label for="source">References & Resources</label>
                         </p-floatlabel>
-
-                        <div>
-                            <text-chips [fieldName]="'Related Materials'" [icon]="'pi pi-link'" [(chips)]="action.relatedMaterials" (chipsChange)="saveDraft()"
-                                    pTooltip="Provide links to resources related to this training action. These materials may exist inside or outside the catalogue, but each link must be a valid URL." 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200" [error]="errorMap.get('relatedMaterials') != undefined"></text-chips>
-                            <p *ngIf="errorMap.get('relatedMaterials')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('relatedMaterials')}}</p>
-                        </div>
 
                         <div>
                             <p-fileupload #fileUpload maxFileSize="1000000" mode="advanced" accept="image/*" customUpload="true" auto
