@@ -135,14 +135,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="mb-2">
-                        <strong>Type of Assessment:</strong>
-                        <ul *ngIf="action.assessment.length > 0">
-                            <li *ngFor="let assessmentType of action.assessment">
-                                {{assessmentType}}
-                            </li>
-                        </ul>
-                    </div>
                 </p-tabpanel>
                 <p-tabpanel value="3">
                     <div class="mb-2">
@@ -176,6 +168,10 @@
                         </div>
                     }
                     <div class="mb-2">
+                        <strong>Source/s:</strong>
+                        <div class="text-justify my-2" style="white-space: pre-wrap;">{{action.source}}</div>
+                    </div>    
+                    <div class="mb-2">
                         <strong>Timing:</strong>
                         <ul *ngIf="action.timing.length > 0">
                             <li *ngFor="let period of action.timing">
@@ -189,17 +185,21 @@
                         </ul>
                     </div>
                     <div class="mb-2">
+                        <strong>Type of Assessment:</strong>
+                        <ul *ngIf="action.assessment.length > 0">
+                            <li *ngFor="let assessmentType of action.assessment">
+                                {{assessmentType}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2">
                         <strong>Audience:</strong>
                         <ul *ngIf="action.audience.length > 0">
                             <li *ngFor="let audience of action.audience">
                                 {{audience}}
                             </li>
                         </ul>
-                    </div>        
-                    <div class="mb-2">
-                        <strong>Source/s:</strong>
-                        <div class="text-justify my-2" style="white-space: pre-wrap;">{{action.source}}</div>
-                    </div>           
+                    </div>               
                   </p-tabpanel>
             </p-tabpanels>
         </p-tabs>

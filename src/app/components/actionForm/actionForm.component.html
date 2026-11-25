@@ -175,14 +175,6 @@
                         <text-chips [fieldName]="'Table of Content'" [icon]="'pi pi-book'" [(chips)]="action.tableOfContents" [allowDuplicatedChips]="true"
                                     pTooltip=" Provide the main structural elements of the training action. This may include chapter titles, lesson breakdowns, or thematic sections" 
                                     tooltipPosition="right" showDelay="200" hideDelay="200" (chipsChange)="saveDraft()"></text-chips>
-
-                        <div>
-                            <multiselect-chips [fieldName]="'Type of Assessment'" [(chips)]="action.assessment" [icon]="'pi pi-bookmark'"
-                                    [error]="errorMap.get('assessment') != undefined" [optionsName]="'Type of Assessment'" (chipsChange)="saveDraft()"
-                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
-                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
-                            <p *ngIf="errorMap.get('assessment')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('assessment')}}</p>
-                        </div>
                         
                         <div>
                             <text-chips [fieldName]="'Related Materials'" [icon]="'pi pi-link'" [(chips)]="action.relatedMaterials" (chipsChange)="saveDraft()"
@@ -324,6 +316,14 @@
                             <duration-input [(periods)]="action.timing" [errorMap]="errorMap" (periodsChange)="saveDraft()"
                                 pTooltip="The date ranges that define when this event is active. Each period has a start date and an optional end date" 
                                 tooltipPosition="right" showDelay="200" hideDelay="200"></duration-input>
+                        </div>
+
+                        <div>
+                            <multiselect-chips [fieldName]="'Type of Assessment'" [(chips)]="action.assessment" [icon]="'pi pi-bookmark'"
+                                    [error]="errorMap.get('assessment') != undefined" [optionsName]="'Type of Assessment'" (chipsChange)="saveDraft()"
+                                    pTooltip="The methods used to evaluate the learner's achievement of the learning outcomes" 
+                                    tooltipPosition="right" showDelay="200" hideDelay="200"></multiselect-chips>
+                            <p *ngIf="errorMap.get('assessment')" style="color: var(--danger-color);" class="m-0 p-0 text-xs font-italic">{{errorMap.get('assessment')}}</p>
                         </div>
 
                         <div>
